@@ -133,3 +133,63 @@ def evaluate(*args, **kwargs):
         if daily_close is not None and daily_volume is not None:
             return evaluate_15m_setup(df15, daily_close, daily_volume)
     return None
+
+
+def t1_blocked(df5: pd.DataFrame, signal_ts, entry: float, t1: float, direction: str) -> bool:
+    if df5 is None or df5.empty:
+        return False
+    ts = _timestamp(signal_ts)
+    history = df5[df5.index < ts].tail(20)
+    if history.empty:
+        return False
+    if direction == "BUY":
+        return bool(((history["high"] > entry) & (history["high"] < t1)).any())
+    return bool(((history["low"] < entry) & (history["low"] > t1)).any())
+
+
+def evaluate_b1_breakout(df15: pd.DataFrame, orb: dict, daily_close: float, daily_volume: float) -> dict | None:
+    """B+RVOL candidate: first completed 15M close outside fixed 09:15 ORB.
+    Uses the tested baseline RSI direction + Quality >=3 and adds 15M RVOL >=1.2.
+    EMA/VWAP are diagnostic only and do not gate B+RVOL.
+    """
+    if df15 is None or df15.empty or not orb:
+        return None
+    minimum = max(SETTINGS.min_15m_candles, SETTINGS.rvol_lookback + 1, 3)
+    if len(df15) < minimum:
+        return None
+    required = {"open", "high", "low", "close", "volume", "rsi14", "rvol", "ema9", "ema20", "vwap"}
+    missing = required.difference(df15.columns)
+    if missing:
+        raise ValueError(f"15M dataframe missing columns: {sorted(missing)}")
+    ts = _timestamp(df15.index[-1])
+    orb_ts = _timestamp(orb["timestamp"])
+    if ts <= orb_ts:
+        return None
+    c = df15.iloc[-1]; p = df15.iloc[-2]
+    close = float(c["close"])
+    direction = "BUY" if close > float(orb["high"]) else "SELL" if close < float(orb["low"]) else None
+    if direction is None:
+        return None
+    rsi = float(c["rsi14"]); prev_rsi = float(p["rsi14"]); rvol = float(c["rvol"])
+    if not all(_finite(v) for v in [close,rsi,prev_rsi,rvol,daily_close,daily_volume,orb["high"],orb["low"],orb["close"]]):
+        return None
+    if direction == "BUY":
+        rsi_ok = SETTINGS.buy_rsi_min < rsi < SETTINGS.buy_rsi_max and rsi > prev_rsi
+    else:
+        rsi_ok = SETTINGS.sell_rsi_min < rsi < SETTINGS.sell_rsi_max and rsi < prev_rsi
+    if not rsi_ok or float(daily_close) <= SETTINGS.min_price or float(daily_volume) <= SETTINGS.min_daily_volume or rvol < SETTINGS.min_15m_rvol:
+        return None
+    quality = score_trade_quality(df15, direction)
+    if quality["trade_quality_score"] < SETTINGS.min_trade_score:
+        return None
+    return {
+        "direction": direction, "setup": "B1_ORB_15M_CLOSE_RVOL",
+        "setup_15m_timestamp": ts.isoformat(),
+        "setup_15m_completion": (ts + pd.Timedelta(minutes=SETTINGS.setup_timeframe)).isoformat(),
+        "setup_15m_open": float(c["open"]), "setup_15m_high": float(c["high"]), "setup_15m_low": float(c["low"]), "setup_15m_close": close,
+        "setup_15m_ema9": float(c["ema9"]), "setup_15m_ema20": float(c["ema20"]), "setup_15m_rsi14": rsi,
+        "setup_15m_previous_rsi14": prev_rsi, "setup_15m_vwap": float(c["vwap"]), "setup_15m_volume": float(c["volume"]), "setup_15m_rvol": rvol,
+        "daily_close": float(daily_close), "daily_volume": float(daily_volume),
+        "orb_timestamp": orb_ts.isoformat(), "orb_high": float(orb["high"]), "orb_low": float(orb["low"]), "orb_close": float(orb["close"]),
+        "breakout_level": float(orb["high"] if direction == "BUY" else orb["low"]), **quality, "status": "CANDIDATE",
+    }

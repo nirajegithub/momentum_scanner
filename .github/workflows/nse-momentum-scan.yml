@@ -1,4 +1,4 @@
-name: NSE Momentum - 5M Scanner
+name: NSE Momentum - B1 ORB + RVOL Scanner
 
 on:
   schedule:
@@ -17,7 +17,7 @@ concurrency:
 
 jobs:
   scanner:
-    name: Scan NSE Momentum on Completed 5M Candles
+    name: Scan NSE Momentum - B1 ORB + RVOL
     runs-on: ubuntu-latest
     env:
       DHAN_CLIENT_ID: ${{ secrets.DHAN_CLIENT_ID }}
@@ -29,8 +29,8 @@ jobs:
       MIN_PREV_VOLUME: "500000"
       MIN_DAILY_VOLUME: "500000"
       BUY_RSI_MIN: "55"
-      BUY_RSI_MAX: "80"
-      SELL_RSI_MIN: "20"
+      BUY_RSI_MAX: "70"
+      SELL_RSI_MIN: "30"
       SELL_RSI_MAX: "45"
       RVOL_LOOKBACK: "20"
       MIN_15M_RVOL: "1.2"
@@ -43,7 +43,6 @@ jobs:
       MIN_RR: "2.0"
       MIN_STOP_DISTANCE_PERCENT: "0.50"
       RISK_PERCENT: "1.0"
-      PENDING_SETUP_MAX_15M_CANDLES: "1"
       ENTRY_TIMEFRAME: "5"
       SETUP_TIMEFRAME: "15"
       SCAN_START_HHMM: "930"
@@ -66,7 +65,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run completed-5M scanner
+      - name: Run B1 ORB + RVOL scanner
         run: python -m app.main
 
       - name: Commit scanner state

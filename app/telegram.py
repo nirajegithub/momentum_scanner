@@ -33,36 +33,33 @@ def signal_message(s):
         "",
         str(s["symbol"]),
         "",
+        "Strategy: B1 ORB + RVOL",
+        f"ORB: {s['orb_timestamp']}",
+        f"Breakout 15M: {s['setup_15m_timestamp']}",
+        f"Signal/Entry available: {s['setup_15m_completion']}",
+        "",
         f"Entry: {_money(s['risk']['entry'])}",
         f"SL: {_money(s['risk']['sl'])}",
-        "",
         f"T1: {_money(s['risk']['t1'])}",
         f"T2: {_money(s['risk']['t2'])}",
         f"T3: {_money(s['risk']['t3'])}",
+        "",
+        f"ORB High: {_money(s['orb_high'])}",
+        f"ORB Low: {_money(s['orb_low'])}",
+        f"15M Close: {_money(s['setup_15m_close'])}",
+        f"15M RSI: {float(s['setup_15m_rsi14']):.2f}",
+        f"15M RVOL: {float(s['setup_15m_rvol']):.2f}x",
+        f"Quality: {float(s['trade_quality_score']):.1f}",
+        "",
+        "Rule: first completed 15M close outside 09:15 ORB + RSI + Quality ≥ 3 + RVOL ≥ 1.2",
     ])
 
 
 def stop_update_message(s, new_stop, stage, basis):
-    labels = {1: "BREAK-EVEN", 2: "+0.5R LOCKED", 3: "+1R LOCKED", 4: "+2R / 15M STRUCTURE TRAIL"}
-    label = labels.get(int(stage), basis)
-    return "\n".join([
-        "🔒 STOP UPDATE",
-        "",
-        str(s["symbol"]),
-        "",
-        f"Entry: {_money(s['risk']['entry'])}",
-        f"New SL: {_money(new_stop)}",
-        f"Status: {label}",
-    ])
+    return "\n".join(["🔒 STOP UPDATE", "", str(s["symbol"]), f"New SL: {_money(new_stop)}", f"Status: {basis}"])
 
 
 def exit_message(s, exit_price, reason, exit_time):
     entry = float(s["risk"]["entry"])
     points = float(exit_price) - entry if s["direction"] == "BUY" else entry - float(exit_price)
-    return (
-        f"⚠️ {s['symbol']} {reason}\n"
-        f"Points: {points:+.2f}\n"
-        f"Entry: {_money(entry)}\n"
-        f"Exit: {_money(exit_price)}\n"
-        f"Time: {exit_time}"
-    )
+    return f"⚠️ {s['symbol']} {reason}\nPoints: {points:+.2f}\nEntry: {_money(entry)}\nExit: {_money(exit_price)}\nTime: {exit_time}"

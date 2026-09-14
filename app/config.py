@@ -13,7 +13,7 @@ class Settings:
     min_daily_volume: int = int(os.getenv("MIN_DAILY_VOLUME", "500000"))
 
     buy_rsi_min: float = float(os.getenv("BUY_RSI_MIN", "55"))
-    buy_rsi_max: float = float(os.getenv("BUY_RSI_MAX", "80"))
+    buy_rsi_max: float = float(os.getenv("BUY_RSI_MAX", "70"))
     sell_rsi_min: float = float(os.getenv("SELL_RSI_MIN", "30"))
     sell_rsi_max: float = float(os.getenv("SELL_RSI_MAX", "45"))
     rvol_lookback: int = int(os.getenv("RVOL_LOOKBACK", "20"))
@@ -34,15 +34,12 @@ class Settings:
     min_rr: float = float(os.getenv("MIN_RR", "2.0"))
     min_stop_distance_percent: float = float(os.getenv("MIN_STOP_DISTANCE_PERCENT", "0.50"))
     risk_percent: float = float(os.getenv("RISK_PERCENT", "1.0"))
-    pending_setup_max_15m_candles: int = int(os.getenv("PENDING_SETUP_MAX_15M_CANDLES", "1"))
-
     scan_start_hhmm: int = int(os.getenv("SCAN_START_HHMM", "930"))
     scan_end_hhmm: int = int(os.getenv("SCAN_END_HHMM", "1505"))
     dry_run: bool = _bool("DRY_RUN", "true")
 
+    enable_progressive_ts: bool = _bool("ENABLE_PROGRESSIVE_TS", "false")
 
-DISCLAIMER = (
-    "⚠️ Educational/informational purposes only. Not financial advice. Trade at your own risk."
-)
 
+DISCLAIMER = "⚠️ Educational/informational purposes only. Not financial advice. Trade at your own risk."
 SETTINGS = Settings()

@@ -1,31 +1,32 @@
-Final replacement bundle — NSE 15M setup + 5M confirmation strategy
+B1 + RVOL PRODUCTION BUNDLE
 
-MODIFIED
-app/config.py
-app/indicators.py
-app/main.py
-app/scoring.py
-app/state.py
-app/strategy.py
-app/summary.py
-app/telegram.py
-.github/workflows/nse-momentum-scan.yml
-.github/workflows/nse-momentum-universe.yml
-.github/workflows/nse-momentum-summary.yml
+Live strategy files:
+- app/main.py
+- app/strategy.py
+- app/config.py
+- app/telegram.py
+- .github/workflows/nse-momentum-scan.yml
+- B1_RVOL_PRODUCTION.md
+- tests/test_b1_rvol_live.py
 
-aDDed
-app/risk.py
-tests/test_final_strategy.py
-CRON_JOB_SETUP.md
-FINAL_IMPLEMENTATION_README.md
-FINAL_CODE_GENERATION_PROMPT.md
+B1 + RVOL rules:
+- Previous-day close > 350
+- Previous-day volume > 500,000
+- Fixed 09:15 15M ORB
+- First subsequent completed 15M close outside ORB
+- RSI direction filter: BUY 55-70 rising; SELL 30-45 falling
+- 15M RVOL >= 1.2 using previous 20 completed 15M volumes
+- Quality Score >= 3
+- Entry = breakout 15M close
+- SL = 09:15 ORB close
+- Minimum stop distance = 0.50%
+- T1-block filter retained
+- T1/T2/T3 = 2R/3R/4R
+- EMA/VWAP are diagnostic only
 
-NOT INCLUDED / PRESERVED FROM EXISTING REPOSITORY
-app/dhan_client.py
-app/calendar.py
-app/nse_universe.py
-requirements.txt
-other existing repository files and secrets
+Timing:
+Dhan candle timestamps are candle-start timestamps. A 09:30 15M candle is only actionable after 09:45 completion.
 
-IMPORTANT
-The external cron-job.org account is not modified by this bundle.
+Validation performed on this bundle:
+pytest -q -> 20 passed
+python -m compileall -q app scripts tests -> passed
