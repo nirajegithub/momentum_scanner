@@ -6,7 +6,7 @@ name: NSE Momentum - Daily Summary
 #     - cron: "55 9 * * 1-5"
 #   workflow_dispatch:
 
-"on":
+on:
   workflow_dispatch:
 
 permissions:
