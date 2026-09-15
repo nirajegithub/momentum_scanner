@@ -35,7 +35,7 @@ import urllib.error
 # EDIT THESE SETTINGS
 # ============================================================
 
-FROM_DATE = "2026-06-01 09:00:00"   # format: YYYY-MM-DD HH:MM:SS
+FROM_DATE = "2026-05-12 09:00:00"   # format: YYYY-MM-DD HH:MM:SS
 TO_DATE = "2026-07-12 15:30:00"
 
 INTERVALS = {

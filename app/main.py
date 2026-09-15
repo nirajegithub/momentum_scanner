@@ -41,15 +41,12 @@ def _intraday_range(ts):
     return (ts - timedelta(days=10)).strftime("%Y-%m-%d"), (ts + timedelta(days=1)).strftime("%Y-%m-%d")
 
 
-def _orb_for_day(df15, day):
-    if df15 is None or df15.empty:
-        return None
-    x = df15[df15.index.date == day]
-    x = x[x.index.strftime("%H:%M") == "09:15"]
+def _orb_for_day(df15):
+    x = df15[df15.index.strftime("%H:%M") == "09:15"]
     if x.empty:
         return None
-    r = x.iloc[-1]
-    ts = x.index[-1]
+    r = x.iloc[0]
+    ts = x.index[0]
     return {
         "timestamp": ts.isoformat(),
         "open": float(r["open"]),
@@ -176,7 +173,7 @@ def _process_b1(state, item, df5, df15):
     st = _b_state(state, symbol)
     orb = st.get("orb")
     if orb is None:
-        orb = _orb_for_day(df15, df15.index[-1].date())
+        orb = _orb_for_day(df15)
         if orb is None:
             LOG.info("%s | ORB_WAITING | 09:15 candle unavailable", symbol)
             return False

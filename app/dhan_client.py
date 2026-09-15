@@ -5,6 +5,8 @@ import os
 
 import pandas as pd
 import requests
+
+from .candle_utils import resample_session_ohlcv
 from dhanhq import DhanContext, dhanhq
 
 
@@ -546,10 +548,10 @@ class DhanClient:
             return result
 
         if interval == 15:
-            result = resample_ohlcv(
-                df,
-                "15min",
-            )
+            # B1 requires candle-start timestamps, with the first candle
+            # explicitly anchored at 09:15-09:30. Dhan's minute data is the
+            # source of truth; do not depend on Dhan's direct 15M labels.
+            result = resample_session_ohlcv(df, 15)
 
             if str(security_id) == "21614":
                 log_resample_validation(
