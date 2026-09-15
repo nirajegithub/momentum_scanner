@@ -1,9 +1,12 @@
 name: NSE Momentum - Daily Summary
 
-on:
-  schedule:
-    # 15:25 IST = 09:55 UTC.
-    - cron: "55 9 * * 1-5"
+# on:
+#   schedule:
+#     # 15:25 IST = 09:55 UTC.
+#     - cron: "55 9 * * 1-5"
+#   workflow_dispatch:
+
+"on":
   workflow_dispatch:
 
 permissions:
