@@ -16,6 +16,7 @@ from .risk import build_risk_and_targets
 from .state import load, save, signal_key, record_alert, backup_and_clear, active_for_symbol
 from .summary import build_summary
 from .strategy import evaluate_b1_breakout, t1_blocked
+from .scoring import score_trade_quality
 from .candle_utils import completed_candles
 from .telegram import send, signal_message, stop_update_message, exit_message
 
@@ -62,6 +63,90 @@ def _b_state(state, symbol):
         "last_processed_15m": None,
         "orb": None,
     })
+
+
+
+def _reset_b1_state_for_day(st, trading_day):
+    """Ensure ORB state belongs to the current NSE trading day."""
+    orb = st.get("orb")
+    if not orb:
+        return
+    try:
+        orb_day = pd.Timestamp(orb["timestamp"]).tz_convert(IST).date()
+    except Exception:
+        orb_day = None
+    if orb_day != trading_day:
+        st["status"] = "WAITING"
+        st["last_processed_15m"] = None
+        st["orb"] = None
+        LOG.info(
+            "B1_STATE_RESET | reason=NEW_TRADING_DAY | old_orb_date=%s | new_date=%s",
+            orb_day, trading_day,
+        )
+
+
+def _log_b1_filter_decision(symbol, item, df15, direction):
+    """Log the first failed B1 filter without changing the strategy gates."""
+    c = df15.iloc[-1]
+    p = df15.iloc[-2]
+
+    rsi = float(c["rsi14"])
+    prev_rsi = float(p["rsi14"])
+    rvol = float(c["rvol"])
+    prev_close = float(item["prev_close"])
+    prev_volume = float(item["prev_volume"])
+
+    if direction == "BUY":
+        rsi_ok = SETTINGS.buy_rsi_min < rsi < SETTINGS.buy_rsi_max and rsi > prev_rsi
+        rsi_rule = f"{SETTINGS.buy_rsi_min:.0f}<RSI<{SETTINGS.buy_rsi_max:.0f} AND rising"
+    else:
+        rsi_ok = SETTINGS.sell_rsi_min < rsi < SETTINGS.sell_rsi_max and rsi < prev_rsi
+        rsi_rule = f"{SETTINGS.sell_rsi_min:.0f}<RSI<{SETTINGS.sell_rsi_max:.0f} AND falling"
+
+    if not rsi_ok:
+        LOG.info(
+            "%s | B1_REJECTED | filter=RSI | direction=%s | rsi=%.2f | prev_rsi=%.2f | required=%s",
+            symbol, direction, rsi, prev_rsi, rsi_rule,
+        )
+        return "RSI"
+
+    if prev_close <= SETTINGS.min_price:
+        LOG.info(
+            "%s | B1_REJECTED | filter=PREV_CLOSE | value=%.2f | required=>%.2f",
+            symbol, prev_close, SETTINGS.min_price,
+        )
+        return "PREV_CLOSE"
+
+    if prev_volume <= SETTINGS.min_daily_volume:
+        LOG.info(
+            "%s | B1_REJECTED | filter=PREV_VOLUME | value=%.0f | required=>%d",
+            symbol, prev_volume, SETTINGS.min_daily_volume,
+        )
+        return "PREV_VOLUME"
+
+    if rvol < SETTINGS.min_15m_rvol:
+        avg20 = float(c["volume"]) / rvol if rvol else 0.0
+        LOG.info(
+            "%s | B1_REJECTED | filter=RVOL | value=%.2f | required=>=%.2f | volume=%.0f | avg20=%.0f",
+            symbol, rvol, SETTINGS.min_15m_rvol, float(c["volume"]), avg20,
+        )
+        return "RVOL"
+
+    quality = score_trade_quality(df15, direction)
+    score = float(quality.get("trade_quality_score", 0.0))
+    if score < SETTINGS.min_trade_score:
+        LOG.info(
+            "%s | B1_REJECTED | filter=QUALITY | score=%.1f | required=>=%.1f | direction=%s | curve=%s",
+            symbol, score, SETTINGS.min_trade_score, direction,
+            quality.get("curve_context", "UNKNOWN"),
+        )
+        return "QUALITY"
+
+    LOG.info(
+        "%s | B1_FILTERS_PASS | direction=%s | rsi=%.2f(prev=%.2f) | rvol=%.2f | quality=%.1f | prev_close=%.2f | prev_volume=%.0f",
+        symbol, direction, rsi, prev_rsi, rvol, score, prev_close, prev_volume,
+    )
+    return None
 
 
 def _build_signal(item, candidate, risk):
@@ -170,67 +255,158 @@ def refresh_universe(dhan, state):
 
 def _process_b1(state, item, df5, df15):
     symbol = item["symbol"]
+    trading_day = df15.index[-1].date()
     st = _b_state(state, symbol)
+
+    _reset_b1_state_for_day(st, trading_day)
+
+    LOG.info(
+        "%s | B1_SCAN | day=%s | completed_15m=%s | prev_close=%.2f | prev_volume=%.0f",
+        symbol, trading_day, df15.index[-1].strftime("%H:%M"),
+        float(item.get("prev_close", 0)), float(item.get("prev_volume", 0)),
+    )
+
     orb = st.get("orb")
     if orb is None:
-        orb = _orb_for_day(df15)
+        orb = _orb_for_day(df15, trading_day)
         if orb is None:
-            LOG.info("%s | ORB_WAITING | 09:15 candle unavailable", symbol)
+            LOG.info(
+                "%s | B1_SKIPPED | reason=ORB_NOT_AVAILABLE | required=09:15 completed candle",
+                symbol,
+            )
             return False
         st["orb"] = orb
-        LOG.info("%s | ORB_ARMED | high=%.2f | low=%.2f | close=%.2f", symbol, orb["high"], orb["low"], orb["close"])
+        LOG.info(
+            "%s | B1_ORB_ARMED | date=%s | high=%.2f | low=%.2f | close=%.2f",
+            symbol, trading_day, orb["high"], orb["low"], orb["close"],
+        )
 
     if st.get("status") == "CONSUMED":
+        LOG.info(
+            "%s | B1_SKIPPED | reason=FIRST_ORB_BREAKOUT_ALREADY_CONSUMED",
+            symbol,
+        )
         return False
 
     latest_ts = df15.index[-1]
     if st.get("last_processed_15m") == latest_ts.isoformat():
+        LOG.info(
+            "%s | B1_SKIPPED | reason=15M_CANDLE_ALREADY_PROCESSED | candle=%s",
+            symbol, latest_ts.isoformat(),
+        )
         return False
     st["last_processed_15m"] = latest_ts.isoformat()
 
     orb_ts = pd.Timestamp(orb["timestamp"])
     if latest_ts <= orb_ts:
+        LOG.info(
+            "%s | B1_SKIPPED | reason=WAITING_FOR_POST_ORB_CANDLE | latest=%s | orb=%s",
+            symbol, latest_ts.isoformat(), orb_ts.isoformat(),
+        )
         return True
 
     close = float(df15.iloc[-1]["close"])
-    direction = "BUY" if close > orb["high"] else "SELL" if close < orb["low"] else None
-    if direction is None:
+
+    if close > orb["high"]:
+        direction = "BUY"
+        LOG.info(
+            "%s | B1_FIRST_ORB_BREAKOUT | direction=BUY | close=%.2f > orb_high=%.2f | candle=%s",
+            symbol, close, orb["high"], latest_ts.isoformat(),
+        )
+    elif close < orb["low"]:
+        direction = "SELL"
+        LOG.info(
+            "%s | B1_FIRST_ORB_BREAKOUT | direction=SELL | close=%.2f < orb_low=%.2f | candle=%s",
+            symbol, close, orb["low"], latest_ts.isoformat(),
+        )
+    else:
+        LOG.info(
+            "%s | B1_SKIPPED | reason=NO_ORB_BREAKOUT | close=%.2f | orb_high=%.2f | orb_low=%.2f | candle=%s",
+            symbol, close, orb["high"], orb["low"], latest_ts.strftime("%H:%M"),
+        )
         return True
 
-    # FIRST ORB BREAKOUT IS CONSUMED REGARDLESS OF WHETHER FILTERS ACCEPT IT.
+    # FIRST ORB BREAKOUT IS CONSUMED regardless of filter acceptance.
     st["status"] = "CONSUMED"
-    LOG.info("%s | B1_FIRST_ORB_BREAKOUT | direction=%s | close=%.2f | orb_high=%.2f | orb_low=%.2f", symbol, direction, close, orb["high"], orb["low"])
 
-    candidate = evaluate_b1_breakout(df15, orb, float(item["prev_close"]), float(item["prev_volume"]))
+    _log_b1_filter_decision(symbol, item, df15, direction)
+
+    candidate = evaluate_b1_breakout(
+        df15, orb, float(item["prev_close"]), float(item["prev_volume"])
+    )
     if candidate is None:
-        LOG.info("%s | B1_REJECTED | first ORB breakout failed RSI/Quality/RVOL filter", symbol)
+        LOG.info(
+            "%s | B1_FINAL | status=REJECTED | reason=FILTER_FAILED | direction=%s",
+            symbol, direction,
+        )
         return True
+
+    LOG.info(
+        "%s | B1_QUALIFIED | direction=%s | entry=%.2f | rsi=%.2f | rvol=%.2f | quality=%.1f",
+        symbol, direction, close,
+        candidate["setup_15m_rsi14"],
+        candidate["setup_15m_rvol"],
+        candidate["trade_quality_score"],
+    )
 
     risk, reject = build_risk_and_targets(
         direction, close, orb["close"], SETTINGS.min_stop_distance_percent,
         SETTINGS.t1_rr, SETTINGS.t2_rr, SETTINGS.t3_rr, SETTINGS.min_rr,
     )
     if reject:
-        LOG.info("%s | B1_REJECTED | reason=%s", symbol, reject)
+        LOG.info(
+            "%s | B1_FINAL | status=REJECTED | reason=%s | entry=%.2f | sl_base=%.2f",
+            symbol, reject, close, orb["close"],
+        )
         return True
 
+    LOG.info(
+        "%s | B1_RISK_PASS | entry=%.2f | sl=%.2f | t1=%.2f | t2=%.2f | t3=%.2f | risk=%.2f",
+        symbol, risk["entry"], risk["sl"], risk["t1"], risk["t2"], risk["t3"], risk["risk"],
+    )
+
     if t1_blocked(df5, latest_ts, risk["entry"], risk["t1"], direction):
-        LOG.info("%s | B1_REJECTED | reason=T1_BLOCKED", symbol)
+        LOG.info(
+            "%s | B1_FINAL | status=REJECTED | reason=T1_BLOCKED | entry=%.2f | t1=%.2f",
+            symbol, risk["entry"], risk["t1"],
+        )
         return True
 
     signal = _build_signal(item, candidate, risk)
     if signal["signal_key"] in state.get("signals", {}):
-        LOG.info("%s | B1_DUPLICATE_SUPPRESSED", symbol)
+        LOG.info(
+            "%s | B1_FINAL | status=SKIPPED | reason=DUPLICATE_SIGNAL | key=%s",
+            symbol, signal["signal_key"],
+        )
         return True
 
-    if send(signal_message(signal)):
-        state.setdefault("signals", {})[signal["signal_key"]] = signal
-        record_alert(state, signal, pd.Timestamp(candidate["setup_15m_completion"]).to_pydatetime())
-        LOG.info(
-            "%s | B1_ALERT_SENT | %s | signal_completion=%s | entry=%.2f | sl=%.2f | rvol=%.2f | rsi=%.2f | quality=%.1f",
-            symbol, direction, candidate["setup_15m_completion"], close, risk["sl"],
-            candidate["setup_15m_rvol"], candidate["setup_15m_rsi14"], candidate["trade_quality_score"],
+    try:
+        sent = send(signal_message(signal))
+    except Exception:
+        LOG.exception(
+            "%s | B1_FINAL | status=ALERT_FAILED | reason=TELEGRAM_EXCEPTION",
+            symbol,
         )
+        return True
+
+    if sent:
+        state.setdefault("signals", {})[signal["signal_key"]] = signal
+        record_alert(
+            state, signal,
+            pd.Timestamp(candidate["setup_15m_completion"]).to_pydatetime(),
+        )
+        LOG.info(
+            "%s | B1_FINAL | status=QUALIFIED_AND_ALERT_SENT | direction=%s | completion=%s | entry=%.2f | sl=%.2f | rvol=%.2f | rsi=%.2f | quality=%.1f",
+            symbol, direction, candidate["setup_15m_completion"], close, risk["sl"],
+            candidate["setup_15m_rvol"], candidate["setup_15m_rsi14"],
+            candidate["trade_quality_score"],
+        )
+    else:
+        LOG.warning(
+            "%s | B1_FINAL | status=QUALIFIED_BUT_ALERT_NOT_SENT | direction=%s | entry=%.2f",
+            symbol, direction, close,
+        )
+
     return True
 
 
@@ -251,9 +427,19 @@ def scan(dhan, state, ts):
             df5 = completed_candles(raw5, ts, 5)
             df15 = completed_candles(raw15, ts, 15)
             if df5.empty or df15.empty:
+                LOG.info(
+                    "%s | B1_SKIPPED | reason=NO_COMPLETED_DATA | df5_rows=%d | df15_rows=%d",
+                    item["symbol"], len(df5), len(df15),
+                )
                 continue
+
             df15 = add_indicators(df15, SETTINGS.rvol_lookback)
-            if df15.empty or len(df15) < max(SETTINGS.min_15m_candles, SETTINGS.rvol_lookback + 1, 3):
+            min_required_15m = max(SETTINGS.min_15m_candles, SETTINGS.rvol_lookback + 1, 3)
+            if df15.empty or len(df15) < min_required_15m:
+                LOG.info(
+                    "%s | B1_SKIPPED | reason=INSUFFICIENT_15M | rows=%d | required=%d",
+                    item["symbol"], len(df15), min_required_15m,
+                )
                 continue
 
             for signal in list(state.get("signals", {}).values()):
