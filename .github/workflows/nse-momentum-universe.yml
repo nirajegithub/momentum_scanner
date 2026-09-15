@@ -8,8 +8,10 @@ name: NSE Momentum - Universe Refresh
 #     - cron: "*/15 4-8 * * 1-5"
 #     - cron: "0,15,30 9 * * 1-5"
 #   workflow_dispatch:
-"on":
+
+on:
   workflow_dispatch:
+
 permissions:
   contents: write
 
