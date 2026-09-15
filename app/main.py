@@ -42,8 +42,13 @@ def _intraday_range(ts):
     return (ts - timedelta(days=10)).strftime("%Y-%m-%d"), (ts + timedelta(days=1)).strftime("%Y-%m-%d")
 
 
-def _orb_for_day(df15):
-    x = df15[df15.index.strftime("%H:%M") == "09:15"]
+def _orb_for_day(df15, trading_day=None):
+    if trading_day is None:
+        trading_day = df15.index[-1].date()
+    x = df15[
+        (df15.index.date == trading_day)
+        & (df15.index.strftime("%H:%M") == "09:15")
+    ]
     if x.empty:
         return None
     r = x.iloc[0]
