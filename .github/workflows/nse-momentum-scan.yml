@@ -8,7 +8,7 @@ name: NSE Momentum - B1 ORB + RVOL Scanner
 #     - cron: "30,35 9 * * 1-5"
 #   workflow_dispatch:
 
-"on":
+on:
   workflow_dispatch:
 
 permissions:
