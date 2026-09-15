@@ -4,7 +4,6 @@ import json
 import logging
 import os
 import tempfile
-from datetime import date, datetime
 from pathlib import Path
 
 STATE = Path(__file__).resolve().parents[1] / "state" / "runtime_state.json"
@@ -48,9 +47,7 @@ def load(day):
 def save(s):
     STATE.parent.mkdir(parents=True, exist_ok=True)
     payload = json.dumps(s, indent=2, ensure_ascii=False)
-    with tempfile.NamedTemporaryFile(
-        "w", encoding="utf-8", dir=STATE.parent, delete=False
-    ) as handle:
+    with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=STATE.parent, delete=False) as handle:
         handle.write(payload)
         temporary = handle.name
     os.replace(temporary, STATE)
@@ -60,8 +57,8 @@ def key(symbol, direction, setup, candle):
     return f"{symbol}|{direction}|{setup}|{candle}"
 
 
-def signal_key(symbol, direction, setup_5m_timestamp):
-    return f"{symbol}|{direction}|{setup_5m_timestamp}"
+def signal_key(symbol, direction, setup_timestamp):
+    return f"{symbol}|{direction}|{setup_timestamp}"
 
 
 def active_for_symbol(state, symbol):
@@ -98,13 +95,29 @@ def reverse_active_signal(state, symbol, new_direction, ts, exit_price):
 
 
 def record_alert(state, signal, ts):
+    """Record an alert for both legacy 5M state and the B1 15M setup schema.
+
+    B1 has no setup_5m_timestamp. Use its completed 15M breakout timestamp
+    as the canonical setup timestamp while retaining the legacy field name
+    for compatibility with existing state consumers.
+    """
+    setup_ts = (
+        signal.get("setup_5m_timestamp")
+        or signal.get("setup_15m_timestamp")
+        or signal.get("setup_time")
+    )
+    if not setup_ts:
+        raise KeyError("signal has no setup timestamp")
+
     key_value = signal.get("signal_key") or signal_key(
-        signal["symbol"], signal["direction"], signal["setup_5m_timestamp"]
+        signal["symbol"], signal["direction"], setup_ts
     )
     state.setdefault("alert_state", {})[key_value] = {
         "symbol": signal["symbol"],
         "direction": signal["direction"],
-        "setup_5m_timestamp": signal["setup_5m_timestamp"],
+        # Legacy compatibility field: for B1 this is the 15M breakout timestamp.
+        "setup_5m_timestamp": setup_ts,
+        "setup_15m_timestamp": signal.get("setup_15m_timestamp") or setup_ts,
         "confirmation_5m_timestamp": signal.get("confirmation_5m_timestamp"),
         "recorded_at": ts.isoformat() if hasattr(ts, "isoformat") else str(ts),
     }
@@ -113,11 +126,7 @@ def record_alert(state, signal, ts):
 def backup_and_clear(s, day):
     BACKUP_DIR.mkdir(parents=True, exist_ok=True)
     backup = BACKUP_DIR / f"runtime_state_{day.isoformat()}.json"
-    backup.write_text(
-        json.dumps(s, indent=2, ensure_ascii=False),
-        encoding="utf-8",
-    )
+    backup.write_text(json.dumps(s, indent=2, ensure_ascii=False), encoding="utf-8")
     cleared = blank(day)
-    # Existing workflow expects runtime state to be cleared after EOD.
     cleared["date"] = ""
     save(cleared)

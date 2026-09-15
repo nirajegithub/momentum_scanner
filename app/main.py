@@ -213,7 +213,7 @@ def _monitor_trade(dhan, state, signal, ts):
         signal["exit_reason"] = "SL_HIT" if sl_hit else "T3_HIT"
         signal["r_multiple"] = ((signal["exit_price"] - entry) / initial_risk if direction == "BUY" else (entry - signal["exit_price"]) / initial_risk)
         try:
-            send(exit_message(signal, signal["exit_price"], signal["exit_reason"], ts.strftime("%H:%M:%S")))
+            send(exit_message(signal, signal["exit_price"], signal["exit_reason"], ts.strftime("%H:%M:%S")), parse_mode="HTML")
         except Exception:
             LOG.exception("%s | exit Telegram failed", signal["symbol"])
         return True
@@ -386,7 +386,7 @@ def _process_b1(state, item, df5, df15):
         return True
 
     try:
-        sent = send(signal_message(signal))
+        sent = send(signal_message(signal), parse_mode="HTML")
     except Exception:
         LOG.exception(
             "%s | B1_FINAL | status=ALERT_FAILED | reason=TELEGRAM_EXCEPTION",
