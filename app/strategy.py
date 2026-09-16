@@ -124,7 +124,6 @@ def confirm_5m_breakout(pending_setup: dict, candle_timestamp, candle_close: flo
     return False
 
 
-# Compatibility alias for any existing imports.
 def evaluate(*args, **kwargs):
     if args:
         df15 = args[0]
