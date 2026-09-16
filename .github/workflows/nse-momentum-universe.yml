@@ -56,7 +56,44 @@ jobs:
 
           if git diff --cached --quiet; then
             echo "No state changes to commit."
-          else
-            git commit -m "Refresh NSE momentum universe"
-            git push
+            exit 0
           fi
+
+          # Scanner and universe-refresh workflows both update the same
+          # runtime_state.json. The scanner may push while this job is
+          # running, so never force-push and never discard scanner state.
+          # Instead, preserve the freshly calculated universe/date and
+          # merge those fields into the latest remote runtime state.
+          cp state/runtime_state.json /tmp/universe_refresh_state.json
+
+          git reset
+          git fetch origin main
+          git checkout --detach origin/main
+
+          python - <<'PYMERGE'
+          import json
+          from pathlib import Path
+
+          refreshed = json.loads(Path('/tmp/universe_refresh_state.json').read_text())
+          latest_path = Path('state/runtime_state.json')
+          latest = json.loads(latest_path.read_text()) if latest_path.exists() else {}
+
+          # Universe refresh owns only these fields. Keep the latest remote
+          # scanner/signal state intact.
+          latest['date'] = refreshed.get('date')
+          latest['universe'] = refreshed.get('universe', [])
+
+          latest_path.write_text(
+              json.dumps(latest, indent=2, ensure_ascii=False) + "\n",
+              encoding='utf-8',
+          )
+          PYMERGE
+
+          git add state/runtime_state.json
+          if git diff --cached --quiet; then
+            echo "No merged state changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Refresh NSE momentum universe"
+          git push origin HEAD:main
