@@ -1,452 +1,436 @@
 from __future__ import annotations
-from app.nse_universe import refresh_dynamic_volume_gainers
-print("IMPORT OK: refresh_dynamic_volume_gainers")
 
 import logging
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 from zoneinfo import ZoneInfo
 
-from .calendar import is_nse_trading_day
+import pandas as pd
+
 from .config import SETTINGS
+from .calendar import is_trading_day
 from .dhan_client import DhanClient
 from .indicators import add_indicators
 from .nse_universe import build_universe, refresh_dynamic_volume_gainers
-from .state import (
-    load,
-    save,
-    backup_and_clear,
-    key,
-    active_signal_for_symbol,
-    reverse_active_signal,
-)
-from .strategy import evaluate_setup, confirm_setup
-from .summary import build_summary
-from .telegram import send, signal_message, exit_message
+from .risk import build_risk_and_targets
+from .state import load, save, record_alert
+from .strategy import evaluate_b1_breakout, t1_blocked
+from .telegram import send, signal_message
+from .candle_utils import completed_candles
 
-IST = ZoneInfo("Asia/Kolkata")
 LOG = logging.getLogger(__name__)
+IST = ZoneInfo("Asia/Kolkata")
 
 
-def now():
+def _now_ist() -> datetime:
     return datetime.now(IST)
 
 
-def format_signal_time(value):
-    """Convert a candle timestamp to a readable IST display string."""
-    if isinstance(value, datetime):
-        dt = value
-    else:
-        text = str(value)
-        try:
-            dt = datetime.fromisoformat(text.replace("Z", "+00:00"))
-        except ValueError:
-            return text
-
-    if dt.tzinfo is None:
-        dt = dt.replace(tzinfo=IST)
-
-    dt = dt.astimezone(IST)
-    return dt.strftime("%d %b %Y, %I:%M %p IST")
-
-
-def explain_alert_reason(signal, reason):
-    """Convert the gate reason into a clear log message."""
-    score = int(signal.get("score", 0))
-    rvol = float(signal.get("rvol", 0.0))
-    direction = str(signal.get("direction", "")).upper()
-    regime_direction = str((signal.get("regime") or {}).get("direction", "")).upper()
-    max_entry = signal.get("max_entry")
-    ltp = signal.get("ltp")
-
-    if reason == "below alert score/grade threshold":
-        return f"score<{SETTINGS.alert_min_score}"
-    if reason == "below minimum RVOL":
-        return f"RVOL<{SETTINGS.alert_min_rvol:.2f}"
-    if reason == "extreme RVOL requires review":
-        return f"RVOL>{SETTINGS.alert_max_rvol:.2f}"
-    if reason == "signal/regime direction mismatch":
-        return f"direction={direction} vs regime={regime_direction}"
-    if reason == "15M structure not confirmed":
-        return "15M structure not confirmed"
-    if reason == "entry is too far from breakout":
-        return f"ltp={ltp} vs max_entry={max_entry}"
-    if reason == "same-direction cooldown":
-        return "same-direction cooldown"
-    if reason == "no meaningful score improvement":
-        return "no meaningful score improvement"
-    if reason == "reversal score too low":
-        return f"reversal score<{SETTINGS.alert_reversal_min_score}"
-    if reason == "invalid RVOL":
-        return "RVOL is invalid"
-    if reason == "approved":
-        return "approved"
-    if reason == "duplicate signal":
-        return "duplicate signal"
-    return reason
-
-
-def format_alert_decision(symbol, signal, allowed, reason):
-    score = int(signal.get("score", 0))
-    verdict = "ALERT=QUALIFIED" if allowed else "ALERT=SUPPRESSED"
-    action = "qualified and sent" if allowed else "rejected"
-
-    if not allowed and reason == "below alert score/grade threshold":
-        detail = f"score<{SETTINGS.alert_min_score}"
-    elif allowed and score >= SETTINGS.alert_min_score:
-        detail = f"score>={SETTINGS.alert_min_score}"
-    else:
-        detail = explain_alert_reason(signal, reason)
-
-    return (
-        f"{symbol} | SIGNAL | score={score} | "
-        f"{verdict} | {detail} - {action}"
-    )
-
-
-def ltp_batch(dhan, ids):
-    if not ids:
-        return {}
-
-    response = dhan.dhan.ohlc_data(
-        securities={
-            "NSE_EQ": [
-                int(x) if str(x).isdigit() else str(x)
-                for x in ids
-            ]
-        }
-    )
-
-    data = response.get("data", response) if isinstance(response, dict) else {}
-    block = data.get("NSE_EQ", {}) if isinstance(data, dict) else {}
-    return block if isinstance(block, dict) else {}
-
-
-def live_ltp(dhan, security_id):
-    quote = ltp_batch(dhan, [security_id]).get(str(security_id), {})
-    value = quote.get("last_price", quote.get("ltp"))
-    try:
-        value = float(value)
-    except (TypeError, ValueError):
-        return None
-    return value if value > 0 else None
-
-
-def completed_candles(df, ts, interval):
-    if df.empty:
+def _as_ist_index(df: pd.DataFrame) -> pd.DataFrame:
+    if df is None or df.empty:
         return df
+    x = df.copy()
+    idx = pd.to_datetime(x.index)
+    if idx.tz is None:
+        idx = idx.tz_localize(IST)
+    else:
+        idx = idx.tz_convert(IST)
+    x.index = idx
+    return x.sort_index()
 
-    cutoff = ts.replace(second=0, microsecond=0)
-    if interval == 1:
-        return df[df.index < cutoff]
-    return df[df.index <= cutoff]
+
+def _orb_for_day(df15: pd.DataFrame, trading_day=None):
+    if df15 is None or df15.empty:
+        return None
+
+    x = _as_ist_index(df15)
+
+    if trading_day is None:
+        trading_day = x.index[-1].date()
+
+    rows = x[
+        (x.index.date == trading_day)
+        & (x.index.strftime("%H:%M") == "09:15")
+    ]
+
+    if rows.empty:
+        return None
+
+    r = rows.iloc[0]
+    ts = rows.index[0]
+
+    return {
+        "timestamp": ts.isoformat(),
+        "open": float(r["open"]),
+        "high": float(r["high"]),
+        "low": float(r["low"]),
+        "close": float(r["close"]),
+    }
+
+
+def _reset_b1_state_for_day(state, trading_day):
+    orb = state.get("orb")
+    if not orb:
+        return
+
+    try:
+        orb_day = pd.Timestamp(orb["timestamp"]).tz_convert(IST).date()
+    except Exception:
+        orb_day = None
+
+    if orb_day != trading_day:
+        state["status"] = "WAITING"
+        state["last_processed_15m"] = None
+        state["orb"] = None
+        LOG.info(
+            "B1_STATE_RESET | reason=NEW_TRADING_DAY | old_orb_date=%s | new_date=%s",
+            orb_day,
+            trading_day,
+        )
+
+
+def _hhmm(ts) -> int:
+    return int(pd.Timestamp(ts).strftime("%H%M"))
+
+
+def _scan_window(ts) -> bool:
+    hhmm = _hhmm(ts)
+    return SETTINGS.scan_start_hhmm <= hhmm <= SETTINGS.scan_end_hhmm
+
+
+def _daily_values(dhan, item, trading_day):
+    close = item.get("prev_close")
+    volume = item.get("prev_volume")
+
+    if close is not None and volume is not None:
+        return float(close), float(volume)
+
+    prev_day = trading_day
+    try:
+        from .calendar import previous_trading_day
+        prev_day = previous_trading_day(trading_day)
+    except Exception:
+        pass
+
+    df = dhan.historical_daily_df(
+        security_id=item["security_id"],
+        from_date=prev_day.isoformat(),
+        to_date=(prev_day + pd.Timedelta(days=1)).date().isoformat(),
+    )
+
+    if df is None or df.empty:
+        raise RuntimeError(f"{item['symbol']}: no previous-day daily data")
+
+    rows = df[df.index.date == prev_day]
+    if rows.empty:
+        raise RuntimeError(f"{item['symbol']}: no candle for {prev_day}")
+
+    row = rows.iloc[-1]
+    return float(row["close"]), float(row["volume"])
+
+
+def _prepare_15m(dhan, security_id, ts):
+    raw = dhan.historical_intraday_df(
+        security_id=security_id,
+        interval=15,
+        from_date=(pd.Timestamp(ts).date() - pd.Timedelta(days=10)).date().isoformat(),
+        to_date=(pd.Timestamp(ts).date() + pd.Timedelta(days=1)).date().isoformat(),
+    )
+
+    if raw is None or raw.empty:
+        return raw
+
+    # dhan_client's 15M path is already session-aligned to 09:15 starts.
+    x = completed_candles(raw, ts, 15)
+    return add_indicators(x)
+
+
+def _build_signal(dhan, item, candle_df, orb, trading_day):
+    daily_close, daily_volume = _daily_values(dhan, item, trading_day)
+
+    candidate = evaluate_b1_breakout(
+        candle_df,
+        orb,
+        daily_close,
+        daily_volume,
+    )
+    if candidate is None:
+        return None
+
+    signal = {
+        "symbol": item["symbol"],
+        "security_id": item["security_id"],
+        **candidate,
+    }
+
+    risk = build_risk_and_targets(
+        entry=float(candidate["setup_15m_close"]),
+        stop_loss=float(orb["close"]),
+        direction=candidate["direction"],
+    )
+
+    if not risk:
+        LOG.info(
+            "%s %s rejected: risk calculation returned no result",
+            item["symbol"],
+            candidate["direction"],
+        )
+        return None
+
+    signal.update(risk)
+
+    entry = float(signal["entry"])
+    t1 = float(signal["t1"])
+
+    # T1-block uses completed 5M history before the signal.
+    try:
+        raw5 = dhan.historical_intraday_df(
+            security_id=item["security_id"],
+            interval=5,
+            from_date=(pd.Timestamp(candidate["setup_15m_timestamp"]).date() - pd.Timedelta(days=2)).isoformat(),
+            to_date=(pd.Timestamp(candidate["setup_15m_timestamp"]).date() + pd.Timedelta(days=1)).isoformat(),
+        )
+        df5 = completed_candles(raw5, candidate["setup_15m_completion"], 5)
+        if t1_blocked(
+            df5,
+            candidate["setup_15m_completion"],
+            entry,
+            t1,
+            candidate["direction"],
+        ):
+            LOG.info(
+                "%s %s rejected: T1_BLOCKED",
+                item["symbol"],
+                candidate["direction"],
+            )
+            return None
+    except Exception as exc:
+        LOG.warning(
+            "%s T1 block diagnostic failed; continuing: %s",
+            item["symbol"],
+            exc,
+        )
+
+    signal["setup_5m_timestamp"] = signal["setup_15m_completion"]
+    signal["status"] = "CANDIDATE"
+    return signal
 
 
 def create_universe(dhan, state):
-    LOG.info(
-        "CREATE_UNIVERSE START | existing universe=%d",
-        len(state.get("universe", [])),
-    )
-    if state["universe"]:
-        LOG.info("CREATE_UNIVERSE SKIPPED | universe already exists")
-        return
+    if state.get("universe"):
+        LOG.info(
+            "CREATE_UNIVERSE SKIPPED | universe already exists | size=%d",
+            len(state["universe"]),
+        )
+        return False
 
     state["universe"] = build_universe(dhan)
-    state["volume_gainers_last_refresh"] = None
     save(state)
-    LOG.info("UNIVERSE_INITIAL | total=%d", len(state["universe"]))
+
+    LOG.info("FINAL UNIVERSE: %d symbols", len(state["universe"]))
+    return True
 
 
 def refresh_universe(dhan, state, ts):
-    """Refresh today's universe without replacing existing symbols.
-
-    Merge the normal daily universe with the current NSE Volume Gainers list.
-    Existing symbols are preserved so intraday B1 state remains attached to
-    the same universe; only genuinely new security IDs are appended.
-    """
     before = len(state.get("universe", []))
-    existing_ids = {str(x.get("security_id")) for x in state.get("universe", []) if x.get("security_id") is not None}
-    existing_symbols = {str(x.get("symbol", "")).upper() for x in state.get("universe", [])}
+    existing_ids = {
+        str(x.get("security_id"))
+        for x in state.get("universe", [])
+        if x.get("security_id") is not None
+    }
+    existing_symbols = {
+        str(x.get("symbol", "")).upper()
+        for x in state.get("universe", [])
+    }
 
     static_candidates = build_universe(dhan)
     static_added = 0
+
     for item in static_candidates:
         sid = item.get("security_id")
         symbol = str(item.get("symbol", "")).upper()
+
         if sid is not None and str(sid) in existing_ids:
             continue
         if symbol and symbol in existing_symbols:
             continue
+
         state.setdefault("universe", []).append(item)
+
         if sid is not None:
             existing_ids.add(str(sid))
         if symbol:
             existing_symbols.add(symbol)
+
         static_added += 1
 
-    # Also include stocks that have become NSE Volume Gainers since the
-    # morning universe was built. The helper performs its own 10-minute
-    # bucket de-duplication and resolves Dhan security IDs.
     dynamic_before = len(state.get("universe", []))
     dynamic_changed = refresh_dynamic_volume_gainers(dhan, state, ts)
     dynamic_added = len(state.get("universe", [])) - dynamic_before
 
     save(state)
+
     LOG.info(
         "UNIVERSE_REFRESH | before=%d | static_candidates=%d | static_added=%d | "
         "dynamic_changed=%s | dynamic_added=%d | total=%d",
-        before, len(static_candidates), static_added, dynamic_changed,
-        dynamic_added, len(state.get("universe", [])),
+        before,
+        len(static_candidates),
+        static_added,
+        dynamic_changed,
+        dynamic_added,
+        len(state.get("universe", [])),
     )
 
-
-def scan(dhan, state, ts):
-    """Evaluate each new completed 5M candle and confirm pending setups every minute."""
-    start = ts - timedelta(days=7)
-    changed = False
-
-    for item in state["universe"]:
-        symbol = item["symbol"]
-
-        try:
-            df1 = completed_candles(
-                add_indicators(
-                    dhan.intraday_df(
-                        item["security_id"],
-                        1,
-                        start.strftime("%Y-%m-%d"),
-                        ts.strftime("%Y-%m-%d"),
-                    ),
-                    SETTINGS.rvol_lookback,
-                ),
-                ts,
-                1,
-            )
-
-            df5 = completed_candles(
-                add_indicators(
-                    dhan.intraday_df(
-                        item["security_id"],
-                        5,
-                        start.strftime("%Y-%m-%d"),
-                        ts.strftime("%Y-%m-%d"),
-                    ),
-                    SETTINGS.rvol_lookback,
-                ),
-                ts,
-                5,
-            )
-
-            if df5.empty or df1.empty:
-                LOG.info("%s | NO SIGNAL | insufficient completed candles", symbol)
-                continue
-            setup_timestamp = df5.index[-1].isoformat()
-            if state["processed_5m_candles"].get(symbol) != setup_timestamp:
-                old = state["pending_setups"].pop(symbol, None)
-                if old:
-                    LOG.info("%s | SETUP_EXPIRED | direction=%s | setup_time=%s | reason=NEXT_5M_CANDLE", symbol, old["direction"], old["setup_5m_timestamp"])
-                state["processed_5m_candles"][symbol] = setup_timestamp
-                rejection = []
-                setup = evaluate_setup(df5, item.get("prev_close"), item.get("prev_volume"), rejection)
-                if setup:
-                    setup.update({"symbol": symbol, "security_id": item["security_id"]})
-                    state["pending_setups"][symbol] = setup
-                    LOG.info("%s | 5M_SETUP | direction=%s | candle=%s | ema9=%.2f | ema20=%.2f | rsi=%.2f | prev_rsi=%.2f | vwap=%.2f | volume=%.0f | avg_volume20=%.0f | rvol=%.2f | daily_close=%.2f | daily_volume=%.0f | high=%.2f | low=%.2f | close=%.2f", symbol, setup["direction"], setup_timestamp, setup["setup_5m_ema9"], setup["setup_5m_ema20"], setup["setup_5m_rsi14"], setup["setup_5m_previous_rsi14"], setup["setup_5m_vwap"], setup["setup_5m_volume"], setup["setup_5m_avg_volume"], setup["setup_5m_rvol"], setup["daily_close"], setup["daily_volume"], setup["setup_5m_high"], setup["setup_5m_low"], setup["setup_5m_close"])
-                elif rejection:
-                    LOG.info("%s | NO_5M_SETUP | %s", symbol, rejection[0])
-                changed = True
-
-            setup = state["pending_setups"].get(symbol)
-            if not setup:
-                continue
-            candle = df1.iloc[-1]
-            confirmation_time = (df1.index[-1] + timedelta(minutes=1)).isoformat()
-            confirmed = confirm_setup(setup, candle, confirmation_time)
-            if not confirmed:
-                LOG.info("%s | NO_1M_CONFIRMATION | close=%.2f | required=%s%.2f", symbol, candle.close, ">" if setup["direction"] == "BUY" else "<", setup["breakout_level"])
-                LOG.info("%s | WAITING_1M_CONFIRMATION | direction=%s | setup_time=%s | breakout_level=%.2f | stop_loss=%.2f", symbol, setup["direction"], setup["setup_5m_timestamp"], setup["breakout_level"], setup["stop_loss"])
-                continue
-            k = key(symbol, setup["direction"], "5M_QUALITY", setup["setup_5m_timestamp"])
-            if k in state["signals"]:
-                state["pending_setups"].pop(symbol, None)
-                changed = True
-                continue
-            entry, sl = confirmed["entry"], confirmed["stop_loss"]
-            risk = abs(entry - sl)
-            targets = [entry + (1.5 + step) * risk if setup["direction"] == "BUY" else entry - (1.5 + step) * risk for step in (0, 1, 2)]
-            signal = {**setup, "setup": "5M_QUALITY", "signal_time": format_signal_time(confirmed["confirmation_time"]), "setup_time": format_signal_time(setup["setup_5m_timestamp"]), "signal_price": entry, "status": "ACTIVE", "score": 0, "grade": "QUALITY", "rvol": setup["setup_5m_rvol"], "risk": {"entry": entry, "sl": sl, "risk": risk, "t1": targets[0], "t2": targets[1], "t3": targets[2]}}
-            if send(signal_message(signal)):
-                previous = active_signal_for_symbol(state, symbol)
-                if previous and previous.get("direction") != signal["direction"]:
-                    reverse_active_signal(state, symbol, signal["direction"], ts, entry)
-                state["signals"][k] = signal
-                state["pending_setups"].pop(symbol, None)
-                changed = True
-                LOG.info("%s | 1M_CONFIRMATION | direction=%s | setup_time=%s | confirmation_time=%s | entry=%.2f | stop_loss=%.2f", symbol, signal["direction"], setup["setup_5m_timestamp"], confirmed["confirmation_time"], entry, sl)
-
-        except Exception:
-            LOG.exception("Scan failed: %s", symbol)
-
-    if changed:
-        save(state)
+    return True
 
 
-def monitor(dhan, state, ts):
-    active = [
-        s
-        for s in state["signals"].values()
-        if s.get("status") == "ACTIVE"
-    ]
+def _process_b1(dhan, state, ts):
+    trading_day = ts.date()
 
-    if not active:
+    _reset_b1_state_for_day(state, trading_day)
+
+    orb = state.get("orb")
+
+    # Build ORB from the current day's completed 15M data.
+    if not orb:
+        for item in state.get("universe", []):
+            try:
+                df15 = _prepare_15m(dhan, item["security_id"], ts)
+                candidate_orb = _orb_for_day(df15, trading_day)
+                if candidate_orb:
+                    orb = candidate_orb
+                    state["orb"] = orb
+                    state["status"] = "WAITING"
+                    LOG.info(
+                        "B1_ORB | timestamp=%s | high=%.2f | low=%.2f | close=%.2f",
+                        orb["timestamp"],
+                        orb["high"],
+                        orb["low"],
+                        orb["close"],
+                    )
+                    break
+            except Exception as exc:
+                LOG.warning(
+                    "%s ORB discovery failed: %s",
+                    item.get("symbol"),
+                    exc,
+                )
+
+    if not orb:
+        LOG.info("B1_ORB_NOT_AVAILABLE | date=%s", trading_day)
         return
 
-    quote_ids = [
-        s.get("security_id")
-        for s in active
-        if s.get("security_id") is not None
-    ]
-    quotes = ltp_batch(dhan, quote_ids) if quote_ids else {}
+    # Only one first breakout is consumed for the entire trading day.
+    if state.get("status") == "CONSUMED":
+        LOG.info("FIRST_ORB_BREAKOUT_ALREADY_CONSUMED")
+        return
 
-    changed = False
+    for item in state.get("universe", []):
+        try:
+            df15 = _prepare_15m(dhan, item["security_id"], ts)
+            if df15 is None or df15.empty:
+                continue
 
-    for s in active:
-        security_id = s.get("security_id")
-        q = quotes.get(str(security_id), {}) if security_id is not None else {}
-        px = q.get("last_price", q.get("ltp"))
+            day15 = df15[df15.index.date == trading_day]
+            if day15.empty:
+                continue
 
-        if px is None:
-            # Legacy signals have no security_id; do not crash the monitor.
-            continue
+            # Process only the newest completed 15M candle.
+            latest_ts = day15.index[-1]
+            latest_key = latest_ts.isoformat()
 
-        px = float(px)
-        reason = None
+            if state.get("last_processed_15m") == latest_key:
+                continue
 
-        if s["direction"] == "BUY" and px <= s["risk"]["sl"]:
-            reason = "Stop loss reached"
+            # The 09:15 ORB itself is not a breakout candle.
+            if latest_ts.strftime("%H:%M") == "09:15":
+                state["last_processed_15m"] = latest_key
+                continue
 
-        if s["direction"] == "SELL" and px >= s["risk"]["sl"]:
-            reason = "Stop loss reached"
-
-        if (
-            reason is None
-            and s["direction"] == "BUY"
-            and px >= s["risk"]["t1"]
-        ):
-            reason = "Target 1 reached"
-
-        if (
-            reason is None
-            and s["direction"] == "SELL"
-            and px <= s["risk"]["t1"]
-        ):
-            reason = "Target 1 reached"
-
-        if reason and send(
-            exit_message(
-                s,
-                px,
-                reason,
-                ts.strftime("%H:%M:%S"),
+            candidate = evaluate_b1_breakout(
+                day15,
+                orb,
+                *_daily_values(dhan, item, trading_day),
             )
-        ):
-            s["status"] = "EXITED"
-            s["exit_price"] = px
-            s["exit_time"] = ts.isoformat()
-            s["exit_reason"] = reason
-            risk = float(s["risk"]["risk"])
-            entry = float(s["risk"]["entry"])
-            move = px - entry if s["direction"] == "BUY" else entry - px
-            s["r_multiple"] = move / risk if risk > 0 else None
-            changed = True
 
-    if changed:
-        save(state)
+            # If the latest completed candle closes outside the ORB, that
+            # breakout is consumed even if RSI/RVOL/quality/risk rejects it.
+            close = float(day15.iloc[-1]["close"])
+            breakout = (
+                close > float(orb["high"])
+                or close < float(orb["low"])
+            )
 
+            state["last_processed_15m"] = latest_key
 
-def summary(dhan, state, ts):
-    active = [
-        s
-        for s in state["signals"].values()
-        if s.get("status") == "ACTIVE"
-    ]
+            if breakout:
+                state["status"] = "CONSUMED"
 
-    # Backward compatibility: older ACTIVE signals may not have a
-    # security_id because that field was added in a later version.
-    # Never let one legacy signal crash the EOD summary.
-    quote_ids = [
-        s.get("security_id")
-        for s in active
-        if s.get("security_id") is not None
-    ]
-    quotes = ltp_batch(dhan, quote_ids) if quote_ids else {}
+                if candidate is None:
+                    LOG.info(
+                        "%s FIRST_ORB_BREAKOUT_CONSUMED | filters=REJECTED",
+                        item["symbol"],
+                    )
+                    break
 
-    prices = {}
+                signal = _build_signal(
+                    dhan,
+                    item,
+                    day15,
+                    orb,
+                    trading_day,
+                )
 
-    for s in active:
-        security_id = s.get("security_id")
-        q = quotes.get(str(security_id), {}) if security_id is not None else {}
-        px = q.get("last_price", q.get("ltp"))
+                if signal is None:
+                    LOG.info(
+                        "%s FIRST_ORB_BREAKOUT_CONSUMED | risk_or_t1=REJECTED",
+                        item["symbol"],
+                    )
+                    break
 
-        # Legacy signals: use the last stored price if live LTP is
-        # unavailable. This keeps the summary useful and prevents a crash.
-        if px is None:
-            px = s.get("ltp", s.get("signal_price"))
+                message = signal_message(signal)
+                sent = send(message, parse_mode="HTML")
 
-        if px is not None:
-            px = float(px)
-            s["status"] = "CLOSED_EOD"
-            s["exit_price"] = px
-            s["exit_time"] = ts.isoformat()
-            s["exit_reason"] = "END_OF_DAY"
-            prices[s["symbol"]] = px
+                if sent:
+                    record_alert(signal)
+                    LOG.info(
+                        "ALERT_SENT | symbol=%s | direction=%s | entry=%.2f",
+                        signal["symbol"],
+                        signal["direction"],
+                        signal["entry"],
+                    )
+                else:
+                    LOG.warning(
+                        "ALERT_NOT_SENT | symbol=%s | direction=%s",
+                        signal["symbol"],
+                        signal["direction"],
+                    )
+                break
 
-    send(build_summary(state, prices))
+        except Exception as exc:
+            LOG.exception(
+                "%s B1 processing failed: %s",
+                item.get("symbol"),
+                exc,
+            )
 
-    backup_and_clear(state, ts.date())
+    save(state)
 
 
 def main():
     logging.basicConfig(
-        level=os.getenv("LOG_LEVEL", "INFO")
+        level=os.getenv("LOG_LEVEL", "INFO"),
+        format="%(asctime)s | %(levelname)s | %(message)s",
     )
 
-    ts = now()
-    action = os.getenv("SCANNER_ACTION", "auto").lower()
-    hhmm = ts.hour * 100 + ts.minute
-
-    LOG.info(
-        "MAIN START | date=%s | time=%s | action=%s",
-        ts.date(),
-        ts.strftime("%H:%M:%S"),
-        action,
-    )
-
-    scan_window = (
-        SETTINGS.scan_start_hhmm
-        <= hhmm
-        <= SETTINGS.scan_end_hhmm
-    )
-    
-    if not is_nse_trading_day(ts.date()):
+    ts = _now_ist()
+    if not is_trading_day(ts.date()):
         LOG.info("Not an NSE trading day")
         return
 
     dhan = DhanClient()
-    state = load(ts.date())
-
-    LOG.info(
-        "STATE LOADED | date=%s | universe=%d | signals=%d",
-        state.get("date"),
-        len(state.get("universe", [])),
-        len(state.get("signals", {})),
-    )
-    
-    # Refresh NSE Volume Gainers every 10 minutes and append newly
-    # qualifying stocks to today's existing universe.
-    if action != "universe" and scan_window:
-        refresh_dynamic_volume_gainers(dhan, state, ts)
-        save(state)
+    state = load()
+    action = os.getenv("SCANNER_ACTION", "scan").strip().lower()
 
     if action == "universe":
         create_universe(dhan, state)
@@ -459,33 +443,30 @@ def main():
             refresh_universe(dhan, state, ts)
         return
 
-    if action == "summary" or (
-        action == "auto" and hhmm == 1525
-    ):
-        summary(dhan, state, ts)
+    if action != "scan":
+        LOG.info("Unknown SCANNER_ACTION=%s", action)
         return
 
-    if not state["universe"]:
-        LOG.warning(
-            "Universe missing; refusing to scan"
-        )
-        return
+    if not state.get("universe"):
+        create_universe(dhan, state)
+        state = load()
 
-    if action in {"scan", "auto"} and scan_window:
-        monitor(dhan, state, ts)
-        scan(dhan, state, ts)
+    if _scan_window(ts):
+        try:
+            if refresh_dynamic_volume_gainers(dhan, state, ts):
+                save(state)
+        except Exception as exc:
+            LOG.warning("Dynamic universe refresh failed: %s", exc)
 
-    elif action == "scan":
+        _process_b1(dhan, state, ts)
+    else:
         LOG.info(
-            "Scan skipped outside window %04d-%04d",
+            "Outside scan window | now=%s | window=%s-%s",
+            ts.strftime("%H:%M"),
             SETTINGS.scan_start_hhmm,
             SETTINGS.scan_end_hhmm,
         )
 
-    elif action == "monitor" or (
-        action == "auto" and 1510 <= hhmm <= 1525
-    ):
-        monitor(dhan, state, ts)
 
 if __name__ == "__main__":
     main()
