@@ -365,6 +365,47 @@
       "membership_count": 1,
       "universe_source": "NSE_VOLUME_GAINERS",
       "volume_gainer_added_at": "2026-09-16T12:05:25.709546+05:30"
+    },
+    {
+      "symbol": "BHEL",
+      "security_id": "438",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "M30",
+        "M50"
+      ],
+      "membership_count": 2,
+      "prev_close": 412.85,
+      "prev_volume": 7340842,
+      "prev_trading_day": "2026-09-15"
+    },
+    {
+      "symbol": "GMDCLTD",
+      "security_id": "5204",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "M50"
+      ],
+      "membership_count": 1,
+      "prev_close": 553.45,
+      "prev_volume": 947898,
+      "prev_trading_day": "2026-09-15"
+    },
+    {
+      "symbol": "NATIONALUM",
+      "security_id": "6364",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "M30",
+        "M50"
+      ],
+      "membership_count": 2,
+      "prev_close": 350.55,
+      "prev_volume": 3640356,
+      "prev_trading_day": "2026-09-15"
     }
   ],
   "signals": {},
