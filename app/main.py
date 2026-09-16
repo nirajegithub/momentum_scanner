@@ -1,4 +1,6 @@
 from __future__ import annotations
+from app.nse_universe import refresh_dynamic_volume_gainers
+print("IMPORT OK: refresh_dynamic_volume_gainers")
 
 import logging
 import os
