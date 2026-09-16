@@ -48,52 +48,74 @@ jobs:
           python -m app.main
 
       - name: Commit universe state
+        shell: bash
         run: |
+          set -e
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add state/runtime_state.json
-
-          if git diff --cached --quiet; then
-            echo "No state changes to commit."
-            exit 0
-          fi
-
-          # Scanner and universe-refresh workflows both update the same
-          # runtime_state.json. The scanner may push while this job is
-          # running, so never force-push and never discard scanner state.
-          # Instead, preserve the freshly calculated universe/date and
-          # merge those fields into the latest remote runtime state.
+          # Save the freshly calculated universe before touching Git state.
           cp state/runtime_state.json /tmp/universe_refresh_state.json
 
-          git reset
-          git fetch origin main
-          git checkout --detach origin/main
+          # Retry because the scanner workflow may push runtime_state.json
+          # while this universe-refresh job is running.
+          for attempt in 1 2 3; do
+            echo "=== Universe state push attempt ${attempt}/3 ==="
 
-          python - <<'PYMERGE'
+            # Always start from the latest remote main.
+            git fetch origin main
+
+            # Make the working tree exactly match latest origin/main.
+            # The freshly calculated universe is safely stored in /tmp.
+            git reset --hard origin/main
+
+            # Merge only the fields owned by Universe Refresh.
+            python - <<'PYMERGE'
           import json
           from pathlib import Path
 
-          refreshed = json.loads(Path('/tmp/universe_refresh_state.json').read_text())
-          latest_path = Path('state/runtime_state.json')
-          latest = json.loads(latest_path.read_text()) if latest_path.exists() else {}
+          refreshed_path = Path("/tmp/universe_refresh_state.json")
+          latest_path = Path("state/runtime_state.json")
 
-          # Universe refresh owns only these fields. Keep the latest remote
-          # scanner/signal state intact.
-          latest['date'] = refreshed.get('date')
-          latest['universe'] = refreshed.get('universe', [])
+          refreshed = json.loads(refreshed_path.read_text(encoding="utf-8"))
+
+          if latest_path.exists():
+              latest = json.loads(latest_path.read_text(encoding="utf-8"))
+          else:
+              latest = {}
+
+          # Universe Refresh owns ONLY these fields.
+          # Scanner/signal state remains untouched.
+          latest["date"] = refreshed.get("date")
+          latest["universe"] = refreshed.get("universe", [])
 
           latest_path.write_text(
-              json.dumps(latest, indent=2, ensure_ascii=False) + "\n",
-              encoding='utf-8',
+              json.dumps(latest, indent=2, ensure_ascii=False) + "
+",
+              encoding="utf-8",
           )
           PYMERGE
 
-          git add state/runtime_state.json
-          if git diff --cached --quiet; then
-            echo "No merged state changes to commit."
-            exit 0
-          fi
+            git add state/runtime_state.json
 
-          git commit -m "Refresh NSE momentum universe"
-          git push origin HEAD:main
+            if git diff --cached --quiet; then
+              echo "No universe state changes."
+              exit 0
+            fi
+
+            git commit -m "Refresh NSE momentum universe"
+
+            # Push to main. If scanner pushed first, retry from the
+            # newest remote state so scanner changes are never discarded.
+            if git push origin HEAD:main; then
+              echo "Universe refresh pushed successfully."
+              exit 0
+            fi
+
+            echo "Push raced with another workflow. Retrying..."
+            git reset --hard origin/main
+          done
+
+          echo "ERROR: Could not push universe refresh after 3 attempts."
+          exit 1
