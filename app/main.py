@@ -84,7 +84,7 @@ def _daily_values(dhan, item, trading_day):
     df = dhan.historical_daily_df(
         security_id=item["security_id"],
         from_date=prev_day.isoformat(),
-        to_date=(prev_day + pd.Timedelta(days=1)).date().isoformat(),
+        to_date=(prev_day + pd.Timedelta(days=1)).isoformat(),
     )
     if df is None or df.empty:
         raise RuntimeError(f"{item['symbol']}: no previous-day daily data")
