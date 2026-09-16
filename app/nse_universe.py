@@ -18,6 +18,13 @@ LOG = logging.getLogger(__name__)
 BASE = "https://www.nseindia.com"
 URL = f"{BASE}/api/heatmap-symbols"
 
+# Dynamic NSE Volume Gainers refresh.
+# NSE's live-analysis-volume-gainers endpoint is used only for universe
+# discovery; the actual trading filters remain in the scanner.
+VOLUME_GAINERS_URL = f"{BASE}/api/live-analysis-volume-gainers"
+VOLUME_GAINER_MIN_VOLUME = 500_000
+VOLUME_GAINER_MIN_PRICE = 350.0
+
 INDEXES = {
     "M50": "NIFTY500MOMENTM50",
     "M30": "NIFTY200MOMENTM30",
@@ -199,6 +206,175 @@ def fetch_index(session, code):
     )
 
     return symbols
+
+
+def fetch_volume_gainer_symbols(session):
+    """Fetch current NSE Volume Gainers and return symbols passing filters.
+
+    The NSE response format can change, so this parser accepts the common
+    top-level ``data`` list as well as nested dictionaries/lists. Only
+    symbols with price >= 350 and volume > 500,000 are returned.
+    """
+    response = nse_get(session, VOLUME_GAINERS_URL)
+    payload = response.json()
+
+    rows = payload.get("data", []) if isinstance(payload, dict) else []
+
+    # Some NSE responses wrap the rows one level deeper.
+    if isinstance(rows, dict):
+        for key in ("data", "volumeGainers", "volume_gainers", "rows"):
+            candidate = rows.get(key)
+            if isinstance(candidate, list):
+                rows = candidate
+                break
+
+    if not isinstance(rows, list):
+        rows = []
+
+    symbols = []
+
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+
+        symbol = str(
+            row.get("symbol")
+            or row.get("tradingSymbol")
+            or row.get("tradingsymbol")
+            or ""
+        ).strip().upper()
+
+        price_raw = (
+            row.get("ltp")
+            or row.get("lastPrice")
+            or row.get("last_price")
+            or row.get("LTP")
+            or 0
+        )
+
+        volume_raw = (
+            row.get("volume")
+            or row.get("totalTradedVolume")
+            or row.get("tradedQuantity")
+            or row.get("traded_quantity")
+            or 0
+        )
+
+        try:
+            price = float(price_raw)
+            volume = float(volume_raw)
+        except (TypeError, ValueError):
+            continue
+
+        if (
+            symbol
+            and volume > VOLUME_GAINER_MIN_VOLUME
+            and price >= VOLUME_GAINER_MIN_PRICE
+        ):
+            symbols.append(symbol)
+
+    return sorted(set(symbols))
+
+
+def refresh_dynamic_volume_gainers(dhan: DhanClient, state, ts):
+    """Refresh Volume Gainers every 10 minutes and append new stocks.
+
+    Existing universe entries are preserved. Only genuinely new symbols
+    are added, so intraday scanner state is not replaced or reset.
+    """
+    minute_bucket = ts.replace(
+        minute=(ts.minute // 10) * 10,
+        second=0,
+        microsecond=0,
+    )
+    bucket_key = minute_bucket.isoformat()
+
+    if state.get("volume_gainers_last_refresh") == bucket_key:
+        return False
+
+    session = create_nse_session()
+
+    try:
+        # NSE may require the homepage/cookie session before API calls.
+        try:
+            nse_get(session, BASE + "/")
+        except Exception as exc:
+            LOG.warning(
+                "Volume Gainers NSE homepage initialization failed: %s",
+                exc,
+            )
+
+        symbols = fetch_volume_gainer_symbols(session)
+
+    except Exception as exc:
+        LOG.warning("Volume Gainers refresh failed: %s", exc)
+        return False
+
+    existing = {
+        str(item.get("symbol", "")).upper()
+        for item in state.get("universe", [])
+    }
+
+    new_symbols = [
+        symbol
+        for symbol in symbols
+        if symbol not in existing
+    ]
+
+    if not new_symbols:
+        state["volume_gainers_last_refresh"] = bucket_key
+
+        LOG.info(
+            "Volume Gainers refresh | eligible=%d | new=0 | universe=%d",
+            len(symbols),
+            len(existing),
+        )
+        return True
+
+    try:
+        mapping = dhan.build_symbol_map(new_symbols)
+    except Exception as exc:
+        LOG.warning(
+            "Volume Gainers Dhan symbol mapping failed: %s",
+            exc,
+        )
+        return False
+
+    added = 0
+
+    for symbol in new_symbols:
+        meta = mapping.get(symbol)
+
+        if not meta:
+            LOG.warning(
+                "Volume Gainer missing Dhan security_id: %s",
+                symbol,
+            )
+            continue
+
+        state.setdefault("universe", []).append(
+            {
+                "symbol": symbol,
+                **meta,
+                "indices": ["VOLUME_GAINERS"],
+                "membership_count": 1,
+                "universe_source": "NSE_VOLUME_GAINERS",
+                "volume_gainer_added_at": ts.isoformat(),
+            }
+        )
+        added += 1
+
+    state["volume_gainers_last_refresh"] = bucket_key
+
+    LOG.info(
+        "Volume Gainers refresh | eligible=%d | new=%d | added=%d | universe=%d",
+        len(symbols),
+        len(new_symbols),
+        added,
+        len(state.get("universe", [])),
+    )
+
+    return True
 
 
 def build_universe(dhan: DhanClient, as_of_date=None):
