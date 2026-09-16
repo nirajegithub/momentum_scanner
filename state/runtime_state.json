@@ -281,11 +281,406 @@
       "prev_close": 2413.3,
       "prev_volume": 3340619,
       "prev_trading_day": "2026-09-15"
+    },
+    {
+      "symbol": "APOLLOTYRE",
+      "security_id": "163",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "NSE_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-09-16T12:05:25.709546+05:30"
+    },
+    {
+      "symbol": "EMUDHRA",
+      "security_id": "9756",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "NSE_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-09-16T12:05:25.709546+05:30"
+    },
+    {
+      "symbol": "LALPATHLAB",
+      "security_id": "11654",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "NSE_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-09-16T12:05:25.709546+05:30"
+    },
+    {
+      "symbol": "NPST",
+      "security_id": "756324",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "NSE_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-09-16T12:05:25.709546+05:30"
+    },
+    {
+      "symbol": "PATANJALI",
+      "security_id": "17029",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "NSE_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-09-16T12:05:25.709546+05:30"
+    },
+    {
+      "symbol": "SAATVIKGL",
+      "security_id": "759057",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "NSE_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-09-16T12:05:25.709546+05:30"
+    },
+    {
+      "symbol": "TATACHEM",
+      "security_id": "3405",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "NSE_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-09-16T12:05:25.709546+05:30"
     }
   ],
   "signals": {},
   "pending_setups": {},
   "daily_filters": {},
   "alert_state": {},
-  "orb": {}
+  "orb": {},
+  "volume_gainers_last_refresh": "2026-09-16T12:00:00+05:30",
+  "b1": {
+    "ABCAPITAL": {
+      "status": "WAITING",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 378.8,
+        "high": 384.05,
+        "low": 378.8,
+        "close": 379.65
+      }
+    },
+    "ADANIENSOL": {
+      "status": "WAITING",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 1347.6,
+        "high": 1371.3,
+        "low": 1343.7,
+        "close": 1350.5
+      }
+    },
+    "ADANIGREEN": {
+      "status": "WAITING",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 1253.9,
+        "high": 1271.3,
+        "low": 1252.7,
+        "close": 1257.1
+      }
+    },
+    "ATHERENERG": {
+      "status": "WAITING",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 1557.9,
+        "high": 1574.8,
+        "low": 1535.0,
+        "close": 1547.8
+      }
+    },
+    "BSE": {
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 3310.0,
+        "high": 3317.0,
+        "low": 3275.0,
+        "close": 3286.4
+      }
+    },
+    "CGPOWER": {
+      "status": "WAITING",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 858.0,
+        "high": 861.25,
+        "low": 849.0,
+        "close": 849.0
+      }
+    },
+    "FINCABLES": {
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 1344.2,
+        "high": 1354.4,
+        "low": 1320.7,
+        "close": 1323.3
+      }
+    },
+    "GESHIP": {
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 1390.4,
+        "high": 1393.5,
+        "low": 1381.1,
+        "close": 1387.6
+      }
+    },
+    "GRANULES": {
+      "status": "WAITING",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 869.0,
+        "high": 872.0,
+        "low": 860.5,
+        "close": 862.0
+      }
+    },
+    "HINDALCO": {
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 956.4,
+        "high": 970.0,
+        "low": 956.4,
+        "close": 964.0
+      }
+    },
+    "HINDCOPPER": {
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 496.0,
+        "high": 496.7,
+        "low": 482.65,
+        "close": 484.65
+      }
+    },
+    "HONASA": {
+      "status": "WAITING",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 457.0,
+        "high": 463.8,
+        "low": 455.75,
+        "close": 458.2
+      }
+    },
+    "KIRLOSENG": {
+      "status": "WAITING",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 2040.5,
+        "high": 2040.5,
+        "low": 1965.1,
+        "close": 1977.7
+      }
+    },
+    "LAURUSLABS": {
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 1924.6,
+        "high": 1940.4,
+        "low": 1886.4,
+        "close": 1887.2
+      }
+    },
+    "MCX": {
+      "status": "WAITING",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 3170.2,
+        "high": 3181.5,
+        "low": 3097.4,
+        "close": 3100.3
+      }
+    },
+    "NETWEB": {
+      "status": "WAITING",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 4629.5,
+        "high": 4638.5,
+        "low": 4484.0,
+        "close": 4490.5
+      }
+    },
+    "RBLBANK": {
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 404.8,
+        "high": 404.8,
+        "low": 400.1,
+        "close": 400.5
+      }
+    },
+    "SHRIRAMFIN": {
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 979.0,
+        "high": 990.3,
+        "low": 976.0,
+        "close": 981.2
+      }
+    },
+    "SOLARINDS": {
+      "status": "WAITING",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 19400.0,
+        "high": 19460.0,
+        "low": 18625.0,
+        "close": 18800.0
+      }
+    },
+    "SYRMA": {
+      "status": "WAITING",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 1508.9,
+        "high": 1514.0,
+        "low": 1452.5,
+        "close": 1456.3
+      }
+    },
+    "WELCORP": {
+      "status": "WAITING",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 2413.0,
+        "high": 2425.0,
+        "low": 2297.7,
+        "close": 2323.4
+      }
+    },
+    "APOLLOTYRE": {
+      "status": "WAITING",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 410.95,
+        "high": 429.55,
+        "low": 404.7,
+        "close": 406.4
+      }
+    },
+    "EMUDHRA": {
+      "status": "WAITING",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 625.0,
+        "high": 677.0,
+        "low": 600.35,
+        "close": 666.1
+      }
+    },
+    "LALPATHLAB": {
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 1921.0,
+        "high": 2038.6,
+        "low": 1921.0,
+        "close": 1966.6
+      }
+    },
+    "NPST": {
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 1730.0,
+        "high": 1816.8,
+        "low": 1673.5,
+        "close": 1809.3
+      }
+    },
+    "PATANJALI": {
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 339.05,
+        "high": 341.1,
+        "low": 337.5,
+        "close": 339.5
+      }
+    },
+    "SAATVIKGL": {
+      "status": "WAITING",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 428.5,
+        "high": 428.5,
+        "low": 410.0,
+        "close": 417.0
+      }
+    },
+    "TATACHEM": {
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-16T09:15:00+05:30",
+        "open": 715.0,
+        "high": 740.0,
+        "low": 691.9,
+        "close": 737.85
+      }
+    }
+  }
 }
