@@ -448,6 +448,18 @@
       "membership_count": 1,
       "universe_source": "NSE_VOLUME_GAINERS",
       "volume_gainer_added_at": "2026-09-17T10:30:43.978926+05:30"
+    },
+    {
+      "symbol": "INDIACEM",
+      "security_id": "1515",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "NSE_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-09-17T11:20:52.254926+05:30"
     }
   ],
   "signals": {},
@@ -455,7 +467,7 @@
   "daily_filters": {},
   "alert_state": {},
   "orb": {},
-  "volume_gainers_last_refresh": "2026-09-17T11:10:00+05:30",
+  "volume_gainers_last_refresh": "2026-09-17T11:20:00+05:30",
   "b1": {
     "ABCAPITAL": {
       "status": "WAITING",
@@ -917,6 +929,17 @@
         "high": 1136.0,
         "low": 1122.1,
         "close": 1130.9
+      }
+    },
+    "INDIACEM": {
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-17T11:00:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 334.65,
+        "high": 336.8,
+        "low": 334.55,
+        "close": 336.6
       }
     }
   }
