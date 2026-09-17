@@ -412,6 +412,18 @@
       "membership_count": 1,
       "universe_source": "NSE_VOLUME_GAINERS",
       "volume_gainer_added_at": "2026-09-17T10:00:39.213883+05:30"
+    },
+    {
+      "symbol": "GOCLCORP",
+      "security_id": "3963",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "NSE_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-09-17T10:10:35.147673+05:30"
     }
   ],
   "signals": {},
@@ -419,7 +431,7 @@
   "daily_filters": {},
   "alert_state": {},
   "orb": {},
-  "volume_gainers_last_refresh": "2026-09-17T10:00:00+05:30",
+  "volume_gainers_last_refresh": "2026-09-17T10:10:00+05:30",
   "b1": {
     "ABCAPITAL": {
       "status": "WAITING",
@@ -848,6 +860,17 @@
         "high": 1019.2,
         "low": 985.1,
         "close": 1013.4
+      }
+    },
+    "GOCLCORP": {
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-17T09:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 437.85,
+        "high": 446.55,
+        "low": 432.6,
+        "close": 439.8
       }
     }
   }
