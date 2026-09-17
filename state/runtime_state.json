@@ -432,35 +432,35 @@
     },
     "ATHERENERG": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-16T14:45:00+05:30",
+      "last_processed_15m": null,
       "orb": {
-        "timestamp": "2026-09-16T09:15:00+05:30",
-        "open": 1557.9,
-        "high": 1574.8,
-        "low": 1535.0,
-        "close": 1547.8
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 1550.0,
+        "high": 1563.0,
+        "low": 1537.1,
+        "close": 1559.0
       }
     },
     "BSE": {
-      "status": "CONSUMED",
-      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "status": "WAITING",
+      "last_processed_15m": null,
       "orb": {
-        "timestamp": "2026-09-16T09:15:00+05:30",
-        "open": 3310.0,
-        "high": 3317.0,
-        "low": 3275.0,
-        "close": 3286.4
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 3255.0,
+        "high": 3271.5,
+        "low": 3236.1,
+        "close": 3268.0
       }
     },
     "CGPOWER": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-16T14:45:00+05:30",
+      "last_processed_15m": null,
       "orb": {
-        "timestamp": "2026-09-16T09:15:00+05:30",
-        "open": 858.0,
-        "high": 861.25,
-        "low": 849.0,
-        "close": 849.0
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 859.0,
+        "high": 868.6,
+        "low": 856.3,
+        "close": 868.4
       }
     },
     "FINCABLES": {
@@ -552,14 +552,14 @@
       }
     },
     "MCX": {
-      "status": "CONSUMED",
-      "last_processed_15m": "2026-09-16T13:00:00+05:30",
+      "status": "WAITING",
+      "last_processed_15m": null,
       "orb": {
-        "timestamp": "2026-09-16T09:15:00+05:30",
-        "open": 3170.2,
-        "high": 3181.5,
-        "low": 3097.4,
-        "close": 3100.3
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 3201.1,
+        "high": 3234.8,
+        "low": 3180.1,
+        "close": 3224.1
       }
     },
     "NETWEB": {
@@ -574,25 +574,25 @@
       }
     },
     "RBLBANK": {
-      "status": "CONSUMED",
-      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "status": "WAITING",
+      "last_processed_15m": null,
       "orb": {
-        "timestamp": "2026-09-16T09:15:00+05:30",
-        "open": 404.8,
-        "high": 404.8,
-        "low": 400.1,
-        "close": 400.5
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 403.0,
+        "high": 408.6,
+        "low": 402.0,
+        "close": 407.9
       }
     },
     "SHRIRAMFIN": {
-      "status": "CONSUMED",
-      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "status": "WAITING",
+      "last_processed_15m": null,
       "orb": {
-        "timestamp": "2026-09-16T09:15:00+05:30",
+        "timestamp": "2026-09-17T09:15:00+05:30",
         "open": 979.0,
-        "high": 990.3,
-        "low": 976.0,
-        "close": 981.2
+        "high": 995.6,
+        "low": 978.3,
+        "close": 995.3
       }
     },
     "SOLARINDS": {
@@ -717,25 +717,25 @@
       }
     },
     "GMDCLTD": {
-      "status": "CONSUMED",
-      "last_processed_15m": "2026-09-16T14:30:00+05:30",
+      "status": "WAITING",
+      "last_processed_15m": null,
       "orb": {
-        "timestamp": "2026-09-16T09:15:00+05:30",
-        "open": 553.45,
-        "high": 557.0,
-        "low": 543.8,
-        "close": 543.9
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 543.35,
+        "high": 551.5,
+        "low": 543.35,
+        "close": 549.85
       }
     },
     "NATIONALUM": {
-      "status": "CONSUMED",
-      "last_processed_15m": "2026-09-16T14:00:00+05:30",
+      "status": "WAITING",
+      "last_processed_15m": null,
       "orb": {
-        "timestamp": "2026-09-16T09:15:00+05:30",
-        "open": 352.0,
-        "high": 356.0,
-        "low": 352.0,
-        "close": 352.8
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 356.0,
+        "high": 358.65,
+        "low": 354.45,
+        "close": 358.3
       }
     },
     "BHARATFORG": {
@@ -752,12 +752,24 @@
     "GLENMARK": {
       "status": "WAITING",
       "last_processed_15m": null,
-      "orb": null
+      "orb": {
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 2406.8,
+        "high": 2410.0,
+        "low": 2388.4,
+        "close": 2400.7
+      }
     },
     "SAILIFE": {
       "status": "WAITING",
       "last_processed_15m": null,
-      "orb": null
+      "orb": {
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 1537.9,
+        "high": 1560.1,
+        "low": 1530.2,
+        "close": 1557.2
+      }
     },
     "TORNTPHARM": {
       "status": "WAITING",
@@ -784,7 +796,13 @@
     "SETL": {
       "status": "WAITING",
       "last_processed_15m": null,
-      "orb": null
+      "orb": {
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 409.95,
+        "high": 415.3,
+        "low": 401.45,
+        "close": 405.25
+      }
     }
   }
 }
