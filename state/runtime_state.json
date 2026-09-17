@@ -388,6 +388,18 @@
       "membership_count": 1,
       "universe_source": "NSE_VOLUME_GAINERS",
       "volume_gainer_added_at": "2026-09-17T09:30:46.241184+05:30"
+    },
+    {
+      "symbol": "POLICYBZR",
+      "security_id": "6656",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "NSE_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-09-17T09:40:31.450957+05:30"
     }
   ],
   "signals": {},
@@ -395,7 +407,7 @@
   "daily_filters": {},
   "alert_state": {},
   "orb": {},
-  "volume_gainers_last_refresh": "2026-09-17T09:30:00+05:30",
+  "volume_gainers_last_refresh": "2026-09-17T09:40:00+05:30",
   "b1": {
     "ABCAPITAL": {
       "status": "WAITING",
@@ -802,6 +814,17 @@
         "high": 415.3,
         "low": 401.45,
         "close": 405.25
+      }
+    },
+    "POLICYBZR": {
+      "status": "WAITING",
+      "last_processed_15m": null,
+      "orb": {
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 1839.0,
+        "high": 1845.0,
+        "low": 1730.5,
+        "close": 1734.3
       }
     }
   }
