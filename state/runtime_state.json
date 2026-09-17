@@ -424,6 +424,30 @@
       "membership_count": 1,
       "universe_source": "NSE_VOLUME_GAINERS",
       "volume_gainer_added_at": "2026-09-17T10:10:35.147673+05:30"
+    },
+    {
+      "symbol": "GNFC",
+      "security_id": "1174",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "NSE_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-09-17T10:30:44.339832+05:30"
+    },
+    {
+      "symbol": "PNBHOUSING",
+      "security_id": "18908",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "NSE_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-09-17T10:30:44.339832+05:30"
     }
   ],
   "signals": {},
@@ -431,11 +455,11 @@
   "daily_filters": {},
   "alert_state": {},
   "orb": {},
-  "volume_gainers_last_refresh": "2026-09-17T10:20:00+05:30",
+  "volume_gainers_last_refresh": "2026-09-17T10:30:00+05:30",
   "b1": {
     "ABCAPITAL": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-17T10:00:00+05:30",
+      "last_processed_15m": "2026-09-17T10:15:00+05:30",
       "orb": {
         "timestamp": "2026-09-17T09:15:00+05:30",
         "open": 382.0,
@@ -468,7 +492,7 @@
     },
     "ATHERENERG": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-17T10:00:00+05:30",
+      "last_processed_15m": "2026-09-17T10:15:00+05:30",
       "orb": {
         "timestamp": "2026-09-17T09:15:00+05:30",
         "open": 1550.0,
@@ -512,7 +536,7 @@
     },
     "GESHIP": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-17T10:00:00+05:30",
+      "last_processed_15m": "2026-09-17T10:15:00+05:30",
       "orb": {
         "timestamp": "2026-09-17T09:15:00+05:30",
         "open": 1392.0,
@@ -578,7 +602,7 @@
     },
     "LAURUSLABS": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-17T10:00:00+05:30",
+      "last_processed_15m": "2026-09-17T10:15:00+05:30",
       "orb": {
         "timestamp": "2026-09-17T09:15:00+05:30",
         "open": 1898.0,
@@ -831,7 +855,7 @@
     },
     "SETL": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-17T10:00:00+05:30",
+      "last_processed_15m": "2026-09-17T10:15:00+05:30",
       "orb": {
         "timestamp": "2026-09-17T09:15:00+05:30",
         "open": 409.95,
@@ -842,7 +866,7 @@
     },
     "POLICYBZR": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-17T10:00:00+05:30",
+      "last_processed_15m": "2026-09-17T10:15:00+05:30",
       "orb": {
         "timestamp": "2026-09-17T09:15:00+05:30",
         "open": 1839.0,
@@ -871,6 +895,28 @@
         "high": 446.55,
         "low": 432.6,
         "close": 439.8
+      }
+    },
+    "GNFC": {
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-17T10:15:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 540.0,
+        "high": 546.55,
+        "low": 538.2,
+        "close": 544.9
+      }
+    },
+    "PNBHOUSING": {
+      "status": "WAITING",
+      "last_processed_15m": "2026-09-17T10:15:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 1122.1,
+        "high": 1136.0,
+        "low": 1122.1,
+        "close": 1130.9
       }
     }
   }
