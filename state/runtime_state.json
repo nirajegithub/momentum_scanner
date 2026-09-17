@@ -364,6 +364,30 @@
       "prev_close": 2424.5,
       "prev_volume": 2931474,
       "prev_trading_day": "2026-09-16"
+    },
+    {
+      "symbol": "KRSNAA",
+      "security_id": "5359",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "NSE_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-09-17T09:30:46.170731+05:30"
+    },
+    {
+      "symbol": "SETL",
+      "security_id": "29075",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "NSE_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-09-17T09:30:46.170731+05:30"
     }
   ],
   "signals": {},
@@ -371,39 +395,39 @@
   "daily_filters": {},
   "alert_state": {},
   "orb": {},
-  "volume_gainers_last_refresh": "2026-09-16T15:00:00+05:30",
+  "volume_gainers_last_refresh": "2026-09-17T09:30:00+05:30",
   "b1": {
     "ABCAPITAL": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-16T14:45:00+05:30",
+      "last_processed_15m": null,
       "orb": {
-        "timestamp": "2026-09-16T09:15:00+05:30",
-        "open": 378.8,
-        "high": 384.05,
-        "low": 378.8,
-        "close": 379.65
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 382.0,
+        "high": 385.95,
+        "low": 381.5,
+        "close": 385.25
       }
     },
     "ADANIENSOL": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-16T14:45:00+05:30",
+      "last_processed_15m": null,
       "orb": {
-        "timestamp": "2026-09-16T09:15:00+05:30",
-        "open": 1347.6,
-        "high": 1371.3,
-        "low": 1343.7,
-        "close": 1350.5
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 1346.0,
+        "high": 1356.6,
+        "low": 1345.0,
+        "close": 1345.2
       }
     },
     "ADANIGREEN": {
-      "status": "CONSUMED",
-      "last_processed_15m": "2026-09-16T12:30:00+05:30",
+      "status": "WAITING",
+      "last_processed_15m": null,
       "orb": {
-        "timestamp": "2026-09-16T09:15:00+05:30",
-        "open": 1253.9,
-        "high": 1271.3,
-        "low": 1252.7,
-        "close": 1257.1
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 1268.5,
+        "high": 1291.0,
+        "low": 1262.1,
+        "close": 1272.7
       }
     },
     "ATHERENERG": {
@@ -440,69 +464,69 @@
       }
     },
     "FINCABLES": {
-      "status": "CONSUMED",
-      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "status": "WAITING",
+      "last_processed_15m": null,
       "orb": {
-        "timestamp": "2026-09-16T09:15:00+05:30",
-        "open": 1344.2,
-        "high": 1354.4,
-        "low": 1320.7,
-        "close": 1323.3
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 1362.5,
+        "high": 1386.5,
+        "low": 1357.7,
+        "close": 1384.5
       }
     },
     "GESHIP": {
-      "status": "CONSUMED",
-      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "status": "WAITING",
+      "last_processed_15m": null,
       "orb": {
-        "timestamp": "2026-09-16T09:15:00+05:30",
-        "open": 1390.4,
-        "high": 1393.5,
-        "low": 1381.1,
-        "close": 1387.6
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 1392.0,
+        "high": 1405.3,
+        "low": 1387.5,
+        "close": 1402.4
       }
     },
     "GRANULES": {
-      "status": "CONSUMED",
-      "last_processed_15m": "2026-09-16T12:15:00+05:30",
+      "status": "WAITING",
+      "last_processed_15m": null,
       "orb": {
-        "timestamp": "2026-09-16T09:15:00+05:30",
-        "open": 869.0,
-        "high": 872.0,
-        "low": 860.5,
-        "close": 862.0
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 841.0,
+        "high": 850.15,
+        "low": 838.2,
+        "close": 848.1
       }
     },
     "HINDALCO": {
-      "status": "CONSUMED",
-      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "status": "WAITING",
+      "last_processed_15m": null,
       "orb": {
-        "timestamp": "2026-09-16T09:15:00+05:30",
-        "open": 956.4,
-        "high": 970.0,
-        "low": 956.4,
-        "close": 964.0
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 972.0,
+        "high": 980.0,
+        "low": 970.5,
+        "close": 979.5
       }
     },
     "HINDCOPPER": {
-      "status": "CONSUMED",
-      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "status": "WAITING",
+      "last_processed_15m": null,
       "orb": {
-        "timestamp": "2026-09-16T09:15:00+05:30",
-        "open": 496.0,
-        "high": 496.7,
-        "low": 482.65,
-        "close": 484.65
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 485.0,
+        "high": 487.7,
+        "low": 480.7,
+        "close": 487.3
       }
     },
     "HONASA": {
-      "status": "CONSUMED",
-      "last_processed_15m": "2026-09-16T12:00:00+05:30",
+      "status": "WAITING",
+      "last_processed_15m": null,
       "orb": {
-        "timestamp": "2026-09-16T09:15:00+05:30",
-        "open": 457.0,
-        "high": 463.8,
-        "low": 455.75,
-        "close": 458.2
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 471.8,
+        "high": 471.8,
+        "low": 461.3,
+        "close": 461.3
       }
     },
     "KIRLOSENG": {
@@ -517,14 +541,14 @@
       }
     },
     "LAURUSLABS": {
-      "status": "CONSUMED",
-      "last_processed_15m": "2026-09-16T11:45:00+05:30",
+      "status": "WAITING",
+      "last_processed_15m": null,
       "orb": {
-        "timestamp": "2026-09-16T09:15:00+05:30",
-        "open": 1924.6,
-        "high": 1940.4,
-        "low": 1886.4,
-        "close": 1887.2
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 1898.0,
+        "high": 1934.1,
+        "low": 1894.8,
+        "close": 1929.8
       }
     },
     "MCX": {
@@ -540,13 +564,13 @@
     },
     "NETWEB": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-16T14:45:00+05:30",
+      "last_processed_15m": null,
       "orb": {
-        "timestamp": "2026-09-16T09:15:00+05:30",
-        "open": 4629.5,
-        "high": 4638.5,
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 4563.0,
+        "high": 4612.0,
         "low": 4484.0,
-        "close": 4490.5
+        "close": 4496.5
       }
     },
     "RBLBANK": {
@@ -573,35 +597,35 @@
     },
     "SOLARINDS": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-16T14:45:00+05:30",
+      "last_processed_15m": null,
       "orb": {
-        "timestamp": "2026-09-16T09:15:00+05:30",
-        "open": 19400.0,
-        "high": 19460.0,
-        "low": 18625.0,
-        "close": 18800.0
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 18900.0,
+        "high": 18950.0,
+        "low": 18590.0,
+        "close": 18835.0
       }
     },
     "SYRMA": {
-      "status": "CONSUMED",
-      "last_processed_15m": "2026-09-16T14:00:00+05:30",
+      "status": "WAITING",
+      "last_processed_15m": null,
       "orb": {
-        "timestamp": "2026-09-16T09:15:00+05:30",
-        "open": 1508.9,
-        "high": 1514.0,
-        "low": 1452.5,
-        "close": 1456.3
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 1513.5,
+        "high": 1624.0,
+        "low": 1513.5,
+        "close": 1618.7
       }
     },
     "WELCORP": {
-      "status": "CONSUMED",
-      "last_processed_15m": "2026-09-16T14:15:00+05:30",
+      "status": "WAITING",
+      "last_processed_15m": null,
       "orb": {
-        "timestamp": "2026-09-16T09:15:00+05:30",
-        "open": 2413.0,
-        "high": 2425.0,
-        "low": 2297.7,
-        "close": 2323.4
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 2420.0,
+        "high": 2488.0,
+        "low": 2415.1,
+        "close": 2474.1
       }
     },
     "APOLLOTYRE": {
@@ -683,13 +707,13 @@
     },
     "BHEL": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-16T14:45:00+05:30",
+      "last_processed_15m": null,
       "orb": {
-        "timestamp": "2026-09-16T09:15:00+05:30",
-        "open": 415.45,
-        "high": 417.4,
-        "low": 409.0,
-        "close": 409.35
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 411.55,
+        "high": 417.75,
+        "low": 410.8,
+        "close": 417.25
       }
     },
     "GMDCLTD": {
@@ -713,6 +737,54 @@
         "low": 352.0,
         "close": 352.8
       }
+    },
+    "BHARATFORG": {
+      "status": "WAITING",
+      "last_processed_15m": null,
+      "orb": {
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 1885.9,
+        "high": 1899.0,
+        "low": 1878.0,
+        "close": 1893.1
+      }
+    },
+    "GLENMARK": {
+      "status": "WAITING",
+      "last_processed_15m": null,
+      "orb": null
+    },
+    "SAILIFE": {
+      "status": "WAITING",
+      "last_processed_15m": null,
+      "orb": null
+    },
+    "TORNTPHARM": {
+      "status": "WAITING",
+      "last_processed_15m": null,
+      "orb": {
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 4810.0,
+        "high": 4858.5,
+        "low": 4805.0,
+        "close": 4807.0
+      }
+    },
+    "KRSNAA": {
+      "status": "WAITING",
+      "last_processed_15m": null,
+      "orb": {
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 563.9,
+        "high": 598.0,
+        "low": 561.55,
+        "close": 570.4
+      }
+    },
+    "SETL": {
+      "status": "WAITING",
+      "last_processed_15m": null,
+      "orb": null
     }
   }
 }
