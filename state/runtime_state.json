@@ -400,6 +400,18 @@
       "membership_count": 1,
       "universe_source": "NSE_VOLUME_GAINERS",
       "volume_gainer_added_at": "2026-09-17T09:40:31.450957+05:30"
+    },
+    {
+      "symbol": "YATHARTH",
+      "security_id": "17738",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "NSE_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-09-17T10:00:41.422309+05:30"
     }
   ],
   "signals": {},
@@ -407,11 +419,11 @@
   "daily_filters": {},
   "alert_state": {},
   "orb": {},
-  "volume_gainers_last_refresh": "2026-09-17T09:50:00+05:30",
+  "volume_gainers_last_refresh": "2026-09-17T10:00:00+05:30",
   "b1": {
     "ABCAPITAL": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-17T09:30:00+05:30",
+      "last_processed_15m": "2026-09-17T09:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-17T09:15:00+05:30",
         "open": 382.0,
@@ -433,7 +445,7 @@
     },
     "ADANIGREEN": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-17T09:30:00+05:30",
+      "last_processed_15m": "2026-09-17T09:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-17T09:15:00+05:30",
         "open": 1268.5,
@@ -444,7 +456,7 @@
     },
     "ATHERENERG": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-17T09:30:00+05:30",
+      "last_processed_15m": "2026-09-17T09:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-17T09:15:00+05:30",
         "open": 1550.0,
@@ -466,7 +478,7 @@
     },
     "CGPOWER": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-17T09:30:00+05:30",
+      "last_processed_15m": "2026-09-17T09:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-17T09:15:00+05:30",
         "open": 859.0,
@@ -488,7 +500,7 @@
     },
     "GESHIP": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-17T09:30:00+05:30",
+      "last_processed_15m": "2026-09-17T09:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-17T09:15:00+05:30",
         "open": 1392.0,
@@ -510,7 +522,7 @@
     },
     "HINDALCO": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-17T09:30:00+05:30",
+      "last_processed_15m": "2026-09-17T09:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-17T09:15:00+05:30",
         "open": 972.0,
@@ -598,7 +610,7 @@
     },
     "SHRIRAMFIN": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-17T09:30:00+05:30",
+      "last_processed_15m": "2026-09-17T09:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-17T09:15:00+05:30",
         "open": 979.0,
@@ -631,7 +643,7 @@
     },
     "WELCORP": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-17T09:30:00+05:30",
+      "last_processed_15m": "2026-09-17T09:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-17T09:15:00+05:30",
         "open": 2420.0,
@@ -763,7 +775,7 @@
     },
     "GLENMARK": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-17T09:30:00+05:30",
+      "last_processed_15m": "2026-09-17T09:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-17T09:15:00+05:30",
         "open": 2406.8,
@@ -825,6 +837,17 @@
         "high": 1845.0,
         "low": 1730.5,
         "close": 1734.3
+      }
+    },
+    "YATHARTH": {
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-17T09:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-17T09:15:00+05:30",
+        "open": 987.0,
+        "high": 1019.2,
+        "low": 985.1,
+        "close": 1013.4
       }
     }
   }
