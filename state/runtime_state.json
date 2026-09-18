@@ -378,11 +378,11 @@
   "daily_filters": {},
   "alert_state": {},
   "orb": {},
-  "volume_gainers_last_refresh": "2026-09-18T09:50:00+05:30",
+  "volume_gainers_last_refresh": "2026-09-18T10:00:00+05:30",
   "b1": {
     "ABCAPITAL": {
-      "status": "WAITING",
-      "last_processed_15m": "2026-09-18T09:30:00+05:30",
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-18T09:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 390.5,
@@ -393,7 +393,7 @@
     },
     "ADANIENSOL": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-18T09:30:00+05:30",
+      "last_processed_15m": "2026-09-18T09:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 1380.9,
@@ -415,7 +415,7 @@
     },
     "ATHERENERG": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-18T09:30:00+05:30",
+      "last_processed_15m": "2026-09-18T09:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 1550.0,
@@ -426,7 +426,7 @@
     },
     "BSE": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-18T09:30:00+05:30",
+      "last_processed_15m": "2026-09-18T09:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 3259.0,
@@ -436,8 +436,8 @@
       }
     },
     "CGPOWER": {
-      "status": "WAITING",
-      "last_processed_15m": "2026-09-18T09:30:00+05:30",
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-18T09:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 883.65,
@@ -502,8 +502,8 @@
       }
     },
     "HONASA": {
-      "status": "WAITING",
-      "last_processed_15m": "2026-09-18T09:30:00+05:30",
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-18T09:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 458.1,
@@ -514,7 +514,7 @@
     },
     "KIRLOSENG": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-18T09:30:00+05:30",
+      "last_processed_15m": "2026-09-18T09:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 2106.8,
@@ -525,7 +525,7 @@
     },
     "LAURUSLABS": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-18T09:30:00+05:30",
+      "last_processed_15m": "2026-09-18T09:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 1962.0,
@@ -547,7 +547,7 @@
     },
     "NETWEB": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-18T09:30:00+05:30",
+      "last_processed_15m": "2026-09-18T09:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 4612.0,
@@ -558,7 +558,7 @@
     },
     "RBLBANK": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-18T09:30:00+05:30",
+      "last_processed_15m": "2026-09-18T09:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 406.15,
@@ -569,7 +569,7 @@
     },
     "SHRIRAMFIN": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-18T09:30:00+05:30",
+      "last_processed_15m": "2026-09-18T09:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 1004.9,
@@ -690,7 +690,7 @@
     },
     "BHEL": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-18T09:30:00+05:30",
+      "last_processed_15m": "2026-09-18T09:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 428.4,
@@ -701,7 +701,7 @@
     },
     "GMDCLTD": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-18T09:30:00+05:30",
+      "last_processed_15m": "2026-09-18T09:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 551.0,
@@ -712,7 +712,7 @@
     },
     "NATIONALUM": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-18T09:30:00+05:30",
+      "last_processed_15m": "2026-09-18T09:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 359.8,
@@ -723,7 +723,7 @@
     },
     "BHARATFORG": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-18T09:30:00+05:30",
+      "last_processed_15m": "2026-09-18T09:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 1940.1,
@@ -888,7 +888,7 @@
     },
     "BBTC": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-18T09:30:00+05:30",
+      "last_processed_15m": "2026-09-18T09:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 1409.7,
