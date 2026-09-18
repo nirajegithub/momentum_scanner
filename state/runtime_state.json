@@ -419,6 +419,18 @@
       "membership_count": 1,
       "universe_source": "NSE_VOLUME_GAINERS",
       "volume_gainer_added_at": "2026-09-18T10:30:44.741855+05:30"
+    },
+    {
+      "symbol": "AVALON",
+      "security_id": "15058",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "NSE_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-09-18T10:50:38.367290+05:30"
     }
   ],
   "signals": {},
@@ -426,7 +438,7 @@
   "daily_filters": {},
   "alert_state": {},
   "orb": {},
-  "volume_gainers_last_refresh": "2026-09-18T10:40:00+05:30",
+  "volume_gainers_last_refresh": "2026-09-18T10:50:00+05:30",
   "b1": {
     "ABCAPITAL": {
       "status": "CONSUMED",
@@ -998,6 +1010,17 @@
         "high": 483.0,
         "low": 448.55,
         "close": 470.55
+      }
+    },
+    "AVALON": {
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-18T10:30:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-18T09:15:00+05:30",
+        "open": 2236.2,
+        "high": 2323.0,
+        "low": 2218.3,
+        "close": 2318.5
       }
     }
   }
