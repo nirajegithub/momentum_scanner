@@ -467,6 +467,30 @@
       "membership_count": 1,
       "universe_source": "NSE_VOLUME_GAINERS",
       "volume_gainer_added_at": "2026-09-18T14:01:13.740893+05:30"
+    },
+    {
+      "symbol": "SKFINDUS",
+      "security_id": "760101",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "NSE_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-09-18T15:16:12.376513+05:30"
+    },
+    {
+      "symbol": "SYNGENE",
+      "security_id": "10243",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "NSE_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-09-18T15:16:12.376513+05:30"
     }
   ],
   "signals": {},
@@ -474,7 +498,7 @@
   "daily_filters": {},
   "alert_state": {},
   "orb": {},
-  "volume_gainers_last_refresh": "2026-09-18T15:00:00+05:30",
+  "volume_gainers_last_refresh": "2026-09-18T15:10:00+05:30",
   "b1": {
     "ABCAPITAL": {
       "status": "CONSUMED",
@@ -786,7 +810,7 @@
     },
     "BHEL": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-18T14:45:00+05:30",
+      "last_processed_15m": "2026-09-18T15:00:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 428.4,
@@ -797,7 +821,7 @@
     },
     "GMDCLTD": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-18T14:45:00+05:30",
+      "last_processed_15m": "2026-09-18T15:00:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 551.0,
@@ -984,7 +1008,7 @@
     },
     "BBTC": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-18T14:45:00+05:30",
+      "last_processed_15m": "2026-09-18T15:00:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 1409.7,
@@ -1090,6 +1114,28 @@
         "high": 996.5,
         "low": 979.0,
         "close": 989.7
+      }
+    },
+    "SKFINDUS": {
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-18T15:00:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-18T09:15:00+05:30",
+        "open": 2969.9,
+        "high": 3218.7,
+        "low": 2969.9,
+        "close": 2997.9
+      }
+    },
+    "SYNGENE": {
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-18T15:00:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-18T09:15:00+05:30",
+        "open": 379.1,
+        "high": 384.0,
+        "low": 375.5,
+        "close": 381.55
       }
     }
   }
