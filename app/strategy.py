@@ -5,10 +5,13 @@ filters pass. Entry is deliberately deferred to a later completed 5M candle.
 """
 from __future__ import annotations
 
+import logging
 import math
 
 from .config import SETTINGS
 from .scoring import score_trade_quality
+
+LOG = logging.getLogger(__name__)
 
 
 def _finite(value) -> bool:
@@ -18,56 +21,80 @@ def _finite(value) -> bool:
         return False
 
 
-def evaluate_b1_breakout(df15, orb, daily_close, daily_volume):
+def _rejected(symbol, reason, **details):
+    """Log a rejection with its specific reason and return None."""
+    if details:
+        detail_str = " | " + " | ".join(f"{k}={v}" for k, v in details.items())
+    else:
+        detail_str = ""
+    LOG.info("B1_FILTER_REJECTED | symbol=%s | reason=%s%s", symbol or "?", reason, detail_str)
+    return None
+
+
+def evaluate_b1_breakout(df15, orb, daily_close, daily_volume, symbol=None):
     """Evaluate one completed 15M candle against the fixed 09:15 ORB."""
     if df15 is None or df15.empty or orb is None:
-        return None
+        return _rejected(symbol, "NO_CANDLE_DATA")
 
     current = df15.iloc[-1]
     if len(df15) >= 2:
         previous = df15.iloc[-2]
     else:
-        return None
+        return _rejected(symbol, "INSUFFICIENT_CANDLE_HISTORY")
 
     required = ("open", "high", "low", "close", "rsi14", "rvol")
     if not all(_finite(current.get(k)) for k in required):
-        return None
+        missing = [k for k in required if not _finite(current.get(k))]
+        return _rejected(symbol, "INDICATORS_UNAVAILABLE", missing=",".join(missing))
     if not _finite(previous.get("rsi14")):
-        return None
+        return _rejected(symbol, "PREVIOUS_RSI_UNAVAILABLE")
     if not _finite(daily_close) or not _finite(daily_volume):
-        return None
+        return _rejected(symbol, "DAILY_DATA_UNAVAILABLE")
 
     if float(daily_close) <= SETTINGS.min_price:
-        return None
+        return _rejected(symbol, "PRICE_TOO_LOW", daily_close=daily_close, min_price=SETTINGS.min_price)
     if float(daily_volume) <= SETTINGS.min_daily_volume:
-        return None
+        return _rejected(symbol, "DAILY_VOLUME_TOO_LOW", daily_volume=daily_volume, min_daily_volume=SETTINGS.min_daily_volume)
 
     close = float(current["close"])
+    rsi_now = float(current["rsi14"])
+    rsi_prev = float(previous["rsi14"])
     if close > float(orb["high"]):
         direction = "BUY"
-        rsi_ok = (
-            SETTINGS.buy_rsi_min < float(current["rsi14"]) < SETTINGS.buy_rsi_max
-            and float(current["rsi14"]) > float(previous["rsi14"])
-        )
+        band_ok = SETTINGS.buy_rsi_min < rsi_now < SETTINGS.buy_rsi_max
+        rising_ok = rsi_now > rsi_prev
+        rsi_ok = band_ok and rising_ok
     elif close < float(orb["low"]):
         direction = "SELL"
-        rsi_ok = (
-            SETTINGS.sell_rsi_min < float(current["rsi14"]) < SETTINGS.sell_rsi_max
-            and float(current["rsi14"]) < float(previous["rsi14"])
-        )
+        band_ok = SETTINGS.sell_rsi_min < rsi_now < SETTINGS.sell_rsi_max
+        rising_ok = rsi_now < rsi_prev
+        rsi_ok = band_ok and rising_ok
     else:
-        return None
+        # Caller already filters to breakout candles, but guard just in case.
+        return _rejected(symbol, "NO_BREAKOUT", close=close, orb_high=orb["high"], orb_low=orb["low"])
 
     rvol = float(current["rvol"])
     if not rsi_ok:
-        return None
+        if not band_ok:
+            return _rejected(
+                symbol, "RSI_OUT_OF_BAND", direction=direction, rsi=round(rsi_now, 2),
+                band=f"{SETTINGS.buy_rsi_min}-{SETTINGS.buy_rsi_max}" if direction == "BUY"
+                else f"{SETTINGS.sell_rsi_min}-{SETTINGS.sell_rsi_max}",
+            )
+        return _rejected(
+            symbol, "RSI_MOMENTUM_NOT_ALIGNED", direction=direction,
+            rsi=round(rsi_now, 2), prev_rsi=round(rsi_prev, 2),
+        )
     if rvol < SETTINGS.min_15m_rvol:
-        return None
+        return _rejected(symbol, "RVOL_TOO_LOW", rvol=round(rvol, 2), min_15m_rvol=SETTINGS.min_15m_rvol)
 
     quality = score_trade_quality(df15, direction)
     score = float(quality.get("trade_quality_score", 0.0))
     if score < SETTINGS.min_trade_score or score > SETTINGS.max_trade_score:
-        return None
+        return _rejected(
+            symbol, "SCORE_OUT_OF_RANGE", score=score,
+            min_trade_score=SETTINGS.min_trade_score, max_trade_score=SETTINGS.max_trade_score,
+        )
 
     setup_ts = df15.index[-1]
     completion = setup_ts
