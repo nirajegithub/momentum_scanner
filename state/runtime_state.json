@@ -407,6 +407,18 @@
       "membership_count": 1,
       "universe_source": "NSE_VOLUME_GAINERS",
       "volume_gainer_added_at": "2026-09-18T10:20:37.509664+05:30"
+    },
+    {
+      "symbol": "PRECWIRE",
+      "security_id": "2717",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "NSE_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-09-18T10:30:44.930301+05:30"
     }
   ],
   "signals": {},
@@ -414,7 +426,7 @@
   "daily_filters": {},
   "alert_state": {},
   "orb": {},
-  "volume_gainers_last_refresh": "2026-09-18T10:20:00+05:30",
+  "volume_gainers_last_refresh": "2026-09-18T10:30:00+05:30",
   "b1": {
     "ABCAPITAL": {
       "status": "CONSUMED",
@@ -549,8 +561,8 @@
       }
     },
     "KIRLOSENG": {
-      "status": "WAITING",
-      "last_processed_15m": "2026-09-18T10:00:00+05:30",
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-18T10:15:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 2106.8,
@@ -560,8 +572,8 @@
       }
     },
     "LAURUSLABS": {
-      "status": "WAITING",
-      "last_processed_15m": "2026-09-18T10:00:00+05:30",
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-18T10:15:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 1962.0,
@@ -605,7 +617,7 @@
     },
     "SHRIRAMFIN": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-18T10:00:00+05:30",
+      "last_processed_15m": "2026-09-18T10:15:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 1004.9,
@@ -737,7 +749,7 @@
     },
     "GMDCLTD": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-18T10:00:00+05:30",
+      "last_processed_15m": "2026-09-18T10:15:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 551.0,
@@ -759,7 +771,7 @@
     },
     "BHARATFORG": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-18T10:00:00+05:30",
+      "last_processed_15m": "2026-09-18T10:15:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 1940.1,
@@ -924,7 +936,7 @@
     },
     "BBTC": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-18T10:00:00+05:30",
+      "last_processed_15m": "2026-09-18T10:15:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 1409.7,
@@ -975,6 +987,17 @@
         "high": 632.5,
         "low": 613.05,
         "close": 628.7
+      }
+    },
+    "PRECWIRE": {
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-18T10:15:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-18T09:15:00+05:30",
+        "open": 450.0,
+        "high": 483.0,
+        "low": 448.55,
+        "close": 470.55
       }
     }
   }
