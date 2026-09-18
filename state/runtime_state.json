@@ -383,6 +383,30 @@
       "membership_count": 1,
       "universe_source": "NSE_VOLUME_GAINERS",
       "volume_gainer_added_at": "2026-09-18T10:10:35.486144+05:30"
+    },
+    {
+      "symbol": "TALBROAUTO",
+      "security_id": "13648",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "NSE_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-09-18T10:20:37.509664+05:30"
+    },
+    {
+      "symbol": "TIMEX",
+      "security_id": "762954",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "NSE_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-09-18T10:20:37.509664+05:30"
     }
   ],
   "signals": {},
@@ -390,7 +414,7 @@
   "daily_filters": {},
   "alert_state": {},
   "orb": {},
-  "volume_gainers_last_refresh": "2026-09-18T10:10:00+05:30",
+  "volume_gainers_last_refresh": "2026-09-18T10:20:00+05:30",
   "b1": {
     "ABCAPITAL": {
       "status": "CONSUMED",
@@ -812,7 +836,7 @@
     },
     "YATHARTH": {
       "status": "WAITING",
-      "last_processed_15m": "2026-09-18T09:45:00+05:30",
+      "last_processed_15m": "2026-09-18T10:00:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 1098.0,
@@ -910,8 +934,8 @@
       }
     },
     "LODHA": {
-      "status": "WAITING",
-      "last_processed_15m": "2026-09-18T09:45:00+05:30",
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-18T10:00:00+05:30",
       "orb": {
         "timestamp": "2026-09-18T09:15:00+05:30",
         "open": 1110.2,
@@ -929,6 +953,28 @@
         "high": 577.6,
         "low": 565.75,
         "close": 571.25
+      }
+    },
+    "TALBROAUTO": {
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-18T10:00:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-18T09:15:00+05:30",
+        "open": 442.0,
+        "high": 458.0,
+        "low": 437.5,
+        "close": 453.1
+      }
+    },
+    "TIMEX": {
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-18T10:00:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-18T09:15:00+05:30",
+        "open": 613.05,
+        "high": 632.5,
+        "low": 613.05,
+        "close": 628.7
       }
     }
   }
