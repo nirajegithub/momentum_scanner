@@ -1,23 +1,11 @@
 name: NSE Momentum - B1 ORB + RVOL Scanner
-
-# on:
-#   schedule:
-#     # 09:30–14:55 IST = 04:00–09:25 UTC, every 5 minutes.
-#     - cron: "*/5 4-8 * * 1-5"
-#     # 15:00 and 15:05 IST = 09:30 and 09:35 UTC.
-#     - cron: "30,35 9 * * 1-5"
-#   workflow_dispatch:
-
 on:
   workflow_dispatch:
-
 permissions:
   contents: write
-
 concurrency:
   group: nse-momentum-state
   cancel-in-progress: false
-
 jobs:
   scanner:
     name: Scan NSE Momentum - B1 ORB + RVOL
@@ -51,26 +39,24 @@ jobs:
       SCAN_START_HHMM: "930"
       SCAN_END_HHMM: "1505"
       SCANNER_ACTION: "scan"
-
+      PYTHONUNBUFFERED: "1"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-
+      - name: Compile Python files
+        run: python -m compileall -q app
       - name: Run B1 ORB + RVOL scanner
         run: python -m app.main
-
       - name: Commit scanner state
         run: |
           git config user.name "github-actions[bot]"

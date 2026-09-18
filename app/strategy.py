@@ -1,12 +1,14 @@
+"""B1 ORB + RVOL strategy.
+
+15M completed candle creates a pending setup only when all configured quality
+filters pass. Entry is deliberately deferred to a later completed 5M candle.
+"""
 from __future__ import annotations
 
 import math
-import pandas as pd
 
 from .config import SETTINGS
 from .scoring import score_trade_quality
-
-IST = "Asia/Kolkata"
 
 
 def _finite(value) -> bool:
@@ -16,179 +18,98 @@ def _finite(value) -> bool:
         return False
 
 
-def _timestamp(value) -> pd.Timestamp:
-    ts = pd.Timestamp(value)
-    if ts.tzinfo is None:
-        ts = ts.tz_localize(IST)
-    return ts.tz_convert(IST)
-
-
-def evaluate_15m_setup(df15: pd.DataFrame, daily_close: float, daily_volume: float) -> dict | None:
-    """Evaluate one completed 15M candle using the final strategy filters."""
-    if df15 is None or df15.empty:
-        return None
-    minimum = max(SETTINGS.min_15m_candles, SETTINGS.rvol_lookback + 1, 2)
-    if len(df15) < minimum:
+def evaluate_b1_breakout(df15, orb, daily_close, daily_volume):
+    """Evaluate one completed 15M candle against the fixed 09:15 ORB."""
+    if df15 is None or df15.empty or orb is None:
         return None
 
-    required = {"open", "high", "low", "close", "volume", "ema9", "ema20", "rsi14", "vwap"}
-    missing = required.difference(df15.columns)
-    if missing:
-        raise ValueError(f"15M dataframe missing columns: {sorted(missing)}")
-
-    c = df15.iloc[-1]
-    p = df15.iloc[-2]
-    avg_volume = pd.to_numeric(df15["volume"].iloc[-SETTINGS.rvol_lookback-1:-1], errors="coerce").mean()
-    if not _finite(avg_volume) or float(avg_volume) <= 0:
-        return None
-    rvol = float(c["volume"]) / float(avg_volume)
-
-    values = [c["close"], c["ema9"], c["ema20"], c["rsi14"], c["vwap"], p["rsi14"], daily_close, daily_volume]
-    if not all(_finite(v) for v in values):
+    current = df15.iloc[-1]
+    if len(df15) >= 2:
+        previous = df15.iloc[-2]
+    else:
         return None
 
-    direction = None
-    if (
-        c["ema9"] > c["ema20"]
-        and SETTINGS.buy_rsi_min < c["rsi14"] < SETTINGS.buy_rsi_max
-        and c["rsi14"] > p["rsi14"]
-        and c["close"] > c["vwap"]
-        and c["close"] > c["ema20"]
-        and float(daily_close) > SETTINGS.min_price
-        and float(daily_volume) > SETTINGS.min_daily_volume
-        and rvol >= SETTINGS.min_15m_rvol
-    ):
+    required = ("open", "high", "low", "close", "rsi14", "rvol")
+    if not all(_finite(current.get(k)) for k in required):
+        return None
+    if not _finite(previous.get("rsi14")):
+        return None
+    if not _finite(daily_close) or not _finite(daily_volume):
+        return None
+
+    if float(daily_close) <= SETTINGS.min_price:
+        return None
+    if float(daily_volume) <= SETTINGS.min_daily_volume:
+        return None
+
+    close = float(current["close"])
+    if close > float(orb["high"]):
         direction = "BUY"
-    elif (
-        c["ema9"] < c["ema20"]
-        and SETTINGS.sell_rsi_min < c["rsi14"] < SETTINGS.sell_rsi_max
-        and c["rsi14"] < p["rsi14"]
-        and c["close"] < c["vwap"]
-        and c["close"] < c["ema20"]
-        and float(daily_close) > SETTINGS.min_price
-        and float(daily_volume) > SETTINGS.min_daily_volume
-        and rvol >= SETTINGS.min_15m_rvol
-    ):
+        rsi_ok = (
+            SETTINGS.buy_rsi_min < float(current["rsi14"]) < SETTINGS.buy_rsi_max
+            and float(current["rsi14"]) > float(previous["rsi14"])
+        )
+    elif close < float(orb["low"]):
         direction = "SELL"
+        rsi_ok = (
+            SETTINGS.sell_rsi_min < float(current["rsi14"]) < SETTINGS.sell_rsi_max
+            and float(current["rsi14"]) < float(previous["rsi14"])
+        )
+    else:
+        return None
 
-    if SETTINGS.require_ema_crossover and direction:
-        if direction == "BUY" and not (p["ema9"] <= p["ema20"] and c["ema9"] > c["ema20"]):
-            direction = None
-        elif direction == "SELL" and not (p["ema9"] >= p["ema20"] and c["ema9"] < c["ema20"]):
-            direction = None
-
-    if direction is None:
+    rvol = float(current["rvol"])
+    if not rsi_ok:
+        return None
+    if rvol < SETTINGS.min_15m_rvol:
         return None
 
     quality = score_trade_quality(df15, direction)
-    if quality["trade_quality_score"] < SETTINGS.min_trade_score:
+    score = float(quality.get("trade_quality_score", 0.0))
+    if score < SETTINGS.min_trade_score or score > SETTINGS.max_trade_score:
         return None
+
+    setup_ts = df15.index[-1]
+    completion = setup_ts
+    # The current 15M dataframe uses candle-start labels. A 15M candle beginning
+    # at 09:15 completes at 09:30, so all setup completion times are +15 minutes.
+    try:
+        completion = setup_ts + __import__("pandas").Timedelta(minutes=15)
+    except Exception:
+        pass
 
     result = {
         "direction": direction,
-        "setup_15m_timestamp": _timestamp(df15.index[-1]).isoformat(),
-        "setup_15m_open": float(c["open"]),
-        "setup_15m_high": float(c["high"]),
-        "setup_15m_low": float(c["low"]),
-        "setup_15m_close": float(c["close"]),
-        "setup_15m_ema9": float(c["ema9"]),
-        "setup_15m_ema20": float(c["ema20"]),
-        "setup_15m_rsi14": float(c["rsi14"]),
-        "setup_15m_previous_rsi14": float(p["rsi14"]),
-        "setup_15m_vwap": float(c["vwap"]),
-        "setup_15m_volume": float(c["volume"]),
-        "setup_15m_avg_volume": float(avg_volume),
-        "setup_15m_rvol": float(rvol),
+        "setup": "B1_ORB",
+        "setup_15m_timestamp": setup_ts.isoformat(),
+        "setup_15m_completion": completion.isoformat(),
+        "setup_15m_open": float(current["open"]),
+        "setup_15m_high": float(current["high"]),
+        "setup_15m_low": float(current["low"]),
+        "setup_15m_close": close,
+        "setup_15m_rsi14": float(current["rsi14"]),
+        "setup_15m_previous_rsi14": float(previous["rsi14"]),
+        "setup_15m_rvol": rvol,
         "daily_close": float(daily_close),
         "daily_volume": float(daily_volume),
-        "breakout_level": float(c["high"] if direction == "BUY" else c["low"]),
-        "stop_loss": float(c["close"]),
+        "trade_quality_score": score,
         **quality,
-        "status": "PENDING",
     }
     return result
 
 
-def confirm_5m_breakout(pending_setup: dict, candle_timestamp, candle_close: float) -> bool:
-    if not pending_setup or not _finite(candle_close):
-        return False
-    ts = _timestamp(candle_timestamp)
-    setup_ts = _timestamp(pending_setup["setup_15m_timestamp"])
-    if ts <= setup_ts:
-        return False
-    close = float(candle_close)
-    if pending_setup["direction"] == "BUY":
-        return close > float(pending_setup["setup_15m_high"])
-    if pending_setup["direction"] == "SELL":
-        return close < float(pending_setup["setup_15m_low"])
-    return False
+def t1_blocked(df5, confirmation_ts, entry, t1, direction):
+    """Return True if T1 had already been touched before confirmation.
 
-
-def evaluate(*args, **kwargs):
-    if args:
-        df15 = args[0]
-        daily_close = kwargs.get("daily_close")
-        daily_volume = kwargs.get("daily_volume")
-        if daily_close is not None and daily_volume is not None:
-            return evaluate_15m_setup(df15, daily_close, daily_volume)
-    return None
-
-
-def t1_blocked(df5: pd.DataFrame, signal_ts, entry: float, t1: float, direction: str) -> bool:
+    This is a safety/diagnostic gate, not a replacement for the 5M close
+    confirmation rule. The confirmation candle itself is excluded.
+    """
     if df5 is None or df5.empty:
         return False
-    ts = _timestamp(signal_ts)
-    history = df5[df5.index < ts].tail(20)
-    if history.empty:
+    rows = df5[df5.index < confirmation_ts]
+    if rows.empty:
         return False
+    target = float(t1)
     if direction == "BUY":
-        return bool(((history["high"] > entry) & (history["high"] < t1)).any())
-    return bool(((history["low"] < entry) & (history["low"] > t1)).any())
-
-
-def evaluate_b1_breakout(df15: pd.DataFrame, orb: dict, daily_close: float, daily_volume: float) -> dict | None:
-    """B+RVOL candidate: first completed 15M close outside fixed 09:15 ORB.
-    Uses the tested baseline RSI direction + Quality >=3 and adds 15M RVOL >=1.2.
-    EMA/VWAP are diagnostic only and do not gate B+RVOL.
-    """
-    if df15 is None or df15.empty or not orb:
-        return None
-    minimum = max(SETTINGS.min_15m_candles, SETTINGS.rvol_lookback + 1, 3)
-    if len(df15) < minimum:
-        return None
-    required = {"open", "high", "low", "close", "volume", "rsi14", "rvol", "ema9", "ema20", "vwap"}
-    missing = required.difference(df15.columns)
-    if missing:
-        raise ValueError(f"15M dataframe missing columns: {sorted(missing)}")
-    ts = _timestamp(df15.index[-1])
-    orb_ts = _timestamp(orb["timestamp"])
-    if ts <= orb_ts:
-        return None
-    c = df15.iloc[-1]; p = df15.iloc[-2]
-    close = float(c["close"])
-    direction = "BUY" if close > float(orb["high"]) else "SELL" if close < float(orb["low"]) else None
-    if direction is None:
-        return None
-    rsi = float(c["rsi14"]); prev_rsi = float(p["rsi14"]); rvol = float(c["rvol"])
-    if not all(_finite(v) for v in [close,rsi,prev_rsi,rvol,daily_close,daily_volume,orb["high"],orb["low"],orb["close"]]):
-        return None
-    if direction == "BUY":
-        rsi_ok = SETTINGS.buy_rsi_min < rsi < SETTINGS.buy_rsi_max and rsi > prev_rsi
-    else:
-        rsi_ok = SETTINGS.sell_rsi_min < rsi < SETTINGS.sell_rsi_max and rsi < prev_rsi
-    if not rsi_ok or float(daily_close) <= SETTINGS.min_price or float(daily_volume) <= SETTINGS.min_daily_volume or rvol < SETTINGS.min_15m_rvol:
-        return None
-    quality = score_trade_quality(df15, direction)
-    if quality["trade_quality_score"] < SETTINGS.min_trade_score:
-        return None
-    return {
-        "direction": direction, "setup": "B1_ORB_15M_CLOSE_RVOL",
-        "setup_15m_timestamp": ts.isoformat(),
-        "setup_15m_completion": (ts + pd.Timedelta(minutes=SETTINGS.setup_timeframe)).isoformat(),
-        "setup_15m_open": float(c["open"]), "setup_15m_high": float(c["high"]), "setup_15m_low": float(c["low"]), "setup_15m_close": close,
-        "setup_15m_ema9": float(c["ema9"]), "setup_15m_ema20": float(c["ema20"]), "setup_15m_rsi14": rsi,
-        "setup_15m_previous_rsi14": prev_rsi, "setup_15m_vwap": float(c["vwap"]), "setup_15m_volume": float(c["volume"]), "setup_15m_rvol": rvol,
-        "daily_close": float(daily_close), "daily_volume": float(daily_volume),
-        "orb_timestamp": orb_ts.isoformat(), "orb_high": float(orb["high"]), "orb_low": float(orb["low"]), "orb_close": float(orb["close"]),
-        "breakout_level": float(orb["high"] if direction == "BUY" else orb["low"]), **quality, "status": "CANDIDATE",
-    }
+        return bool(rows["high"].astype(float).max() >= target)
+    return bool(rows["low"].astype(float).min() <= target)

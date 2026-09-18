@@ -120,16 +120,16 @@ def _prepare_5m(dhan, security_id, signal_completion):
     return completed_candles(raw, signal_completion, 5)
 
 
-def _build_signal(dhan, item, candle_df, orb, trading_day):
-    daily_close, daily_volume = _daily_values(dhan, item, trading_day)
-    candidate = evaluate_b1_breakout(candle_df, orb, daily_close, daily_volume)
-    if candidate is None:
-        return None
+def _build_confirmed_signal(item, setup, confirmation_ts, confirmation_close, orb):
+    """Build a trade only after a completed 5M confirmation candle."""
+    direction = setup["direction"]
+    entry = float(confirmation_close)
+    sl = float(setup["setup_15m_close"])
 
     risk, reject = build_risk_and_targets(
-        direction=candidate["direction"],
-        entry=float(candidate["setup_15m_close"]),
-        sl=float(orb["close"]),
+        direction=direction,
+        entry=entry,
+        sl=sl,
         min_stop_distance_percent=SETTINGS.min_stop_distance_percent,
         t1_rr=SETTINGS.t1_rr,
         t2_rr=SETTINGS.t2_rr,
@@ -137,11 +137,22 @@ def _build_signal(dhan, item, candle_df, orb, trading_day):
         min_rr=SETTINGS.min_rr,
     )
     if risk is None:
-        LOG.info("%s %s rejected | %s", item["symbol"], candidate["direction"], reject)
-        return None
+        return None, reject or "RISK_REJECTED"
 
-    signal = {"symbol": item["symbol"], "security_id": item["security_id"], **candidate}
-    signal.update(risk)
+    signal = {
+        "symbol": item["symbol"],
+        "security_id": item["security_id"],
+        **setup,
+        "orb_timestamp": orb["timestamp"],
+        "orb_high": orb["high"],
+        "orb_low": orb["low"],
+        "orb_close": orb["close"],
+        "setup_15m_timestamp": setup["setup_15m_timestamp"],
+        "setup_15m_completion": setup["setup_15m_completion"],
+        "confirmation_5m_timestamp": pd.Timestamp(confirmation_ts).isoformat(),
+        "confirmation_5m_close": entry,
+        "status": "ACTIVE",
+    }
     signal["risk"] = risk
     signal["entry"] = risk["entry"]
     signal["sl"] = risk["sl"]
@@ -149,20 +160,171 @@ def _build_signal(dhan, item, candle_df, orb, trading_day):
     signal["t2"] = risk["t2"]
     signal["t3"] = risk["t3"]
 
-    # T1 block is diagnostic/safety filter based only on completed 5M history.
-    try:
-        df5 = _prepare_5m(dhan, item["security_id"], candidate["setup_15m_completion"])
-        if t1_blocked(df5, candidate["setup_15m_completion"], risk["entry"], risk["t1"], candidate["direction"]):
-            LOG.info("%s %s rejected | T1_BLOCKED", item["symbol"], candidate["direction"])
-            return None
-    except Exception as exc:
-        LOG.warning("%s T1 block check failed; continuing | %s", item["symbol"], exc)
+    return signal, None
 
-    # Compatibility with the existing state schema.
-    signal["setup_5m_timestamp"] = candidate["setup_15m_completion"]
-    signal["confirmation_5m_timestamp"] = candidate["setup_15m_completion"]
-    signal["status"] = "ACTIVE"
-    return signal
+
+def _confirmation_5m(dhan, security_id, setup_completion, now_ts):
+    """Return the first completed 5M candle after setup that confirms B1."""
+    raw = dhan.historical_intraday_df(
+        security_id=security_id,
+        interval=5,
+        from_date=(pd.Timestamp(setup_completion).date() - pd.Timedelta(days=1)).isoformat(),
+        to_date=(pd.Timestamp(now_ts).date() + pd.Timedelta(days=1)).isoformat(),
+    )
+    if raw is None or raw.empty:
+        return None, pd.DataFrame()
+
+    df5 = completed_candles(raw, now_ts, 5)
+    if df5.empty:
+        return None, df5
+    df5 = _as_ist_index(df5)
+    setup_ts = pd.Timestamp(setup_completion)
+    rows = df5[df5.index > setup_ts]
+    return rows, df5
+
+
+def _process_b1(dhan, state, ts):
+    trading_day = ts.date()
+
+    for item in state.get("universe", []):
+        symbol = item.get("symbol")
+        if not symbol or item.get("security_id") is None:
+            continue
+
+        ss = _state_for_symbol(state, symbol)
+
+        try:
+            df15 = _prepare_15m(dhan, item["security_id"], ts)
+            if df15.empty:
+                LOG.info("%s | 15M_DATA_UNAVAILABLE", symbol)
+                continue
+
+            day15 = df15[df15.index.date == trading_day]
+            orb = _orb_for_day(day15, trading_day)
+            if orb is None:
+                LOG.info("%s | ORB_NOT_AVAILABLE", symbol)
+                continue
+
+            if ss.get("orb") is None or ss["orb"].get("timestamp") != orb["timestamp"]:
+                ss["orb"] = orb
+                ss["status"] = "WAITING_FOR_15M"
+                ss["last_processed_15m"] = None
+                ss["setup"] = None
+                LOG.info("B1_ORB | symbol=%s | timestamp=%s | high=%.2f | low=%.2f | close=%.2f", symbol, orb["timestamp"], orb["high"], orb["low"], orb["close"])
+
+            # Once an alert is active, do not create another B1 setup for the symbol.
+            if ss.get("status") == "CONSUMED":
+                continue
+
+            # ----------------------------------------------------------
+            # Phase 1: completed 15M setup. Process every new 15M candle
+            # in chronological order so a delayed GitHub Action cannot skip one.
+            # ----------------------------------------------------------
+            if not ss.get("setup"):
+                candidates = day15[day15.index > pd.Timestamp(orb["timestamp"])].sort_index()
+                last_processed = ss.get("last_processed_15m")
+                if last_processed:
+                    candidates = candidates[candidates.index > pd.Timestamp(last_processed)]
+
+                for setup_ts, row15 in candidates.iterrows():
+                    ss["last_processed_15m"] = setup_ts.isoformat()
+                    close15 = float(row15["close"])
+                    if close15 > orb["high"]:
+                        side = "BUY"
+                    elif close15 < orb["low"]:
+                        side = "SELL"
+                    else:
+                        LOG.info("B1_15M | symbol=%s | candle=%s | status=NO_BREAKOUT | close=%.2f", symbol, setup_ts, close15)
+                        continue
+
+                    LOG.info("B1_15M | symbol=%s | candle=%s | status=BREAKOUT_%s | close=%.2f", symbol, setup_ts, side, close15)
+
+                    try:
+                        daily_close, daily_volume = _daily_values(dhan, item, trading_day)
+                    except Exception as exc:
+                        LOG.warning("B1_15M | symbol=%s | status=DATA_UNAVAILABLE | reason=%s", symbol, exc)
+                        # Do not lose this breakout when daily data/API is temporarily unavailable.
+                        ss["last_processed_15m"] = (setup_ts - pd.Timedelta(minutes=15)).isoformat()
+                        break
+
+                    candidate = evaluate_b1_breakout(day15.loc[:setup_ts], orb, daily_close, daily_volume)
+                    if candidate is None:
+                        LOG.info("B1_15M | symbol=%s | candle=%s | status=FILTER_REJECTED | breakout=%s", symbol, setup_ts, side)
+                        continue
+
+                    setup = dict(candidate)
+                    setup["direction"] = side
+                    setup["setup_15m_timestamp"] = setup_ts.isoformat()
+                    setup["setup_15m_completion"] = (setup_ts + pd.Timedelta(minutes=15)).isoformat()
+                    ss["setup"] = setup
+                    ss["status"] = "WAITING_FOR_5M"
+                    state.setdefault("pending_setups", {})[symbol] = setup
+                    LOG.info("B1_SETUP_ACCEPTED | symbol=%s | direction=%s | setup=%s | wait_for_5m_confirmation=true", symbol, side, setup_ts)
+                    break
+
+            # ----------------------------------------------------------
+            # Phase 2: subsequent completed 5M close must cross the stored
+            # 15M HIGH/LOW. Equality never confirms.
+            # ----------------------------------------------------------
+            setup = ss.get("setup")
+            if not setup:
+                continue
+
+            rows5, full5 = _confirmation_5m(
+                dhan, item["security_id"], setup["setup_15m_completion"], ts
+            )
+            if rows5 is None or rows5.empty:
+                LOG.info("B1_5M | symbol=%s | status=WAITING_FOR_5M | setup=%s", symbol, setup["setup_15m_timestamp"])
+                continue
+
+            direction = setup["direction"]
+            threshold = float(setup["setup_15m_high"] if direction == "BUY" else setup["setup_15m_low"])
+
+            for ts5, row5 in rows5.iterrows():
+                close5 = float(row5["close"])
+                confirmed = close5 > threshold if direction == "BUY" else close5 < threshold
+                if not confirmed:
+                    LOG.info("B1_5M | symbol=%s | candle=%s | status=NO_CONFIRMATION | close=%.2f | threshold=%.2f", symbol, ts5, close5, threshold)
+                    continue
+
+                LOG.info("B1_5M | symbol=%s | candle=%s | status=CONFIRMED | direction=%s | close=%.2f | threshold=%.2f", symbol, ts5, direction, close5, threshold)
+                signal, reject = _build_confirmed_signal(item, setup, ts5, close5, orb)
+                if signal is None:
+                    LOG.info("B1_5M | symbol=%s | candle=%s | status=CONFIRMED_BUT_REJECTED | reason=%s", symbol, ts5, reject)
+                    ss["status"] = "CONSUMED"
+                    ss["setup"] = None
+                    state.get("pending_setups", {}).pop(symbol, None)
+                    break
+
+                # T1 safety check is evaluated at the actual 5M entry.
+                try:
+                    if t1_blocked(full5, ts5, signal["risk"]["entry"], signal["risk"]["t1"], direction):
+                        LOG.info("B1_5M | symbol=%s | candle=%s | status=CONFIRMED_BUT_REJECTED | reason=T1_BLOCKED", symbol, ts5)
+                        ss["status"] = "CONSUMED"
+                        ss["setup"] = None
+                        state.get("pending_setups", {}).pop(symbol, None)
+                        break
+                except Exception as exc:
+                    LOG.warning("%s T1 block check failed; continuing | %s", symbol, exc)
+
+                sent = send(signal_message(signal))
+                if sent:
+                    record_alert(state, signal, ts)
+                    signal_key = f"{symbol}|{direction}|{setup['setup_15m_timestamp']}|{signal['confirmation_5m_timestamp']}"
+                    state.setdefault("signals", {})[signal_key] = signal
+                    ss["status"] = "CONSUMED"
+                    ss["setup"] = None
+                    ss["confirmation_5m_timestamp"] = signal["confirmation_5m_timestamp"]
+                    state.get("pending_setups", {}).pop(symbol, None)
+                    LOG.info("ALERT_SENT | symbol=%s | direction=%s | entry=%.2f | confirmation_5m=%s", symbol, direction, signal["entry"], signal["confirmation_5m_timestamp"])
+                else:
+                    LOG.warning("ALERT_NOT_SENT | symbol=%s | direction=%s | confirmation_5m=%s", symbol, direction, ts5)
+                break
+
+        except Exception as exc:
+            LOG.exception("%s B1 processing failed | %s", symbol, exc)
+
+    save(state)
 
 
 def create_universe(dhan, state):

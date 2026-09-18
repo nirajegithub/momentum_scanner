@@ -41,17 +41,13 @@ def _esc(value):
 
 
 def _time(value):
-    # Keep the exact timestamp in state/logs, but make Telegram easier to read.
-    text = str(value)
-    return text.replace("+05:30", " IST")
+    return str(value).replace("+05:30", " IST")
 
 
 def signal_message(s):
-    """Build the B1 alert as Telegram HTML with deliberate line breaks."""
     buy = s["direction"] == "BUY"
     header = "🚀 BUY ALERT" if buy else "🔻 SELL ALERT"
-    direction_arrow = "↑" if buy else "↓"
-
+    relation = "above" if buy else "below"
     return "\n".join([
         f"<b>{header}</b>",
         "",
@@ -59,16 +55,23 @@ def signal_message(s):
         "",
         "📊 <b>Strategy:</b> B1 ORB + RVOL",
         "",
-        "🕘 <b>ORB</b>",
+        "🕘 <b>09:15 ORB</b>",
         f"Time: {_esc(_time(s['orb_timestamp']))}",
         f"High: <b>{_money(s['orb_high'])}</b>",
         f"Low: <b>{_money(s['orb_low'])}</b>",
         f"Close: <b>{_money(s['orb_close'])}</b>",
         "",
-        "🚨 <b>BREAKOUT</b>",
-        f"15M candle: {_esc(_time(s['setup_15m_timestamp']))}",
-        f"15M close: <b>{_money(s['setup_15m_close'])}</b>",
-        f"Signal available: {_esc(_time(s['setup_15m_completion']))}",
+        "🧱 <b>15M QUALITY SETUP</b>",
+        f"Candle: {_esc(_time(s['setup_15m_timestamp']))}",
+        f"15M Close: <b>{_money(s['setup_15m_close'])}</b>",
+        f"RSI: <b>{float(s['setup_15m_rsi14']):.2f}</b>",
+        f"RVOL: <b>{float(s['setup_15m_rvol']):.2f}x</b>",
+        f"Quality: <b>{float(s['trade_quality_score']):.1f} / 7</b>",
+        "",
+        "✅ <b>5M CONFIRMATION</b>",
+        f"Time: {_esc(_time(s['confirmation_5m_timestamp']))}",
+        f"5M Close: <b>{_money(s['confirmation_5m_close'])}</b>",
+        f"Rule: completed 5M close {relation} stored 15M {'HIGH' if buy else 'LOW'}",
         "",
         "💰 <b>TRADE</b>",
         f"Entry: <b>{_money(s['risk']['entry'])}</b>",
@@ -79,22 +82,12 @@ def signal_message(s):
         f"T1 (2R): <b>{_money(s['risk']['t1'])}</b>",
         f"T2 (3R): <b>{_money(s['risk']['t2'])}</b>",
         f"T3 (4R): <b>{_money(s['risk']['t3'])}</b>",
-        "",
-        "📈 <b>FILTERS</b>",
-        f"RSI: <b>{float(s['setup_15m_rsi14']):.2f} {direction_arrow}</b>",
-        f"RVOL: <b>{float(s['setup_15m_rvol']):.2f}x</b>",
-        f"Quality: <b>{float(s['trade_quality_score']):.1f} / 7</b>",
-        "",
-        "📋 <b>RULE</b>",
-        "First completed 15M close outside 09:15 ORB",
-        "+ RSI + Quality ≥ 3 + RVOL ≥ 1.2",
     ])
 
 
 def stop_update_message(s, new_stop, stage, basis):
     return "\n".join([
-        "🔒 <b>STOP UPDATE</b>",
-        "",
+        "🔒 <b>STOP UPDATE</b>", "",
         f"<b>{_esc(s['symbol'])}</b>",
         f"New SL: <b>{_money(new_stop)}</b>",
         f"Status: {_esc(basis)}",

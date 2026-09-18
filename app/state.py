@@ -20,6 +20,7 @@ def blank(day):
         "daily_filters": {},
         "alert_state": {},
         "orb": {},
+        "b1": {},
     }
 
 
@@ -31,16 +32,13 @@ def load(day):
     except Exception:
         LOG.exception("State file is unreadable: %s", STATE)
         return blank(day)
-
     if s.get("date") != day.isoformat():
         return blank(day)
-
-    s.setdefault("universe", [])
-    s.setdefault("signals", {})
-    s.setdefault("pending_setups", {})
-    s.setdefault("daily_filters", {})
-    s.setdefault("alert_state", {})
-    s.setdefault("orb", {})
+    for key, default in {
+        "universe": [], "signals": {}, "pending_setups": {},
+        "daily_filters": {}, "alert_state": {}, "orb": {}, "b1": {},
+    }.items():
+        s.setdefault(key, default)
     return s
 
 
@@ -62,13 +60,9 @@ def signal_key(symbol, direction, setup_timestamp):
 
 
 def active_for_symbol(state, symbol):
-    return any(
-        v.get("symbol") == symbol and v.get("status") == "ACTIVE"
-        for v in state.get("signals", {}).values()
-    )
+    return any(v.get("symbol") == symbol and v.get("status") == "ACTIVE" for v in state.get("signals", {}).values())
 
 
-# Compatibility alias used by older code.
 active_signal_for_symbol = active_for_symbol
 
 
@@ -79,45 +73,29 @@ def reverse_active_signal(state, symbol, new_direction, ts, exit_price):
             continue
         if signal.get("direction") == new_direction:
             continue
-
         entry = float(signal.get("risk", {}).get("entry", 0))
         risk = float(signal.get("risk", {}).get("risk", 0))
         px = float(exit_price)
         move = px - entry if signal["direction"] == "BUY" else entry - px
-
-        signal["status"] = "REVERSED"
-        signal["exit_price"] = px
-        signal["exit_time"] = ts.isoformat() if hasattr(ts, "isoformat") else str(ts)
-        signal["exit_reason"] = f"Reversed by {new_direction}"
-        signal["r_multiple"] = move / risk if risk > 0 else None
+        signal.update({
+            "status": "REVERSED", "exit_price": px,
+            "exit_time": ts.isoformat() if hasattr(ts, "isoformat") else str(ts),
+            "exit_reason": f"Reversed by {new_direction}",
+            "r_multiple": move / risk if risk > 0 else None,
+        })
         changed = True
     return changed
 
 
 def record_alert(state, signal, ts):
-    """Record an alert for both legacy 5M state and the B1 15M setup schema.
-
-    B1 has no setup_5m_timestamp. Use its completed 15M breakout timestamp
-    as the canonical setup timestamp while retaining the legacy field name
-    for compatibility with existing state consumers.
-    """
-    setup_ts = (
-        signal.get("setup_5m_timestamp")
-        or signal.get("setup_15m_timestamp")
-        or signal.get("setup_time")
-    )
+    setup_ts = signal.get("setup_15m_timestamp") or signal.get("setup_time")
     if not setup_ts:
         raise KeyError("signal has no setup timestamp")
-
-    key_value = signal.get("signal_key") or signal_key(
-        signal["symbol"], signal["direction"], setup_ts
-    )
+    key_value = signal.get("signal_key") or signal_key(signal["symbol"], signal["direction"], setup_ts)
     state.setdefault("alert_state", {})[key_value] = {
         "symbol": signal["symbol"],
         "direction": signal["direction"],
-        # Legacy compatibility field: for B1 this is the 15M breakout timestamp.
-        "setup_5m_timestamp": setup_ts,
-        "setup_15m_timestamp": signal.get("setup_15m_timestamp") or setup_ts,
+        "setup_15m_timestamp": setup_ts,
         "confirmation_5m_timestamp": signal.get("confirmation_5m_timestamp"),
         "recorded_at": ts.isoformat() if hasattr(ts, "isoformat") else str(ts),
     }
