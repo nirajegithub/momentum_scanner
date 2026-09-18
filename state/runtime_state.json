@@ -371,6 +371,18 @@
       "membership_count": 1,
       "universe_source": "NSE_VOLUME_GAINERS",
       "volume_gainer_added_at": "2026-09-18T09:30:53.073710+05:30"
+    },
+    {
+      "symbol": "OMNI",
+      "security_id": "760865",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "NSE_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-09-18T10:10:35.486144+05:30"
     }
   ],
   "signals": {},
@@ -378,7 +390,7 @@
   "daily_filters": {},
   "alert_state": {},
   "orb": {},
-  "volume_gainers_last_refresh": "2026-09-18T10:00:00+05:30",
+  "volume_gainers_last_refresh": "2026-09-18T10:10:00+05:30",
   "b1": {
     "ABCAPITAL": {
       "status": "CONSUMED",
@@ -906,6 +918,17 @@
         "high": 1144.7,
         "low": 1108.6,
         "close": 1139.1
+      }
+    },
+    "OMNI": {
+      "status": "CONSUMED",
+      "last_processed_15m": "2026-09-18T09:45:00+05:30",
+      "orb": {
+        "timestamp": "2026-09-18T09:15:00+05:30",
+        "open": 569.95,
+        "high": 577.6,
+        "low": 565.75,
+        "close": 571.25
       }
     }
   }
