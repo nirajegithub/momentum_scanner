@@ -21,7 +21,7 @@ DHAN_PROFILE_URL = "https://api.dhan.co/v2/profile"
 # GitHub
 GITHUB_API = "https://api.github.com"
 GITHUB_OWNER = "nirajegithub"
-GITHUB_REPO = "nse_momentum"
+GITHUB_REPO = "momentum_scanner"
 GITHUB_SECRET_NAME = "DHAN_ACCESS_TOKEN"
 
 # Existing project holiday file
