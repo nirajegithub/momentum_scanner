@@ -1,4 +1,4 @@
-# NSE Momentum — B1 ORB Strategy
+# Momentum Scanner — B1 ORB Strategy
 
 > **Note on this file's history:** this document previously described a
 > "progressive trailing-stop" exit model and referenced backtest scripts
