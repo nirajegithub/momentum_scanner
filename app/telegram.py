@@ -5,12 +5,12 @@ import os
 
 import requests
 
-from .config import DISCLAIMER
+from .config import DISCLAIMER, SETTINGS
 
 
 def send(text, parse_mode=None):
     full = text.rstrip() + "\n\n" + DISCLAIMER
-    if os.getenv("DRY_RUN", "true").lower() == "true":
+    if SETTINGS.dry_run:
         print(full)
         return True
 

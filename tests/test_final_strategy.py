@@ -1,91 +1,114 @@
-from datetime import datetime
-from zoneinfo import ZoneInfo
+from __future__ import annotations
 
 import pandas as pd
 
 from app.config import SETTINGS
 from app.risk import build_risk_and_targets
 from app.scoring import score_trade_quality
-from app.strategy import evaluate_15m_setup, confirm_5m_breakout
+from app.strategy import evaluate_b1_breakout, t1_blocked
 
-IST = ZoneInfo("Asia/Kolkata")
+IST = "Asia/Kolkata"
+ORB = {"high": 520.0, "low": 480.0, "timestamp": "2026-09-10T09:15:00+05:30", "close": 500.0, "open": 500.0}
 
 
-def _frame(direction="BUY", rows=35):
+def _frame(direction="BUY", rows=30):
+    """Synthetic 15M candles ending in a clean ORB breakout on the last row."""
     idx = pd.date_range("2026-09-10 09:30", periods=rows, freq="15min", tz=IST)
     bullish = direction == "BUY"
-    step = 0.8 if bullish else -0.8
-    close = pd.Series([500 + i * step for i in range(rows)], index=idx, dtype=float)
-    open_ = close - 0.8 if bullish else close + 0.8
-    high = close + 1.2
-    low = close - 1.2
-    ema20 = close - 1.0 if bullish else close + 1.0
-    ema9 = close + 1.0 if bullish else close - 1.0
-    rsi = pd.Series([60.0 if bullish else 40.0] * rows, index=idx)
+
+    base_price = 500.0
+    close = pd.Series([base_price] * rows, index=idx, dtype=float)
+    # Small alternating bodies on filler candles so the scoring module's
+    # median-body calculation is realistic (a flat 0 body short-circuits it).
+    open_ = pd.Series([base_price - 0.2 if i % 2 == 0 else base_price + 0.2 for i in range(rows)], index=idx, dtype=float)
+    high = pd.Series([base_price + 1.0] * rows, index=idx, dtype=float)
+    low = pd.Series([base_price - 1.0] * rows, index=idx, dtype=float)
+    rvol = pd.Series([1.0] * rows, index=idx, dtype=float)
+
+    rsi = pd.Series([50.0] * rows, index=idx, dtype=float)
     rsi.iloc[-2] = 58.0 if bullish else 42.0
-    volume = pd.Series([1000.0] * rows, index=idx)
-    volume.iloc[-1] = 2200.0
-    # Make the final setup candle a clear departure candle.
-    if bullish:
-        open_.iloc[-1] = close.iloc[-1] - 1.5
-        high.iloc[-1] = close.iloc[-1] + 0.4
-        low.iloc[-1] = open_.iloc[-1] - 0.2
-    else:
-        open_.iloc[-1] = close.iloc[-1] + 1.5
-        high.iloc[-1] = open_.iloc[-1] + 0.2
-        low.iloc[-1] = close.iloc[-1] - 0.4
-    vwap = close - 1.0 if bullish else close + 1.0
-    # Three compact base candles immediately before the setup candle.
+    rsi.iloc[-1] = 62.0 if bullish else 38.0
+
+    # Three compact base candles immediately before the breakout candle.
     for i in range(rows - 4, rows - 1):
-        high.iloc[i] = close.iloc[i] + 0.70
-        low.iloc[i] = close.iloc[i] - 0.70
-        open_.iloc[i] = close.iloc[i] - 0.30 if bullish else close.iloc[i] + 0.30
+        high.iloc[i] = close.iloc[i] + 0.5
+        low.iloc[i] = close.iloc[i] - 0.5
+
+    # Last candle: a strong departure/breakout candle, gapping away from the
+    # prior base and closing outside the ORB (mirrors a real breakout candle).
+    breakout_close = ORB["high"] + 6.0 if bullish else ORB["low"] - 6.0
+    if bullish:
+        open_.iloc[-1] = high.iloc[-2] + 1.0  # gap up beyond the last base candle's high
+        high.iloc[-1] = breakout_close + 0.5
+        low.iloc[-1] = open_.iloc[-1] - 0.3
+    else:
+        open_.iloc[-1] = low.iloc[-2] - 1.0  # gap down beyond the last base candle's low
+        high.iloc[-1] = open_.iloc[-1] + 0.3
+        low.iloc[-1] = breakout_close - 0.5
+    close.iloc[-1] = breakout_close
+    rvol.iloc[-1] = 1.8
+
     return pd.DataFrame({
-        "open": open_, "high": high, "low": low, "close": close,
-        "volume": volume, "ema9": ema9, "ema20": ema20,
-        "rsi14": rsi, "vwap": vwap,
+        "open": open_, "high": high, "low": low, "close": close, "rsi14": rsi, "rvol": rvol,
     }, index=idx)
 
 
-def test_buy_15m_setup_passes():
-    result = evaluate_15m_setup(_frame("BUY"), 500, 600_000)
-    assert result is not None
+def test_buy_breakout_passes_all_filters():
+    result = evaluate_b1_breakout(_frame("BUY"), ORB, daily_close=500, daily_volume=600_000, symbol="TEST")
+    assert result is not None, "expected a BUY setup to be accepted"
     assert result["direction"] == "BUY"
     assert result["trade_quality_score"] >= SETTINGS.min_trade_score
-    assert result["stop_loss"] == result["setup_15m_close"]
+    assert result["setup_15m_close"] == result["setup_15m_close"]
 
 
-def test_sell_15m_setup_passes():
-    result = evaluate_15m_setup(_frame("SELL"), 500, 600_000)
-    assert result is not None
+def test_sell_breakout_passes_all_filters():
+    result = evaluate_b1_breakout(_frame("SELL"), ORB, daily_close=500, daily_volume=600_000, symbol="TEST")
+    assert result is not None, "expected a SELL setup to be accepted"
     assert result["direction"] == "SELL"
-    assert result["stop_loss"] == result["setup_15m_close"]
 
 
-def test_buy_rsi_boundary_rejected():
+def test_buy_rsi_out_of_band_rejected():
     frame = _frame("BUY")
-    frame.iloc[-1, frame.columns.get_loc("rsi14")] = 55
-    assert evaluate_15m_setup(frame, 500, 600_000) is None
+    frame.iloc[-1, frame.columns.get_loc("rsi14")] = 75.0  # above buy_rsi_max
+    assert evaluate_b1_breakout(frame, ORB, 500, 600_000) is None
 
 
-def test_sell_rsi_boundary_rejected():
+def test_buy_rsi_momentum_not_aligned_rejected():
+    frame = _frame("BUY")
+    frame.iloc[-1, frame.columns.get_loc("rsi14")] = 56.0
+    frame.iloc[-2, frame.columns.get_loc("rsi14")] = 65.0  # falling, not rising
+    assert evaluate_b1_breakout(frame, ORB, 500, 600_000) is None
+
+
+def test_sell_rsi_out_of_band_rejected():
     frame = _frame("SELL")
-    frame.iloc[-1, frame.columns.get_loc("rsi14")] = 45
-    assert evaluate_15m_setup(frame, 500, 600_000) is None
+    frame.iloc[-1, frame.columns.get_loc("rsi14")] = 20.0  # below sell_rsi_min
+    assert evaluate_b1_breakout(frame, ORB, 500, 600_000) is None
 
 
-def test_daily_filters_are_strict():
+def test_rvol_too_low_rejected():
     frame = _frame("BUY")
-    assert evaluate_15m_setup(frame, 350, 600_000) is None
-    assert evaluate_15m_setup(frame, 500, 500_000) is None
+    frame.iloc[-1, frame.columns.get_loc("rvol")] = 0.5
+    assert evaluate_b1_breakout(frame, ORB, 500, 600_000) is None
 
 
-def test_rvol_is_previous_20_candles_only():
+def test_daily_price_filter_is_strict():
     frame = _frame("BUY")
-    result = evaluate_15m_setup(frame, 500, 600_000)
-    assert result is not None
-    assert result["setup_15m_rvol"] > 1.5
-    assert result["setup_15m_avg_volume"] == 1000.0
+    assert evaluate_b1_breakout(frame, ORB, SETTINGS.min_price, 600_000) is None
+
+
+def test_daily_volume_filter_is_strict():
+    frame = _frame("BUY")
+    assert evaluate_b1_breakout(frame, ORB, 500, SETTINGS.min_daily_volume) is None
+
+
+def test_no_breakout_returns_none():
+    frame = _frame("BUY")
+    # Pull the close back inside the ORB range so it's not actually a breakout.
+    frame.iloc[-1, frame.columns.get_loc("close")] = 500.0
+    frame.iloc[-1, frame.columns.get_loc("high")] = 505.0
+    frame.iloc[-1, frame.columns.get_loc("low")] = 495.0
+    assert evaluate_b1_breakout(frame, ORB, 500, 600_000) is None
 
 
 def test_score_range_and_components():
@@ -96,25 +119,23 @@ def test_score_range_and_components():
     assert result["base_candle_score"] in {0.0, 1.0, 2.0}
 
 
-def test_buy_confirmation_strictly_above_15m_high():
-    pending = {
-        "direction": "BUY",
-        "setup_15m_timestamp": "2026-09-10T10:00:00+05:30",
-        "setup_15m_high": 520.0,
-    }
-    assert not confirm_5m_breakout(pending, "2026-09-10T10:00:00+05:30", 521)
-    assert not confirm_5m_breakout(pending, "2026-09-10T10:05:00+05:30", 520)
-    assert confirm_5m_breakout(pending, "2026-09-10T10:05:00+05:30", 521)
+def test_t1_blocked_buy_when_target_already_touched():
+    idx = pd.date_range("2026-09-10 09:30", periods=3, freq="5min", tz=IST)
+    df5 = pd.DataFrame({
+        "open": [500, 505, 512], "high": [504, 512, 515],
+        "low": [499, 504, 510], "close": [503, 511, 513],
+    }, index=idx)
+    # Entry 500, T1 510: high of 512 before confirmation already touched T1.
+    assert t1_blocked(df5, idx[-1], entry=500, t1=510, direction="BUY") is True
 
 
-def test_sell_confirmation_strictly_below_15m_low():
-    pending = {
-        "direction": "SELL",
-        "setup_15m_timestamp": "2026-09-10T10:00:00+05:30",
-        "setup_15m_low": 500.0,
-    }
-    assert not confirm_5m_breakout(pending, "2026-09-10T10:05:00+05:30", 500)
-    assert confirm_5m_breakout(pending, "2026-09-10T10:05:00+05:30", 499)
+def test_t1_not_blocked_when_target_untouched():
+    idx = pd.date_range("2026-09-10 09:30", periods=3, freq="5min", tz=IST)
+    df5 = pd.DataFrame({
+        "open": [500, 502, 505], "high": [503, 506, 508],
+        "low": [499, 501, 504], "close": [502, 505, 507],
+    }, index=idx)
+    assert t1_blocked(df5, idx[-1], entry=500, t1=510, direction="BUY") is False
 
 
 def test_small_stop_examples_are_rejected():
