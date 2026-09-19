@@ -1,12 +1,11 @@
 from __future__ import annotations
 
-from collections import defaultdict
 from datetime import datetime, timedelta
+from pathlib import Path
 from zoneinfo import ZoneInfo
 
+import json
 import logging
-import time
-import requests
 
 from .config import SETTINGS
 from .calendar import previous_trading_day
@@ -15,350 +14,222 @@ from .dhan_client import DhanClient
 
 LOG = logging.getLogger(__name__)
 
-BASE = "https://www.nseindia.com"
-URL = f"{BASE}/api/heatmap-symbols"
+# ---------------------------------------------------------------------
+# Base universe: a static NIFTY 500 constituent list, refreshed by hand
+# every few months (NSE Indices rebalances it twice a year), instead of
+# a live nseindia.com call. Drop a new NSE "Market Watch" CSV export for
+# NIFTY 500 into app/data/ and update NIFTY500_FILE / re-run the loader
+# script to refresh it.
+# ---------------------------------------------------------------------
+NIFTY500_FILE = Path(__file__).parent / "data" / "nifty500_constituents.json"
 
-# Dynamic NSE Volume Gainers refresh.
-# NSE's live-analysis-volume-gainers endpoint is used only for universe
-# discovery; the actual trading filters remain in the scanner.
-VOLUME_GAINERS_URL = f"{BASE}/api/live-analysis-volume-gainers"
-VOLUME_GAINER_MIN_VOLUME = 500_000
-VOLUME_GAINER_MIN_PRICE = 350.0
-
-INDEXES = {
-    "M50": "NIFTY500MOMENTM50",
-    "M30": "NIFTY200MOMENTM30",
-}
-
-HEADERS = {
-    "User-Agent": (
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/124.0.0.0 Safari/537.36"
-    ),
-    "Accept": "application/json, text/plain, */*",
-    "Accept-Language": "en-US,en;q=0.9",
-    "Referer": BASE + "/",
-    "Connection": "keep-alive",
-}
+# ---------------------------------------------------------------------
+# Dynamic "volume gainer" discovery — computed from Dhan's own market
+# feed instead of scraping nseindia.com. This compares each candidate's
+# cumulative traded volume so far today against its own historical daily
+# average (scaled to the same point in the trading day), rather than
+# relying on NSE's website's internal ranking endpoint.
+# ---------------------------------------------------------------------
+MARKET_OPEN_MINUTES = 9 * 60 + 15   # 09:15 IST
+MARKET_CLOSE_MINUTES = 15 * 60 + 30  # 15:30 IST
+TRADING_MINUTES_PER_DAY = MARKET_CLOSE_MINUTES - MARKET_OPEN_MINUTES  # 375
 
 IST = ZoneInfo("Asia/Kolkata")
 
-NSE_TIMEOUT = 45
-NSE_RETRIES = 3
-NSE_RETRY_DELAY = 5
 
+def load_nifty500_constituents() -> dict:
+    """Load the static NIFTY 500 symbol list from app/data/.
 
-def extract_symbols(payload):
-    found = set()
-
-    keys = {
-        "symbol",
-        "tradingsymbol",
-        "tradingSymbol",
-        "symbolCode",
-    }
-
-    def walk(x):
-        if isinstance(x, dict):
-            for k, v in x.items():
-
-                if k in keys and isinstance(v, str):
-                    s = v.strip().upper()
-
-                    if (
-                        s
-                        and len(s) <= 40
-                        and s.replace("-", "").isalnum()
-                    ):
-                        found.add(s)
-
-                else:
-                    walk(v)
-
-        elif isinstance(x, list):
-            for v in x:
-                walk(v)
-
-    walk(payload)
-
-    return sorted(found)
-
-
-def create_nse_session():
-    session = requests.Session()
-    session.headers.update(HEADERS)
-
-    return session
-
-
-def nse_get(session, url, params=None):
+    Raises FileNotFoundError with a clear message if the file is missing,
+    rather than silently returning an empty universe.
     """
-    Reliable NSE GET request with retries.
-
-    Retries:
-    - ReadTimeout
-    - ConnectionError
-    - HTTP 429
-    - HTTP 5xx
-    """
-
-    last_exception = None
-
-    for attempt in range(1, NSE_RETRIES + 1):
-
-        try:
-
-            LOG.info(
-                "NSE request attempt %d/%d | url=%s | params=%s",
-                attempt,
-                NSE_RETRIES,
-                url,
-                params,
-            )
-
-            response = session.get(
-                url,
-                params=params,
-                timeout=NSE_TIMEOUT,
-            )
-
-            LOG.info(
-                "NSE response | status=%d | attempt=%d/%d",
-                response.status_code,
-                attempt,
-                NSE_RETRIES,
-            )
-
-            # Retry rate-limit responses.
-            if response.status_code == 429:
-
-                LOG.warning(
-                    "NSE rate limited (429). Waiting %d seconds.",
-                    NSE_RETRY_DELAY,
-                )
-
-                time.sleep(NSE_RETRY_DELAY)
-                continue
-
-            # Retry temporary NSE/server errors.
-            if response.status_code >= 500:
-
-                LOG.warning(
-                    "NSE server error %d. Waiting %d seconds.",
-                    response.status_code,
-                    NSE_RETRY_DELAY,
-                )
-
-                time.sleep(NSE_RETRY_DELAY)
-                continue
-
-            response.raise_for_status()
-
-            return response
-
-        except (
-            requests.exceptions.ReadTimeout,
-            requests.exceptions.ConnectTimeout,
-            requests.exceptions.ConnectionError,
-        ) as exc:
-
-            last_exception = exc
-
-            LOG.warning(
-                "NSE request failed on attempt %d/%d: %s",
-                attempt,
-                NSE_RETRIES,
-                exc,
-            )
-
-            if attempt < NSE_RETRIES:
-                LOG.info(
-                    "Retrying NSE request in %d seconds...",
-                    NSE_RETRY_DELAY,
-                )
-
-                time.sleep(NSE_RETRY_DELAY)
-
-    if last_exception is not None:
-        raise last_exception
-
-    raise RuntimeError("NSE request failed after retries")
-
-
-def fetch_index(session, code):
-
-    response = nse_get(
-        session,
-        URL,
-        params={
-            "type": "Strategy Indices",
-            "indices": code,
-        },
-    )
-
-    symbols = extract_symbols(response.json())
-
-    LOG.info(
-        "NSE index=%s returned %d symbols",
-        code,
-        len(symbols),
-    )
-
-    return symbols
-
-
-def fetch_volume_gainer_symbols(session):
-    """Fetch current NSE Volume Gainers and return symbols passing filters.
-
-    The NSE response format can change, so this parser accepts the common
-    top-level ``data`` list as well as nested dictionaries/lists. Only
-    symbols with price >= 350 and volume > 500,000 are returned.
-    """
-    response = nse_get(session, VOLUME_GAINERS_URL)
-    payload = response.json()
-
-    rows = payload.get("data", []) if isinstance(payload, dict) else []
-
-    # Some NSE responses wrap the rows one level deeper.
-    if isinstance(rows, dict):
-        for key in ("data", "volumeGainers", "volume_gainers", "rows"):
-            candidate = rows.get(key)
-            if isinstance(candidate, list):
-                rows = candidate
-                break
-
-    if not isinstance(rows, list):
-        rows = []
-
-    symbols = []
-
-    for row in rows:
-        if not isinstance(row, dict):
-            continue
-
-        symbol = str(
-            row.get("symbol")
-            or row.get("tradingSymbol")
-            or row.get("tradingsymbol")
-            or ""
-        ).strip().upper()
-
-        price_raw = (
-            row.get("ltp")
-            or row.get("lastPrice")
-            or row.get("last_price")
-            or row.get("LTP")
-            or 0
+    if not NIFTY500_FILE.exists():
+        raise FileNotFoundError(
+            f"NIFTY 500 constituent file not found at {NIFTY500_FILE}. "
+            "Export the NIFTY 500 list from NSE's website (Market Watch "
+            "CSV download) and regenerate this file."
         )
 
-        volume_raw = (
-            row.get("volume")
-            or row.get("totalTradedVolume")
-            or row.get("tradedQuantity")
-            or row.get("traded_quantity")
-            or 0
-        )
+    with open(NIFTY500_FILE, "r", encoding="utf-8") as f:
+        data = json.load(f)
 
+    symbols = sorted({str(s).strip().upper() for s in data.get("symbols", [])})
+    if not symbols:
+        raise ValueError(f"NIFTY 500 constituent file at {NIFTY500_FILE} has no symbols.")
+
+    return {"symbols": symbols, "as_of": data.get("as_of"), "index": data.get("index")}
+
+
+def _elapsed_trading_fraction(ts) -> float:
+    """Fraction of the trading day elapsed at ts, clamped to (small, 1.0].
+
+    Used so a stock isn't unfairly flagged as a "volume gainer" simply
+    because it's 9:35 AM and cumulative volume naturally looks small next
+    to a full day's average.
+    """
+    minutes = ts.hour * 60 + ts.minute - MARKET_OPEN_MINUTES
+    fraction = minutes / TRADING_MINUTES_PER_DAY
+    return max(0.05, min(fraction, 1.0))
+
+
+def _candidate_pool(dhan: DhanClient) -> list[dict]:
+    """NSE cash-equity candidates from Dhan's own security master.
+
+    Capped by SETTINGS.volume_gainer_candidate_limit to keep the once-daily
+    baseline pull (one historical_daily_df call per candidate) practical.
+    Verify this limit against your Dhan plan's rate limits and raise it if
+    you have headroom and want broader universe coverage.
+    """
+    df = dhan.security_master()
+
+    required = ["EXCH_ID", "SEGMENT", "SECURITY_ID", "INSTRUMENT", "UNDERLYING_SYMBOL"]
+    missing = [c for c in required if c not in df.columns]
+    if missing:
+        LOG.warning("Volume gainer candidate pool: missing master columns %s", missing)
+        return []
+
+    mask = (
+        (df["EXCH_ID"].astype(str).str.upper() == "NSE")
+        & (df["SEGMENT"].astype(str).str.upper() == "E")
+        & (df["INSTRUMENT"].astype(str).str.upper() == "EQUITY")
+    )
+    # If a series column is present, restrict to the plain "EQ" series
+    # (avoid SME/other series that trade too thinly to be useful).
+    for series_col in ("SERIES", "SM_SYMBOL_SERIES"):
+        if series_col in df.columns:
+            mask &= df[series_col].astype(str).str.upper() == "EQ"
+            break
+
+    df = df.loc[mask].copy()
+    df = df.drop_duplicates(subset=["UNDERLYING_SYMBOL"])
+    df = df.sort_values("UNDERLYING_SYMBOL").head(SETTINGS.volume_gainer_candidate_limit)
+
+    return [
+        {
+            "symbol": str(row["UNDERLYING_SYMBOL"]).strip().upper(),
+            "security_id": str(row["SECURITY_ID"]),
+        }
+        for _, row in df.iterrows()
+    ]
+
+
+def _build_volume_baseline(dhan: DhanClient, candidates: list[dict], prev_day) -> dict[str, dict]:
+    """Once-per-day average daily volume + latest close, per candidate.
+
+    One historical_daily_df call per candidate over the trailing
+    VOLUME_GAINER_BASELINE_DAYS trading days. Failures for individual
+    symbols are skipped rather than aborting the whole baseline build.
+    """
+    from_date = (prev_day - timedelta(days=SETTINGS.volume_gainer_baseline_days * 2)).isoformat()
+    to_date = (prev_day + timedelta(days=1)).isoformat()
+
+    baseline: dict[str, dict] = {}
+    for item in candidates:
+        symbol = item["symbol"]
         try:
-            price = float(price_raw)
-            volume = float(volume_raw)
-        except (TypeError, ValueError):
+            df = dhan.historical_daily_df(item["security_id"], from_date, to_date)
+        except Exception as exc:
+            LOG.warning("Volume gainer baseline failed for %s: %s", symbol, exc)
             continue
 
-        if (
-            symbol
-            and volume > VOLUME_GAINER_MIN_VOLUME
-            and price >= VOLUME_GAINER_MIN_PRICE
-        ):
-            symbols.append(symbol)
+        if df.empty:
+            continue
 
-    return sorted(set(symbols))
+        df = df.tail(SETTINGS.volume_gainer_baseline_days)
+        avg_volume = float(df["volume"].mean())
+        last_close = float(df["close"].iloc[-1])
+        if avg_volume > 0:
+            baseline[symbol] = {
+                "avg_volume": avg_volume,
+                "last_close": last_close,
+                "security_id": item["security_id"],
+            }
+
+    LOG.info("Volume gainer baseline built: %d/%d candidates", len(baseline), len(candidates))
+    return baseline
 
 
 def refresh_dynamic_volume_gainers(dhan: DhanClient, state, ts):
-    """Refresh Volume Gainers every 10 minutes and append new stocks.
+    """Refresh the volume-gainer universe every 10 minutes, via Dhan only.
 
     Existing universe entries are preserved. Only genuinely new symbols
     are added, so intraday scanner state is not replaced or reset.
     """
-    minute_bucket = ts.replace(
-        minute=(ts.minute // 10) * 10,
-        second=0,
-        microsecond=0,
-    )
+    minute_bucket = ts.replace(minute=(ts.minute // 10) * 10, second=0, microsecond=0)
     bucket_key = minute_bucket.isoformat()
 
     if state.get("volume_gainers_last_refresh") == bucket_key:
         return False
 
-    session = create_nse_session()
+    today = ts.date()
+    baseline = state.get("volume_gainer_baseline")
+    if not isinstance(baseline, dict) or baseline.get("date") != today.isoformat():
+        prev_day = previous_trading_day(today)
+        candidates = _candidate_pool(dhan)
+        if not candidates:
+            LOG.warning("Volume gainer refresh skipped: empty candidate pool")
+            return False
+        built = _build_volume_baseline(dhan, candidates, prev_day)
+        baseline = {"date": today.isoformat(), "symbols": built}
+        state["volume_gainer_baseline"] = baseline
 
-    try:
-        # NSE may require the homepage/cookie session before API calls.
-        try:
-            nse_get(session, BASE + "/")
-        except Exception as exc:
-            LOG.warning(
-                "Volume Gainers NSE homepage initialization failed: %s",
-                exc,
-            )
-
-        symbols = fetch_volume_gainer_symbols(session)
-
-    except Exception as exc:
-        LOG.warning("Volume Gainers refresh failed: %s", exc)
+    symbol_baseline = baseline.get("symbols", {})
+    if not symbol_baseline:
+        LOG.warning("Volume gainer refresh skipped: empty baseline")
         return False
 
-    existing = {
-        str(item.get("symbol", "")).upper()
-        for item in state.get("universe", [])
-    }
+    security_ids = [row["security_id"] for row in symbol_baseline.values()]
+    try:
+        quotes = dhan.quote_batch(security_ids)
+    except Exception as exc:
+        LOG.warning("Volume gainer quote fetch failed: %s", exc)
+        return False
 
-    new_symbols = [
-        symbol
-        for symbol in symbols
-        if symbol not in existing
-    ]
+    elapsed_fraction = _elapsed_trading_fraction(ts)
+    symbols = []
+    for symbol, row in symbol_baseline.items():
+        quote = quotes.get(row["security_id"])
+        if not quote:
+            continue
+
+        price = quote["ltp"]
+        volume_so_far = quote["volume"]
+        expected_by_now = row["avg_volume"] * elapsed_fraction
+        if expected_by_now <= 0:
+            continue
+
+        rvol = volume_so_far / expected_by_now
+        if (
+            price >= SETTINGS.min_price
+            and volume_so_far > SETTINGS.min_prev_volume
+            and rvol >= SETTINGS.volume_gainer_rvol_threshold
+        ):
+            symbols.append(symbol)
+
+    symbols = sorted(set(symbols))
+
+    existing = {str(item.get("symbol", "")).upper() for item in state.get("universe", [])}
+    new_symbols = [symbol for symbol in symbols if symbol not in existing]
 
     if not new_symbols:
         state["volume_gainers_last_refresh"] = bucket_key
-
-        LOG.info(
-            "Volume Gainers refresh | eligible=%d | new=0 | universe=%d",
-            len(symbols),
-            len(existing),
-        )
+        LOG.info("Volume Gainers refresh | eligible=%d | new=0 | universe=%d", len(symbols), len(existing))
         return True
 
-    try:
-        mapping = dhan.build_symbol_map(new_symbols)
-    except Exception as exc:
-        LOG.warning(
-            "Volume Gainers Dhan symbol mapping failed: %s",
-            exc,
-        )
-        return False
-
     added = 0
-
     for symbol in new_symbols:
-        meta = mapping.get(symbol)
-
-        if not meta:
-            LOG.warning(
-                "Volume Gainer missing Dhan security_id: %s",
-                symbol,
-            )
+        row = symbol_baseline.get(symbol)
+        if not row:
             continue
-
         state.setdefault("universe", []).append(
             {
                 "symbol": symbol,
-                **meta,
+                "security_id": row["security_id"],
+                "exchange_segment": "NSE_EQ",
+                "instrument": "EQUITY",
                 "indices": ["VOLUME_GAINERS"],
                 "membership_count": 1,
-                "universe_source": "NSE_VOLUME_GAINERS",
+                "universe_source": "DHAN_VOLUME_GAINERS",
                 "volume_gainer_added_at": ts.isoformat(),
             }
         )
@@ -368,10 +239,7 @@ def refresh_dynamic_volume_gainers(dhan: DhanClient, state, ts):
 
     LOG.info(
         "Volume Gainers refresh | eligible=%d | new=%d | added=%d | universe=%d",
-        len(symbols),
-        len(new_symbols),
-        added,
-        len(state.get("universe", [])),
+        len(symbols), len(new_symbols), added, len(state.get("universe", [])),
     )
 
     return True
@@ -380,55 +248,17 @@ def refresh_dynamic_volume_gainers(dhan: DhanClient, state, ts):
 def build_universe(dhan: DhanClient, as_of_date=None):
 
     # ---------------------------------------------------------
-    # 1. Fetch M50 + M30
+    # 1. Load the NIFTY 500 constituent list (static, not live NSE)
     # ---------------------------------------------------------
 
-    session = create_nse_session()
-
-    # NSE sometimes requires an initial homepage request
-    # before API requests are accepted.
-    try:
-
-        LOG.info("NSE session initialization")
-
-        nse_get(
-            session,
-            BASE + "/",
-        )
-
-        LOG.info("NSE homepage session initialized")
-
-    except Exception as exc:
-
-        LOG.warning(
-            "NSE homepage initialization failed: %s",
-            exc,
-        )
-
-        # Continue. The API request itself may still work.
-
-    membership = defaultdict(set)
-
-    for name, code in INDEXES.items():
-
-        symbols = fetch_index(
-            session,
-            code,
-        )
-
-        LOG.info(
-            "%s returned %d symbols",
-            name,
-            len(symbols),
-        )
-
-        for symbol in symbols:
-            membership[symbol].add(name)
-
-    symbols = sorted(membership)
+    constituents = load_nifty500_constituents()
+    symbols = constituents["symbols"]
+    membership = {symbol: {"NIFTY500"} for symbol in symbols}
 
     LOG.info(
-        "Merged M50 + M30 universe: %d symbols",
+        "NIFTY 500 universe loaded from %s (as_of=%s): %d symbols",
+        NIFTY500_FILE.name,
+        constituents.get("as_of", "unknown"),
         len(symbols),
     )
 
