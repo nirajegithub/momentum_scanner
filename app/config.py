@@ -38,6 +38,10 @@ class Settings:
     scan_end_hhmm: int = int(os.getenv("SCAN_END_HHMM", "1505"))
     dry_run: bool = _bool("DRY_RUN", "true")
 
+    volume_gainer_candidate_limit: int = int(os.getenv("VOLUME_GAINER_CANDIDATE_LIMIT", "800"))
+    volume_gainer_rvol_threshold: float = float(os.getenv("VOLUME_GAINER_RVOL_THRESHOLD", "2.0"))
+    volume_gainer_baseline_days: int = int(os.getenv("VOLUME_GAINER_BASELINE_DAYS", "10"))
+
     enable_progressive_ts: bool = _bool("ENABLE_PROGRESSIVE_TS", "false")
 
 

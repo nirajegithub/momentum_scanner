@@ -132,6 +132,62 @@ class DhanClient:
         return result
 
     # ------------------------------------------------------------------
+    # Live Market Feed (quote) — batched, used for the Dhan-based
+    # volume-gainer universe scan instead of scraping nseindia.com.
+    # ------------------------------------------------------------------
+
+    def quote_batch(self, security_ids: list[str], chunk_size: int = 400) -> dict[str, dict]:
+        """Fetch current LTP + today's cumulative volume for many securities.
+
+        Dhan's marketfeed/quote endpoint accepts a batch of security IDs per
+        exchange segment. NOTE: batch-size and rate limits are enforced by
+        Dhan and may change — verify the current limit against your own
+        account/plan and adjust ``chunk_size`` if you see errors or
+        truncated responses. This defensively parses a couple of plausible
+        field-name variants since the exact response schema should be
+        confirmed against a live account before relying on it in production.
+        """
+        result: dict[str, dict] = {}
+        ids = [str(s) for s in security_ids]
+
+        for start in range(0, len(ids), chunk_size):
+            chunk = ids[start:start + chunk_size]
+            try:
+                payload = self.dhan.quote_data({"NSE_EQ": chunk})
+            except Exception as exc:
+                LOG.warning("Dhan quote_data batch failed (chunk %d-%d): %s", start, start + len(chunk), exc)
+                continue
+
+            if not isinstance(payload, dict):
+                LOG.warning("Dhan quote_data returned non-dict payload for chunk %d-%d", start, start + len(chunk))
+                continue
+
+            data = payload.get("data", payload)
+            segment_rows = data.get("NSE_EQ", {}) if isinstance(data, dict) else {}
+            if not isinstance(segment_rows, dict):
+                LOG.warning("Dhan quote_data NSE_EQ payload not a dict for chunk %d-%d", start, start + len(chunk))
+                continue
+
+            for sec_id, row in segment_rows.items():
+                if not isinstance(row, dict):
+                    continue
+                ltp = row.get("last_price") or row.get("LTP") or row.get("ltp")
+                volume = (
+                    row.get("volume")
+                    or row.get("total_traded_volume")
+                    or row.get("totalTradedVolume")
+                )
+                try:
+                    ltp = float(ltp) if ltp is not None else None
+                    volume = float(volume) if volume is not None else None
+                except (TypeError, ValueError):
+                    ltp, volume = None, None
+                if ltp is not None and volume is not None:
+                    result[str(sec_id)] = {"ltp": ltp, "volume": volume}
+
+        return result
+
+    # ------------------------------------------------------------------
     # Intraday Historical Data
     # ------------------------------------------------------------------
 
