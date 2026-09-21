@@ -1238,7 +1238,56 @@
       "prev_trading_day": "2026-09-18"
     }
   ],
-  "signals": {},
+  "signals": {
+    "SYNGENE|BUY|2026-09-21T11:15:00+05:30|2026-09-21T12:30:00+05:30": {
+      "symbol": "SYNGENE",
+      "security_id": "10243",
+      "direction": "BUY",
+      "setup": "B1_ORB",
+      "setup_15m_timestamp": "2026-09-21T11:15:00+05:30",
+      "setup_15m_completion": "2026-09-21T11:30:00+05:30",
+      "setup_15m_open": 371.45,
+      "setup_15m_high": 381.2,
+      "setup_15m_low": 371.35,
+      "setup_15m_close": 379.55,
+      "setup_15m_rsi14": 65.4588370040619,
+      "setup_15m_previous_rsi14": 53.24046800929249,
+      "setup_15m_rvol": 3.196742379179426,
+      "daily_close": 369.05,
+      "daily_volume": 2498133.0,
+      "trade_quality_score": 3.0,
+      "departure_score": 3.0,
+      "freshness_score": 0.0,
+      "base_candle_score": 0.0,
+      "base_candle_count": 0,
+      "zone_test_count": 0,
+      "zone_low": null,
+      "zone_high": null,
+      "curve_context": "NOT_AVAILABLE",
+      "orb_timestamp": "2026-09-21T09:15:00+05:30",
+      "orb_high": 370.5,
+      "orb_low": 361.65,
+      "orb_close": 364.9,
+      "confirmation_5m_timestamp": "2026-09-21T12:30:00+05:30",
+      "confirmation_5m_close": 382.85,
+      "status": "ACTIVE",
+      "risk": {
+        "entry": 382.85,
+        "sl": 379.55,
+        "risk": 3.3000000000000114,
+        "risk_percent": 0.8619563797832078,
+        "t1": 389.45000000000005,
+        "t2": 392.75000000000006,
+        "t3": 396.05000000000007,
+        "rr_t1": 2.0
+      },
+      "entry": 382.85,
+      "sl": 379.55,
+      "t1": 389.45000000000005,
+      "t2": 392.75000000000006,
+      "t3": 396.05000000000007
+    }
+  },
   "pending_setups": {
     "CLEAN": {
       "direction": "SELL",
@@ -1262,30 +1311,6 @@
       "zone_test_count": 1,
       "zone_low": 844.0,
       "zone_high": 848.2,
-      "curve_context": "NOT_AVAILABLE"
-    },
-    "SYNGENE": {
-      "direction": "BUY",
-      "setup": "B1_ORB",
-      "setup_15m_timestamp": "2026-09-21T11:15:00+05:30",
-      "setup_15m_completion": "2026-09-21T11:30:00+05:30",
-      "setup_15m_open": 371.45,
-      "setup_15m_high": 381.2,
-      "setup_15m_low": 371.35,
-      "setup_15m_close": 379.55,
-      "setup_15m_rsi14": 65.4588370040619,
-      "setup_15m_previous_rsi14": 53.24046800929249,
-      "setup_15m_rvol": 3.196742379179426,
-      "daily_close": 369.05,
-      "daily_volume": 2498133.0,
-      "trade_quality_score": 3.0,
-      "departure_score": 3.0,
-      "freshness_score": 0.0,
-      "base_candle_score": 0.0,
-      "base_candle_count": 0,
-      "zone_test_count": 0,
-      "zone_low": null,
-      "zone_high": null,
       "curve_context": "NOT_AVAILABLE"
     },
     "KFINTECH": {
@@ -1314,7 +1339,15 @@
     }
   },
   "daily_filters": {},
-  "alert_state": {},
+  "alert_state": {
+    "SYNGENE|BUY|2026-09-21T11:15:00+05:30": {
+      "symbol": "SYNGENE",
+      "direction": "BUY",
+      "setup_15m_timestamp": "2026-09-21T11:15:00+05:30",
+      "confirmation_5m_timestamp": "2026-09-21T12:30:00+05:30",
+      "recorded_at": "2026-09-21T12:35:30.370611+05:30"
+    }
+  },
   "orb": {},
   "b1": {
     "AARTIIND": {
@@ -1427,7 +1460,7 @@
     },
     "AIIL": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-21T12:00:00+05:30",
+      "last_processed_15m": "2026-09-21T12:15:00+05:30",
       "orb": {
         "timestamp": "2026-09-21T09:15:00+05:30",
         "open": 553.9,
@@ -1487,7 +1520,7 @@
     },
     "BALKRISIND": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-21T12:00:00+05:30",
+      "last_processed_15m": "2026-09-21T12:15:00+05:30",
       "orb": {
         "timestamp": "2026-09-21T09:15:00+05:30",
         "open": 2259.0,
@@ -1535,7 +1568,7 @@
     },
     "BHARTIARTL": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-21T12:00:00+05:30",
+      "last_processed_15m": "2026-09-21T12:15:00+05:30",
       "orb": {
         "timestamp": "2026-09-21T09:15:00+05:30",
         "open": 1854.8,
@@ -1571,7 +1604,7 @@
     },
     "CDSL": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-21T12:00:00+05:30",
+      "last_processed_15m": "2026-09-21T12:15:00+05:30",
       "orb": {
         "timestamp": "2026-09-21T09:15:00+05:30",
         "open": 1390.0,
@@ -2312,7 +2345,7 @@
       "setup": null
     },
     "SYNGENE": {
-      "status": "WAITING_FOR_5M",
+      "status": "CONSUMED",
       "last_processed_15m": "2026-09-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-09-21T09:15:00+05:30",
@@ -2321,30 +2354,8 @@
         "low": 361.65,
         "close": 364.9
       },
-      "setup": {
-        "direction": "BUY",
-        "setup": "B1_ORB",
-        "setup_15m_timestamp": "2026-09-21T11:15:00+05:30",
-        "setup_15m_completion": "2026-09-21T11:30:00+05:30",
-        "setup_15m_open": 371.45,
-        "setup_15m_high": 381.2,
-        "setup_15m_low": 371.35,
-        "setup_15m_close": 379.55,
-        "setup_15m_rsi14": 65.4588370040619,
-        "setup_15m_previous_rsi14": 53.24046800929249,
-        "setup_15m_rvol": 3.196742379179426,
-        "daily_close": 369.05,
-        "daily_volume": 2498133.0,
-        "trade_quality_score": 3.0,
-        "departure_score": 3.0,
-        "freshness_score": 0.0,
-        "base_candle_score": 0.0,
-        "base_candle_count": 0,
-        "zone_test_count": 0,
-        "zone_low": null,
-        "zone_high": null,
-        "curve_context": "NOT_AVAILABLE"
-      }
+      "setup": null,
+      "confirmation_5m_timestamp": "2026-09-21T12:30:00+05:30"
     },
     "SYRMA": {
       "status": "WAITING_FOR_15M",
