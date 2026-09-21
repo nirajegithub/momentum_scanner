@@ -1336,30 +1336,6 @@
       "zone_low": 1384.0,
       "zone_high": 1387.5,
       "curve_context": "NOT_AVAILABLE"
-    },
-    "FIVESTAR": {
-      "direction": "SELL",
-      "setup": "B1_ORB",
-      "setup_15m_timestamp": "2026-09-21T12:45:00+05:30",
-      "setup_15m_completion": "2026-09-21T13:00:00+05:30",
-      "setup_15m_open": 529.0,
-      "setup_15m_high": 529.25,
-      "setup_15m_low": 524.0,
-      "setup_15m_close": 524.7,
-      "setup_15m_rsi14": 34.73569967431371,
-      "setup_15m_previous_rsi14": 42.64053724629977,
-      "setup_15m_rvol": 2.101068142492765,
-      "daily_close": 538.45,
-      "daily_volume": 741259.0,
-      "trade_quality_score": 4.0,
-      "departure_score": 3.0,
-      "freshness_score": 0.0,
-      "base_candle_score": 1.0,
-      "base_candle_count": 4,
-      "zone_test_count": 4,
-      "zone_low": 529.0,
-      "zone_high": 531.6,
-      "curve_context": "NOT_AVAILABLE"
     }
   },
   "daily_filters": {},
@@ -1829,7 +1805,7 @@
       "setup": null
     },
     "FIVESTAR": {
-      "status": "WAITING_FOR_5M",
+      "status": "CONSUMED",
       "last_processed_15m": "2026-09-21T12:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-21T09:15:00+05:30",
@@ -1838,30 +1814,7 @@
         "low": 530.6,
         "close": 532.55
       },
-      "setup": {
-        "direction": "SELL",
-        "setup": "B1_ORB",
-        "setup_15m_timestamp": "2026-09-21T12:45:00+05:30",
-        "setup_15m_completion": "2026-09-21T13:00:00+05:30",
-        "setup_15m_open": 529.0,
-        "setup_15m_high": 529.25,
-        "setup_15m_low": 524.0,
-        "setup_15m_close": 524.7,
-        "setup_15m_rsi14": 34.73569967431371,
-        "setup_15m_previous_rsi14": 42.64053724629977,
-        "setup_15m_rvol": 2.101068142492765,
-        "daily_close": 538.45,
-        "daily_volume": 741259.0,
-        "trade_quality_score": 4.0,
-        "departure_score": 3.0,
-        "freshness_score": 0.0,
-        "base_candle_score": 1.0,
-        "base_candle_count": 4,
-        "zone_test_count": 4,
-        "zone_low": 529.0,
-        "zone_high": 531.6,
-        "curve_context": "NOT_AVAILABLE"
-      }
+      "setup": null
     },
     "GICRE": {
       "status": "WAITING_FOR_15M",
@@ -2153,7 +2106,7 @@
     },
     "MEDANTA": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-21T12:45:00+05:30",
+      "last_processed_15m": "2026-09-21T13:00:00+05:30",
       "orb": {
         "timestamp": "2026-09-21T09:15:00+05:30",
         "open": 1499.4,
