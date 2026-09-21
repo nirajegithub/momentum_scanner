@@ -139,6 +139,11 @@ def _build_confirmed_signal(item, setup, confirmation_ts, confirmation_close, or
     if risk is None:
         return None, reject or "RISK_REJECTED"
 
+    confirmation_timestamp = pd.Timestamp(confirmation_ts)
+    setup_completion = pd.Timestamp(setup["setup_15m_completion"])
+    lag_minutes = (confirmation_timestamp - setup_completion).total_seconds() / 60.0
+    lag_5m_candles = round(lag_minutes / SETTINGS.entry_timeframe) if SETTINGS.entry_timeframe else None
+
     signal = {
         "symbol": item["symbol"],
         "security_id": item["security_id"],
@@ -149,8 +154,10 @@ def _build_confirmed_signal(item, setup, confirmation_ts, confirmation_close, or
         "orb_close": orb["close"],
         "setup_15m_timestamp": setup["setup_15m_timestamp"],
         "setup_15m_completion": setup["setup_15m_completion"],
-        "confirmation_5m_timestamp": pd.Timestamp(confirmation_ts).isoformat(),
+        "confirmation_5m_timestamp": confirmation_timestamp.isoformat(),
         "confirmation_5m_close": entry,
+        "confirmation_lag_minutes": round(lag_minutes, 1),
+        "confirmation_lag_5m_candles": lag_5m_candles,
         "status": "ACTIVE",
     }
     signal["risk"] = risk
