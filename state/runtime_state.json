@@ -1287,30 +1287,6 @@
       "zone_low": null,
       "zone_high": null,
       "curve_context": "NOT_AVAILABLE"
-    },
-    "CHOICEIN": {
-      "direction": "BUY",
-      "setup": "B1_ORB",
-      "setup_15m_timestamp": "2026-09-21T11:30:00+05:30",
-      "setup_15m_completion": "2026-09-21T11:45:00+05:30",
-      "setup_15m_open": 767.55,
-      "setup_15m_high": 774.0,
-      "setup_15m_low": 767.55,
-      "setup_15m_close": 773.9,
-      "setup_15m_rsi14": 69.84989899990094,
-      "setup_15m_previous_rsi14": 63.065563682417086,
-      "setup_15m_rvol": 1.9928808495593566,
-      "daily_close": 763.85,
-      "daily_volume": 989378.0,
-      "trade_quality_score": 3.0,
-      "departure_score": 3.0,
-      "freshness_score": 0.0,
-      "base_candle_score": 0.0,
-      "base_candle_count": 0,
-      "zone_test_count": 0,
-      "zone_low": null,
-      "zone_high": null,
-      "curve_context": "NOT_AVAILABLE"
     }
   },
   "daily_filters": {},
@@ -1594,7 +1570,7 @@
       "setup": null
     },
     "CHOICEIN": {
-      "status": "WAITING_FOR_5M",
+      "status": "CONSUMED",
       "last_processed_15m": "2026-09-21T11:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-21T09:15:00+05:30",
@@ -1603,30 +1579,7 @@
         "low": 756.1,
         "close": 759.7
       },
-      "setup": {
-        "direction": "BUY",
-        "setup": "B1_ORB",
-        "setup_15m_timestamp": "2026-09-21T11:30:00+05:30",
-        "setup_15m_completion": "2026-09-21T11:45:00+05:30",
-        "setup_15m_open": 767.55,
-        "setup_15m_high": 774.0,
-        "setup_15m_low": 767.55,
-        "setup_15m_close": 773.9,
-        "setup_15m_rsi14": 69.84989899990094,
-        "setup_15m_previous_rsi14": 63.065563682417086,
-        "setup_15m_rvol": 1.9928808495593566,
-        "daily_close": 763.85,
-        "daily_volume": 989378.0,
-        "trade_quality_score": 3.0,
-        "departure_score": 3.0,
-        "freshness_score": 0.0,
-        "base_candle_score": 0.0,
-        "base_candle_count": 0,
-        "zone_test_count": 0,
-        "zone_low": null,
-        "zone_high": null,
-        "curve_context": "NOT_AVAILABLE"
-      }
+      "setup": null
     },
     "CLEAN": {
       "status": "WAITING_FOR_5M",
