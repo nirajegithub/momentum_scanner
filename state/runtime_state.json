@@ -1239,32 +1239,7 @@
     }
   ],
   "signals": {},
-  "pending_setups": {
-    "USHAMART": {
-      "direction": "BUY",
-      "setup": "B1_ORB",
-      "setup_15m_timestamp": "2026-09-21T11:00:00+05:30",
-      "setup_15m_completion": "2026-09-21T11:15:00+05:30",
-      "setup_15m_open": 510.6,
-      "setup_15m_high": 515.0,
-      "setup_15m_low": 509.55,
-      "setup_15m_close": 513.25,
-      "setup_15m_rsi14": 64.90961047569661,
-      "setup_15m_previous_rsi14": 60.253731906872666,
-      "setup_15m_rvol": 1.208079622518403,
-      "daily_close": 507.2,
-      "daily_volume": 1588391.0,
-      "trade_quality_score": 3.5,
-      "departure_score": 1.5,
-      "freshness_score": 0.0,
-      "base_candle_score": 2.0,
-      "base_candle_count": 1,
-      "zone_test_count": 3,
-      "zone_low": 510.0,
-      "zone_high": 511.5,
-      "curve_context": "NOT_AVAILABLE"
-    }
-  },
+  "pending_setups": {},
   "daily_filters": {},
   "alert_state": {},
   "orb": {},
@@ -2350,7 +2325,7 @@
       "setup": null
     },
     "USHAMART": {
-      "status": "WAITING_FOR_5M",
+      "status": "CONSUMED",
       "last_processed_15m": "2026-09-21T11:00:00+05:30",
       "orb": {
         "timestamp": "2026-09-21T09:15:00+05:30",
@@ -2359,30 +2334,7 @@
         "low": 508.0,
         "close": 510.8
       },
-      "setup": {
-        "direction": "BUY",
-        "setup": "B1_ORB",
-        "setup_15m_timestamp": "2026-09-21T11:00:00+05:30",
-        "setup_15m_completion": "2026-09-21T11:15:00+05:30",
-        "setup_15m_open": 510.6,
-        "setup_15m_high": 515.0,
-        "setup_15m_low": 509.55,
-        "setup_15m_close": 513.25,
-        "setup_15m_rsi14": 64.90961047569661,
-        "setup_15m_previous_rsi14": 60.253731906872666,
-        "setup_15m_rvol": 1.208079622518403,
-        "daily_close": 507.2,
-        "daily_volume": 1588391.0,
-        "trade_quality_score": 3.5,
-        "departure_score": 1.5,
-        "freshness_score": 0.0,
-        "base_candle_score": 2.0,
-        "base_candle_count": 1,
-        "zone_test_count": 3,
-        "zone_low": 510.0,
-        "zone_high": 511.5,
-        "curve_context": "NOT_AVAILABLE"
-      }
+      "setup": null
     },
     "VOLTAS": {
       "status": "WAITING_FOR_15M",
