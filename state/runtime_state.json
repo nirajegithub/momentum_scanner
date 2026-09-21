@@ -1384,30 +1384,6 @@
       "zone_low": 529.0,
       "zone_high": 531.6,
       "curve_context": "NOT_AVAILABLE"
-    },
-    "KIMS": {
-      "direction": "SELL",
-      "setup": "B1_ORB",
-      "setup_15m_timestamp": "2026-09-21T12:45:00+05:30",
-      "setup_15m_completion": "2026-09-21T13:00:00+05:30",
-      "setup_15m_open": 798.1,
-      "setup_15m_high": 800.1,
-      "setup_15m_low": 796.5,
-      "setup_15m_close": 796.95,
-      "setup_15m_rsi14": 38.30034501604627,
-      "setup_15m_previous_rsi14": 39.37241975524523,
-      "setup_15m_rvol": 3.3682754819943423,
-      "daily_close": 809.85,
-      "daily_volume": 1242321.0,
-      "trade_quality_score": 3.0,
-      "departure_score": 0.0,
-      "freshness_score": 1.0,
-      "base_candle_score": 2.0,
-      "base_candle_count": 1,
-      "zone_test_count": 1,
-      "zone_low": 797.55,
-      "zone_high": 798.45,
-      "curve_context": "NOT_AVAILABLE"
     }
   },
   "daily_filters": {},
@@ -2139,7 +2115,7 @@
       }
     },
     "KIMS": {
-      "status": "WAITING_FOR_5M",
+      "status": "CONSUMED",
       "last_processed_15m": "2026-09-21T12:45:00+05:30",
       "orb": {
         "timestamp": "2026-09-21T09:15:00+05:30",
@@ -2148,30 +2124,7 @@
         "low": 806.05,
         "close": 807.65
       },
-      "setup": {
-        "direction": "SELL",
-        "setup": "B1_ORB",
-        "setup_15m_timestamp": "2026-09-21T12:45:00+05:30",
-        "setup_15m_completion": "2026-09-21T13:00:00+05:30",
-        "setup_15m_open": 798.1,
-        "setup_15m_high": 800.1,
-        "setup_15m_low": 796.5,
-        "setup_15m_close": 796.95,
-        "setup_15m_rsi14": 38.30034501604627,
-        "setup_15m_previous_rsi14": 39.37241975524523,
-        "setup_15m_rvol": 3.3682754819943423,
-        "daily_close": 809.85,
-        "daily_volume": 1242321.0,
-        "trade_quality_score": 3.0,
-        "departure_score": 0.0,
-        "freshness_score": 1.0,
-        "base_candle_score": 2.0,
-        "base_candle_count": 1,
-        "zone_test_count": 1,
-        "zone_low": 797.55,
-        "zone_high": 798.45,
-        "curve_context": "NOT_AVAILABLE"
-      }
+      "setup": null
     },
     "KPITTECH": {
       "status": "WAITING_FOR_15M",
@@ -6569,5 +6522,5 @@
       }
     }
   },
-  "volume_gainers_last_refresh": "2026-09-21T13:00:00+05:30"
+  "volume_gainers_last_refresh": "2026-09-21T13:10:00+05:30"
 }
