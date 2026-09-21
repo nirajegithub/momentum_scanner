@@ -1456,30 +1456,6 @@
       "zone_low": 558.0,
       "zone_high": 558.6,
       "curve_context": "LOW"
-    },
-    "SUNTV": {
-      "direction": "BUY",
-      "setup": "B1_ORB",
-      "setup_15m_timestamp": "2026-09-21T14:30:00+05:30",
-      "setup_15m_completion": "2026-09-21T14:45:00+05:30",
-      "setup_15m_open": 456.85,
-      "setup_15m_high": 458.5,
-      "setup_15m_low": 456.5,
-      "setup_15m_close": 458.25,
-      "setup_15m_rsi14": 60.568630202084,
-      "setup_15m_previous_rsi14": 55.6881483714489,
-      "setup_15m_rvol": 3.0808536835624873,
-      "daily_close": 451.7,
-      "daily_volume": 943160.0,
-      "trade_quality_score": 4.5,
-      "departure_score": 1.5,
-      "freshness_score": 1.0,
-      "base_candle_score": 2.0,
-      "base_candle_count": 1,
-      "zone_test_count": 1,
-      "zone_low": 456.45,
-      "zone_high": 456.95,
-      "curve_context": "HIGH"
     }
   },
   "daily_filters": {},
@@ -2531,7 +2507,7 @@
       "setup": null
     },
     "SUNTV": {
-      "status": "WAITING_FOR_5M",
+      "status": "CONSUMED",
       "last_processed_15m": "2026-09-21T14:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-21T09:15:00+05:30",
@@ -2540,30 +2516,7 @@
         "low": 447.2,
         "close": 451.5
       },
-      "setup": {
-        "direction": "BUY",
-        "setup": "B1_ORB",
-        "setup_15m_timestamp": "2026-09-21T14:30:00+05:30",
-        "setup_15m_completion": "2026-09-21T14:45:00+05:30",
-        "setup_15m_open": 456.85,
-        "setup_15m_high": 458.5,
-        "setup_15m_low": 456.5,
-        "setup_15m_close": 458.25,
-        "setup_15m_rsi14": 60.568630202084,
-        "setup_15m_previous_rsi14": 55.6881483714489,
-        "setup_15m_rvol": 3.0808536835624873,
-        "daily_close": 451.7,
-        "daily_volume": 943160.0,
-        "trade_quality_score": 4.5,
-        "departure_score": 1.5,
-        "freshness_score": 1.0,
-        "base_candle_score": 2.0,
-        "base_candle_count": 1,
-        "zone_test_count": 1,
-        "zone_low": 456.45,
-        "zone_high": 456.95,
-        "curve_context": "HIGH"
-      }
+      "setup": null
     },
     "SYNGENE": {
       "status": "CONSUMED",
