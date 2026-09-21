@@ -72,6 +72,7 @@ def signal_message(s):
         f"Time: {_esc(_time(s['confirmation_5m_timestamp']))}",
         f"5M Close: <b>{_money(s['confirmation_5m_close'])}</b>",
         f"Rule: completed 5M close {relation} stored 15M {'HIGH' if buy else 'LOW'}",
+        f"Lag: <b>{s.get('confirmation_lag_minutes', 0):.0f} min</b> ({s.get('confirmation_lag_5m_candles', 0)} candles) after setup",
         "",
         "💰 <b>TRADE</b>",
         f"Entry: <b>{_money(s['risk']['entry'])}</b>",
