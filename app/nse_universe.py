@@ -343,6 +343,7 @@ def build_universe(dhan: DhanClient, as_of_date=None):
 
     price_rejected = 0
     volume_rejected = 0
+    move_rejected = 0
     data_failed = 0
 
     for item in candidates:
@@ -429,6 +430,41 @@ def build_universe(dhan: DhanClient, as_of_date=None):
                 continue
 
             # -------------------------------------------------
+            # Previous-day move filter — open-to-close % move,
+            # either direction. Uses the open already present on
+            # this same daily candle, so no extra API call.
+            # -------------------------------------------------
+
+            open_price = float(candle["open"])
+
+            if open_price <= 0:
+
+                data_failed += 1
+
+                LOG.warning(
+                    "%s: invalid open price %.2f, skipping move filter",
+                    symbol,
+                    open_price,
+                )
+
+                continue
+
+            move_percent = abs(close_price - open_price) / open_price * 100.0
+
+            if move_percent < SETTINGS.min_daily_move_percent:
+
+                move_rejected += 1
+
+                LOG.info(
+                    "%s rejected: move %.2f%% < %.2f%%",
+                    symbol,
+                    move_percent,
+                    SETTINGS.min_daily_move_percent,
+                )
+
+                continue
+
+            # -------------------------------------------------
             # Passed both filters
             # -------------------------------------------------
 
@@ -469,6 +505,11 @@ def build_universe(dhan: DhanClient, as_of_date=None):
     LOG.info(
         "Volume filter rejected: %d",
         volume_rejected,
+    )
+
+    LOG.info(
+        "Move filter rejected: %d",
+        move_rejected,
     )
 
     LOG.info(

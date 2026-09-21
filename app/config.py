@@ -10,6 +10,7 @@ def _bool(name: str, default: str) -> bool:
 class Settings:
     min_price: float = float(os.getenv("MIN_PRICE", "350"))
     min_prev_volume: int = int(os.getenv("MIN_PREV_VOLUME", "500000"))
+    min_daily_move_percent: float = float(os.getenv("MIN_DAILY_MOVE_PERCENT", "2.0"))
     min_daily_volume: int = int(os.getenv("MIN_DAILY_VOLUME", "500000"))
 
     buy_rsi_min: float = float(os.getenv("BUY_RSI_MIN", "55"))

@@ -18,6 +18,7 @@ jobs:
       DRY_RUN: "false"
       MIN_PRICE: "350"
       MIN_PREV_VOLUME: "500000"
+      MIN_DAILY_MOVE_PERCENT: "2.0"
       MIN_DAILY_VOLUME: "500000"
       BUY_RSI_MIN: "55"
       BUY_RSI_MAX: "70"

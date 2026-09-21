@@ -24,7 +24,17 @@ codebase.**
    index roughly twice a year (per its published methodology); refresh
    this file by hand every few months by downloading a fresh NIFTY 500
    CSV from NSE's site and regenerating the JSON (symbol list, `as_of`
-   date, source filename).
+   date, source filename). Each symbol is then filtered against its
+   previous trading day's daily candle (one Dhan API call per symbol):
+   - Previous close > `MIN_PRICE` (350)
+   - Previous volume > `MIN_PREV_VOLUME` (500,000)
+   - Previous open-to-close move ≥ `MIN_DAILY_MOVE_PERCENT` (2.0%), either
+     direction — uses the `open`/`close` already present on the same
+     candle, so this costs no extra API calls. This exists specifically
+     to shrink the universe that gets scanned every 5 minutes: NIFTY 500
+     is too large to scan intraday without hitting Dhan's rate limits, and
+     a stock that barely moved the prior day is a poor momentum candidate
+     anyway.
 2. **Dynamic additions (`refresh_dynamic_volume_gainers`):** every 10
    minutes during the scan window, a candidate pool of NSE equities
    (from Dhan's own security master, capped by
@@ -139,7 +149,9 @@ All of the above thresholds are environment variables, set in
 | Variable | Default | Purpose |
 |---|---|---|
 | `MIN_PRICE` | 350 | Minimum daily close to be considered |
-| `MIN_DAILY_VOLUME` | 500000 | Minimum daily volume |
+| `MIN_PREV_VOLUME` | 500000 | Minimum previous-day volume for a symbol to enter the base universe |
+| `MIN_DAILY_MOVE_PERCENT` | 2.0 | Minimum previous-day open-to-close move (either direction) to enter the base universe |
+| `MIN_DAILY_VOLUME` | 500000 | Minimum daily volume (checked again at breakout time, inside the B1 filter chain) |
 | `BUY_RSI_MIN` / `BUY_RSI_MAX` | 55 / 70 | RSI band for BUY setups |
 | `SELL_RSI_MIN` / `SELL_RSI_MAX` | 30 / 45 | RSI band for SELL setups |
 | `RVOL_LOOKBACK` | 20 | Candles used for the RVOL average |
