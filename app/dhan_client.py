@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 import os
+import time
 
 import pandas as pd
 import requests
@@ -25,6 +26,47 @@ IST = "Asia/Kolkata"
 
 MARKET_OPEN = "09:15"
 MARKET_CLOSE = "15:30"
+
+# Dhan's rate-limit response (HTTP 429, errorCode DH-904) was previously
+# being treated identically to genuine "no data" — logged once and given
+# up on immediately. This retries specifically on 429 with backoff before
+# falling back to the old give-up behavior, so a rate-limited symbol gets
+# a real second chance instead of silently vanishing from that run.
+RATE_LIMIT_MAX_RETRIES = 3
+RATE_LIMIT_BASE_DELAY_SECONDS = 1.5
+
+
+def _post_with_rate_limit_retry(url, headers, json_payload, timeout, log_context):
+    """POST with retry-and-backoff specifically for HTTP 429 responses.
+
+    Any other status code (200 or a genuine error) is returned immediately,
+    unchanged from the previous behavior — only 429 gets retried.
+    """
+    delay = RATE_LIMIT_BASE_DELAY_SECONDS
+    last_response = None
+
+    for attempt in range(1, RATE_LIMIT_MAX_RETRIES + 2):  # +1 initial try, +1 for range inclusivity
+        response = requests.post(url, headers=headers, json=json_payload, timeout=timeout)
+        last_response = response
+
+        if response.status_code != 429:
+            return response
+
+        if attempt > RATE_LIMIT_MAX_RETRIES:
+            LOG.error(
+                "Dhan rate limit (429) — exhausted %d retries, giving up | %s",
+                RATE_LIMIT_MAX_RETRIES, log_context,
+            )
+            return response
+
+        LOG.warning(
+            "Dhan rate limit (429) — retry %d/%d in %.1fs | %s",
+            attempt, RATE_LIMIT_MAX_RETRIES, delay, log_context,
+        )
+        time.sleep(delay)
+        delay *= 2  # exponential backoff: 1.5s, 3s, 6s
+
+    return last_response
 
 
 class DhanClient:
@@ -221,11 +263,12 @@ class DhanClient:
             "toDate": to_date,
         }
         try:
-            response = requests.post(
+            response = _post_with_rate_limit_retry(
                 "https://api.dhan.co/v2/charts/intraday",
-                headers=headers,
-                json=payload,
-                timeout=30,
+                headers,
+                payload,
+                30,
+                f"security_id={security_id} interval={interval}",
             )
             if response.status_code != 200:
                 LOG.error(
@@ -280,11 +323,12 @@ class DhanClient:
         }
 
         try:
-            response = requests.post(
+            response = _post_with_rate_limit_retry(
                 DHAN_HISTORICAL_URL,
-                headers=headers,
-                json=payload,
-                timeout=20,
+                headers,
+                payload,
+                20,
+                f"security_id={security_id}",
             )
 
             if response.status_code != 200:
