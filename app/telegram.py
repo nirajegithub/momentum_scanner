@@ -8,7 +8,7 @@ import requests
 from .config import DISCLAIMER, SETTINGS
 
 
-def send(text, parse_mode=None):
+def send(text, parse_mode="HTML"):
     full = text.rstrip() + "\n\n" + DISCLAIMER
     if SETTINGS.dry_run:
         print(full)
