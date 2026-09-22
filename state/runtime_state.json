@@ -876,30 +876,6 @@
       "zone_low": 1382.7,
       "zone_high": 1389.0,
       "curve_context": "NOT_AVAILABLE"
-    },
-    "ICICIGI": {
-      "direction": "SELL",
-      "setup": "B1_ORB",
-      "setup_15m_timestamp": "2026-09-22T12:00:00+05:30",
-      "setup_15m_completion": "2026-09-22T12:15:00+05:30",
-      "setup_15m_open": 1500.0,
-      "setup_15m_high": 1500.2,
-      "setup_15m_low": 1492.9,
-      "setup_15m_close": 1498.1,
-      "setup_15m_rsi14": 43.32770668515522,
-      "setup_15m_previous_rsi14": 47.01348322864222,
-      "setup_15m_rvol": 3.9416665097549757,
-      "daily_close": 1509.1,
-      "daily_volume": 1427947.0,
-      "trade_quality_score": 3.5,
-      "departure_score": 1.5,
-      "freshness_score": 0.0,
-      "base_candle_score": 2.0,
-      "base_candle_count": 3,
-      "zone_test_count": 4,
-      "zone_low": 1499.5,
-      "zone_high": 1501.7,
-      "curve_context": "NOT_AVAILABLE"
     }
   },
   "daily_filters": {},
@@ -2354,7 +2330,7 @@
       "setup": null
     },
     "ICICIGI": {
-      "status": "WAITING_FOR_5M",
+      "status": "CONSUMED",
       "last_processed_15m": "2026-09-22T12:00:00+05:30",
       "orb": {
         "timestamp": "2026-09-22T09:15:00+05:30",
@@ -2363,30 +2339,7 @@
         "low": 1503.2,
         "close": 1507.9
       },
-      "setup": {
-        "direction": "SELL",
-        "setup": "B1_ORB",
-        "setup_15m_timestamp": "2026-09-22T12:00:00+05:30",
-        "setup_15m_completion": "2026-09-22T12:15:00+05:30",
-        "setup_15m_open": 1500.0,
-        "setup_15m_high": 1500.2,
-        "setup_15m_low": 1492.9,
-        "setup_15m_close": 1498.1,
-        "setup_15m_rsi14": 43.32770668515522,
-        "setup_15m_previous_rsi14": 47.01348322864222,
-        "setup_15m_rvol": 3.9416665097549757,
-        "daily_close": 1509.1,
-        "daily_volume": 1427947.0,
-        "trade_quality_score": 3.5,
-        "departure_score": 1.5,
-        "freshness_score": 0.0,
-        "base_candle_score": 2.0,
-        "base_candle_count": 3,
-        "zone_test_count": 4,
-        "zone_low": 1499.5,
-        "zone_high": 1501.7,
-        "curve_context": "NOT_AVAILABLE"
-      }
+      "setup": null
     },
     "KAYNES": {
       "status": "WAITING_FOR_15M",
