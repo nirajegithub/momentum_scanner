@@ -1,0 +1,50 @@
+name: Weekly Backtest Data Export
+
+# Run every Friday at 3:40 PM IST (10:10 UTC)
+on:
+  schedule:
+    - cron: "10 10 * * 5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  export-backtest-data:
+    name: Export Last 90 Days for Backtesting
+    runs-on: ubuntu-latest
+
+    env:
+      DHAN_CLIENT_ID: ${{ secrets.DHAN_CLIENT_ID }}
+      DHAN_ACCESS_TOKEN: ${{ secrets.DHAN_ACCESS_TOKEN }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Export last 90 days data
+        run: python scripts/export_dhan_backtest_data.py
+
+      - name: Commit and push backtest data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/historical/
+          if git diff --cached --quiet; then
+            echo "No new data to commit"
+          else
+            git commit -m "Weekly backtest data snapshot"
+            git push
+          fi

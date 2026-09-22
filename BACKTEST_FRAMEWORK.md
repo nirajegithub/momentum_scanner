@@ -242,17 +242,62 @@ def test_trailing_stop():
 ### What You Need
 1. **5M Candles**: symbol, timestamp, open, high, low, close, volume
 2. **15M Candles**: symbol, timestamp, open, high, low, close, volume
-3. **Date Range**: Minimum 3 months, ideally 6 months
+3. **Date Range**: Last 90 days (Dhan API limitation)
 4. **Trading Calendar**: NSE holidays/non-trading days
 
-### Where to Get Data
+### Important: Dhan 90-Day Limit
+⚠️ DhanHQ API only provides last 90 days of historical data.
+
+**Solutions:**
+
+#### Option A: Export & Store Locally (Recommended)
 ```bash
-# Export from your Dhan historical API
-python scripts/export_historical_data.py \
-  --symbols AARTIIND,ACMESOLAR,ADANIGREEN \
-  --start 2026-04-01 \
-  --end 2026-09-22 \
-  --output data/
+# Run weekly to build persistent backtest dataset
+python scripts/export_dhan_backtest_data.py
+
+# This creates:
+# - data/historical/5m_last_90d_2026-09-22.csv
+# - data/historical/15m_last_90d_2026-09-22.csv
+# - Symlinks to latest: 5m_last_90d.csv, 15m_last_90d.csv
+
+# Commit to git (store all snapshots)
+git add data/historical/
+git commit -m "Store historical data snapshots"
+```
+
+#### Option B: Monthly Snapshots
+Export on the 22nd of each month:
+```
+data/historical/
+├── 2026-09-22_90d.csv  (latest)
+├── 2026-08-22_90d.csv  (previous month)
+└── 2026-07-22_90d.csv  (two months ago)
+```
+This gives you rolling 90-day windows + overlap for continuity.
+
+#### Option C: Backtest on Latest 90 Days Only
+Quick validation without historical storage:
+```bash
+# Export fresh data
+python scripts/export_dhan_backtest_data.py
+
+# Run backtest immediately
+python scripts/historical_backtest_15m5m_confirmation.py \
+  --data-5m data/historical/5m_last_90d.csv \
+  --data-15m data/historical/15m_last_90d.csv \
+  --out backtest/latest_90d.csv
+```
+
+### Best Practice Workflow
+```bash
+# Weekly (e.g., every Friday)
+1. python scripts/export_dhan_backtest_data.py
+2. python scripts/historical_backtest_15m5m_confirmation.py \
+     --data-5m data/historical/5m_last_90d.csv \
+     --data-15m data/historical/15m_last_90d.csv \
+     --out backtest/week_$(date +%Y-%m-%d).csv
+3. git add data/historical/ backtest/
+4. git commit -m "Weekly backtest snapshot"
 ```
 
 ---
