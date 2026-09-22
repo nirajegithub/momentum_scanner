@@ -46,5 +46,5 @@ class Settings:
     enable_progressive_ts: bool = _bool("ENABLE_PROGRESSIVE_TS", "false")
 
 
-DISCLAIMER = "⚠️ Educational/informational purposes only. Not financial advice. Trade at your own risk."
+DISCLAIMER = "<b>⚠️ Educational content. Not investment advice. Trade at your own risk.</b>"
 SETTINGS = Settings()

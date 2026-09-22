@@ -20,15 +20,35 @@ def _result_price(signal, final_prices):
 
 
 def build_summary(state, final_prices):
-    lines = ["📊 NSE MOMENTUM SUMMARY", ""]
+    lines = ["<b>📊 NSE MOMENTUM SUMMARY</b>", ""]
     count = 0
+    total_points = 0
+    winners = 0
+    losers = 0
+
     for s in state.get("signals", {}).values():
         if s.get("status") not in {"ACTIVE", "EXITED", "CLOSED_EOD", "REVERSED"}:
             continue
         price = _result_price(s, final_prices)
         points = _points(s, price)
-        lines.append(f"{s['symbol']} Stocks {points:+.2f} points")
+
+        # Use emoji based on result
+        emoji = "✅" if points >= 0 else "❌"
+        symbol = s['symbol']
+
+        lines.append(f"{emoji} <b>{symbol}</b>: {points:+.2f} pts")
         count += 1
+        total_points += points
+
+        if points >= 0:
+            winners += 1
+        else:
+            losers += 1
+
     if count == 0:
         lines.append("No completed alerts.")
+    else:
+        lines.append("")
+        lines.append(f"<b>Summary:</b> {count} trades | {winners}W {losers}L | Total: {total_points:+.2f} pts")
+
     return "\n".join(lines)
