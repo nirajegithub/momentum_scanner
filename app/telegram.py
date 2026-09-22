@@ -81,13 +81,17 @@ def signal_message(s):
         f"<b>💰 TRADE SETUP</b>",
         f"  Entry: <b>{_money(s['risk']['entry'])}</b>",
         f"  Stop Loss: <b>{_money(s['risk']['sl'])}</b>",
-        f"  Trailing SL (5%): <b>{_money(s['risk'].get('trailing_sl', s['risk']['sl']))}</b>",
         f"  Risk: <b>{_money(s['risk']['risk'])}</b> ({float(s['risk'].get('risk_percent', 0)):.2f}%)",
         "",
         f"<b>🎯 TARGETS (Risk/Reward)</b>",
         f"  T1: <b>{_money(s['risk']['t1'])}</b> (2R)",
         f"  T2: <b>{_money(s['risk']['t2'])}</b> (3R)",
         f"  T3: <b>{_money(s['risk']['t3'])}</b> (4R)",
+        "",
+        f"<b>📋 SL ESCALATION GUIDE (Manual)</b>",
+        f"  • T1 hit: Move SL to Entry <b>{_money(s['risk']['entry'])}</b> (1:1)",
+        f"  • T2 hit: Move SL to T1 <b>{_money(s['risk']['t1'])}</b> (2:1)",
+        f"  • T3 hit: Move SL to T2 <b>{_money(s['risk']['t2'])}</b> (3:1)",
     ]
     return "\n".join(lines)
 
