@@ -853,30 +853,6 @@
       "zone_high": null,
       "curve_context": "LOW"
     },
-    "CHENNPETRO": {
-      "direction": "BUY",
-      "setup": "B1_ORB",
-      "setup_15m_timestamp": "2026-09-22T11:15:00+05:30",
-      "setup_15m_completion": "2026-09-22T11:30:00+05:30",
-      "setup_15m_open": 1385.5,
-      "setup_15m_high": 1397.6,
-      "setup_15m_low": 1385.5,
-      "setup_15m_close": 1392.0,
-      "setup_15m_rsi14": 56.18166564548098,
-      "setup_15m_previous_rsi14": 51.62469910389221,
-      "setup_15m_rvol": 1.7245615596901984,
-      "daily_close": 1375.5,
-      "daily_volume": 1280837.0,
-      "trade_quality_score": 3.0,
-      "departure_score": 0.0,
-      "freshness_score": 1.0,
-      "base_candle_score": 2.0,
-      "base_candle_count": 1,
-      "zone_test_count": 1,
-      "zone_low": 1382.7,
-      "zone_high": 1389.0,
-      "curve_context": "NOT_AVAILABLE"
-    },
     "TATAINVEST": {
       "direction": "BUY",
       "setup": "B1_ORB",
@@ -924,30 +900,6 @@
       "zone_low": null,
       "zone_high": null,
       "curve_context": "NOT_AVAILABLE"
-    },
-    "DLF": {
-      "direction": "BUY",
-      "setup": "B1_ORB",
-      "setup_15m_timestamp": "2026-09-22T14:00:00+05:30",
-      "setup_15m_completion": "2026-09-22T14:15:00+05:30",
-      "setup_15m_open": 666.05,
-      "setup_15m_high": 669.0,
-      "setup_15m_low": 665.2,
-      "setup_15m_close": 668.75,
-      "setup_15m_rsi14": 69.71438670640461,
-      "setup_15m_previous_rsi14": 63.209819851140495,
-      "setup_15m_rvol": 2.637098963356832,
-      "daily_close": 660.25,
-      "daily_volume": 3148346.0,
-      "trade_quality_score": 3.5,
-      "departure_score": 1.5,
-      "freshness_score": 0.0,
-      "base_candle_score": 2.0,
-      "base_candle_count": 3,
-      "zone_test_count": 10,
-      "zone_low": 665.0,
-      "zone_high": 666.65,
-      "curve_context": "HIGH"
     }
   },
   "daily_filters": {},
@@ -2294,7 +2246,7 @@
       "setup": null
     },
     "CHENNPETRO": {
-      "status": "WAITING_FOR_5M",
+      "status": "CONSUMED",
       "last_processed_15m": "2026-09-22T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-09-22T09:15:00+05:30",
@@ -2303,30 +2255,7 @@
         "low": 1364.6,
         "close": 1371.0
       },
-      "setup": {
-        "direction": "BUY",
-        "setup": "B1_ORB",
-        "setup_15m_timestamp": "2026-09-22T11:15:00+05:30",
-        "setup_15m_completion": "2026-09-22T11:30:00+05:30",
-        "setup_15m_open": 1385.5,
-        "setup_15m_high": 1397.6,
-        "setup_15m_low": 1385.5,
-        "setup_15m_close": 1392.0,
-        "setup_15m_rsi14": 56.18166564548098,
-        "setup_15m_previous_rsi14": 51.62469910389221,
-        "setup_15m_rvol": 1.7245615596901984,
-        "daily_close": 1375.5,
-        "daily_volume": 1280837.0,
-        "trade_quality_score": 3.0,
-        "departure_score": 0.0,
-        "freshness_score": 1.0,
-        "base_candle_score": 2.0,
-        "base_candle_count": 1,
-        "zone_test_count": 1,
-        "zone_low": 1382.7,
-        "zone_high": 1389.0,
-        "curve_context": "NOT_AVAILABLE"
-      }
+      "setup": null
     },
     "CHOLAFIN": {
       "status": "WAITING_FOR_15M",
@@ -2388,7 +2317,7 @@
       }
     },
     "DLF": {
-      "status": "WAITING_FOR_5M",
+      "status": "CONSUMED",
       "last_processed_15m": "2026-09-22T14:00:00+05:30",
       "orb": {
         "timestamp": "2026-09-22T09:15:00+05:30",
@@ -2397,30 +2326,7 @@
         "low": 662.0,
         "close": 665.45
       },
-      "setup": {
-        "direction": "BUY",
-        "setup": "B1_ORB",
-        "setup_15m_timestamp": "2026-09-22T14:00:00+05:30",
-        "setup_15m_completion": "2026-09-22T14:15:00+05:30",
-        "setup_15m_open": 666.05,
-        "setup_15m_high": 669.0,
-        "setup_15m_low": 665.2,
-        "setup_15m_close": 668.75,
-        "setup_15m_rsi14": 69.71438670640461,
-        "setup_15m_previous_rsi14": 63.209819851140495,
-        "setup_15m_rvol": 2.637098963356832,
-        "daily_close": 660.25,
-        "daily_volume": 3148346.0,
-        "trade_quality_score": 3.5,
-        "departure_score": 1.5,
-        "freshness_score": 0.0,
-        "base_candle_score": 2.0,
-        "base_candle_count": 3,
-        "zone_test_count": 10,
-        "zone_low": 665.0,
-        "zone_high": 666.65,
-        "curve_context": "HIGH"
-      }
+      "setup": null
     },
     "FACT": {
       "status": "WAITING_FOR_15M",
