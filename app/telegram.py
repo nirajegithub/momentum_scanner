@@ -50,11 +50,12 @@ def signal_message(s):
     relation = "above" if buy else "below"
     symbol = _esc(s['symbol'])
     early_surge = "⚡ EARLY" if s.get("early_momentum_surge") else ""
+    trend_check = "✓ Trend" if s.get("market_trend_aligned", True) else ""
 
-    return "\n".join([
+    lines = [
         f"<b>{header}</b>",
         "",
-        f"<b>{symbol}</b> {early_surge}",
+        f"<b>{symbol}</b> {early_surge} {trend_check}",
         "",
         f"📊 <b>Strategy:</b> B1 ORB + RVOL",
         "",
@@ -80,13 +81,15 @@ def signal_message(s):
         f"<b>💰 TRADE SETUP</b>",
         f"  Entry: <b>{_money(s['risk']['entry'])}</b>",
         f"  Stop Loss: <b>{_money(s['risk']['sl'])}</b>",
+        f"  Trailing SL (5%): <b>{_money(s['risk'].get('trailing_sl', s['risk']['sl']))}</b>",
         f"  Risk: <b>{_money(s['risk']['risk'])}</b> ({float(s['risk'].get('risk_percent', 0)):.2f}%)",
         "",
         f"<b>🎯 TARGETS (Risk/Reward)</b>",
         f"  T1: <b>{_money(s['risk']['t1'])}</b> (2R)",
         f"  T2: <b>{_money(s['risk']['t2'])}</b> (3R)",
         f"  T3: <b>{_money(s['risk']['t3'])}</b> (4R)",
-    ])
+    ]
+    return "\n".join(lines)
 
 
 def stop_update_message(s, new_stop, stage, basis):

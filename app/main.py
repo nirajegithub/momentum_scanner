@@ -14,7 +14,7 @@ from .indicators import add_indicators
 from .nse_universe import build_universe, refresh_dynamic_volume_gainers
 from .risk import build_risk_and_targets
 from .state import load, save, record_alert
-from .strategy import evaluate_b1_breakout, t1_blocked, momentum_surge_qualifies
+from .strategy import evaluate_b1_breakout, t1_blocked, momentum_surge_qualifies, market_trend_aligned
 from .candle_utils import completed_candles
 from .telegram import send, signal_message
 from .summary import build_summary
@@ -182,8 +182,29 @@ def _confirmation_5m(dhan, security_id, setup_completion, now_ts):
     return rows, df5
 
 
+def _fetch_nifty_15m(dhan):
+    """Fetch Nifty50 15M data for market trend alignment."""
+    try:
+        nifty_security_id = 99926000  # Nifty50 security ID in Dhan
+        ts = _now_ist()
+        trading_day = ts.date()
+        df = dhan.historical_intraday_df(
+            security_id=nifty_security_id,
+            interval=15,
+            from_date=trading_day.isoformat(),
+            to_date=(trading_day + pd.Timedelta(days=1)).isoformat(),
+        )
+        if df is not None and not df.empty:
+            x = completed_candles(df, ts, 15)
+            return x
+    except Exception as exc:
+        LOG.warning("Failed to fetch Nifty50 data: %s", exc)
+    return None
+
+
 def _process_b1(dhan, state, ts):
     trading_day = ts.date()
+    nifty15m = _fetch_nifty_15m(dhan)
 
     for item in state.get("universe", []):
         symbol = item.get("symbol")
@@ -262,6 +283,14 @@ def _process_b1(dhan, state, ts):
                     if early_surge:
                         # For early surge, start 5M search from current time, not full 15M completion
                         setup["early_5m_search_start"] = ts.isoformat()
+
+                    # Check market trend alignment (Nifty50)
+                    trend_aligned = market_trend_aligned(nifty15m, side)
+                    setup["market_trend_aligned"] = trend_aligned
+                    if not trend_aligned:
+                        LOG.info("B1_SETUP_REJECTED | symbol=%s | direction=%s | reason=MARKET_TREND_NOT_ALIGNED | setup=%s",
+                                 symbol, side, setup_ts)
+                        continue
 
                     ss["setup"] = setup
                     ss["status"] = "WAITING_FOR_5M"

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 
-def build_risk_and_targets(direction: str, entry: float, sl: float, min_stop_distance_percent: float, t1_rr: float, t2_rr: float, t3_rr: float, min_rr: float):
+def build_risk_and_targets(direction: str, entry: float, sl: float, min_stop_distance_percent: float, t1_rr: float, t2_rr: float, t3_rr: float, min_rr: float, trailing_stop_pct: float = 5.0):
     entry = float(entry)
     sl = float(sl)
     risk = entry - sl if direction == "BUY" else sl - entry
@@ -14,10 +14,12 @@ def build_risk_and_targets(direction: str, entry: float, sl: float, min_stop_dis
         t1 = entry + float(t1_rr) * risk
         t2 = entry + float(t2_rr) * risk
         t3 = entry + float(t3_rr) * risk
+        trailing_sl = entry * (1 - trailing_stop_pct / 100.0)
     else:
         t1 = entry - float(t1_rr) * risk
         t2 = entry - float(t2_rr) * risk
         t3 = entry - float(t3_rr) * risk
+        trailing_sl = entry * (1 + trailing_stop_pct / 100.0)
     if float(t1_rr) < float(min_rr):
         return None, "T1_RR_BELOW_MIN"
     return {
@@ -29,4 +31,6 @@ def build_risk_and_targets(direction: str, entry: float, sl: float, min_stop_dis
         "t2": t2,
         "t3": t3,
         "rr_t1": float(t1_rr),
+        "trailing_sl": trailing_sl,
+        "trailing_stop_pct": trailing_stop_pct,
     }, None

@@ -33,7 +33,7 @@ from app.candle_utils import as_ist_index
 from app.config import SETTINGS
 from app.indicators import add_indicators
 from app.risk import build_risk_and_targets
-from app.strategy import evaluate_15m_setup, confirm_5m_breakout
+from app.strategy import evaluate_b1_breakout
 
 IST = ZoneInfo("Asia/Kolkata")
 

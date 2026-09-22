@@ -59,6 +59,7 @@ def export_backtest_data(output_dir: Path, symbol_filter: list = None):
                 to_date=today.isoformat(),
             )
             if df5 is not None and not df5.empty:
+                df5 = df5.reset_index()  # Move timestamp from index to column
                 df5["symbol"] = symbol
                 candles_5m.append(df5)
 
@@ -70,6 +71,7 @@ def export_backtest_data(output_dir: Path, symbol_filter: list = None):
                 to_date=today.isoformat(),
             )
             if df15 is not None and not df15.empty:
+                df15 = df15.reset_index()  # Move timestamp from index to column
                 df15["symbol"] = symbol
                 candles_15m.append(df15)
 

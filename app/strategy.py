@@ -162,3 +162,25 @@ def t1_blocked(df5, confirmation_ts, entry, t1, direction):
     if direction == "BUY":
         return bool(rows["high"].astype(float).max() >= target)
     return bool(rows["low"].astype(float).min() <= target)
+
+
+def market_trend_aligned(nifty_df, direction):
+    """Check if Nifty50 trend aligns with trade direction.
+
+    Returns True if:
+    - BUY: Nifty50 is in uptrend (last 3 closes > previous 3 closes average)
+    - SELL: Nifty50 is in downtrend (last 3 closes < previous 3 closes average)
+    """
+    if nifty_df is None or nifty_df.empty or len(nifty_df) < 6:
+        return True  # Assume aligned if data unavailable
+
+    closes = nifty_df["close"].astype(float).tail(6).values
+    recent_avg = closes[-3:].mean()
+    previous_avg = closes[:3].mean()
+
+    if direction == "BUY":
+        return recent_avg > previous_avg
+    elif direction == "SELL":
+        return recent_avg < previous_avg
+
+    return True
