@@ -7,7 +7,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: nse-momentum
+  group: dhan-api-access
   cancel-in-progress: false
 
 jobs:

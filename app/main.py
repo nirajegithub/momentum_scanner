@@ -401,8 +401,13 @@ def main():
         return
 
     if not state.get("universe"):
-        create_universe(dhan, state)
-        state = load(ts.date())
+        LOG.warning(
+            "Universe is empty — skipping this scan cycle. Waiting for the "
+            "dedicated universe/universe_refresh workflow to populate it "
+            "(scan no longer rebuilds the universe itself, to avoid two "
+            "workflows hammering Dhan concurrently)."
+        )
+        return
 
     if not _scan_window(ts):
         LOG.info("Outside scan window | now=%s | window=%s-%s", ts.strftime("%H:%M"), SETTINGS.scan_start_hhmm, SETTINGS.scan_end_hhmm)
