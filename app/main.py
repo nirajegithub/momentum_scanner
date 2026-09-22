@@ -97,27 +97,17 @@ def _daily_values(dhan, item, trading_day):
 
 
 def _prepare_15m(dhan, security_id, ts):
+    trading_day = pd.Timestamp(ts).date()
     raw = dhan.historical_intraday_df(
         security_id=security_id,
         interval=15,
-        from_date=(pd.Timestamp(ts).date() - pd.Timedelta(days=10)).isoformat(),
-        to_date=(pd.Timestamp(ts).date() + pd.Timedelta(days=1)).isoformat(),
+        from_date=trading_day.isoformat(),
+        to_date=(trading_day + pd.Timedelta(days=1)).isoformat(),
     )
     if raw is None or raw.empty:
         return pd.DataFrame()
     x = completed_candles(raw, ts, 15)
     return add_indicators(x, rvol_lookback=SETTINGS.rvol_lookback)
-
-
-def _prepare_5m(dhan, security_id, signal_completion):
-    ts = pd.Timestamp(signal_completion)
-    raw = dhan.historical_intraday_df(
-        security_id=security_id,
-        interval=5,
-        from_date=(ts.date() - pd.Timedelta(days=2)).isoformat(),
-        to_date=(ts.date() + pd.Timedelta(days=1)).isoformat(),
-    )
-    return completed_candles(raw, signal_completion, 5)
 
 
 def _build_confirmed_signal(item, setup, confirmation_ts, confirmation_close, orb):
@@ -172,11 +162,12 @@ def _build_confirmed_signal(item, setup, confirmation_ts, confirmation_close, or
 
 def _confirmation_5m(dhan, security_id, setup_completion, now_ts):
     """Return the first completed 5M candle after setup that confirms B1."""
+    setup_date = pd.Timestamp(setup_completion).date()
     raw = dhan.historical_intraday_df(
         security_id=security_id,
         interval=5,
-        from_date=(pd.Timestamp(setup_completion).date() - pd.Timedelta(days=1)).isoformat(),
-        to_date=(pd.Timestamp(now_ts).date() + pd.Timedelta(days=1)).isoformat(),
+        from_date=setup_date.isoformat(),
+        to_date=(setup_date + pd.Timedelta(days=1)).isoformat(),
     )
     if raw is None or raw.empty:
         return None, pd.DataFrame()
