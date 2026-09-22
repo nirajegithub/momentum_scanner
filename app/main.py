@@ -115,7 +115,8 @@ def _build_confirmed_signal(item, setup, confirmation_ts, confirmation_close, or
     """Build a trade only after a completed 5M confirmation candle."""
     direction = setup["direction"]
     entry = float(confirmation_close)
-    sl = float(setup["setup_15m_close"])
+    # SL is the ORB Low (for BUY) or ORB High (for SELL)
+    sl = float(orb["low"]) if direction == "BUY" else float(orb["high"])
 
     risk, reject = build_risk_and_targets(
         direction=direction,
