@@ -98,16 +98,26 @@ def export_backtest_data(output_dir: Path, symbol_filter: list = None):
     if failed_symbols:
         print(f"\n⚠️  Failed to export ({len(failed_symbols)}): {', '.join(failed_symbols[:5])}...")
 
-    # Create symlink to latest
+    # Create symlink to latest (skip on Windows if permission denied)
+    latest_5m = file_5m
+    latest_15m = file_15m
+
     if candles_5m:
         latest_5m = output_dir / "5m_last_90d.csv"
         latest_5m.unlink(missing_ok=True)
-        latest_5m.symlink_to(file_5m.name)
+        try:
+            latest_5m.symlink_to(file_5m.name)
+        except OSError:
+            latest_5m = file_5m
+            print(f"\n⚠️  Symlink failed (Windows permission) - using direct file path")
 
     if candles_15m:
         latest_15m = output_dir / "15m_last_90d.csv"
         latest_15m.unlink(missing_ok=True)
-        latest_15m.symlink_to(file_15m.name)
+        try:
+            latest_15m.symlink_to(file_15m.name)
+        except OSError:
+            latest_15m = file_15m
 
     print(f"\n✅ Export complete!")
     print(f"Run backtest with:")
