@@ -17,6 +17,7 @@ from .state import load, save, record_alert
 from .strategy import evaluate_b1_breakout, t1_blocked, momentum_surge_qualifies
 from .candle_utils import completed_candles
 from .telegram import send, signal_message
+from .summary import build_summary
 
 IST = ZoneInfo("Asia/Kolkata")
 LOG = logging.getLogger(__name__)
@@ -384,6 +385,40 @@ def refresh_universe(dhan, state, ts):
     return True
 
 
+def _send_daily_summary(dhan, state, ts):
+    """Send daily summary of all signals/trades for the current session."""
+    trading_day = ts.date()
+
+    # Build summary message using final EOD prices
+    final_prices = {}
+    for item in state.get("universe", []):
+        symbol = item.get("symbol")
+        if not symbol or item.get("security_id") is None:
+            continue
+        try:
+            df = dhan.historical_daily_df(
+                security_id=item["security_id"],
+                from_date=trading_day.isoformat(),
+                to_date=(trading_day + pd.Timedelta(days=1)).isoformat(),
+            )
+            if df is not None and not df.empty:
+                x = _as_ist_index(df)
+                rows = x[x.index.date == trading_day]
+                if not rows.empty:
+                    final_prices[symbol] = float(rows.iloc[-1]["close"])
+        except Exception as exc:
+            LOG.warning("Failed to fetch EOD price for %s: %s", symbol, exc)
+
+    summary_text = build_summary(state, final_prices)
+    LOG.info("SUMMARY\n%s", summary_text)
+
+    sent = send(summary_text)
+    if sent:
+        LOG.info("DAILY_SUMMARY_SENT | symbols=%d | text_len=%d", len(final_prices), len(summary_text))
+    else:
+        LOG.warning("DAILY_SUMMARY_FAILED | symbols=%d", len(final_prices))
+
+
 def main():
     logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"), format="%(asctime)s | %(levelname)s | %(message)s")
     ts = _now_ist()
@@ -403,6 +438,9 @@ def main():
             create_universe(dhan, state)
         else:
             refresh_universe(dhan, state, ts)
+        return
+    if action == "summary":
+        _send_daily_summary(dhan, state, ts)
         return
     if action != "scan":
         LOG.info("Unknown SCANNER_ACTION=%s", action)
