@@ -125,6 +125,28 @@ def evaluate_b1_breakout(df15, orb, daily_close, daily_volume, symbol=None):
     return result
 
 
+def momentum_surge_qualifies(setup, direction):
+    """Check if setup qualifies for early 5M confirmation via momentum surge.
+
+    Early entry triggered when:
+    - RVOL > 3.5 (strong volume surge)
+    - BUY: RSI > 60 (strong upside momentum)
+    - SELL: RSI < 40 (strong downside momentum)
+    """
+    rvol = float(setup.get("setup_15m_rvol", 0))
+    rsi = float(setup.get("setup_15m_rsi14", 0))
+
+    if rvol <= 3.5:
+        return False
+
+    if direction == "BUY":
+        return rsi > 60
+    elif direction == "SELL":
+        return rsi < 40
+
+    return False
+
+
 def t1_blocked(df5, confirmation_ts, entry, t1, direction):
     """Return True if T1 had already been touched before confirmation.
 

@@ -14,7 +14,7 @@ from .indicators import add_indicators
 from .nse_universe import build_universe, refresh_dynamic_volume_gainers
 from .risk import build_risk_and_targets
 from .state import load, save, record_alert
-from .strategy import evaluate_b1_breakout, t1_blocked
+from .strategy import evaluate_b1_breakout, t1_blocked, momentum_surge_qualifies
 from .candle_utils import completed_candles
 from .telegram import send, signal_message
 
@@ -254,10 +254,23 @@ def _process_b1(dhan, state, ts):
                     setup["direction"] = side
                     setup["setup_15m_timestamp"] = setup_ts.isoformat()
                     setup["setup_15m_completion"] = (setup_ts + pd.Timedelta(minutes=15)).isoformat()
+
+                    # Check if setup qualifies for early 5M confirmation (momentum surge filter)
+                    early_surge = momentum_surge_qualifies(setup, side)
+                    setup["early_momentum_surge"] = early_surge
+                    if early_surge:
+                        # For early surge, start 5M search from current time, not full 15M completion
+                        setup["early_5m_search_start"] = ts.isoformat()
+
                     ss["setup"] = setup
                     ss["status"] = "WAITING_FOR_5M"
                     state.setdefault("pending_setups", {})[symbol] = setup
-                    LOG.info("B1_SETUP_ACCEPTED | symbol=%s | direction=%s | setup=%s | wait_for_5m_confirmation=true", symbol, side, setup_ts)
+
+                    surge_marker = " | EARLY_MOMENTUM_SURGE_QUALIFIED" if early_surge else ""
+                    rvol = float(setup.get("setup_15m_rvol", 0))
+                    rsi = float(setup.get("setup_15m_rsi14", 0))
+                    LOG.info("B1_SETUP_ACCEPTED | symbol=%s | direction=%s | setup=%s | rvol=%.2f | rsi=%.2f | wait_for_5m_confirmation=true%s",
+                             symbol, side, setup_ts, rvol, rsi, surge_marker)
                     break
 
             # ----------------------------------------------------------
@@ -268,11 +281,14 @@ def _process_b1(dhan, state, ts):
             if not setup:
                 continue
 
+            # Use early search time if momentum surge qualifies, otherwise use normal completion time
+            search_start = setup.get("early_5m_search_start") or setup["setup_15m_completion"]
             rows5, full5 = _confirmation_5m(
-                dhan, item["security_id"], setup["setup_15m_completion"], ts
+                dhan, item["security_id"], search_start, ts
             )
             if rows5 is None or rows5.empty:
-                LOG.info("B1_5M | symbol=%s | status=WAITING_FOR_5M | setup=%s", symbol, setup["setup_15m_timestamp"])
+                early_marker = " (EARLY_MOMENTUM_SURGE)" if setup.get("early_momentum_surge") else ""
+                LOG.info("B1_5M | symbol=%s | status=WAITING_FOR_5M | setup=%s%s", symbol, setup["setup_15m_timestamp"], early_marker)
                 continue
 
             direction = setup["direction"]
@@ -285,7 +301,8 @@ def _process_b1(dhan, state, ts):
                     LOG.info("B1_5M | symbol=%s | candle=%s | status=NO_CONFIRMATION | close=%.2f | threshold=%.2f", symbol, ts5, close5, threshold)
                     continue
 
-                LOG.info("B1_5M | symbol=%s | candle=%s | status=CONFIRMED | direction=%s | close=%.2f | threshold=%.2f", symbol, ts5, direction, close5, threshold)
+                early_marker = " (EARLY_MOMENTUM_SURGE)" if setup.get("early_momentum_surge") else ""
+                LOG.info("B1_5M | symbol=%s | candle=%s | status=CONFIRMED | direction=%s | close=%.2f | threshold=%.2f%s", symbol, ts5, direction, close5, threshold, early_marker)
                 signal, reject = _build_confirmed_signal(item, setup, ts5, close5, orb)
                 if signal is None:
                     LOG.info("B1_5M | symbol=%s | candle=%s | status=CONFIRMED_BUT_REJECTED | reason=%s", symbol, ts5, reject)
