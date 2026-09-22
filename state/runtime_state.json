@@ -632,6 +632,56 @@
       "t1": 822.4,
       "t2": 816.8,
       "t3": 811.1999999999999
+    },
+    "ANURAS|BUY|2026-09-22T12:00:00+05:30|2026-09-22T12:20:00+05:30": {
+      "symbol": "ANURAS",
+      "security_id": "2829",
+      "direction": "BUY",
+      "setup": "B1_ORB",
+      "setup_15m_timestamp": "2026-09-22T12:00:00+05:30",
+      "setup_15m_completion": "2026-09-22T12:15:00+05:30",
+      "setup_15m_open": 1157.9,
+      "setup_15m_high": 1189.9,
+      "setup_15m_low": 1157.2,
+      "setup_15m_close": 1189.8,
+      "setup_15m_rsi14": 64.64168946713255,
+      "setup_15m_previous_rsi14": 41.453288014023585,
+      "setup_15m_rvol": 4.800723735537739,
+      "daily_close": 1160.8,
+      "daily_volume": 6030650.0,
+      "trade_quality_score": 4.5,
+      "departure_score": 1.5,
+      "freshness_score": 1.0,
+      "base_candle_score": 2.0,
+      "base_candle_count": 3,
+      "zone_test_count": 1,
+      "zone_low": 1154.8,
+      "zone_high": 1159.0,
+      "curve_context": "NOT_AVAILABLE",
+      "orb_timestamp": "2026-09-22T09:15:00+05:30",
+      "orb_high": 1172.4,
+      "orb_low": 1142.0,
+      "orb_close": 1144.4,
+      "confirmation_5m_timestamp": "2026-09-22T12:20:00+05:30",
+      "confirmation_5m_close": 1196.7,
+      "confirmation_lag_minutes": 5.0,
+      "confirmation_lag_5m_candles": 1,
+      "status": "ACTIVE",
+      "risk": {
+        "entry": 1196.7,
+        "sl": 1189.8,
+        "risk": 6.900000000000091,
+        "risk_percent": 0.5765856104286865,
+        "t1": 1210.5000000000002,
+        "t2": 1217.4000000000003,
+        "t3": 1224.3000000000004,
+        "rr_t1": 2.0
+      },
+      "entry": 1196.7,
+      "sl": 1189.8,
+      "t1": 1210.5000000000002,
+      "t2": 1217.4000000000003,
+      "t3": 1224.3000000000004
     }
   },
   "pending_setups": {
@@ -827,30 +877,6 @@
       "zone_high": 1389.0,
       "curve_context": "NOT_AVAILABLE"
     },
-    "ANURAS": {
-      "direction": "BUY",
-      "setup": "B1_ORB",
-      "setup_15m_timestamp": "2026-09-22T12:00:00+05:30",
-      "setup_15m_completion": "2026-09-22T12:15:00+05:30",
-      "setup_15m_open": 1157.9,
-      "setup_15m_high": 1189.9,
-      "setup_15m_low": 1157.2,
-      "setup_15m_close": 1189.8,
-      "setup_15m_rsi14": 64.64168946713255,
-      "setup_15m_previous_rsi14": 41.453288014023585,
-      "setup_15m_rvol": 4.800723735537739,
-      "daily_close": 1160.8,
-      "daily_volume": 6030650.0,
-      "trade_quality_score": 4.5,
-      "departure_score": 1.5,
-      "freshness_score": 1.0,
-      "base_candle_score": 2.0,
-      "base_candle_count": 3,
-      "zone_test_count": 1,
-      "zone_low": 1154.8,
-      "zone_high": 1159.0,
-      "curve_context": "NOT_AVAILABLE"
-    },
     "ICICIGI": {
       "direction": "SELL",
       "setup": "B1_ORB",
@@ -891,6 +917,13 @@
       "setup_15m_timestamp": "2026-09-21T11:15:00+05:30",
       "confirmation_5m_timestamp": "2026-09-21T13:30:00+05:30",
       "recorded_at": "2026-09-21T13:35:26.153278+05:30"
+    },
+    "ANURAS|BUY|2026-09-22T12:00:00+05:30": {
+      "symbol": "ANURAS",
+      "direction": "BUY",
+      "setup_15m_timestamp": "2026-09-22T12:00:00+05:30",
+      "confirmation_5m_timestamp": "2026-09-22T12:20:00+05:30",
+      "recorded_at": "2026-09-22T12:25:28.430224+05:30"
     }
   },
   "orb": {},
@@ -2153,7 +2186,7 @@
       "setup": null
     },
     "ANURAS": {
-      "status": "WAITING_FOR_5M",
+      "status": "CONSUMED",
       "last_processed_15m": "2026-09-22T12:00:00+05:30",
       "orb": {
         "timestamp": "2026-09-22T09:15:00+05:30",
@@ -2162,30 +2195,8 @@
         "low": 1142.0,
         "close": 1144.4
       },
-      "setup": {
-        "direction": "BUY",
-        "setup": "B1_ORB",
-        "setup_15m_timestamp": "2026-09-22T12:00:00+05:30",
-        "setup_15m_completion": "2026-09-22T12:15:00+05:30",
-        "setup_15m_open": 1157.9,
-        "setup_15m_high": 1189.9,
-        "setup_15m_low": 1157.2,
-        "setup_15m_close": 1189.8,
-        "setup_15m_rsi14": 64.64168946713255,
-        "setup_15m_previous_rsi14": 41.453288014023585,
-        "setup_15m_rvol": 4.800723735537739,
-        "daily_close": 1160.8,
-        "daily_volume": 6030650.0,
-        "trade_quality_score": 4.5,
-        "departure_score": 1.5,
-        "freshness_score": 1.0,
-        "base_candle_score": 2.0,
-        "base_candle_count": 3,
-        "zone_test_count": 1,
-        "zone_low": 1154.8,
-        "zone_high": 1159.0,
-        "curve_context": "NOT_AVAILABLE"
-      }
+      "setup": null,
+      "confirmation_5m_timestamp": "2026-09-22T12:20:00+05:30"
     },
     "BERGEPAINT": {
       "status": "WAITING_FOR_15M",
