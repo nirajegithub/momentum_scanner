@@ -113,3 +113,42 @@ def log_filters_applied(symbol: str, side: str, filters: dict):
         msg += f" | failed=[{', '.join(failed)}]"
 
     LOG.info(msg)
+
+
+def log_risk_validation_failure(symbol: str, direction: str, entry: float, sl: float,
+                                reason: str, **details):
+    """Log risk/reward validation failure after 5M confirmation."""
+    msg = f"{symbol} | RISK_VALIDATION_FAILED | direction={direction} | entry={entry:.2f} | sl={sl:.2f} | reason={reason}"
+    for key, val in details.items():
+        if isinstance(val, float):
+            msg += f" | {key}={val:.2f}"
+        else:
+            msg += f" | {key}={val}"
+    LOG.info(msg)
+
+
+def log_t1_blocked(symbol: str, direction: str, entry: float, t1: float, current_close: float):
+    """Log when T1 target is already blocked (price already passed it)."""
+    LOG.info("%s | T1_BLOCKED | direction=%s | entry=%.2f | t1=%.2f | current_close=%.2f | reason=TARGET_ALREADY_REACHED",
+             symbol, direction, entry, t1, current_close)
+
+
+def log_telegram_failure(symbol: str, direction: str, reason: str, entry: float = None):
+    """Log Telegram send failure."""
+    if entry:
+        LOG.warning("%s | TELEGRAM_SEND_FAILED | direction=%s | entry=%.2f | reason=%s",
+                   symbol, direction, entry, reason)
+    else:
+        LOG.warning("%s | TELEGRAM_SEND_FAILED | direction=%s | reason=%s",
+                   symbol, direction, reason)
+
+
+def log_confirmed_rejection(symbol: str, direction: str, confirmation_time, reason: str, **details):
+    """Log rejection after 5M confirmation (catchall for other rejections)."""
+    msg = f"{symbol} | CONFIRMED_BUT_REJECTED | direction={direction} | time={str(confirmation_time)[:16]} | reason={reason}"
+    for key, val in details.items():
+        if isinstance(val, float):
+            msg += f" | {key}={val:.2f}"
+        else:
+            msg += f" | {key}={val}"
+    LOG.info(msg)

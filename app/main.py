@@ -18,7 +18,7 @@ from .strategy import evaluate_b1_breakout, t1_blocked, momentum_surge_qualifies
 from .candle_utils import completed_candles
 from .telegram import send, signal_message
 from .summary import build_summary
-from .logging_utils import ScanStats, log_orb_check, log_15m_candle_check, log_setup_created, log_5m_confirmation_check, log_signal_generated
+from .logging_utils import ScanStats, log_orb_check, log_15m_candle_check, log_setup_created, log_5m_confirmation_check, log_signal_generated, log_risk_validation_failure, log_t1_blocked, log_telegram_failure, log_confirmed_rejection
 
 IST = ZoneInfo("Asia/Kolkata")
 LOG = logging.getLogger(__name__)
@@ -338,7 +338,7 @@ def _process_b1(dhan, state, ts):
                     continue
                 signal, reject = _build_confirmed_signal(item, setup, ts5, close5, orb)
                 if signal is None:
-                    LOG.info("B1_5M | symbol=%s | candle=%s | status=CONFIRMED_BUT_REJECTED | reason=%s", symbol, ts5, reject)
+                    log_confirmed_rejection(symbol, direction, ts5, reject, sl=float(orb["low"]) if direction == "BUY" else float(orb["high"]), entry=close5)
                     ss["status"] = "CONSUMED"
                     ss["setup"] = None
                     state.get("pending_setups", {}).pop(symbol, None)
@@ -347,7 +347,7 @@ def _process_b1(dhan, state, ts):
                 # T1 safety check is evaluated at the actual 5M entry.
                 try:
                     if t1_blocked(full5, ts5, signal["risk"]["entry"], signal["risk"]["t1"], direction):
-                        LOG.info("B1_5M | symbol=%s | candle=%s | status=CONFIRMED_BUT_REJECTED | reason=T1_BLOCKED", symbol, ts5)
+                        log_t1_blocked(symbol, direction, signal["risk"]["entry"], signal["risk"]["t1"], close5)
                         ss["status"] = "CONSUMED"
                         ss["setup"] = None
                         state.get("pending_setups", {}).pop(symbol, None)
@@ -371,7 +371,7 @@ def _process_b1(dhan, state, ts):
                                         signal["t1"], rvol, rsi, signal["confirmation_5m_timestamp"])
                     stats.signals_generated += 1
                 else:
-                    LOG.warning("%s | SIGNAL_NOT_SENT | confirmation_5m=%s", symbol, ts5)
+                    log_telegram_failure(symbol, direction, "SEND_FAILED", signal["entry"])
                 break
 
         except Exception as exc:
