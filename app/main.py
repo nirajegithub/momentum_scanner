@@ -435,8 +435,9 @@ def refresh_universe(dhan, state, ts):
 def _send_daily_summary(dhan, state, ts):
     """Send daily summary of all signals/trades for the current session."""
     trading_day = ts.date()
+    prev_day = previous_trading_day(trading_day)
 
-    # Build summary message using final EOD prices
+    # Build summary message using previous day's EOD prices
     final_prices = {}
     for item in state.get("universe", []):
         symbol = item.get("symbol")
@@ -445,12 +446,12 @@ def _send_daily_summary(dhan, state, ts):
         try:
             df = dhan.historical_daily_df(
                 security_id=item["security_id"],
-                from_date=trading_day.isoformat(),
-                to_date=(trading_day + pd.Timedelta(days=1)).isoformat(),
+                from_date=prev_day.isoformat(),
+                to_date=(prev_day + pd.Timedelta(days=1)).isoformat(),
             )
             if df is not None and not df.empty:
                 x = _as_ist_index(df)
-                rows = x[x.index.date == trading_day]
+                rows = x[x.index.date == prev_day]
                 if not rows.empty:
                     final_prices[symbol] = float(rows.iloc[-1]["close"])
         except Exception as exc:
