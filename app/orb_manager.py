@@ -1,4 +1,4 @@
-"""Smart ORB data fetching with fallback to today's last hour."""
+"""Smart ORB data fetching with fallback to previous day's last hour."""
 
 import logging
 import time
@@ -17,8 +17,9 @@ def get_orb_with_fallback(dhan, security_id, trading_day, max_retries=3):
     Strategy:
     1. Try today's ORB (09:15-09:30)
     2. If missing, retry up to max_retries times (data might not be indexed yet)
-    3. Fall back to TODAY's 15:30 (last hour close) if ORB not available
+    3. Fall back to PREVIOUS day's 15:30 (last hour close) if today's ORB not available
     """
+    from .calendar import previous_trading_day
 
     def fetch_orb_candle(date_to_fetch):
         """Fetch and return ORB candle (09:15-09:30)."""
@@ -68,7 +69,7 @@ def get_orb_with_fallback(dhan, security_id, trading_day, max_retries=3):
             return None, f"ERROR_{str(exc)[:20]}"
 
     def fetch_last_hour_range(date_to_fetch):
-        """Fetch and return last hour (15:15-15:30) range for fallback."""
+        """Fetch and return last hour (15:15-15:30) range."""
         try:
             raw = dhan.historical_intraday_df(
                 security_id=security_id,
@@ -145,24 +146,26 @@ def get_orb_with_fallback(dhan, security_id, trading_day, max_retries=3):
             LOG.debug("After market hours, not retrying: %s", reason)
             break
 
-    # Strategy 2: Fall back to TODAY's last hour (15:15-15:30) range
+    # Strategy 2: Fall back to PREVIOUS day's last hour (15:15-15:30)
+    prev_day = previous_trading_day(trading_day)
+
     LOG.warning(
-        "ORB not available for today (%s), falling back to today's last hour range",
-        trading_day
+        "ORB not available for today (%s), falling back to previous day's last hour (%s)",
+        trading_day, prev_day
     )
 
-    last_hour_data, reason = fetch_last_hour_range(trading_day)
+    last_hour_data, reason = fetch_last_hour_range(prev_day)
 
     if last_hour_data:
         LOG.info(
-            "✓ Using today's last hour range as fallback for %s: %s",
+            "✓ Using previous day's last hour as fallback for %s: %s",
             trading_day, reason
         )
-        return last_hour_data, "TODAY_LAST_HOUR"
+        return last_hour_data, "PREVIOUS_DAY_LAST_HOUR"
 
     # No usable data available
     LOG.error(
-        "No ORB or last hour data available for today (%s): %s",
-        trading_day, reason
+        "No ORB available for today (%s) or previous day's last hour (%s): %s",
+        trading_day, prev_day, reason
     )
     return None, None
