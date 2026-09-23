@@ -70,6 +70,7 @@ def get_orb_with_fallback(dhan, security_id, trading_day, max_retries=3):
                 if not rows.empty:
                     r = rows.iloc[0]
                     orb_data = {
+                        "timestamp": rows.index[0].isoformat(),
                         "date": date_to_fetch.isoformat(),
                         "time": target_time,
                         "high": float(r["high"]),
@@ -148,7 +149,9 @@ def get_orb_with_fallback(dhan, security_id, trading_day, max_retries=3):
             low = float(last_hour_rows["low"].min())
             close = float(last_hour_rows.iloc[-1]["close"])
 
+            last_timestamp = last_hour_rows.index[-1].isoformat() if hasattr(last_hour_rows.index, 'isoformat') else str(last_hour_rows.index[-1])
             return {
+                "timestamp": last_timestamp,
                 "date": date_to_fetch.isoformat(),
                 "time": "15:30_LAST_HOUR",
                 "high": high,

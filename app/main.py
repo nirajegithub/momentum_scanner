@@ -20,6 +20,8 @@ from .telegram import send, signal_message
 from .summary import build_summary
 from .logging_utils import ScanStats, log_orb_check, log_15m_candle_check, log_setup_created, log_5m_confirmation_check, log_signal_generated, log_risk_validation_failure, log_t1_blocked, log_telegram_failure, log_confirmed_rejection
 from .state import backup_and_clear
+from .orb_manager import get_orb_with_fallback
+from .orb_tracker import log_orb_used, log_orb_selection
 
 IST = ZoneInfo("Asia/Kolkata")
 LOG = logging.getLogger(__name__)
@@ -232,14 +234,20 @@ def _process_b1(dhan, state, ts):
                 continue
 
             day15 = df15[df15.index.date == trading_day]
-            orb = _orb_for_day(day15, trading_day)
+
+            # Get ORB with smart fallback
+            orb, orb_source = get_orb_with_fallback(dhan, item["security_id"], trading_day)
             if orb is None:
                 LOG.info("%s | DATA_STAGE | status=ORB_NOT_AVAILABLE", symbol)
                 stats.orb_not_available += 1
                 continue
 
-            if ss.get("orb") is None or ss["orb"].get("timestamp") != orb["timestamp"]:
+            # Log which ORB source was selected
+            log_orb_selection(symbol, trading_day, previous_trading_day(trading_day), orb_source)
+
+            if ss.get("orb") is None or ss["orb"].get("timestamp") != orb.get("timestamp"):
                 ss["orb"] = orb
+                ss["orb_source"] = orb_source
                 ss["status"] = "WAITING_FOR_15M"
                 ss["last_processed_15m"] = None
                 ss["setup"] = None
@@ -271,6 +279,7 @@ def _process_b1(dhan, state, ts):
                         stats.no_breakout += 1
                         continue
 
+                    log_orb_used(symbol, orb, ss.get("orb_source", "UNKNOWN"), close15, side)
                     log_15m_candle_check(symbol, setup_ts, close15, orb["high"], orb["low"], side)
 
                     try:
