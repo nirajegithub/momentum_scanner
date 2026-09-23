@@ -20,7 +20,7 @@ def _result_price(signal, final_prices):
 
 
 def build_summary(state, final_prices):
-    lines = ["<b>📊 MOMENTUM SUMMARY</b>", ""]
+    lines = ["<b>📊 MOMENTUM SCANNER SUMMARY</b>", ""]
     count = 0
     total_points = 0
     winners = 0
