@@ -1,8 +1,8 @@
-"""Smart ORB data fetching with fallbacks and retries."""
+"""Smart ORB data fetching with fallback to today's last hour."""
 
 import logging
 import time
-from datetime import datetime, timedelta
+from datetime import datetime
 from zoneinfo import ZoneInfo
 
 import pandas as pd
@@ -16,13 +16,12 @@ def get_orb_with_fallback(dhan, security_id, trading_day, max_retries=3):
 
     Strategy:
     1. Try today's ORB (09:15-09:30)
-    2. If missing, retry up to max_retries times (data might not be available yet)
-    3. Fall back to previous trading day's ORB if today's not available
+    2. If missing, retry up to max_retries times (data might not be indexed yet)
+    3. Fall back to TODAY's 15:30 (last hour close) if ORB not available
     """
-    from .calendar import previous_trading_day
 
-    def fetch_orb_candle(date_to_fetch, is_today=True):
-        """Fetch and return ORB candle for given date."""
+    def fetch_orb_candle(date_to_fetch):
+        """Fetch and return ORB candle (09:15-09:30)."""
         try:
             raw = dhan.historical_intraday_df(
                 security_id=security_id,
@@ -42,11 +41,8 @@ def get_orb_with_fallback(dhan, security_id, trading_day, max_retries=3):
             else:
                 df.index = df.index.tz_convert(IST)
 
-            # Check if we have data starting from market open
-            first_time = df.index[0].strftime("%H:%M")
-            earliest_expected = "09:15" if is_today else "09:15"
-
             times_hhmm = df.index.strftime("%H:%M")
+            first_time = df.index[0].strftime("%H:%M")
 
             # Try 09:15 first, then 09:30 (in case Dhan uses close time)
             for target_time in ["09:15", "09:30"]:
@@ -62,13 +58,59 @@ def get_orb_with_fallback(dhan, security_id, trading_day, max_retries=3):
                     }, f"FOUND_AT_{target_time}"
 
             # If we have early data but not 9:15/9:30, data might not be ready yet
-            if first_time < "10:00":  # Data starts before 10 AM
+            if first_time < "10:00":
                 return None, f"INCOMPLETE_DATA_STARTS_AT_{first_time}"
-            else:  # Data starts after 10 AM, likely no ORB available
+            else:
                 return None, f"NO_EARLY_DATA_STARTS_AT_{first_time}"
 
         except Exception as exc:
             LOG.debug("Failed to fetch ORB for %s: %s", date_to_fetch, exc)
+            return None, f"ERROR_{str(exc)[:20]}"
+
+    def fetch_last_hour_range(date_to_fetch):
+        """Fetch and return last hour (15:15-15:30) range for fallback."""
+        try:
+            raw = dhan.historical_intraday_df(
+                security_id=security_id,
+                interval=15,
+                from_date=date_to_fetch.isoformat(),
+                to_date=(date_to_fetch + pd.Timedelta(days=1)).isoformat(),
+            )
+
+            if raw is None or raw.empty:
+                return None, None
+
+            df = pd.DataFrame(raw)
+            df.index = pd.to_datetime(df.index)
+
+            if df.index.tz is None:
+                df.index = df.index.tz_localize(IST)
+            else:
+                df.index = df.index.tz_convert(IST)
+
+            times_hhmm = df.index.strftime("%H:%M")
+
+            # Get last hour (15:15 and 15:30 candles)
+            last_hour_rows = df[times_hhmm.isin(["15:15", "15:30"])]
+
+            if last_hour_rows.empty:
+                return None, "NO_15H_DATA"
+
+            # Calculate high/low for the last hour
+            high = float(last_hour_rows["high"].max())
+            low = float(last_hour_rows["low"].min())
+            close = float(last_hour_rows.iloc[-1]["close"])
+
+            return {
+                "date": date_to_fetch.isoformat(),
+                "time": "15:30_LAST_HOUR",
+                "high": high,
+                "low": low,
+                "close": close,
+            }, "LAST_HOUR_RANGE"
+
+        except Exception as exc:
+            LOG.debug("Failed to fetch last hour for %s: %s", date_to_fetch, exc)
             return None, f"ERROR_{str(exc)[:20]}"
 
     # Strategy 1: Try to get today's ORB
@@ -76,14 +118,14 @@ def get_orb_with_fallback(dhan, security_id, trading_day, max_retries=3):
     current_time = ts_now.time()
 
     for attempt in range(1, max_retries + 1):
-        orb_data, reason = fetch_orb_candle(trading_day, is_today=True)
+        orb_data, reason = fetch_orb_candle(trading_day)
 
         if orb_data:
-            LOG.debug(
+            LOG.info(
                 "✓ ORB found for %s at attempt %d: %s",
                 trading_day, attempt, reason
             )
-            return orb_data, "TODAY"
+            return orb_data, "TODAY_ORB"
 
         # If during market hours and data incomplete, retry (data might not be indexed yet)
         market_open = datetime.strptime("09:15", "%H:%M").time()
@@ -103,25 +145,24 @@ def get_orb_with_fallback(dhan, security_id, trading_day, max_retries=3):
             LOG.debug("After market hours, not retrying: %s", reason)
             break
 
-    # Strategy 2: Fall back to previous trading day's ORB
+    # Strategy 2: Fall back to TODAY's last hour (15:15-15:30) range
     LOG.warning(
-        "ORB not available for today (%s), falling back to previous trading day",
+        "ORB not available for today (%s), falling back to today's last hour range",
         trading_day
     )
 
-    prev_day = previous_trading_day(trading_day)
-    orb_data, reason = fetch_orb_candle(prev_day, is_today=False)
+    last_hour_data, reason = fetch_last_hour_range(trading_day)
 
-    if orb_data:
+    if last_hour_data:
         LOG.info(
-            "✓ Using previous day ORB (%s) as fallback for %s",
-            prev_day, trading_day
+            "✓ Using today's last hour range as fallback for %s: %s",
+            trading_day, reason
         )
-        return orb_data, "PREVIOUS_DAY"
+        return last_hour_data, "TODAY_LAST_HOUR"
 
-    # No ORB available at all
+    # No usable data available
     LOG.error(
-        "No ORB available - not found today (%s) or previous day (%s)",
-        trading_day, prev_day
+        "No ORB or last hour data available for today (%s): %s",
+        trading_day, reason
     )
     return None, None
