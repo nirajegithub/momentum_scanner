@@ -19,10 +19,12 @@ from .candle_utils import completed_candles
 from .telegram import send, signal_message
 from .summary import build_summary
 from .logging_utils import ScanStats, log_orb_check, log_15m_candle_check, log_setup_created, log_5m_confirmation_check, log_signal_generated, log_risk_validation_failure, log_t1_blocked, log_telegram_failure, log_confirmed_rejection
+from .state import backup_and_clear
 
 IST = ZoneInfo("Asia/Kolkata")
 LOG = logging.getLogger(__name__)
 ORB_TIME = time(9, 15)
+MARKET_CLOSE_TIME = time(15, 30)
 
 
 def _now_ist():
@@ -49,6 +51,12 @@ def _hhmm(ts):
 def _scan_window(ts):
     hhmm = _hhmm(ts)
     return SETTINGS.scan_start_hhmm <= hhmm <= SETTINGS.scan_end_hhmm
+
+
+def _is_market_close(ts):
+    """Check if we're at or past market close time (15:30 IST)."""
+    t = ts.time()
+    return t >= MARKET_CLOSE_TIME
 
 
 def _orb_for_day(df15, trading_day):
@@ -505,6 +513,13 @@ def main():
         LOG.warning("Dynamic universe refresh failed | %s", exc)
 
     _process_b1(dhan, state, ts)
+
+    if _is_market_close(ts):
+        try:
+            backup_and_clear(state, ts.date())
+            LOG.info("MARKET_CLOSE | Daily state backed up and cleared for next trading day")
+        except Exception as exc:
+            LOG.error("Failed to backup and clear state at market close | %s", exc)
 
 
 if __name__ == "__main__":
