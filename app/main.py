@@ -18,6 +18,7 @@ from .strategy import evaluate_b1_breakout, t1_blocked, momentum_surge_qualifies
 from .candle_utils import completed_candles
 from .telegram import send, signal_message
 from .summary import build_summary
+from .logging_utils import ScanStats, log_orb_check, log_15m_candle_check, log_setup_created, log_5m_confirmation_check, log_signal_generated
 
 IST = ZoneInfo("Asia/Kolkata")
 LOG = logging.getLogger(__name__)
@@ -206,6 +207,7 @@ def _fetch_nifty_15m(dhan):
 def _process_b1(dhan, state, ts):
     trading_day = ts.date()
     nifty15m = _fetch_nifty_15m(dhan)
+    stats = ScanStats(total_symbols=len(state.get("universe", [])))
 
     for item in state.get("universe", []):
         symbol = item.get("symbol")
@@ -217,13 +219,15 @@ def _process_b1(dhan, state, ts):
         try:
             df15 = _prepare_15m(dhan, item["security_id"], ts)
             if df15.empty:
-                LOG.info("%s | 15M_DATA_UNAVAILABLE", symbol)
+                LOG.info("%s | DATA_STAGE | status=15M_DATA_UNAVAILABLE", symbol)
+                stats.data_unavailable += 1
                 continue
 
             day15 = df15[df15.index.date == trading_day]
             orb = _orb_for_day(day15, trading_day)
             if orb is None:
-                LOG.info("%s | ORB_NOT_AVAILABLE", symbol)
+                LOG.info("%s | DATA_STAGE | status=ORB_NOT_AVAILABLE", symbol)
+                stats.orb_not_available += 1
                 continue
 
             if ss.get("orb") is None or ss["orb"].get("timestamp") != orb["timestamp"]:
@@ -231,7 +235,7 @@ def _process_b1(dhan, state, ts):
                 ss["status"] = "WAITING_FOR_15M"
                 ss["last_processed_15m"] = None
                 ss["setup"] = None
-                LOG.info("B1_ORB | symbol=%s | timestamp=%s | high=%.2f | low=%.2f | close=%.2f", symbol, orb["timestamp"], orb["high"], orb["low"], orb["close"])
+                log_orb_check(symbol, orb)
 
             # Once an alert is active, do not create another B1 setup for the symbol.
             if ss.get("status") == "CONSUMED":
@@ -255,10 +259,11 @@ def _process_b1(dhan, state, ts):
                     elif close15 < orb["low"]:
                         side = "SELL"
                     else:
-                        LOG.info("B1_15M | symbol=%s | candle=%s | status=NO_BREAKOUT | close=%.2f", symbol, setup_ts, close15)
+                        log_15m_candle_check(symbol, setup_ts, close15, orb["high"], orb["low"], None)
+                        stats.no_breakout += 1
                         continue
 
-                    LOG.info("B1_15M | symbol=%s | candle=%s | status=BREAKOUT_%s | close=%.2f", symbol, setup_ts, side, close15)
+                    log_15m_candle_check(symbol, setup_ts, close15, orb["high"], orb["low"], side)
 
                     try:
                         daily_close, daily_volume = _daily_values(dhan, item, trading_day)
@@ -268,9 +273,9 @@ def _process_b1(dhan, state, ts):
                         ss["last_processed_15m"] = (setup_ts - pd.Timedelta(minutes=15)).isoformat()
                         break
 
-                    candidate = evaluate_b1_breakout(day15.loc[:setup_ts], orb, daily_close, daily_volume)
+                    candidate = evaluate_b1_breakout(day15.loc[:setup_ts], orb, daily_close, daily_volume, symbol=symbol)
                     if candidate is None:
-                        LOG.info("B1_15M | symbol=%s | candle=%s | status=FILTER_REJECTED | breakout=%s", symbol, setup_ts, side)
+                        stats.filter_rejected += 1
                         continue
 
                     setup = dict(candidate)
@@ -289,19 +294,19 @@ def _process_b1(dhan, state, ts):
                     trend_aligned = market_trend_aligned(nifty15m, side)
                     setup["market_trend_aligned"] = trend_aligned
                     if not trend_aligned:
-                        LOG.info("B1_SETUP_REJECTED | symbol=%s | direction=%s | reason=MARKET_TREND_NOT_ALIGNED | setup=%s",
-                                 symbol, side, setup_ts)
+                        LOG.info("%s | BREAKOUT_STAGE | status=MARKET_TREND_REJECTED | direction=%s", symbol, side)
+                        stats.filter_rejected += 1
                         continue
 
                     ss["setup"] = setup
                     ss["status"] = "WAITING_FOR_5M"
                     state.setdefault("pending_setups", {})[symbol] = setup
 
-                    surge_marker = " | EARLY_MOMENTUM_SURGE_QUALIFIED" if early_surge else ""
                     rvol = float(setup.get("setup_15m_rvol", 0))
                     rsi = float(setup.get("setup_15m_rsi14", 0))
-                    LOG.info("B1_SETUP_ACCEPTED | symbol=%s | direction=%s | setup=%s | rvol=%.2f | rsi=%.2f | wait_for_5m_confirmation=true%s",
-                             symbol, side, setup_ts, rvol, rsi, surge_marker)
+                    quality_score = float(setup.get("trade_quality_score", 0))
+                    log_setup_created(symbol, side, setup_ts, rvol, rsi, quality_score, early_surge)
+                    stats.setups_created += 1
                     break
 
             # ----------------------------------------------------------
@@ -319,7 +324,7 @@ def _process_b1(dhan, state, ts):
             )
             if rows5 is None or rows5.empty:
                 early_marker = " (EARLY_MOMENTUM_SURGE)" if setup.get("early_momentum_surge") else ""
-                LOG.info("B1_5M | symbol=%s | status=WAITING_FOR_5M | setup=%s%s", symbol, setup["setup_15m_timestamp"], early_marker)
+                LOG.info("%s | CONFIRMATION_STAGE | status=WAITING_FOR_5M%s", symbol, early_marker)
                 continue
 
             direction = setup["direction"]
@@ -328,12 +333,9 @@ def _process_b1(dhan, state, ts):
             for ts5, row5 in rows5.iterrows():
                 close5 = float(row5["close"])
                 confirmed = close5 > threshold if direction == "BUY" else close5 < threshold
+                log_5m_confirmation_check(symbol, ts5, close5, threshold, direction, confirmed)
                 if not confirmed:
-                    LOG.info("B1_5M | symbol=%s | candle=%s | status=NO_CONFIRMATION | close=%.2f | threshold=%.2f", symbol, ts5, close5, threshold)
                     continue
-
-                early_marker = " (EARLY_MOMENTUM_SURGE)" if setup.get("early_momentum_surge") else ""
-                LOG.info("B1_5M | symbol=%s | candle=%s | status=CONFIRMED | direction=%s | close=%.2f | threshold=%.2f%s", symbol, ts5, direction, close5, threshold, early_marker)
                 signal, reject = _build_confirmed_signal(item, setup, ts5, close5, orb)
                 if signal is None:
                     LOG.info("B1_5M | symbol=%s | candle=%s | status=CONFIRMED_BUT_REJECTED | reason=%s", symbol, ts5, reject)
@@ -362,15 +364,22 @@ def _process_b1(dhan, state, ts):
                     ss["setup"] = None
                     ss["confirmation_5m_timestamp"] = signal["confirmation_5m_timestamp"]
                     state.get("pending_setups", {}).pop(symbol, None)
-                    LOG.info("ALERT_SENT | symbol=%s | direction=%s | entry=%.2f | confirmation_5m=%s", symbol, direction, signal["entry"], signal["confirmation_5m_timestamp"])
+
+                    rvol = float(setup.get("setup_15m_rvol", 0))
+                    rsi = float(setup.get("setup_15m_rsi14", 0))
+                    log_signal_generated(symbol, direction, signal["entry"], signal["sl"],
+                                        signal["t1"], rvol, rsi, signal["confirmation_5m_timestamp"])
+                    stats.signals_generated += 1
                 else:
-                    LOG.warning("ALERT_NOT_SENT | symbol=%s | direction=%s | confirmation_5m=%s", symbol, direction, ts5)
+                    LOG.warning("%s | SIGNAL_NOT_SENT | confirmation_5m=%s", symbol, ts5)
                 break
 
         except Exception as exc:
-            LOG.exception("%s B1 processing failed | %s", symbol, exc)
+            LOG.exception("%s | B1_PROCESSING_FAILED | error=%s", symbol, exc)
 
     save(state)
+    stats.setups_confirmed = len(state.get("signals", {}))
+    stats.print_summary()
 
 
 def create_universe(dhan, state):
