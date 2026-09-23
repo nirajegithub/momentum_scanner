@@ -9,27 +9,45 @@ from .config import DISCLAIMER, SETTINGS
 
 
 def send(text, parse_mode="HTML"):
+    import logging
+    LOG = logging.getLogger(__name__)
+
     full = text.rstrip() + "\n\n" + DISCLAIMER
     if SETTINGS.dry_run:
+        LOG.info("DRY_RUN MODE - Message not sent to Telegram")
         print(full)
         return True
 
+    chat_id = os.environ.get("TELEGRAM_CHAT_ID", "NOT_SET")
+    token = os.environ.get("TELEGRAM_BOT_TOKEN", "NOT_SET")[:10] + "***"
+
+    if chat_id == "NOT_SET" or token == "NOT_SET":
+        LOG.error("Telegram credentials missing: chat_id=%s, token=%s",
+                  chat_id == "NOT_SET", token == "NOT_SET")
+        return False
+
     payload = {
-        "chat_id": os.environ["TELEGRAM_CHAT_ID"],
+        "chat_id": chat_id,
         "text": full,
     }
     if parse_mode:
         payload["parse_mode"] = parse_mode
 
-    r = requests.post(
-        f"https://api.telegram.org/bot{os.environ['TELEGRAM_BOT_TOKEN']}/sendMessage",
-        json=payload,
-        timeout=20,
-    )
-    r.raise_for_status()
-    if not r.json().get("ok", True):
-        raise RuntimeError("Telegram API returned failure")
-    return True
+    try:
+        r = requests.post(
+            f"https://api.telegram.org/bot{os.environ['TELEGRAM_BOT_TOKEN']}/sendMessage",
+            json=payload,
+            timeout=20,
+        )
+        r.raise_for_status()
+        if not r.json().get("ok", True):
+            LOG.error("Telegram API error: %s", r.json())
+            return False
+        LOG.info("✓ Telegram message sent successfully")
+        return True
+    except Exception as exc:
+        LOG.error("Failed to send Telegram message: %s", exc)
+        return False
 
 
 def _money(value):
