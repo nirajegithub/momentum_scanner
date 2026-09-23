@@ -170,7 +170,8 @@ def generate_dhan_token() -> tuple[str, str]:
     if not token:
         raise RuntimeError(
             "Dhan response did not contain "
-            "accessToken."
+            "accessToken. Response: "
+            f"{json.dumps(payload, indent=2)}"
         )
 
     log(
