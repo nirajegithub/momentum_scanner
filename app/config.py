@@ -23,7 +23,7 @@ class Settings:
 
     setup_timeframe: int = int(os.getenv("SETUP_TIMEFRAME", "5"))
     entry_timeframe: int = int(os.getenv("ENTRY_TIMEFRAME", "5"))
-    min_15m_candles: int = int(os.getenv("MIN_15M_CANDLES", "60"))
+    min_15m_candles: int = int(os.getenv("MIN_15M_CANDLES", "90"))
     min_5m_candles: int = int(os.getenv("MIN_5M_CANDLES", "30"))
 
     min_trade_score: float = float(os.getenv("MIN_TRADE_SCORE", "3"))
