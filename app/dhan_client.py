@@ -277,15 +277,29 @@ class DhanClient:
                 )
                 return pd.DataFrame()
 
-            data = response.json()
+            resp_json = response.json()
+
+            # Handle both flat and nested response formats
+            if isinstance(resp_json, dict) and "data" in resp_json and isinstance(resp_json.get("data"), dict):
+                # Nested format: {"status": "success", "data": {...}}
+                data = resp_json["data"]
+                status = resp_json.get("status")
+                if status != "success":
+                    LOG.warning("Dhan intraday API unsuccessful: security_id=%s interval=%s status=%s", security_id, interval, status)
+                    return pd.DataFrame()
+            else:
+                # Flat format: {"timestamp": [...], "open": [...], ...}
+                data = resp_json
+
             required = ["timestamp", "open", "high", "low", "close", "volume"]
             missing = [key for key in required if key not in data]
             if missing:
-                LOG.error("Dhan intraday response missing fields: security_id=%s missing=%s", security_id, missing)
+                LOG.error("Dhan intraday response missing fields: security_id=%s missing=%s response=%s", security_id, missing, resp_json)
                 return pd.DataFrame()
 
             n = min(len(data[key]) for key in required)
             if n == 0:
+                LOG.warning("Dhan intraday API returned no candles: security_id=%s interval=%s from=%s to=%s", security_id, interval, from_date, to_date)
                 return pd.DataFrame()
 
             df = pd.DataFrame({key: data[key][:n] for key in required})
@@ -342,7 +356,19 @@ class DhanClient:
 
                 return pd.DataFrame()
 
-            data = response.json()
+            resp_json = response.json()
+
+            # Handle both flat and nested response formats
+            if isinstance(resp_json, dict) and "data" in resp_json and isinstance(resp_json.get("data"), dict):
+                # Nested format: {"status": "success", "data": {...}}
+                data = resp_json["data"]
+                status = resp_json.get("status")
+                if status != "success":
+                    LOG.warning("Dhan historical API unsuccessful: security_id=%s status=%s", security_id, status)
+                    return pd.DataFrame()
+            else:
+                # Flat format: {"timestamp": [...], "open": [...], ...}
+                data = resp_json
 
             required = [
                 "timestamp",
@@ -365,7 +391,7 @@ class DhanClient:
                     "security_id=%s missing=%s response=%s",
                     security_id,
                     missing,
-                    data,
+                    resp_json,
                 )
 
                 return pd.DataFrame()
