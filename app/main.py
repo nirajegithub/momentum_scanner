@@ -199,6 +199,7 @@ def _confirmation_5m(dhan, security_id, setup_completion, now_ts):
     df5 = completed_candles(raw, now_ts, 5)
     if df5.empty:
         return None, df5
+    df5 = add_indicators(df5, rvol_lookback=SETTINGS.rvol_lookback)
     df5 = _as_ist_index(df5)
     setup_ts = pd.Timestamp(setup_completion)
     rows = df5[df5.index > setup_ts]
@@ -356,6 +357,13 @@ def _process_b1(dhan, state, ts):
                 log_5m_confirmation_check(symbol, ts5, close5, threshold, direction, confirmed)
                 if not confirmed:
                     continue
+
+                rvol5 = float(row5.get("rvol", 0))
+                if rvol5 < SETTINGS.min_followthrough_volume_rvol:
+                    LOG.info("%s | 5M_CONFIRMATION_LOW_VOLUME | rvol=%.2f | min_required=%.2f | SKIPPED",
+                            symbol, rvol5, SETTINGS.min_followthrough_volume_rvol)
+                    continue
+
                 signal, reject = _build_confirmed_signal(item, setup, ts5, close5, orb)
                 if signal is None:
                     log_confirmed_rejection(symbol, direction, ts5, reject, sl=float(orb["low"]) if direction == "BUY" else float(orb["high"]), entry=close5)

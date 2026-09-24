@@ -88,6 +88,55 @@ def evaluate_b1_breakout(df15, orb, daily_close, daily_volume, symbol=None):
     if rvol < SETTINGS.min_15m_rvol:
         return _rejected(symbol, "RVOL_TOO_LOW", rvol=round(rvol, 2), min_15m_rvol=SETTINGS.min_15m_rvol)
 
+    body_ratio = float(current.get("body_ratio", 0))
+    if body_ratio < SETTINGS.min_candle_body_ratio:
+        return _rejected(symbol, "CANDLE_BODY_TOO_WEAK", body_ratio=round(body_ratio, 2),
+                        min_ratio=SETTINGS.min_candle_body_ratio)
+
+    ema8 = float(current.get("ema8", 0))
+    if len(df15) >= SETTINGS.min_ema8_slope_bars + 1:
+        ema8_prev = float(df15.iloc[-(SETTINGS.min_ema8_slope_bars + 1)].get("ema8", 0))
+        if direction == "BUY" and ema8 <= ema8_prev:
+            return _rejected(symbol, "EMA8_NOT_UPSLOPING", direction=direction,
+                           ema8_now=round(ema8, 2), ema8_prev=round(ema8_prev, 2))
+        elif direction == "SELL" and ema8 >= ema8_prev:
+            return _rejected(symbol, "EMA8_NOT_DOWNSLOPING", direction=direction,
+                           ema8_now=round(ema8, 2), ema8_prev=round(ema8_prev, 2))
+
+    if direction == "BUY" and close < ema8:
+        return _rejected(symbol, "PRICE_BELOW_EMA8", close=round(close, 2), ema8=round(ema8, 2))
+    elif direction == "SELL" and close > ema8:
+        return _rejected(symbol, "PRICE_ABOVE_EMA8", close=round(close, 2), ema8=round(ema8, 2))
+
+    time_of_candle = setup_ts.hour * 100 + setup_ts.minute
+    if 915 <= time_of_candle < 1000:
+        min_rvol_time = SETTINGS.rvol_morning_0915_1000
+    elif 1000 <= time_of_candle < 1200:
+        min_rvol_time = SETTINGS.rvol_morning_1000_1200
+    elif 1200 <= time_of_candle < 1400:
+        min_rvol_time = SETTINGS.rvol_midday_1200_1400
+    else:
+        min_rvol_time = SETTINGS.rvol_close_1400_1530
+
+    if rvol < min_rvol_time:
+        return _rejected(symbol, "RVOL_BELOW_TIME_THRESHOLD", rvol=round(rvol, 2),
+                        time_slot=f"{time_of_candle}", min_rvol=round(min_rvol_time, 2))
+
+    consolidation_ok = False
+    if len(df15) >= SETTINGS.consolidation_candles:
+        consol_candles = df15.iloc[-(SETTINGS.consolidation_candles):]
+        body_sizes = (consol_candles["close"] - consol_candles["open"]).abs()
+        avg_body = body_sizes.mean()
+        price_range = consol_candles["high"].max() - consol_candles["low"].min()
+        max_body_range_pct = price_range / close * 100 if close > 0 else 999
+
+        if avg_body < (close * SETTINGS.consolidation_body_pct / 100) and \
+           price_range < (close * SETTINGS.consolidation_range_pct / 100):
+            consolidation_ok = True
+
+    if not consolidation_ok:
+        return _rejected(symbol, "NO_CONSOLIDATION_BEFORE_BREAKOUT", consolidation_candles=SETTINGS.consolidation_candles)
+
     quality = score_trade_quality(df15, direction)
     score = float(quality.get("trade_quality_score", 0.0))
     if score < SETTINGS.min_trade_score or score > SETTINGS.max_trade_score:

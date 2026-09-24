@@ -16,6 +16,7 @@ def add_indicators(df: pd.DataFrame, rvol_lookback=20) -> pd.DataFrame:
     if x.empty:
         return x
     x = x.sort_index()
+    x["ema8"] = x["close"].ewm(span=8, adjust=False).mean()
     x["ema9"] = x["close"].ewm(span=9, adjust=False).mean()
     x["ema20"] = x["close"].ewm(span=20, adjust=False).mean()
     x["vwap"] = _session_vwap(x)
@@ -35,4 +36,7 @@ def add_indicators(df: pd.DataFrame, rvol_lookback=20) -> pd.DataFrame:
     x["atr14"] = tr.ewm(alpha=1 / 14, adjust=False, min_periods=14).mean()
     x["avg_volume"] = x["volume"].shift(1).rolling(rvol_lookback, min_periods=rvol_lookback).mean()
     x["rvol"] = x["volume"] / x["avg_volume"].replace(0, np.nan)
-    return x.dropna(subset=["ema9", "ema20", "vwap", "rsi14", "avg_volume"])
+    x["candle_body"] = (x["close"] - x["open"]).abs()
+    x["candle_range"] = x["high"] - x["low"]
+    x["body_ratio"] = x["candle_body"] / x["candle_range"].replace(0, np.nan)
+    return x.dropna(subset=["ema8", "ema9", "ema20", "vwap", "rsi14", "avg_volume"])

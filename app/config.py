@@ -45,6 +45,19 @@ class Settings:
 
     enable_progressive_ts: bool = _bool("ENABLE_PROGRESSIVE_TS", "false")
 
+    min_candle_body_ratio: float = float(os.getenv("MIN_CANDLE_BODY_RATIO", "0.60"))
+    min_ema8_slope_bars: int = int(os.getenv("MIN_EMA8_SLOPE_BARS", "5"))
+    consolidation_body_pct: float = float(os.getenv("CONSOLIDATION_BODY_PCT", "0.5"))
+    consolidation_range_pct: float = float(os.getenv("CONSOLIDATION_RANGE_PCT", "0.3"))
+    consolidation_candles: int = int(os.getenv("CONSOLIDATION_CANDLES", "3"))
+
+    rvol_morning_0915_1000: float = float(os.getenv("RVOL_MORNING_0915_1000", "2.0"))
+    rvol_morning_1000_1200: float = float(os.getenv("RVOL_MORNING_1000_1200", "1.8"))
+    rvol_midday_1200_1400: float = float(os.getenv("RVOL_MIDDAY_1200_1400", "2.2"))
+    rvol_close_1400_1530: float = float(os.getenv("RVOL_CLOSE_1400_1530", "1.5"))
+
+    min_followthrough_volume_rvol: float = float(os.getenv("MIN_FOLLOWTHROUGH_VOLUME_RVOL", "1.5"))
+
 
 DISCLAIMER = "<b>⚠️ Educational content. Not investment advice. Trade at your own risk.</b>"
 SETTINGS = Settings()
