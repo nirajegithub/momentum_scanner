@@ -123,6 +123,9 @@ def _prepare_15m(dhan, security_id, ts):
         interval=15,
         from_date=trading_day.isoformat(),
         to_date=(trading_day + pd.Timedelta(days=1)).isoformat(),
+        retry_on_empty=True,
+        max_retries=6,
+        retry_delay_seconds=5.0,
     )
     if raw is None or raw.empty:
         return pd.DataFrame()
