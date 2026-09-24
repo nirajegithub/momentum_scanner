@@ -263,6 +263,8 @@ class DhanClient:
             "toDate": to_date,
         }
         try:
+            LOG.debug("Dhan intraday request: security_id=%s interval=%s from_date=%s to_date=%s",
+                     security_id, interval, from_date, to_date)
             response = _post_with_rate_limit_retry(
                 "https://api.dhan.co/v2/charts/intraday",
                 headers,
@@ -278,6 +280,8 @@ class DhanClient:
                 return pd.DataFrame()
 
             resp_json = response.json()
+            LOG.debug("Dhan intraday response received: security_id=%s HTTP=%s content_length=%d",
+                     security_id, response.status_code, len(response.text))
 
             # Handle both flat and nested response formats
             if isinstance(resp_json, dict) and "data" in resp_json and isinstance(resp_json.get("data"), dict):
@@ -307,7 +311,12 @@ class DhanClient:
             df = pd.DataFrame({key: data[key][:n] for key in required})
             df["timestamp"] = pd.to_datetime(df["timestamp"], unit="s", utc=True).dt.tz_convert(IST)
             df = df.set_index("timestamp").sort_index()
-            return df[~df.index.duplicated(keep="last")]
+            result = df[~df.index.duplicated(keep="last")]
+            LOG.debug("Dhan intraday dataframe: security_id=%s interval=%s rows=%d first=%s last=%s",
+                     security_id, interval, len(result),
+                     result.index.min() if len(result) > 0 else "N/A",
+                     result.index.max() if len(result) > 0 else "N/A")
+            return result
         except requests.RequestException as exc:
             LOG.error("Dhan intraday HTTP exception: security_id=%s interval=%s error=%s", security_id, interval, exc)
             return pd.DataFrame()
