@@ -41,6 +41,7 @@ jobs:
       SCAN_END_HHMM: "1505"
       SCANNER_ACTION: "scan"
       PYTHONUNBUFFERED: "1"
+      SAMPLE_SYMBOLS: "HINDALCO,ACMESOLAR,ANANTRAJ,BIKAJI,ELECON"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
