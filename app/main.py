@@ -310,8 +310,8 @@ def _process_b1(dhan, state, ts):
                         # For early surge, start 5M search from current time, not full 15M completion
                         setup["early_5m_search_start"] = ts.isoformat()
 
-                    # Check market trend alignment (Nifty50)
-                    trend_aligned = market_trend_aligned(nifty15m, side)
+                    # Check market trend alignment (Nifty50 data unavailable for indices)
+                    trend_aligned = market_trend_aligned(None, side)
                     setup["market_trend_aligned"] = trend_aligned
                     if not trend_aligned:
                         LOG.info("%s | BREAKOUT_STAGE | status=MARKET_TREND_REJECTED | direction=%s", symbol, side)
