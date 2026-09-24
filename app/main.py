@@ -522,6 +522,30 @@ def main():
     except Exception as exc:
         LOG.warning("Dynamic universe refresh failed | %s", exc)
 
+    # Clear any previous day's signals/setups to start fresh each trading day
+    current_date = ts.date()
+    cleared_signals = {}
+    cleared_setups = {}
+
+    for key, signal in state.get("signals", {}).items():
+        signal_date = pd.Timestamp(signal.get("confirmation_5m_timestamp", signal.get("setup_15m_timestamp", ""))).date()
+        if signal_date == current_date:
+            cleared_signals[key] = signal
+
+    for symbol, setup in state.get("pending_setups", {}).items():
+        setup_date = pd.Timestamp(setup.get("setup_15m_timestamp", "")).date()
+        if setup_date == current_date:
+            cleared_setups[symbol] = setup
+
+    if len(cleared_signals) < len(state.get("signals", {})) or len(cleared_setups) < len(state.get("pending_setups", {})):
+        old_signal_count = len(state.get("signals", {}))
+        old_setup_count = len(state.get("pending_setups", {}))
+        state["signals"] = cleared_signals
+        state["pending_setups"] = cleared_setups
+        LOG.info("Cleared previous day entries | signals: %d -> %d | setups: %d -> %d",
+                old_signal_count, len(cleared_signals), old_setup_count, len(cleared_setups))
+        save(state)
+
     _process_b1(dhan, state, ts)
 
     if _is_market_close(ts):
