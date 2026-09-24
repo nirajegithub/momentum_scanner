@@ -62,28 +62,19 @@ def evaluate_b1_breakout(df15, orb, daily_close, daily_volume, symbol=None):
     if close > float(orb["high"]):
         direction = "BUY"
         band_ok = SETTINGS.buy_rsi_min < rsi_now < SETTINGS.buy_rsi_max
-        rising_ok = rsi_now > rsi_prev
-        rsi_ok = band_ok and rising_ok
     elif close < float(orb["low"]):
         direction = "SELL"
         band_ok = SETTINGS.sell_rsi_min < rsi_now < SETTINGS.sell_rsi_max
-        rising_ok = rsi_now < rsi_prev
-        rsi_ok = band_ok and rising_ok
     else:
         # Caller already filters to breakout candles, but guard just in case.
         return _rejected(symbol, "NO_BREAKOUT", close=close, orb_high=orb["high"], orb_low=orb["low"])
 
     rvol = float(current["rvol"])
-    if not rsi_ok:
-        if not band_ok:
-            return _rejected(
-                symbol, "RSI_OUT_OF_BAND", direction=direction, rsi=round(rsi_now, 2),
-                band=f"{SETTINGS.buy_rsi_min}-{SETTINGS.buy_rsi_max}" if direction == "BUY"
-                else f"{SETTINGS.sell_rsi_min}-{SETTINGS.sell_rsi_max}",
-            )
+    if not band_ok:
         return _rejected(
-            symbol, "RSI_MOMENTUM_NOT_ALIGNED", direction=direction,
-            rsi=round(rsi_now, 2), prev_rsi=round(rsi_prev, 2),
+            symbol, "RSI_OUT_OF_BAND", direction=direction, rsi=round(rsi_now, 2),
+            band=f"{SETTINGS.buy_rsi_min}-{SETTINGS.buy_rsi_max}" if direction == "BUY"
+            else f"{SETTINGS.sell_rsi_min}-{SETTINGS.sell_rsi_max}",
         )
     if rvol < SETTINGS.min_15m_rvol:
         return _rejected(symbol, "RVOL_TOO_LOW", rvol=round(rvol, 2), min_15m_rvol=SETTINGS.min_15m_rvol)
@@ -103,11 +94,13 @@ def evaluate_b1_breakout(df15, orb, daily_close, daily_volume, symbol=None):
             return _rejected(symbol, "EMA8_NOT_DOWNSLOPING", direction=direction,
                            ema8_now=round(ema8, 2), ema8_prev=round(ema8_prev, 2))
 
-    if direction == "BUY" and close < ema8:
-        return _rejected(symbol, "PRICE_BELOW_EMA8", close=round(close, 2), ema8=round(ema8, 2))
-    elif direction == "SELL" and close > ema8:
-        return _rejected(symbol, "PRICE_ABOVE_EMA8", close=round(close, 2), ema8=round(ema8, 2))
+    # EMA8 price alignment check disabled - insufficient filter value in live trading
+    # if direction == "BUY" and close < ema8:
+    #     return _rejected(symbol, "PRICE_BELOW_EMA8", close=round(close, 2), ema8=round(ema8, 2))
+    # elif direction == "SELL" and close > ema8:
+    #     return _rejected(symbol, "PRICE_ABOVE_EMA8", close=round(close, 2), ema8=round(ema8, 2))
 
+    setup_ts = df15.index[-1]
     time_of_candle = setup_ts.hour * 100 + setup_ts.minute
     if 915 <= time_of_candle < 1000:
         min_rvol_time = SETTINGS.rvol_morning_0915_1000
@@ -139,11 +132,12 @@ def evaluate_b1_breakout(df15, orb, daily_close, daily_volume, symbol=None):
 
     quality = score_trade_quality(df15, direction)
     score = float(quality.get("trade_quality_score", 0.0))
-    if score < SETTINGS.min_trade_score or score > SETTINGS.max_trade_score:
-        return _rejected(
-            symbol, "SCORE_OUT_OF_RANGE", score=score,
-            min_trade_score=SETTINGS.min_trade_score, max_trade_score=SETTINGS.max_trade_score,
-        )
+    # Trade quality score check disabled - insufficient filter value in live trading
+    # if score < SETTINGS.min_trade_score or score > SETTINGS.max_trade_score:
+    #     return _rejected(
+    #         symbol, "SCORE_OUT_OF_RANGE", score=score,
+    #         min_trade_score=SETTINGS.min_trade_score, max_trade_score=SETTINGS.max_trade_score,
+    #     )
 
     setup_ts = df15.index[-1]
     completion = setup_ts

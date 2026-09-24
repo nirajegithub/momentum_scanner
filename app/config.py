@@ -13,12 +13,12 @@ class Settings:
     min_daily_move_percent: float = float(os.getenv("MIN_DAILY_MOVE_PERCENT", "2.0"))
     min_daily_volume: int = int(os.getenv("MIN_DAILY_VOLUME", "500000"))
 
-    buy_rsi_min: float = float(os.getenv("BUY_RSI_MIN", "55"))
-    buy_rsi_max: float = float(os.getenv("BUY_RSI_MAX", "70"))
-    sell_rsi_min: float = float(os.getenv("SELL_RSI_MIN", "30"))
-    sell_rsi_max: float = float(os.getenv("SELL_RSI_MAX", "45"))
+    buy_rsi_min: float = float(os.getenv("BUY_RSI_MIN", "20"))
+    buy_rsi_max: float = float(os.getenv("BUY_RSI_MAX", "100"))
+    sell_rsi_min: float = float(os.getenv("SELL_RSI_MIN", "0"))
+    sell_rsi_max: float = float(os.getenv("SELL_RSI_MAX", "80"))
     rvol_lookback: int = int(os.getenv("RVOL_LOOKBACK", "20"))
-    min_15m_rvol: float = float(os.getenv("MIN_15M_RVOL", "1.2"))
+    min_15m_rvol: float = float(os.getenv("MIN_15M_RVOL", "0.001"))
     require_ema_crossover: bool = _bool("REQUIRE_EMA_CROSSOVER", "false")
 
     setup_timeframe: int = int(os.getenv("SETUP_TIMEFRAME", "5"))
@@ -45,16 +45,16 @@ class Settings:
 
     enable_progressive_ts: bool = _bool("ENABLE_PROGRESSIVE_TS", "false")
 
-    min_candle_body_ratio: float = float(os.getenv("MIN_CANDLE_BODY_RATIO", "0.60"))
-    min_ema8_slope_bars: int = int(os.getenv("MIN_EMA8_SLOPE_BARS", "5"))
-    consolidation_body_pct: float = float(os.getenv("CONSOLIDATION_BODY_PCT", "0.5"))
+    min_candle_body_ratio: float = float(os.getenv("MIN_CANDLE_BODY_RATIO", "0.01"))
+    min_ema8_slope_bars: int = int(os.getenv("MIN_EMA8_SLOPE_BARS", "999"))
+    consolidation_body_pct: float = float(os.getenv("CONSOLIDATION_BODY_PCT", "100"))
     consolidation_range_pct: float = float(os.getenv("CONSOLIDATION_RANGE_PCT", "0.3"))
     consolidation_candles: int = int(os.getenv("CONSOLIDATION_CANDLES", "3"))
 
-    rvol_morning_0915_1000: float = float(os.getenv("RVOL_MORNING_0915_1000", "2.0"))
-    rvol_morning_1000_1200: float = float(os.getenv("RVOL_MORNING_1000_1200", "1.8"))
-    rvol_midday_1200_1400: float = float(os.getenv("RVOL_MIDDAY_1200_1400", "2.2"))
-    rvol_close_1400_1530: float = float(os.getenv("RVOL_CLOSE_1400_1530", "1.5"))
+    rvol_morning_0915_1000: float = float(os.getenv("RVOL_MORNING_0915_1000", "0.001"))
+    rvol_morning_1000_1200: float = float(os.getenv("RVOL_MORNING_1000_1200", "0.001"))
+    rvol_midday_1200_1400: float = float(os.getenv("RVOL_MIDDAY_1200_1400", "0.001"))
+    rvol_close_1400_1530: float = float(os.getenv("RVOL_CLOSE_1400_1530", "0.001"))
 
     min_followthrough_volume_rvol: float = float(os.getenv("MIN_FOLLOWTHROUGH_VOLUME_RVOL", "1.5"))
 

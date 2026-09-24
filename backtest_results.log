@@ -1,0 +1,10 @@
+2026-09-24 18:16:35,194 | ERROR | Backtest failed: 'DHAN_CLIENT_ID'
+Traceback (most recent call last):
+  File "C:\Projects\momentum_scanner_repo\app\backtest.py", line 157, in <module>
+    dhan = DhanClient()
+           ^^^^^^^^^^^^
+  File "C:\Projects\momentum_scanner_repo\app\dhan_client.py", line 74, in __init__
+    client_id = os.environ["DHAN_CLIENT_ID"]
+                ~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "<frozen os>", line 679, in __getitem__
+KeyError: 'DHAN_CLIENT_ID'
