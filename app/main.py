@@ -225,9 +225,18 @@ def _fetch_nifty_15m(dhan):
 def _process_b1(dhan, state, ts):
     trading_day = ts.date()
     nifty15m = _fetch_nifty_15m(dhan)
+
+    # SAMPLING MODE: Test with subset of symbols to diagnose API rate-limiting
+    universe = state.get("universe", [])
+    if os.getenv("SAMPLE_SYMBOLS"):
+        sample_list = os.getenv("SAMPLE_SYMBOLS").split(",")
+        universe = [item for item in universe if item.get("symbol") in sample_list]
+        LOG.info("SAMPLING_MODE | testing %d/%d symbols: %s",
+                 len(universe), len(state.get("universe", [])), sample_list)
+
     stats = ScanStats(total_symbols=len(state.get("universe", [])))
 
-    for item in state.get("universe", []):
+    for item in universe:
         symbol = item.get("symbol")
         if not symbol or item.get("security_id") is None:
             continue
