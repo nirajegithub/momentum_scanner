@@ -205,32 +205,8 @@ def _confirmation_5m(dhan, security_id, setup_completion, now_ts):
     return rows, df5
 
 
-def _fetch_nifty_15m(dhan):
-    """Fetch Nifty50 15M data for market trend alignment."""
-    try:
-        nifty_security_id = 99926000  # Nifty50 security ID in Dhan
-        ts = _now_ist()
-        trading_day = ts.date()
-        df = dhan.historical_intraday_df(
-            security_id=nifty_security_id,
-            interval=15,
-            from_date=trading_day.isoformat(),
-            to_date=(trading_day + pd.Timedelta(days=1)).isoformat(),
-            retry_on_empty=True,
-            max_retries=6,
-            retry_delay_seconds=5.0,
-        )
-        if df is not None and not df.empty:
-            x = completed_candles(df, ts, 15)
-            return x
-    except Exception as exc:
-        LOG.warning("Failed to fetch Nifty50 data: %s", exc)
-    return None
-
-
 def _process_b1(dhan, state, ts):
     trading_day = ts.date()
-    nifty15m = _fetch_nifty_15m(dhan)
 
     # SAMPLING MODE: Test with subset of symbols to diagnose API rate-limiting
     universe = state.get("universe", [])
