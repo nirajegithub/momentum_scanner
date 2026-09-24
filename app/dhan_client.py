@@ -239,11 +239,19 @@ class DhanClient:
         from_date: str,
         to_date: str,
         interval: int,
+        retry_on_empty: bool = True,
+        max_retries: int = 3,
+        retry_delay_seconds: float = 2.0,
     ) -> pd.DataFrame:
         """Fetch historical intraday candles from Dhan's V2 API.
 
         Dhan supports 1/5/15/25/60 minute intervals. The backtester uses
         5M and 15M only. Timestamps returned by Dhan are converted to IST.
+
+        Args:
+            retry_on_empty: If True, retry when API returns empty data (early market lag).
+            max_retries: Maximum number of retry attempts for empty responses.
+            retry_delay_seconds: Initial delay between retries (exponential backoff).
         """
         if int(interval) not in (1, 5, 15, 25, 60):
             raise ValueError("interval must be one of 1, 5, 15, 25, 60")
@@ -262,64 +270,88 @@ class DhanClient:
             "fromDate": from_date,
             "toDate": to_date,
         }
-        try:
-            LOG.debug("Dhan intraday request: security_id=%s interval=%s from_date=%s to_date=%s",
-                     security_id, interval, from_date, to_date)
-            response = _post_with_rate_limit_retry(
-                "https://api.dhan.co/v2/charts/intraday",
-                headers,
-                payload,
-                30,
-                f"security_id={security_id} interval={interval}",
-            )
-            if response.status_code != 200:
-                LOG.error(
-                    "Dhan intraday API failed: security_id=%s interval=%s HTTP=%s response=%s",
-                    security_id, interval, response.status_code, response.text,
+
+        # Retry loop for empty data (market data lag)
+        attempt = 0
+        delay = retry_delay_seconds
+
+        while attempt <= max_retries:
+            try:
+                if attempt > 0 and retry_on_empty:
+                    LOG.info("Dhan intraday retry %d/%d after %.1fs wait: security_id=%s",
+                            attempt, max_retries, delay, security_id)
+                    time.sleep(delay)
+
+                LOG.debug("Dhan intraday request: security_id=%s interval=%s from_date=%s to_date=%s",
+                         security_id, interval, from_date, to_date)
+                response = _post_with_rate_limit_retry(
+                    "https://api.dhan.co/v2/charts/intraday",
+                    headers,
+                    payload,
+                    30,
+                    f"security_id={security_id} interval={interval}",
                 )
-                return pd.DataFrame()
-
-            resp_json = response.json()
-            LOG.debug("Dhan intraday response received: security_id=%s HTTP=%s content_length=%d",
-                     security_id, response.status_code, len(response.text))
-
-            # Handle both flat and nested response formats
-            if isinstance(resp_json, dict) and "data" in resp_json and isinstance(resp_json.get("data"), dict):
-                # Nested format: {"status": "success", "data": {...}}
-                data = resp_json["data"]
-                status = resp_json.get("status")
-                if status != "success":
-                    LOG.warning("Dhan intraday API unsuccessful: security_id=%s interval=%s status=%s", security_id, interval, status)
+                if response.status_code != 200:
+                    LOG.error(
+                        "Dhan intraday API failed: security_id=%s interval=%s HTTP=%s response=%s",
+                        security_id, interval, response.status_code, response.text,
+                    )
                     return pd.DataFrame()
-            else:
-                # Flat format: {"timestamp": [...], "open": [...], ...}
-                data = resp_json
 
-            required = ["timestamp", "open", "high", "low", "close", "volume"]
-            missing = [key for key in required if key not in data]
-            if missing:
-                LOG.error("Dhan intraday response missing fields: security_id=%s missing=%s response=%s", security_id, missing, resp_json)
+                resp_json = response.json()
+                LOG.debug("Dhan intraday response received: security_id=%s HTTP=%s content_length=%d",
+                         security_id, response.status_code, len(response.text))
+
+                # Handle both flat and nested response formats
+                if isinstance(resp_json, dict) and "data" in resp_json and isinstance(resp_json.get("data"), dict):
+                    # Nested format: {"status": "success", "data": {...}}
+                    data = resp_json["data"]
+                    status = resp_json.get("status")
+                    if status != "success":
+                        LOG.warning("Dhan intraday API unsuccessful: security_id=%s interval=%s status=%s", security_id, interval, status)
+                        return pd.DataFrame()
+                else:
+                    # Flat format: {"timestamp": [...], "open": [...], ...}
+                    data = resp_json
+
+                required = ["timestamp", "open", "high", "low", "close", "volume"]
+                missing = [key for key in required if key not in data]
+                if missing:
+                    LOG.error("Dhan intraday response missing fields: security_id=%s missing=%s response=%s", security_id, missing, resp_json)
+                    return pd.DataFrame()
+
+                n = min(len(data[key]) for key in required)
+                if n == 0:
+                    # Empty data - retry if configured
+                    if retry_on_empty and attempt < max_retries:
+                        candle_counts = {key: len(data.get(key, [])) if isinstance(data.get(key), list) else 0 for key in required}
+                        LOG.info("Dhan intraday returned no candles (possible market data lag): security_id=%s interval=%s attempt=%d/%d",
+                                security_id, interval, attempt + 1, max_retries)
+                        attempt += 1
+                        delay *= 2  # exponential backoff
+                        continue
+                    else:
+                        candle_counts = {key: len(data.get(key, [])) if isinstance(data.get(key), list) else 0 for key in required}
+                        LOG.warning("Dhan intraday API returned no candles: security_id=%s interval=%s from=%s to=%s candle_counts=%s response_keys=%s",
+                                    security_id, interval, from_date, to_date, candle_counts, list(resp_json.keys()) if isinstance(resp_json, dict) else "not_dict")
+                        return pd.DataFrame()
+
+                df = pd.DataFrame({key: data[key][:n] for key in required})
+                df["timestamp"] = pd.to_datetime(df["timestamp"], unit="s", utc=True).dt.tz_convert(IST)
+                df = df.set_index("timestamp").sort_index()
+                result = df[~df.index.duplicated(keep="last")]
+                LOG.debug("Dhan intraday dataframe: security_id=%s interval=%s rows=%d first=%s last=%s",
+                         security_id, interval, len(result),
+                         result.index.min() if len(result) > 0 else "N/A",
+                         result.index.max() if len(result) > 0 else "N/A")
+                return result
+
+            except requests.RequestException as exc:
+                LOG.error("Dhan intraday HTTP exception: security_id=%s interval=%s error=%s", security_id, interval, exc)
                 return pd.DataFrame()
 
-            n = min(len(data[key]) for key in required)
-            if n == 0:
-                candle_counts = {key: len(data.get(key, [])) if isinstance(data.get(key), list) else 0 for key in required}
-                LOG.warning("Dhan intraday API returned no candles: security_id=%s interval=%s from=%s to=%s candle_counts=%s response_keys=%s",
-                            security_id, interval, from_date, to_date, candle_counts, list(resp_json.keys()) if isinstance(resp_json, dict) else "not_dict")
-                return pd.DataFrame()
-
-            df = pd.DataFrame({key: data[key][:n] for key in required})
-            df["timestamp"] = pd.to_datetime(df["timestamp"], unit="s", utc=True).dt.tz_convert(IST)
-            df = df.set_index("timestamp").sort_index()
-            result = df[~df.index.duplicated(keep="last")]
-            LOG.debug("Dhan intraday dataframe: security_id=%s interval=%s rows=%d first=%s last=%s",
-                     security_id, interval, len(result),
-                     result.index.min() if len(result) > 0 else "N/A",
-                     result.index.max() if len(result) > 0 else "N/A")
-            return result
-        except requests.RequestException as exc:
-            LOG.error("Dhan intraday HTTP exception: security_id=%s interval=%s error=%s", security_id, interval, exc)
-            return pd.DataFrame()
+        # Exhausted retries
+        return pd.DataFrame()
 
     # ------------------------------------------------------------------
     # Daily Historical Data
