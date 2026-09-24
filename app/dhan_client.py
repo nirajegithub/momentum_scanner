@@ -299,7 +299,9 @@ class DhanClient:
 
             n = min(len(data[key]) for key in required)
             if n == 0:
-                LOG.warning("Dhan intraday API returned no candles: security_id=%s interval=%s from=%s to=%s", security_id, interval, from_date, to_date)
+                candle_counts = {key: len(data.get(key, [])) if isinstance(data.get(key), list) else 0 for key in required}
+                LOG.warning("Dhan intraday API returned no candles: security_id=%s interval=%s from=%s to=%s candle_counts=%s response_keys=%s",
+                            security_id, interval, from_date, to_date, candle_counts, list(resp_json.keys()) if isinstance(resp_json, dict) else "not_dict")
                 return pd.DataFrame()
 
             df = pd.DataFrame({key: data[key][:n] for key in required})
