@@ -28,6 +28,14 @@ LOG = logging.getLogger(__name__)
 ORB_TIME = time(9, 15)
 MARKET_CLOSE_TIME = time(15, 30)
 
+# NSE indices that don't have intraday data in Dhan API
+INDICES_TO_SKIP = {
+    "NIFTY50", "NIFTYIT", "NIFTY100", "NIFTYAUTO", "NIFTYCONSTRUCTION",
+    "NIFTYINFRA", "NIFTYENERGY", "NIFTYHEALTHCARE", "NIFTYFMCG", "NIFTYMEDIA",
+    "NIFTYPHARM", "NIFTYTECH", "NIFTYREALTY", "NIFTYBANK", "NIFTYFINANCE",
+    "NIFTYPSE", "NIFTYPSURVEY", "NIFTYSERV", "NIFTYTOTAL", "NIFTYCONSUM",
+}
+
 
 def _now_ist():
     return datetime.now(IST)
@@ -222,6 +230,10 @@ def _process_b1(dhan, state, ts):
     for item in state.get("universe", []):
         symbol = item.get("symbol")
         if not symbol or item.get("security_id") is None:
+            continue
+
+        if symbol in INDICES_TO_SKIP:
+            stats.skipped_indices += 1
             continue
 
         ss = _state_for_symbol(state, symbol)

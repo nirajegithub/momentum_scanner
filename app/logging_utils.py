@@ -11,6 +11,7 @@ LOG = logging.getLogger(__name__)
 class ScanStats:
     """Track scan statistics across all symbols."""
     total_symbols: int = 0
+    skipped_indices: int = 0
     data_unavailable: int = 0
     orb_not_available: int = 0
     no_breakout: int = 0
@@ -22,7 +23,7 @@ class ScanStats:
     def print_summary(self):
         """Print scan summary statistics."""
         LOG.info("=" * 80)
-        LOG.info("SCAN_SUMMARY | total_symbols=%d", self.total_symbols)
+        LOG.info("SCAN_SUMMARY | total_symbols=%d | skipped_indices=%d", self.total_symbols, self.skipped_indices)
         LOG.info("  Data Stage: unavailable=%d | orb_missing=%d",
                  self.data_unavailable, self.orb_not_available)
         LOG.info("  Breakout Stage: no_breakout=%d | filter_rejected=%d | setups=%d",
