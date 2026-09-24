@@ -36,12 +36,11 @@ jobs:
       MIN_STOP_DISTANCE_PERCENT: "0.50"
       RISK_PERCENT: "1.0"
       ENTRY_TIMEFRAME: "5"
-      SETUP_TIMEFRAME: "15"
+      SETUP_TIMEFRAME: "5"
       SCAN_START_HHMM: "930"
       SCAN_END_HHMM: "1505"
       SCANNER_ACTION: "scan"
       PYTHONUNBUFFERED: "1"
-      SAMPLE_SYMBOLS: "HINDALCO,ACMESOLAR,ANANTRAJ,BIKAJI,ELECON"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
