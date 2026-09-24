@@ -563,6 +563,85 @@
       "curve_context": "NOT_AVAILABLE",
       "early_momentum_surge": false,
       "market_trend_aligned": true
+    },
+    "GABRIEL": {
+      "direction": "SELL",
+      "setup": "B1_ORB",
+      "setup_15m_timestamp": "2026-09-24T12:30:00+05:30",
+      "setup_15m_completion": "2026-09-24T12:45:00+05:30",
+      "setup_15m_open": 1414.0,
+      "setup_15m_high": 1415.0,
+      "setup_15m_low": 1407.0,
+      "setup_15m_close": 1408.0,
+      "setup_15m_rsi14": 33.57343675942673,
+      "setup_15m_previous_rsi14": 39.005064452382925,
+      "setup_15m_rvol": 4.020168256063819,
+      "daily_close": 1428.1,
+      "daily_volume": 1533195.0,
+      "trade_quality_score": 4.5,
+      "departure_score": 1.5,
+      "freshness_score": 1.0,
+      "base_candle_score": 2.0,
+      "base_candle_count": 1,
+      "zone_test_count": 1,
+      "zone_low": 1414.0,
+      "zone_high": 1416.5,
+      "curve_context": "LOW",
+      "early_momentum_surge": true,
+      "early_5m_search_start": "2026-09-24T12:35:31.667118+05:30",
+      "market_trend_aligned": true
+    },
+    "HINDALCO": {
+      "direction": "SELL",
+      "setup": "B1_ORB",
+      "setup_15m_timestamp": "2026-09-24T12:25:00+05:30",
+      "setup_15m_completion": "2026-09-24T12:40:00+05:30",
+      "setup_15m_open": 983.2,
+      "setup_15m_high": 983.3,
+      "setup_15m_low": 980.6,
+      "setup_15m_close": 981.4,
+      "setup_15m_rsi14": 35.65355082674441,
+      "setup_15m_previous_rsi14": 42.568208279666656,
+      "setup_15m_rvol": 2.523767347073013,
+      "daily_close": 1003.8,
+      "daily_volume": 5158521.0,
+      "trade_quality_score": 3.5,
+      "departure_score": 1.5,
+      "freshness_score": 0.0,
+      "base_candle_score": 2.0,
+      "base_candle_count": 2,
+      "zone_test_count": 6,
+      "zone_low": 982.5,
+      "zone_high": 984.0,
+      "curve_context": "NOT_AVAILABLE",
+      "early_momentum_surge": false,
+      "market_trend_aligned": true
+    },
+    "NATIONALUM": {
+      "direction": "BUY",
+      "setup": "B1_ORB",
+      "setup_15m_timestamp": "2026-09-24T12:30:00+05:30",
+      "setup_15m_completion": "2026-09-24T12:45:00+05:30",
+      "setup_15m_open": 360.1,
+      "setup_15m_high": 361.0,
+      "setup_15m_low": 360.05,
+      "setup_15m_close": 360.9,
+      "setup_15m_rsi14": 56.76077317755229,
+      "setup_15m_previous_rsi14": 50.36430198694366,
+      "setup_15m_rvol": 1.2525375213406607,
+      "daily_close": 363.45,
+      "daily_volume": 6249209.0,
+      "trade_quality_score": 3.0,
+      "departure_score": 3.0,
+      "freshness_score": 0.0,
+      "base_candle_score": 0.0,
+      "base_candle_count": 0,
+      "zone_test_count": 0,
+      "zone_low": null,
+      "zone_high": null,
+      "curve_context": "HIGH",
+      "early_momentum_surge": false,
+      "market_trend_aligned": true
     }
   },
   "daily_filters": {},
@@ -617,7 +696,7 @@
     },
     "ACMESOLAR": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -739,7 +818,7 @@
     },
     "ATHERENERG": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -860,7 +939,7 @@
     },
     "CARBORUNIV": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -1077,7 +1156,7 @@
     },
     "FIVESTAR": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -1414,7 +1493,7 @@
     },
     "MOTILALOFS": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -1439,8 +1518,8 @@
       "setup": null
     },
     "NATIONALUM": {
-      "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "status": "WAITING_FOR_5M",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -1449,7 +1528,32 @@
         "low": 354.4,
         "close": 358.8
       },
-      "setup": null,
+      "setup": {
+        "direction": "BUY",
+        "setup": "B1_ORB",
+        "setup_15m_timestamp": "2026-09-24T12:30:00+05:30",
+        "setup_15m_completion": "2026-09-24T12:45:00+05:30",
+        "setup_15m_open": 360.1,
+        "setup_15m_high": 361.0,
+        "setup_15m_low": 360.05,
+        "setup_15m_close": 360.9,
+        "setup_15m_rsi14": 56.76077317755229,
+        "setup_15m_previous_rsi14": 50.36430198694366,
+        "setup_15m_rvol": 1.2525375213406607,
+        "daily_close": 363.45,
+        "daily_volume": 6249209.0,
+        "trade_quality_score": 3.0,
+        "departure_score": 3.0,
+        "freshness_score": 0.0,
+        "base_candle_score": 0.0,
+        "base_candle_count": 0,
+        "zone_test_count": 0,
+        "zone_low": null,
+        "zone_high": null,
+        "curve_context": "HIGH",
+        "early_momentum_surge": false,
+        "market_trend_aligned": true
+      },
       "orb_source": "TODAY_ORB"
     },
     "NAVA": {
@@ -1490,7 +1594,7 @@
     },
     "PAYTM": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -1612,7 +1716,7 @@
     },
     "SONACOMS": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -1841,7 +1945,7 @@
     },
     "VOLTAS": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -2182,7 +2286,7 @@
     },
     "POLICYBZR": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -2208,7 +2312,7 @@
     },
     "WOCKPHARMA": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -2222,7 +2326,7 @@
     },
     "ANANTRAJ": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -2255,8 +2359,8 @@
       "orb": null
     },
     "GABRIEL": {
-      "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "status": "WAITING_FOR_5M",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -2266,7 +2370,33 @@
         "close": 1416.3
       },
       "orb_source": "TODAY_ORB",
-      "setup": null
+      "setup": {
+        "direction": "SELL",
+        "setup": "B1_ORB",
+        "setup_15m_timestamp": "2026-09-24T12:30:00+05:30",
+        "setup_15m_completion": "2026-09-24T12:45:00+05:30",
+        "setup_15m_open": 1414.0,
+        "setup_15m_high": 1415.0,
+        "setup_15m_low": 1407.0,
+        "setup_15m_close": 1408.0,
+        "setup_15m_rsi14": 33.57343675942673,
+        "setup_15m_previous_rsi14": 39.005064452382925,
+        "setup_15m_rvol": 4.020168256063819,
+        "daily_close": 1428.1,
+        "daily_volume": 1533195.0,
+        "trade_quality_score": 4.5,
+        "departure_score": 1.5,
+        "freshness_score": 1.0,
+        "base_candle_score": 2.0,
+        "base_candle_count": 1,
+        "zone_test_count": 1,
+        "zone_low": 1414.0,
+        "zone_high": 1416.5,
+        "curve_context": "LOW",
+        "early_momentum_surge": true,
+        "early_5m_search_start": "2026-09-24T12:35:31.667118+05:30",
+        "market_trend_aligned": true
+      }
     },
     "HBLENGINE": {
       "status": "WAITING",
@@ -2280,7 +2410,7 @@
     },
     "KEC": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -2309,7 +2439,7 @@
     },
     "REDINGTON": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -2333,7 +2463,7 @@
     },
     "TENNIND": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -2347,7 +2477,7 @@
     },
     "ARE&M": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -2361,7 +2491,7 @@
     },
     "ASTERDM": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -2375,7 +2505,7 @@
     },
     "BALRAMCHIN": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -2389,7 +2519,7 @@
     },
     "BIKAJI": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -2403,7 +2533,7 @@
     },
     "CAMS": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -2417,7 +2547,7 @@
     },
     "CIEINDIA": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -2469,8 +2599,8 @@
       }
     },
     "HINDALCO": {
-      "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "status": "WAITING_FOR_5M",
+      "last_processed_15m": "2026-09-24T12:25:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -2480,11 +2610,36 @@
         "close": 987.1
       },
       "orb_source": "TODAY_ORB",
-      "setup": null
+      "setup": {
+        "direction": "SELL",
+        "setup": "B1_ORB",
+        "setup_15m_timestamp": "2026-09-24T12:25:00+05:30",
+        "setup_15m_completion": "2026-09-24T12:40:00+05:30",
+        "setup_15m_open": 983.2,
+        "setup_15m_high": 983.3,
+        "setup_15m_low": 980.6,
+        "setup_15m_close": 981.4,
+        "setup_15m_rsi14": 35.65355082674441,
+        "setup_15m_previous_rsi14": 42.568208279666656,
+        "setup_15m_rvol": 2.523767347073013,
+        "daily_close": 1003.8,
+        "daily_volume": 5158521.0,
+        "trade_quality_score": 3.5,
+        "departure_score": 1.5,
+        "freshness_score": 0.0,
+        "base_candle_score": 2.0,
+        "base_candle_count": 2,
+        "zone_test_count": 6,
+        "zone_low": 982.5,
+        "zone_high": 984.0,
+        "curve_context": "NOT_AVAILABLE",
+        "early_momentum_surge": false,
+        "market_trend_aligned": true
+      }
     },
     "IIFL": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -2498,7 +2653,7 @@
     },
     "IKS": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -2512,7 +2667,7 @@
     },
     "INTELLECT": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -2526,7 +2681,7 @@
     },
     "JINDALSTEL": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -2540,7 +2695,7 @@
     },
     "KEI": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -2593,7 +2748,7 @@
     },
     "NATCOPHARM": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -2607,7 +2762,7 @@
     },
     "NETWEB": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -2621,7 +2776,7 @@
     },
     "OLECTRA": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -2635,7 +2790,7 @@
     },
     "RADICO": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -2649,7 +2804,7 @@
     },
     "UNITDSPR": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -2663,7 +2818,7 @@
     },
     "WHIRLPOOL": {
       "status": "WAITING_FOR_15M",
-      "last_processed_15m": "2026-09-24T12:20:00+05:30",
+      "last_processed_15m": "2026-09-24T12:30:00+05:30",
       "orb": {
         "timestamp": "2026-09-24T09:15:00+05:30",
         "date": "2026-09-24",
@@ -6576,5 +6731,5 @@
       }
     }
   },
-  "volume_gainers_last_refresh": "2026-09-24T12:20:00+05:30"
+  "volume_gainers_last_refresh": "2026-09-24T12:30:00+05:30"
 }
