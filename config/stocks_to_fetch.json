@@ -48,8 +48,19 @@
       {
         "symbol": "BAJFINANCE",
         "security_id": 1346369,
+<<<<<<< HEAD
         "enabled": false,
         "reason": "DISABLED - 0% backtest pass rate, unfit for B1 ORB strategy"
+=======
+        "enabled": true,
+        "reason": "Day 1 signal stock - no historical data"
+      },
+      {
+        "symbol": "QUADFUTURE",
+        "security_id": 544336,
+        "enabled": true,
+        "reason": "Day 1 signal stock - no historical data"
+>>>>>>> 82c28c1747fe21058dc90bd8922d0626a95b4911
       }
     ],
     "parameters": {
