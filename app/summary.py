@@ -5,6 +5,10 @@ def _points(signal, price):
 
 
 def _result_price(signal, final_prices):
+    # SL hit takes priority (most critical exit)
+    if signal.get("sl_hit") is True:
+        return float(signal["risk"]["sl"])
+
     # If a target was reached, summarize the highest achieved target rather
     # than allowing a later EOD pullback to erase the achieved target result.
     hit = signal.get("highest_target_hit")

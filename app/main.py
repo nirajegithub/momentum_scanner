@@ -22,6 +22,7 @@ from .logging_utils import ScanStats, log_orb_check, log_15m_candle_check, log_s
 from .state import backup_and_clear
 from .orb_manager import get_orb_with_fallback
 from .orb_tracker import log_orb_used, log_orb_selection
+from .signal_monitor import monitor_active_signals
 
 IST = ZoneInfo("Asia/Kolkata")
 LOG = logging.getLogger(__name__)
@@ -452,6 +453,22 @@ def refresh_universe(dhan, state, ts):
     return True
 
 
+def _fetch_current_prices(dhan, state):
+    """Fetch current LTP for all active signals and setups."""
+    current_prices = {}
+    for item in state.get("universe", []):
+        symbol = item.get("symbol")
+        if not symbol or item.get("security_id") is None:
+            continue
+        try:
+            quotes = dhan.quotes(security_id=item["security_id"])
+            if quotes and quotes.get("ltp"):
+                current_prices[symbol] = float(quotes["ltp"])
+        except Exception as exc:
+            LOG.debug("Failed to fetch current price for %s: %s", symbol, exc)
+    return current_prices
+
+
 def _send_daily_summary(dhan, state, ts):
     """Send daily summary of all signals/trades for the current session."""
     trading_day = ts.date()
@@ -568,6 +585,15 @@ def main():
         LOG.info("Cleared previous day entries | signals: %d -> %d | setups: %d -> %d",
                 old_signal_count, len(cleared_signals), old_setup_count, len(cleared_setups))
         save(state)
+
+    # Monitor active signals against current market prices
+    try:
+        current_prices = _fetch_current_prices(dhan, state)
+        if current_prices:
+            state = monitor_active_signals(state, current_prices)
+            save(state)
+    except Exception as exc:
+        LOG.warning("Signal monitoring failed | %s", exc)
 
     _process_b1(dhan, state, ts)
 
