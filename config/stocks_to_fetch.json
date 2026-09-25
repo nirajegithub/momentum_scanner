@@ -6,50 +6,50 @@
       {
         "symbol": "PNBHOUSING",
         "security_id": 2031296,
-        "enabled": false,
-        "reason": "DISABLED - 0% backtest pass rate, unfit for B1 ORB strategy"
+        "enabled": true,
+        "reason": "Data collection only - 0% pass rate (SELL stock, not used in Phase 1)"
       },
       {
         "symbol": "SBILIFE",
         "security_id": 1922057,
-        "enabled": false,
-        "reason": "DISABLED - 0% backtest pass rate, unfit for B1 ORB strategy"
+        "enabled": true,
+        "reason": "Data collection only - 0% pass rate (SELL stock, not used in Phase 1)"
       },
       {
         "symbol": "TRENT",
         "security_id": 1705857,
-        "enabled": false,
-        "reason": "DISABLED - 0% backtest pass rate, unfit for B1 ORB strategy"
+        "enabled": true,
+        "reason": "Data collection only - 0% pass rate (SELL stock, not used in Phase 1)"
       },
       {
         "symbol": "PIRAMALFIN",
         "security_id": 1918597,
-        "enabled": false,
-        "reason": "DISABLED - 0% backtest pass rate, unfit for B1 ORB strategy"
+        "enabled": true,
+        "reason": "Data collection only - 0% pass rate (SELL stock, not used in Phase 1)"
       },
       {
         "symbol": "AXISBANK",
         "security_id": 1333441,
         "enabled": true,
-        "reason": "ENABLED - 1.43% pass rate (21 setups) | Top BUY performer for Phase 1"
+        "reason": "Phase 1 BUY signal generator - 1.43% pass rate (21 setups, primary source)"
       },
       {
         "symbol": "HONASA",
         "security_id": 2004729,
-        "enabled": false,
-        "reason": "DISABLED - 0% backtest pass rate, unfit for B1 ORB strategy (SELL stock)"
+        "enabled": true,
+        "reason": "Data collection only - 0% pass rate (SELL stock, not used in Phase 1)"
       },
       {
         "symbol": "AUBANK",
         "security_id": 1346753,
         "enabled": true,
-        "reason": "ENABLED - 0.20% pass rate (3 setups) | BUY performer for Phase 1"
+        "reason": "Phase 1 BUY signal generator - 0.20% pass rate (3 setups)"
       },
       {
         "symbol": "BAJFINANCE",
         "security_id": 1346369,
         "enabled": true,
-        "reason": "ENABLED - 0.54% pass rate (8 setups) | BUY performer for Phase 1"
+        "reason": "Phase 1 BUY signal generator - 0.54% pass rate (8 setups)"
       }
     ],
     "parameters": {
