@@ -30,37 +30,26 @@
       {
         "symbol": "AXISBANK",
         "security_id": 1333441,
-        "enabled": false,
-        "reason": "DISABLED - 0% backtest pass rate, unfit for B1 ORB strategy"
+        "enabled": true,
+        "reason": "ENABLED - 1.43% pass rate (21 setups) | Top BUY performer for Phase 1"
       },
       {
         "symbol": "HONASA",
         "security_id": 2004729,
         "enabled": false,
-        "reason": "DISABLED - 0% backtest pass rate, unfit for B1 ORB strategy"
+        "reason": "DISABLED - 0% backtest pass rate, unfit for B1 ORB strategy (SELL stock)"
       },
       {
         "symbol": "AUBANK",
         "security_id": 1346753,
-        "enabled": false,
-        "reason": "DISABLED - 0% backtest pass rate, unfit for B1 ORB strategy"
+        "enabled": true,
+        "reason": "ENABLED - 0.20% pass rate (3 setups) | BUY performer for Phase 1"
       },
       {
         "symbol": "BAJFINANCE",
         "security_id": 1346369,
-<<<<<<< HEAD
-        "enabled": false,
-        "reason": "DISABLED - 0% backtest pass rate, unfit for B1 ORB strategy"
-=======
         "enabled": true,
-        "reason": "Day 1 signal stock - no historical data"
-      },
-      {
-        "symbol": "QUADFUTURE",
-        "security_id": 544336,
-        "enabled": true,
-        "reason": "Day 1 signal stock - no historical data"
->>>>>>> 82c28c1747fe21058dc90bd8922d0626a95b4911
+        "reason": "ENABLED - 0.54% pass rate (8 setups) | BUY performer for Phase 1"
       }
     ],
     "parameters": {
