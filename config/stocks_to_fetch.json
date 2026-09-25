@@ -1,0 +1,62 @@
+{
+  "fetch_config": {
+    "description": "List of stocks to fetch 90-day historical data for. Add/remove stocks as needed.",
+    "note": "Security IDs obtained from Dhan API master data. Update if IDs change.",
+    "stocks": [
+      {
+        "symbol": "PNBHOUSING",
+        "security_id": 2031296,
+        "enabled": true,
+        "reason": "Day 1 signal stock - no historical data"
+      },
+      {
+        "symbol": "SBILIFE",
+        "security_id": 1922057,
+        "enabled": true,
+        "reason": "Day 1 signal stock - no historical data"
+      },
+      {
+        "symbol": "TRENT",
+        "security_id": 1705857,
+        "enabled": true,
+        "reason": "Day 1 signal stock - no historical data"
+      },
+      {
+        "symbol": "PIRAMALFIN",
+        "security_id": 1918597,
+        "enabled": true,
+        "reason": "Day 1 signal stock - no historical data"
+      },
+      {
+        "symbol": "AXISBANK",
+        "security_id": 1333441,
+        "enabled": true,
+        "reason": "Day 1 signal stock - no historical data"
+      },
+      {
+        "symbol": "HONASA",
+        "security_id": 2004729,
+        "enabled": true,
+        "reason": "Day 1 signal stock - no historical data"
+      },
+      {
+        "symbol": "AUBANK",
+        "security_id": 1346753,
+        "enabled": true,
+        "reason": "Day 1 signal stock - no historical data"
+      },
+      {
+        "symbol": "BAJFINANCE",
+        "security_id": 1346369,
+        "enabled": true,
+        "reason": "Day 1 signal stock - no historical data"
+      }
+    ],
+    "parameters": {
+      "interval_minutes": 15,
+      "days_back": 90,
+      "output_format": "csv",
+      "append_to_existing": true
+    }
+  }
+}

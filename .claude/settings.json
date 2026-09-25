@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(timeout 120 python -m app.backtest_9stocks_dhan)",
+      "Bash(python -m app.backtest_9stocks_dhan)",
+      "Bash(python3)",
+      "Bash(timeout 300 python -m app.fetch_90day_data)"
+    ]
+  }
+}
