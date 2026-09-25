@@ -488,7 +488,19 @@ def _send_daily_summary(dhan, state, ts):
 
 
 def main():
-    logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"), format="%(asctime)s | %(levelname)s | %(message)s")
+    class ISTFormatter(logging.Formatter):
+        """Custom formatter that converts UTC times to IST."""
+        def formatTime(self, record, datefmt=None):
+            dt = datetime.fromtimestamp(record.created, tz=IST)
+            if datefmt:
+                return dt.strftime(datefmt)
+            return dt.strftime("%Y-%m-%d %H:%M:%S IST")
+
+    handler = logging.StreamHandler()
+    handler.setFormatter(ISTFormatter(fmt="%(asctime)s | %(levelname)s | %(message)s"))
+    logging.root.addHandler(handler)
+    logging.root.setLevel(os.getenv("LOG_LEVEL", "INFO"))
+
     ts = _now_ist()
     if not is_nse_trading_day(ts.date()):
         LOG.info("Not an NSE trading day")
