@@ -45,6 +45,31 @@ def monitor_active_signals(state, current_prices):
             signal["price_history"] = []
         signal["price_history"].append({"time": now.isoformat(), "ltp": ltp})
 
+        # Log informative status line
+        if direction == "BUY":
+            sl_gap = ltp - sl
+            t1_gap = ltp - t1
+            t2_gap = ltp - t2
+            t3_gap = ltp - t3
+            sl_status = f"SL@{sl:.2f}({sl_gap:+.2f})" if sl_gap > 0 else f"SL@{sl:.2f}(BREACHED!)"
+            t1_status = f"T1@{t1:.2f}({t1_gap:+.2f})" if t1_gap < 0 else f"T1@{t1:.2f}(HIT!)"
+            t2_status = f"T2@{t2:.2f}({t2_gap:+.2f})" if t2_gap < 0 else f"T2@{t2:.2f}(HIT!)"
+            t3_status = f"T3@{t3:.2f}({t3_gap:+.2f})" if t3_gap < 0 else f"T3@{t3:.2f}(HIT!)"
+        else:  # SELL
+            sl_gap = sl - ltp
+            t1_gap = t1 - ltp
+            t2_gap = t2 - ltp
+            t3_gap = t3 - ltp
+            sl_status = f"SL@{sl:.2f}({sl_gap:+.2f})" if sl_gap > 0 else f"SL@{sl:.2f}(BREACHED!)"
+            t1_status = f"T1@{t1:.2f}({t1_gap:+.2f})" if t1_gap < 0 else f"T1@{t1:.2f}(HIT!)"
+            t2_status = f"T2@{t2:.2f}({t2_gap:+.2f})" if t2_gap < 0 else f"T2@{t2:.2f}(HIT!)"
+            t3_status = f"T3@{t3:.2f}({t3_gap:+.2f})" if t3_gap < 0 else f"T3@{t3:.2f}(HIT!)"
+
+        LOG.info(
+            "SIGNAL_STATUS | %s | %s | LTP: %.2f | %s | %s | %s | %s",
+            symbol, direction, ltp, sl_status, t1_status, t2_status, t3_status,
+        )
+
         # BUY direction
         if direction == "BUY":
             # Check SL first (exit immediately if breached)
