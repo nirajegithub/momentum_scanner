@@ -119,10 +119,14 @@ def _daily_values(dhan, item, trading_day):
 
 def _prepare_15m(dhan, security_id, ts):
     trading_day = pd.Timestamp(ts).date()
+    # Fetch from previous trading day so add_indicators has enough prior candles
+    # to fill the RVOL rolling window (min_periods=rvol_lookback) from market open.
+    # Without this, all early-session rows get dropped by dropna → empty dataframe.
+    lookback_start = previous_trading_day(trading_day)
     raw = dhan.historical_intraday_df(
         security_id=security_id,
-        interval=15,  # ← FIXED: Use 15-minute data, not 5-minute
-        from_date=trading_day.isoformat(),
+        interval=15,
+        from_date=lookback_start.isoformat(),
         to_date=(trading_day + pd.Timedelta(days=1)).isoformat(),
         retry_on_empty=True,
         max_retries=6,
@@ -130,7 +134,7 @@ def _prepare_15m(dhan, security_id, ts):
     )
     if raw is None or raw.empty:
         return pd.DataFrame()
-    x = completed_candles(raw, ts, 15)  # ← FIXED: Changed to 15 (was 5)
+    x = completed_candles(raw, ts, 15)
     return add_indicators(x, rvol_lookback=SETTINGS.rvol_lookback)
 
 
