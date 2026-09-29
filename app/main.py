@@ -590,6 +590,20 @@ def main():
                 old_signal_count, len(cleared_signals), old_setup_count, len(cleared_setups))
         save(state)
 
+    # Remove b1 entries whose ORB is from a previous trading day. Symbols that
+    # leave the universe mid-week accumulate stale state; clear it each morning
+    # so only today's scan results persist.
+    b1 = state.get("b1", {})
+    stale_b1 = [
+        sym for sym, ss in b1.items()
+        if pd.Timestamp(ss.get("orb", {}).get("timestamp", "1970-01-01")).date() != current_date
+    ]
+    if stale_b1:
+        for sym in stale_b1:
+            del b1[sym]
+        LOG.info("Cleared stale b1 entries | count=%d", len(stale_b1))
+        save(state)
+
     # Monitor active signals against current market prices
     try:
         current_prices = _fetch_current_prices(dhan, state)
