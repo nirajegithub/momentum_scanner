@@ -244,17 +244,21 @@ def _process_b1(dhan, state, ts):
 
             day15 = df15[df15.index.date == trading_day]
 
-            # Get ORB with smart fallback
-            orb, orb_source = get_orb_with_fallback(dhan, item["security_id"], trading_day)
-            if orb is None:
-                LOG.info("%s | DATA_STAGE | status=ORB_NOT_AVAILABLE", symbol)
-                stats.orb_not_available += 1
-                continue
-
-            # Log which ORB source was selected
-            log_orb_selection(symbol, trading_day, previous_trading_day(trading_day), orb_source)
-
-            if ss.get("orb") is None or ss["orb"].get("timestamp") != orb.get("timestamp"):
+            # Use cached ORB from state if already fetched today; otherwise fetch from API.
+            cached_orb = ss.get("orb")
+            cached_orb_date = (cached_orb or {}).get("date") or (
+                str((cached_orb or {}).get("timestamp", ""))[:10]
+            )
+            if cached_orb and cached_orb_date == trading_day.isoformat():
+                orb = cached_orb
+                orb_source = ss.get("orb_source", "CACHED")
+            else:
+                orb, orb_source = get_orb_with_fallback(dhan, item["security_id"], trading_day)
+                if orb is None:
+                    LOG.info("%s | DATA_STAGE | status=ORB_NOT_AVAILABLE", symbol)
+                    stats.orb_not_available += 1
+                    continue
+                log_orb_selection(symbol, trading_day, previous_trading_day(trading_day), orb_source)
                 ss["orb"] = orb
                 ss["orb_source"] = orb_source
                 ss["status"] = "WAITING_FOR_15M"
