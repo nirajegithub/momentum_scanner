@@ -389,13 +389,25 @@ class DhanClient:
             )
 
             if response.status_code != 200:
-                LOG.error(
-                    "Dhan historical API failed: "
-                    "security_id=%s HTTP=%s response=%s",
-                    security_id,
-                    response.status_code,
-                    response.text,
-                )
+                # DH-907 = no data for this instrument (delisted/inactive/SME).
+                # Expected during universe baseline build; log at WARNING not ERROR.
+                try:
+                    err_code = response.json().get("errorCode", "")
+                except Exception:
+                    err_code = ""
+                if err_code == "DH-907":
+                    LOG.warning(
+                        "Dhan historical API: no data | security_id=%s | %s",
+                        security_id, err_code,
+                    )
+                else:
+                    LOG.error(
+                        "Dhan historical API failed: "
+                        "security_id=%s HTTP=%s response=%s",
+                        security_id,
+                        response.status_code,
+                        response.text,
+                    )
 
                 return pd.DataFrame()
 
