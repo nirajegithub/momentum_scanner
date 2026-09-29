@@ -1,7 +1,7 @@
 """B1 ORB + RVOL strategy.
 
-15M completed candle creates a pending setup only when all configured quality
-filters pass. Entry is deliberately deferred to a later completed 5M candle.
+5M completed candle that closes beyond the ORB high/low is evaluated against
+quality filters (RVOL, RSI, EMA8). Entry is at the close of the confirming candle.
 """
 from __future__ import annotations
 
@@ -114,21 +114,6 @@ def evaluate_b1_breakout(df15, orb, daily_close, daily_volume, symbol=None):
     if rvol < min_rvol_time:
         return _rejected(symbol, "RVOL_BELOW_TIME_THRESHOLD", rvol=round(rvol, 2),
                         time_slot=f"{time_of_candle}", min_rvol=round(min_rvol_time, 2))
-
-    consolidation_ok = False
-    if len(df15) >= SETTINGS.consolidation_candles:
-        consol_candles = df15.iloc[-(SETTINGS.consolidation_candles):]
-        body_sizes = (consol_candles["close"] - consol_candles["open"]).abs()
-        avg_body = body_sizes.mean()
-        price_range = consol_candles["high"].max() - consol_candles["low"].min()
-        max_body_range_pct = price_range / close * 100 if close > 0 else 999
-
-        if avg_body < (close * SETTINGS.consolidation_body_pct / 100) and \
-           price_range < (close * SETTINGS.consolidation_range_pct / 100):
-            consolidation_ok = True
-
-    if not consolidation_ok:
-        return _rejected(symbol, "NO_CONSOLIDATION_BEFORE_BREAKOUT", consolidation_candles=SETTINGS.consolidation_candles)
 
     quality = score_trade_quality(df15, direction)
     score = float(quality.get("trade_quality_score", 0.0))
