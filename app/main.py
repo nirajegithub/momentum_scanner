@@ -224,6 +224,16 @@ def _process_b1(dhan, state, ts):
 
     stats = ScanStats(total_symbols=len(state.get("universe", [])))
 
+    b1_state = state.get("b1", {})
+    orb_cached_count = sum(
+        1 for ss in b1_state.values()
+        if (ss.get("orb") or {}).get("timestamp", "")[:10] == trading_day.isoformat()
+    )
+    LOG.info(
+        "UNIVERSE | total=%d | orb_cached=%d | orb_pending=%d",
+        len(universe), orb_cached_count, len(universe) - orb_cached_count,
+    )
+
     for item in universe:
         symbol = item.get("symbol")
         if not symbol or item.get("security_id") is None:
