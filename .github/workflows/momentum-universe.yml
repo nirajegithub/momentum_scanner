@@ -22,9 +22,9 @@ jobs:
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
 
       DRY_RUN: "false"
-      MIN_PRICE: "350"
-      MIN_PREV_VOLUME: "100000"
-      MIN_DAILY_MOVE_PERCENT: "0.0"
+      MIN_PRICE: "450"
+      MIN_PREV_VOLUME: "500000"
+      MIN_DAILY_MOVE_PERCENT: "2.0"
 
       SCANNER_ACTION: "universe_refresh"
 
