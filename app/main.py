@@ -430,14 +430,21 @@ def refresh_universe(dhan, state, ts):
 
 
 def _fetch_current_prices(dhan, state):
-    """Fetch current LTP for all active signals and setups."""
+    """Fetch current LTP for all active signals.
+
+    Uses security_id from signals directly so this works even after
+    backup_and_clear has blanked state["universe"].
+    """
     current_prices = {}
-    for item in state.get("universe", []):
-        symbol = item.get("symbol")
-        if not symbol or item.get("security_id") is None:
+    for signal in state.get("signals", {}).values():
+        symbol = signal.get("symbol")
+        security_id = signal.get("security_id")
+        if not symbol or security_id is None:
+            continue
+        if symbol in current_prices:
             continue
         try:
-            quotes = dhan.quotes(security_id=item["security_id"])
+            quotes = dhan.quotes(security_id=security_id)
             if quotes and quotes.get("ltp"):
                 current_prices[symbol] = float(quotes["ltp"])
         except Exception as exc:
