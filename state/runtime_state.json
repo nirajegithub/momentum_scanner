@@ -2052,6 +2052,112 @@
       "t1": 620.3500000000001,
       "t2": 649.8000000000002,
       "t3": 679.2500000000002
+    },
+    "BDL|BUY|2026-09-30T11:05:00+05:30|2026-09-30T11:05:00+05:30": {
+      "symbol": "BDL",
+      "security_id": "2144",
+      "direction": "BUY",
+      "setup": "B1_ORB",
+      "setup_15m_timestamp": "2026-09-30T11:05:00+05:30",
+      "setup_15m_completion": "2026-09-30T11:10:00+05:30",
+      "setup_15m_open": 1111.8,
+      "setup_15m_high": 1112.6,
+      "setup_15m_low": 1109.6,
+      "setup_15m_close": 1111.3,
+      "setup_15m_rsi14": 60.46482599220583,
+      "setup_15m_previous_rsi14": 61.96222536603068,
+      "setup_15m_rvol": 1.4224000527629077,
+      "daily_close": 1085.1,
+      "daily_volume": 1081355.0,
+      "trade_quality_score": 0.0,
+      "departure_score": 0.0,
+      "freshness_score": 0.0,
+      "base_candle_score": 0.0,
+      "base_candle_count": 0,
+      "zone_test_count": 0,
+      "zone_low": null,
+      "zone_high": null,
+      "curve_context": "HIGH",
+      "market_trend_aligned": true,
+      "orb_timestamp": "2026-09-30T09:15:00+05:30",
+      "orb_high": 1109.9,
+      "orb_low": 1091.0,
+      "orb_close": 1105.2,
+      "confirmation_5m_timestamp": "2026-09-30T11:05:00+05:30",
+      "confirmation_5m_close": 1111.3,
+      "confirmation_lag_minutes": -5.0,
+      "confirmation_lag_5m_candles": -1,
+      "status": "ACTIVE",
+      "risk": {
+        "entry": 1111.3,
+        "sl": 1091.0,
+        "risk": 20.299999999999955,
+        "risk_percent": 1.8266894627913213,
+        "t1": 1151.8999999999999,
+        "t2": 1172.1999999999998,
+        "t3": 1192.4999999999998,
+        "rr_t1": 2.0,
+        "trailing_sl": 1055.735,
+        "trailing_stop_pct": 5.0
+      },
+      "entry": 1111.3,
+      "sl": 1091.0,
+      "t1": 1151.8999999999999,
+      "t2": 1172.1999999999998,
+      "t3": 1192.4999999999998
+    },
+    "LENSKART|BUY|2026-09-30T11:05:00+05:30|2026-09-30T11:05:00+05:30": {
+      "symbol": "LENSKART",
+      "security_id": "759605",
+      "direction": "BUY",
+      "setup": "B1_ORB",
+      "setup_15m_timestamp": "2026-09-30T11:05:00+05:30",
+      "setup_15m_completion": "2026-09-30T11:10:00+05:30",
+      "setup_15m_open": 684.95,
+      "setup_15m_high": 689.9,
+      "setup_15m_low": 684.3,
+      "setup_15m_close": 688.45,
+      "setup_15m_rsi14": 73.5062526479438,
+      "setup_15m_previous_rsi14": 67.09749305840165,
+      "setup_15m_rvol": 3.243550625154126,
+      "daily_close": 674.6,
+      "daily_volume": 6208921.0,
+      "trade_quality_score": 3.0,
+      "departure_score": 3.0,
+      "freshness_score": 0.0,
+      "base_candle_score": 0.0,
+      "base_candle_count": 0,
+      "zone_test_count": 0,
+      "zone_low": null,
+      "zone_high": null,
+      "curve_context": "HIGH",
+      "market_trend_aligned": true,
+      "orb_timestamp": "2026-09-30T09:15:00+05:30",
+      "orb_high": 685.0,
+      "orb_low": 672.4,
+      "orb_close": 680.7,
+      "confirmation_5m_timestamp": "2026-09-30T11:05:00+05:30",
+      "confirmation_5m_close": 688.45,
+      "confirmation_lag_minutes": -5.0,
+      "confirmation_lag_5m_candles": -1,
+      "status": "ACTIVE",
+      "risk": {
+        "entry": 688.45,
+        "sl": 672.4,
+        "risk": 16.050000000000068,
+        "risk_percent": 2.331323988670211,
+        "t1": 720.5500000000002,
+        "t2": 736.6000000000003,
+        "t3": 752.6500000000003,
+        "rr_t1": 2.0,
+        "trailing_sl": 654.0275,
+        "trailing_stop_pct": 5.0
+      },
+      "entry": 688.45,
+      "sl": 672.4,
+      "t1": 720.5500000000002,
+      "t2": 736.6000000000003,
+      "t3": 752.6500000000003
     }
   },
   "pending_setups": {},
@@ -2203,13 +2309,27 @@
       "setup_15m_timestamp": "2026-09-30T11:00:00+05:30",
       "confirmation_5m_timestamp": "2026-09-30T11:00:00+05:30",
       "recorded_at": "2026-09-30T11:05:31.300068+05:30"
+    },
+    "BDL|BUY|2026-09-30T11:05:00+05:30": {
+      "symbol": "BDL",
+      "direction": "BUY",
+      "setup_15m_timestamp": "2026-09-30T11:05:00+05:30",
+      "confirmation_5m_timestamp": "2026-09-30T11:05:00+05:30",
+      "recorded_at": "2026-09-30T11:10:37.949826+05:30"
+    },
+    "LENSKART|BUY|2026-09-30T11:05:00+05:30": {
+      "symbol": "LENSKART",
+      "direction": "BUY",
+      "setup_15m_timestamp": "2026-09-30T11:05:00+05:30",
+      "confirmation_5m_timestamp": "2026-09-30T11:05:00+05:30",
+      "recorded_at": "2026-09-30T11:10:37.949826+05:30"
     }
   },
   "orb": {},
   "b1": {
     "ADANIENT": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2223,7 +2343,7 @@
     },
     "ADANIGREEN": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2237,7 +2357,7 @@
     },
     "ADANIPORTS": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2251,7 +2371,7 @@
     },
     "AMBUJACEM": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2265,7 +2385,7 @@
     },
     "ANANDRATHI": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2294,7 +2414,7 @@
     },
     "APOLLOTYRE": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2308,7 +2428,7 @@
     },
     "ATHERENERG": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2321,8 +2441,8 @@
       "setup": null
     },
     "BDL": {
-      "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "status": "CONSUMED",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2332,11 +2452,12 @@
         "close": 1105.2
       },
       "orb_source": "TODAY_ORB",
-      "setup": null
+      "setup": null,
+      "confirmation_5m_timestamp": "2026-09-30T11:05:00+05:30"
     },
     "BIKAJI": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2350,7 +2471,7 @@
     },
     "BLUESTARCO": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2364,7 +2485,7 @@
     },
     "BSE": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2378,7 +2499,7 @@
     },
     "CAMS": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2407,7 +2528,7 @@
     },
     "CHALET": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2421,7 +2542,7 @@
     },
     "COCHINSHIP": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2465,7 +2586,7 @@
     },
     "FIVESTAR": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2479,7 +2600,7 @@
     },
     "GLAND": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2508,7 +2629,7 @@
     },
     "HAL": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2522,7 +2643,7 @@
     },
     "HAVELLS": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2551,7 +2672,7 @@
     },
     "HCLTECH": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2565,7 +2686,7 @@
     },
     "HDFCAMC": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2579,7 +2700,7 @@
     },
     "HEROMOTOCO": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2593,7 +2714,7 @@
     },
     "HONASA": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2607,7 +2728,7 @@
     },
     "HYUNDAI": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2621,7 +2742,7 @@
     },
     "IIFL": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2635,7 +2756,7 @@
     },
     "INDUSINDBK": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2649,7 +2770,7 @@
     },
     "INDUSTOWER": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2663,7 +2784,7 @@
     },
     "JUBLFOOD": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2677,7 +2798,7 @@
     },
     "KAYNES": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2691,7 +2812,7 @@
     },
     "KEC": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2705,7 +2826,7 @@
     },
     "KFINTECH": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2719,7 +2840,7 @@
     },
     "KIRLOSENG": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2733,7 +2854,7 @@
     },
     "LAURUSLABS": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2746,8 +2867,8 @@
       "setup": null
     },
     "LENSKART": {
-      "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "status": "CONSUMED",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2757,7 +2878,8 @@
         "close": 680.7
       },
       "orb_source": "TODAY_ORB",
-      "setup": null
+      "setup": null,
+      "confirmation_5m_timestamp": "2026-09-30T11:05:00+05:30"
     },
     "LICHSGFIN": {
       "status": "CONSUMED",
@@ -2776,7 +2898,7 @@
     },
     "LICI": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2805,7 +2927,7 @@
     },
     "MANKIND": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2834,7 +2956,7 @@
     },
     "MAZDOCK": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2863,7 +2985,7 @@
     },
     "NAM-INDIA": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2907,7 +3029,7 @@
     },
     "PGEL": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2921,7 +3043,7 @@
     },
     "PIDILITIND": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2950,7 +3072,7 @@
     },
     "PREMIERENE": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -2994,7 +3116,7 @@
     },
     "SBICARD": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -3008,7 +3130,7 @@
     },
     "SPLPETRO": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -3052,7 +3174,7 @@
     },
     "SYNGENE": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -3081,7 +3203,7 @@
     },
     "TATACHEM": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -3110,7 +3232,7 @@
     },
     "TECHM": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -3139,7 +3261,7 @@
     },
     "TITAN": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -3153,7 +3275,7 @@
     },
     "UNITDSPR": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -3182,7 +3304,7 @@
     },
     "VTL": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -3196,7 +3318,7 @@
     },
     "WAAREEENER": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -3210,7 +3332,7 @@
     },
     "WELCORP": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -3224,7 +3346,7 @@
     },
     "WHIRLPOOL": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-09-30T11:00:00+05:30",
+      "last_processed_5m": "2026-09-30T11:05:00+05:30",
       "orb": {
         "timestamp": "2026-09-30T09:15:00+05:30",
         "date": "2026-09-30",
@@ -7127,5 +7249,5 @@
       }
     }
   },
-  "volume_gainers_last_refresh": "2026-09-30T11:00:00+05:30"
+  "volume_gainers_last_refresh": "2026-09-30T11:10:00+05:30"
 }
