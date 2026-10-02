@@ -430,25 +430,35 @@ def refresh_universe(dhan, state, ts):
 
 
 def _fetch_current_prices(dhan, state):
-    """Fetch current LTP for all active signals.
+    """Fetch current LTP for all active signals via a single batched quote call.
 
-    Uses security_id from signals directly so this works even after
+    Uses security_id stored on each signal so this works even after
     backup_and_clear has blanked state["universe"].
     """
-    current_prices = {}
+    # Build symbol -> security_id map from signals
+    sym_to_sid = {}
     for signal in state.get("signals", {}).values():
         symbol = signal.get("symbol")
         security_id = signal.get("security_id")
-        if not symbol or security_id is None:
-            continue
-        if symbol in current_prices:
-            continue
-        try:
-            quotes = dhan.quotes(security_id=security_id)
-            if quotes and quotes.get("ltp"):
-                current_prices[symbol] = float(quotes["ltp"])
-        except Exception as exc:
-            LOG.debug("Failed to fetch current price for %s: %s", symbol, exc)
+        if symbol and security_id is not None and symbol not in sym_to_sid:
+            sym_to_sid[symbol] = str(security_id)
+
+    if not sym_to_sid:
+        return {}
+
+    sid_to_sym = {sid: sym for sym, sid in sym_to_sid.items()}
+    try:
+        batch = dhan.quote_batch(list(sym_to_sid.values()))
+    except Exception as exc:
+        LOG.warning("quote_batch failed: %s", exc)
+        return {}
+
+    current_prices = {}
+    for sid, data in batch.items():
+        sym = sid_to_sym.get(str(sid))
+        ltp = data.get("ltp") if isinstance(data, dict) else None
+        if sym and ltp:
+            current_prices[sym] = float(ltp)
     return current_prices
 
 
