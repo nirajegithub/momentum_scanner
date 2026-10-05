@@ -1,9 +1,12 @@
 name: Momentum Scanner - Daily Summary
 
+# on:
+#   schedule:
+#     # 15:25 IST = 09:55 UTC.
+#     - cron: "55 9 * * 1-5"
+#   workflow_dispatch:
+
 on:
-  schedule:
-    # 15:25 IST = 09:55 UTC
-    - cron: "55 9 * * 1-5"
   workflow_dispatch:
 
 permissions:
