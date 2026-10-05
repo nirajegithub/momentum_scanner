@@ -34,6 +34,8 @@ def monitor_active_signals(state, current_prices):
             continue
 
         ltp = float(ltp)
+        signal["last_ltp"] = ltp
+
         entry = float(signal["risk"]["entry"])
         sl = float(signal["risk"]["sl"])
         t1 = float(signal["risk"]["t1"])
