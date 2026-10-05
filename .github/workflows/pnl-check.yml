@@ -41,7 +41,7 @@ jobs:
           sys.path.insert(0, ".")
           from app.dhan_client import DhanClient
           from app.telegram import send
-          from app.calendar_utils import previous_trading_day
+          from app.calendar import previous_trading_day
 
           IST = ZoneInfo("Asia/Kolkata")
           today = datetime.now(IST).date()
