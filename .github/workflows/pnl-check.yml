@@ -1,0 +1,140 @@
+name: Today P&L Check
+
+on:
+  workflow_dispatch:
+
+jobs:
+  pnl:
+    name: Calculate Today P&L from Last 5M Candle
+    runs-on: ubuntu-latest
+    env:
+      DHAN_CLIENT_ID: ${{ secrets.DHAN_CLIENT_ID }}
+      DHAN_ACCESS_TOKEN: ${{ secrets.DHAN_ACCESS_TOKEN }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      DRY_RUN: "false"
+      PYTHONUNBUFFERED: "1"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Calculate and send P&L
+        run: |
+          python - <<'EOF'
+          import json, sys
+          from pathlib import Path
+          from zoneinfo import ZoneInfo
+          from datetime import datetime, date, timedelta
+          import pandas as pd
+
+          sys.path.insert(0, ".")
+          from app.dhan_client import DhanClient
+          from app.telegram import send
+          from app.calendar_utils import previous_trading_day
+
+          IST = ZoneInfo("Asia/Kolkata")
+          today = datetime.now(IST).date()
+          prev_day = previous_trading_day(today)
+
+          state = json.loads(Path("state/runtime_state.json").read_text(encoding="utf-8"))
+          signals = state.get("signals", {})
+          if not signals:
+              print("No signals found in state.")
+              sys.exit(0)
+
+          dhan = DhanClient()
+
+          # Collect all security_ids
+          sym_to_sid = {}
+          for s in signals.values():
+              sym = s.get("symbol")
+              sid = s.get("security_id")
+              if sym and sid and sym not in sym_to_sid:
+                  sym_to_sid[sym] = str(sid)
+
+          print(f"Fetching last 5M close for {len(sym_to_sid)} symbols...")
+
+          # Fetch last 5M candle close via quote_batch (live LTP)
+          final_prices = {}
+          try:
+              batch = dhan.quote_batch(list(sym_to_sid.values()))
+              sid_to_sym = {v: k for k, v in sym_to_sid.items()}
+              for sid, data in batch.items():
+                  sym = sid_to_sym.get(str(sid))
+                  ltp = data.get("ltp") if isinstance(data, dict) else None
+                  if sym and ltp:
+                      final_prices[sym] = float(ltp)
+              print(f"quote_batch returned {len(final_prices)} prices")
+          except Exception as e:
+              print(f"quote_batch failed: {e}")
+
+          # Fallback: fetch last 5M candle from historical intraday
+          missing = [sym for sym in sym_to_sid if sym not in final_prices]
+          if missing:
+              print(f"Fetching historical 5M for {len(missing)} missing symbols...")
+              for sym in missing:
+                  sid = sym_to_sid[sym]
+                  try:
+                      df = dhan.historical_intraday_df(
+                          security_id=sid,
+                          interval=5,
+                          from_date=today.isoformat(),
+                          to_date=(today + timedelta(days=1)).isoformat(),
+                      )
+                      if df is not None and not df.empty:
+                          final_prices[sym] = float(df.iloc[-1]["close"])
+                  except Exception as e:
+                      print(f"  {sym}: failed - {e}")
+
+          # Calculate P&L
+          lines = ["<b>📊 P&L CHECK — {}</b>".format(today.isoformat()), ""]
+          total = 0
+          winners = losers = 0
+          for s in signals.values():
+              sym = s.get("symbol", "")
+              direction = s.get("direction", "")
+              entry = float(s.get("risk", {}).get("entry", 0))
+              sl = float(s.get("risk", {}).get("sl", 0))
+              t1 = float(s.get("risk", {}).get("t1", 0))
+
+              if s.get("sl_hit"):
+                  price, note = sl, " [SL]"
+              elif s.get("highest_target_hit"):
+                  tgt = s["highest_target_hit"]
+                  price = float(s["risk"].get(tgt.replace("_HIT","").lower(), t1))
+                  note = f" [{tgt}]"
+              else:
+                  price = final_prices.get(sym)
+                  note = ""
+
+              if price is None:
+                  lines.append(f"❓ <b>{sym}</b>: no price")
+                  continue
+
+              pnl = price - entry if direction == "BUY" else entry - price
+              total += pnl
+              if pnl >= 0:
+                  winners += 1
+                  lines.append(f"✅ <b>{sym}</b> {direction}: {pnl:+.2f} pts (entry={entry:.2f} ltp={price:.2f}){note}")
+              else:
+                  losers += 1
+                  lines.append(f"❌ <b>{sym}</b> {direction}: {pnl:+.2f} pts (entry={entry:.2f} ltp={price:.2f}){note}")
+
+          lines.append("")
+          lines.append(f"<b>Total: {len(signals)} trades | {winners}W {losers}L | {total:+.2f} pts</b>")
+          msg = "\n".join(lines)
+          print(msg)
+          sent = send(msg)
+          print("Telegram sent:", sent)
+          EOF
