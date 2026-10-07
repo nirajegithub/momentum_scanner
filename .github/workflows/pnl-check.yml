@@ -175,11 +175,12 @@ jobs:
               icon = "🔼" if direction == "BUY" else "🔽"
               tag_str = f" [{tag}]" if tag else ""
               time_str = f" @{ltp_time}" if ltp_time else ""
-              line1 = f"  {icon} <b>{sym}</b>  {pnl:+.2f} pts ({pct:+.1f}%)  {entry:.1f}→{price:.1f}{tag_str}{time_str}"
+              line1 = f"  {icon} <b>{sym}</b>  {pnl:+.2f} pts ({pct:+.1f}%)"
+              line2 = f"  Entry: {entry:.1f}→ Exit: {price:.1f}{tag_str} = {pnl:+.2f} pts{time_str}"
               if day_high is not None and day_low is not None:
-                  line2 = f"     <b>H:</b>{day_high:.1f}  <b>L:</b>{day_low:.1f}"
-                  return f"{line1}\n{line2}"
-              return line1
+                  line3 = f"  Today's <b>H:</b>{day_high:.1f}  <b>L:</b>{day_low:.1f}"
+                  return f"{line1}\n{line2}\n{line3}"
+              return f"{line1}\n{line2}"
 
           date_str = today.strftime("%d-%b-%Y")
           lines = [f"<b>📊 P&amp;L — {date_str}</b>", ""]
