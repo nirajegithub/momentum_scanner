@@ -63,10 +63,38 @@ jobs:
               if sym and sid and sym not in sym_to_sid:
                   sym_to_sid[sym] = str(sid)
 
-          print(f"Fetching last 5M close for {len(sym_to_sid)} symbols...")
+          # Step 1: Fetch 5M intraday for ALL symbols → day H/L + last candle time + close
+          print(f"Fetching 5M intraday for {len(sym_to_sid)} symbols (day H/L + last price)...")
+          intraday = {}  # sym -> {day_high, day_low, last_close, last_time}
+          for sym, sid in sym_to_sid.items():
+              try:
+                  df = dhan.historical_intraday_df(
+                      security_id=sid,
+                      interval=5,
+                      from_date=today.isoformat(),
+                      to_date=(today + timedelta(days=1)).isoformat(),
+                  )
+                  if df is not None and not df.empty:
+                      last_row = df.iloc[-1]
+                      # Last candle close time = candle start + 5 min
+                      candle_start = df.index[-1]
+                      try:
+                          candle_close_time = (candle_start + pd.Timedelta(minutes=5)).strftime("%H:%M")
+                      except Exception:
+                          candle_close_time = str(candle_start)[:16][11:16]
+                      intraday[sym] = {
+                          "day_high": float(df["high"].max()),
+                          "day_low":  float(df["low"].min()),
+                          "last_close": float(last_row["close"]),
+                          "last_time": candle_close_time,
+                      }
+              except Exception as e:
+                  print(f"  {sym}: 5M fetch failed - {e}")
 
-          # Fetch last 5M candle close via quote_batch (live LTP)
-          final_prices = {}
+          print(f"5M data fetched for {len(intraday)} symbols")
+
+          # Step 2: Try quote_batch for live LTP override (works during market hours)
+          live_ltp = {}
           try:
               batch = dhan.quote_batch(list(sym_to_sid.values()))
               sid_to_sym = {v: k for k, v in sym_to_sid.items()}
@@ -74,28 +102,22 @@ jobs:
                   sym = sid_to_sym.get(str(sid))
                   ltp = data.get("ltp") if isinstance(data, dict) else None
                   if sym and ltp:
-                      final_prices[sym] = float(ltp)
-              print(f"quote_batch returned {len(final_prices)} prices")
+                      live_ltp[sym] = float(ltp)
+              print(f"quote_batch returned {len(live_ltp)} live prices")
           except Exception as e:
-              print(f"quote_batch failed: {e}")
+              print(f"quote_batch failed (expected after hours): {e}")
 
-          # Fallback: fetch last 5M candle from historical intraday
-          missing = [sym for sym in sym_to_sid if sym not in final_prices]
-          if missing:
-              print(f"Fetching historical 5M for {len(missing)} missing symbols...")
-              for sym in missing:
-                  sid = sym_to_sid[sym]
-                  try:
-                      df = dhan.historical_intraday_df(
-                          security_id=sid,
-                          interval=5,
-                          from_date=today.isoformat(),
-                          to_date=(today + timedelta(days=1)).isoformat(),
-                      )
-                      if df is not None and not df.empty:
-                          final_prices[sym] = float(df.iloc[-1]["close"])
-                  except Exception as e:
-                      print(f"  {sym}: failed - {e}")
+          # Build final_prices: live LTP if available, else last 5M close
+          now_ist = datetime.now(IST).strftime("%H:%M")
+          final_prices = {}
+          price_times = {}
+          for sym in sym_to_sid:
+              if sym in live_ltp:
+                  final_prices[sym] = live_ltp[sym]
+                  price_times[sym] = now_ist
+              elif sym in intraday:
+                  final_prices[sym] = intraday[sym]["last_close"]
+                  price_times[sym] = intraday[sym]["last_time"]
 
           # Calculate P&L
           rows = []
@@ -106,6 +128,9 @@ jobs:
               entry = float(s.get("risk", {}).get("entry", 0))
               sl = float(s.get("risk", {}).get("sl", 0))
               t1 = float(s.get("risk", {}).get("t1", 0))
+              day_high = intraday.get(sym, {}).get("day_high")
+              day_low  = intraday.get(sym, {}).get("day_low")
+              ltp_time = price_times.get(sym, "")
 
               if s.get("sl_hit"):
                   price, tag = sl, "SL"
@@ -116,7 +141,6 @@ jobs:
               else:
                   price = final_prices.get(sym)
                   tag = ""
-                  # Cap at SL if price has breached it (monitoring may have missed it)
                   if price is not None:
                       if direction == "BUY" and price < sl:
                           price, tag = sl, "SL"
@@ -129,7 +153,7 @@ jobs:
 
               pnl = price - entry if direction == "BUY" else entry - price
               pct = (price - entry) / entry * 100 if direction == "BUY" else (entry - price) / entry * 100
-              rows.append((sym, direction, entry, price, pnl, pct, tag))
+              rows.append((sym, direction, entry, price, pnl, pct, tag, day_high, day_low, ltp_time))
 
           rows.sort(key=lambda r: r[4], reverse=True)
           win_rows = [r for r in rows if r[4] >= 0]
@@ -138,26 +162,31 @@ jobs:
           win_total = sum(r[4] for r in win_rows)
           loss_total = sum(r[4] for r in loss_rows)
 
+          def fmt_row(sym, direction, entry, price, pnl, pct, tag, day_high, day_low, ltp_time):
+              icon = "🔼" if direction == "BUY" else "🔽"
+              tag_str = f" [{tag}]" if tag else ""
+              hl_str = ""
+              if day_high is not None and day_low is not None:
+                  hl_str = f"  H:{day_high:.1f} L:{day_low:.1f}"
+              time_str = f" @{ltp_time}" if ltp_time else ""
+              return f"  {icon} <b>{sym}</b>  {pnl:+.2f} pts ({pct:+.1f}%)  {entry:.1f}→{price:.1f}{tag_str}{hl_str}{time_str}"
+
           date_str = today.strftime("%d-%b-%Y")
           lines = [f"<b>📊 P&amp;L — {date_str}</b>", ""]
 
           if win_rows:
               lines.append(f"<b>🟢 Winners ({len(win_rows)})  {win_total:+.2f} pts</b>")
               lines.append("")
-              for sym, direction, entry, price, pnl, pct, tag in win_rows:
-                  icon = "🔼" if direction == "BUY" else "🔽"
-                  tag_str = f" [{tag}]" if tag else ""
-                  lines.append(f"  {icon} <b>{sym}</b>  {pnl:+.2f} pts ({pct:+.1f}%)  {entry:.1f}→{price:.1f}{tag_str}")
+              for row in win_rows:
+                  lines.append(fmt_row(*row))
 
           if loss_rows:
               if win_rows:
                   lines.append("")
               lines.append(f"<b>🔴 Losers ({len(loss_rows)})  {loss_total:+.2f} pts</b>")
               lines.append("")
-              for sym, direction, entry, price, pnl, pct, tag in loss_rows:
-                  icon = "🔼" if direction == "BUY" else "🔽"
-                  tag_str = f" [{tag}]" if tag else ""
-                  lines.append(f"  {icon} <b>{sym}</b>  {pnl:+.2f} pts ({pct:+.1f}%)  {entry:.1f}→{price:.1f}{tag_str}")
+              for row in loss_rows:
+                  lines.append(fmt_row(*row))
 
           if no_price:
               lines.append("")
