@@ -143,6 +143,7 @@ jobs:
 
           if win_rows:
               lines.append(f"<b>🟢 Winners ({len(win_rows)})  {win_total:+.2f} pts</b>")
+              lines.append("")
               for sym, direction, entry, price, pnl, pct, tag in win_rows:
                   icon = "🔼" if direction == "BUY" else "🔽"
                   tag_str = f" [{tag}]" if tag else ""
@@ -152,6 +153,7 @@ jobs:
               if win_rows:
                   lines.append("")
               lines.append(f"<b>🔴 Losers ({len(loss_rows)})  {loss_total:+.2f} pts</b>")
+              lines.append("")
               for sym, direction, entry, price, pnl, pct, tag in loss_rows:
                   icon = "🔼" if direction == "BUY" else "🔽"
                   tag_str = f" [{tag}]" if tag else ""
