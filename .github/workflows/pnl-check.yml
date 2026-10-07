@@ -173,10 +173,11 @@ jobs:
 
           def fmt_row(sym, direction, entry, price, pnl, pct, tag, day_high, day_low, ltp_time):
               icon = "🔼" if direction == "BUY" else "🔽"
-              tag_str = f" [{tag}]" if tag else ""
+              # Dynamic exit label: "Exit (SL)", "Exit (T1)", etc., or plain "Exit"
+              exit_label = f"Exit ({tag})" if tag else "Exit"
               time_str = f" @{ltp_time}" if ltp_time else ""
               line1 = f"  {icon} <b>{sym}</b>  {pnl:+.2f} pts ({pct:+.1f}%)"
-              line2 = f"  Entry: {entry:.1f}→ Exit: {price:.1f}{tag_str} = {pnl:+.2f} pts{time_str}"
+              line2 = f"  <b>Entry:</b> {entry:.1f} → <b>{exit_label}:</b> {price:.1f} = {pnl:+.2f} pts{time_str}"
               if day_high is not None and day_low is not None:
                   line3 = f"  Today's <b>H:</b>{day_high:.1f}  <b>L:</b>{day_low:.1f}"
                   return f"{line1}\n{line2}\n{line3}"
