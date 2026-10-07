@@ -20,7 +20,14 @@ def _result_price(signal, final_prices):
         return float(signal["risk"]["t1"])
     if signal.get("status") == "EXITED" and signal.get("exit_price") is not None:
         return float(signal["exit_price"])
-    return float(final_prices.get(signal["symbol"], signal["risk"]["entry"]))
+    price = float(final_prices.get(signal["symbol"], signal["risk"]["entry"]))
+    # Cap at SL if breached (monitoring may have missed the hit intraday)
+    sl = float(signal["risk"]["sl"])
+    if signal["direction"] == "BUY" and price < sl:
+        return sl
+    if signal["direction"] == "SELL" and price > sl:
+        return sl
+    return price
 
 
 def build_summary(state, final_prices):

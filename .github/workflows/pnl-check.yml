@@ -116,6 +116,12 @@ jobs:
               else:
                   price = final_prices.get(sym)
                   tag = ""
+                  # Cap at SL if price has breached it (monitoring may have missed it)
+                  if price is not None:
+                      if direction == "BUY" and price < sl:
+                          price, tag = sl, "SL"
+                      elif direction == "SELL" and price > sl:
+                          price, tag = sl, "SL"
 
               if price is None:
                   no_price.append(sym)
