@@ -63,8 +63,11 @@ jobs:
               if sym and sid and sym not in sym_to_sid:
                   sym_to_sid[sym] = str(sid)
 
-          # Step 1: Fetch 5M intraday for ALL symbols → day H/L + last candle time + close
-          print(f"Fetching 5M intraday for {len(sym_to_sid)} symbols (day H/L + last price)...")
+          # Step 1: Fetch 5M intraday for ALL symbols → day H/L + 15:10 autosquare close
+          # Intraday autosquare happens at 15:10; the 15:05 candle closes exactly at 15:10.
+          # We use that candle's close as the reference price, falling back to the last
+          # available candle if 15:05 hasn't printed yet (mid-day runs).
+          print(f"Fetching 5M intraday for {len(sym_to_sid)} symbols (day H/L + 15:10 price)...")
           intraday = {}  # sym -> {day_high, day_low, last_close, last_time}
           for sym, sid in sym_to_sid.items():
               try:
@@ -75,18 +78,24 @@ jobs:
                       to_date=(today + timedelta(days=1)).isoformat(),
                   )
                   if df is not None and not df.empty:
-                      last_row = df.iloc[-1]
-                      # Last candle close time = candle start + 5 min
-                      candle_start = df.index[-1]
+                      # Pick 15:05 candle (closes 15:10) as autosquare reference;
+                      # fall back to last available candle for mid-day runs.
                       try:
-                          candle_close_time = (candle_start + pd.Timedelta(minutes=5)).strftime("%H:%M")
+                          cutoff = pd.Timestamp(f"{today} 15:05").tz_localize(df.index.tz)
                       except Exception:
-                          candle_close_time = str(candle_start)[:16][11:16]
+                          cutoff = pd.Timestamp(f"{today} 15:05")
+                      before_cutoff = df[df.index <= cutoff]
+                      ref_row = before_cutoff.iloc[-1] if not before_cutoff.empty else df.iloc[-1]
+                      ref_start = before_cutoff.index[-1] if not before_cutoff.empty else df.index[-1]
+                      try:
+                          ref_time = (ref_start + pd.Timedelta(minutes=5)).strftime("%H:%M")
+                      except Exception:
+                          ref_time = str(ref_start)[11:16]
                       intraday[sym] = {
-                          "day_high": float(df["high"].max()),
-                          "day_low":  float(df["low"].min()),
-                          "last_close": float(last_row["close"]),
-                          "last_time": candle_close_time,
+                          "day_high":   float(df["high"].max()),
+                          "day_low":    float(df["low"].min()),
+                          "last_close": float(ref_row["close"]),
+                          "last_time":  ref_time,
                       }
               except Exception as e:
                   print(f"  {sym}: 5M fetch failed - {e}")
