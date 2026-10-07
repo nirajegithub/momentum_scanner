@@ -18,7 +18,8 @@ class Settings:
     sell_rsi_min: float = float(os.getenv("SELL_RSI_MIN", "20"))
     sell_rsi_max: float = float(os.getenv("SELL_RSI_MAX", "50"))
     rvol_lookback: int = int(os.getenv("RVOL_LOOKBACK", "10"))
-    min_15m_rvol: float = float(os.getenv("MIN_15M_RVOL", "1.2"))
+    min_15m_rvol: float = float(os.getenv("MIN_15M_RVOL", "1.5"))
+    max_15m_rvol: float = float(os.getenv("MAX_15M_RVOL", "8.0"))
     require_ema_crossover: bool = _bool("REQUIRE_EMA_CROSSOVER", "false")
 
     setup_timeframe: int = int(os.getenv("SETUP_TIMEFRAME", "5"))
@@ -36,7 +37,7 @@ class Settings:
     min_stop_distance_percent: float = float(os.getenv("MIN_STOP_DISTANCE_PERCENT", "0.50"))
     risk_percent: float = float(os.getenv("RISK_PERCENT", "1.0"))
     scan_start_hhmm: int = int(os.getenv("SCAN_START_HHMM", "930"))
-    scan_end_hhmm: int = int(os.getenv("SCAN_END_HHMM", "1505"))
+    scan_end_hhmm: int = int(os.getenv("SCAN_END_HHMM", "1330"))
     dry_run: bool = _bool("DRY_RUN", "true")
 
     volume_gainer_candidate_limit: int = int(os.getenv("VOLUME_GAINER_CANDIDATE_LIMIT", "800"))

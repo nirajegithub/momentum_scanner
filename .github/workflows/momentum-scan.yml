@@ -25,7 +25,8 @@ jobs:
       SELL_RSI_MIN: "0"
       SELL_RSI_MAX: "50"
       RVOL_LOOKBACK: "20"
-      MIN_15M_RVOL: "1.2"
+      MIN_15M_RVOL: "1.5"
+      MAX_15M_RVOL: "8.0"
       REQUIRE_EMA_CROSSOVER: "false"
       MIN_TRADE_SCORE: "3"
       MAX_TRADE_SCORE: "7"
@@ -38,7 +39,7 @@ jobs:
       ENTRY_TIMEFRAME: "5"
       SETUP_TIMEFRAME: "5"
       SCAN_START_HHMM: "930"
-      SCAN_END_HHMM: "1505"
+      SCAN_END_HHMM: "1330"
       SCANNER_ACTION: "scan"
       PYTHONUNBUFFERED: "1"
     steps:

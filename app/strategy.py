@@ -78,6 +78,8 @@ def evaluate_b1_breakout(df15, orb, daily_close, daily_volume, symbol=None):
         )
     if rvol < SETTINGS.min_15m_rvol:
         return _rejected(symbol, "RVOL_TOO_LOW", rvol=round(rvol, 2), min_15m_rvol=SETTINGS.min_15m_rvol)
+    if rvol > SETTINGS.max_15m_rvol:
+        return _rejected(symbol, "RVOL_SPIKE_TOO_HIGH", rvol=round(rvol, 2), max_15m_rvol=SETTINGS.max_15m_rvol)
 
     body_ratio = float(current.get("body_ratio", 0))
     if body_ratio < SETTINGS.min_candle_body_ratio:
