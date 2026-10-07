@@ -31,6 +31,8 @@ def build_risk_and_targets(direction: str, entry: float, sl: float, min_stop_dis
         "t2": t2,
         "t3": t3,
         "rr_t1": float(t1_rr),
+        "rr_t2": float(t2_rr),
+        "rr_t3": float(t3_rr),
         "trailing_sl": trailing_sl,
         "trailing_stop_pct": trailing_stop_pct,
     }, None

@@ -102,14 +102,14 @@ def signal_message(s):
         f"  Risk: <b>{_money(s['risk']['risk'])}</b> ({float(s['risk'].get('risk_percent', 0)):.2f}%)",
         "",
         f"<b>🎯 TARGETS (Risk/Reward)</b>",
-        f"  T1: <b>{_money(s['risk']['t1'])}</b> (2R)",
-        f"  T2: <b>{_money(s['risk']['t2'])}</b> (3R)",
-        f"  T3: <b>{_money(s['risk']['t3'])}</b> (4R)",
+        f"  T1: <b>{_money(s['risk']['t1'])}</b> (1:{int(s['risk'].get('rr_t1', 1))})",
+        f"  T2: <b>{_money(s['risk']['t2'])}</b> (1:{int(s['risk'].get('rr_t2', 2))})",
+        f"  T3: <b>{_money(s['risk']['t3'])}</b> (1:{int(s['risk'].get('rr_t3', 3))})",
         "",
         f"<b>📋 SL ESCALATION GUIDE (Manual)</b>",
-        f"  • T1 hit: Move SL to Entry <b>{_money(s['risk']['entry'])}</b> (1:1)",
-        f"  • T2 hit: Move SL to T1 <b>{_money(s['risk']['t1'])}</b> (2:1)",
-        f"  • T3 hit: Move SL to T2 <b>{_money(s['risk']['t2'])}</b> (3:1)",
+        f"  • T1 hit: Move SL to Entry <b>{_money(s['risk']['entry'])}</b> (breakeven)",
+        f"  • T2 hit: Move SL to T1 <b>{_money(s['risk']['t1'])}</b>",
+        f"  • T3 hit: Move SL to T2 <b>{_money(s['risk']['t2'])}</b>",
     ]
     return "\n".join(lines)
 
