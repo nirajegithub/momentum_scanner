@@ -98,9 +98,8 @@ jobs:
                       print(f"  {sym}: failed - {e}")
 
           # Calculate P&L
-          lines = ["<b>📊 P&L CHECK — {}</b>".format(today.isoformat()), ""]
-          total = 0
-          winners = losers = 0
+          rows = []
+          no_price = []
           for s in signals.values():
               sym = s.get("symbol", "")
               direction = s.get("direction", "")
@@ -109,30 +108,54 @@ jobs:
               t1 = float(s.get("risk", {}).get("t1", 0))
 
               if s.get("sl_hit"):
-                  price, note = sl, " [SL]"
+                  price, tag = sl, "SL"
               elif s.get("highest_target_hit"):
                   tgt = s["highest_target_hit"]
                   price = float(s["risk"].get(tgt.replace("_HIT","").lower(), t1))
-                  note = f" [{tgt}]"
+                  tag = tgt.replace("_HIT", "")
               else:
                   price = final_prices.get(sym)
-                  note = ""
+                  tag = ""
 
               if price is None:
-                  lines.append(f"❓ <b>{sym}</b>: no price")
+                  no_price.append(sym)
                   continue
 
               pnl = price - entry if direction == "BUY" else entry - price
-              total += pnl
-              if pnl >= 0:
-                  winners += 1
-                  lines.append(f"✅ <b>{sym}</b> {direction}: {pnl:+.2f} pts (entry={entry:.2f} ltp={price:.2f}){note}")
-              else:
-                  losers += 1
-                  lines.append(f"❌ <b>{sym}</b> {direction}: {pnl:+.2f} pts (entry={entry:.2f} ltp={price:.2f}){note}")
+              pct = (price - entry) / entry * 100 if direction == "BUY" else (entry - price) / entry * 100
+              rows.append((sym, direction, entry, price, pnl, pct, tag))
+
+          rows.sort(key=lambda r: r[4], reverse=True)
+          win_rows = [r for r in rows if r[4] >= 0]
+          loss_rows = [r for r in rows if r[4] < 0]
+          total = sum(r[4] for r in rows)
+
+          date_str = today.strftime("%d-%b-%Y")
+          lines = [f"<b>📊 P&amp;L — {date_str}</b>", ""]
+
+          if win_rows:
+              lines.append(f"<b>🟢 Winners ({len(win_rows)})</b>")
+              for sym, direction, entry, price, pnl, pct, tag in win_rows:
+                  arrow = "▲" if direction == "BUY" else "▼"
+                  tag_str = f" [{tag}]" if tag else ""
+                  lines.append(f"  {arrow} <b>{sym}</b>  {pnl:+.2f} pts ({pct:+.1f}%)  {entry:.1f}→{price:.1f}{tag_str}")
+
+          if loss_rows:
+              if win_rows:
+                  lines.append("")
+              lines.append(f"<b>🔴 Losers ({len(loss_rows)})</b>")
+              for sym, direction, entry, price, pnl, pct, tag in loss_rows:
+                  arrow = "▲" if direction == "BUY" else "▼"
+                  tag_str = f" [{tag}]" if tag else ""
+                  lines.append(f"  {arrow} <b>{sym}</b>  {pnl:+.2f} pts ({pct:+.1f}%)  {entry:.1f}→{price:.1f}{tag_str}")
+
+          if no_price:
+              lines.append("")
+              lines.append("❓ No price: " + ", ".join(no_price))
 
           lines.append("")
-          lines.append(f"<b>Total: {len(signals)} trades | {winners}W {losers}L | {total:+.2f} pts</b>")
+          total_emoji = "🟢" if total >= 0 else "🔴"
+          lines.append(f"{total_emoji} <b>{len(rows)} trades | {len(win_rows)}W {len(loss_rows)}L | {total:+.2f} pts</b>")
           msg = "\n".join(lines)
           print(msg)
           sent = send(msg)
