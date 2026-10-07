@@ -174,11 +174,12 @@ jobs:
           def fmt_row(sym, direction, entry, price, pnl, pct, tag, day_high, day_low, ltp_time):
               icon = "🔼" if direction == "BUY" else "🔽"
               tag_str = f" [{tag}]" if tag else ""
-              hl_str = ""
-              if day_high is not None and day_low is not None:
-                  hl_str = f"  H:{day_high:.1f} L:{day_low:.1f}"
               time_str = f" @{ltp_time}" if ltp_time else ""
-              return f"  {icon} <b>{sym}</b>  {pnl:+.2f} pts ({pct:+.1f}%)  {entry:.1f}→{price:.1f}{tag_str}{hl_str}{time_str}"
+              line1 = f"  {icon} <b>{sym}</b>  {pnl:+.2f} pts ({pct:+.1f}%)  {entry:.1f}→{price:.1f}{tag_str}{time_str}"
+              if day_high is not None and day_low is not None:
+                  line2 = f"     <b>H:</b>{day_high:.1f}  <b>L:</b>{day_low:.1f}"
+                  return f"{line1}\n{line2}"
+              return line1
 
           date_str = today.strftime("%d-%b-%Y")
           lines = [f"<b>📊 P&amp;L — {date_str}</b>", ""]
