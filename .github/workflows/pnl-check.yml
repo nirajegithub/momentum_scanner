@@ -135,25 +135,27 @@ jobs:
           win_rows = [r for r in rows if r[4] >= 0]
           loss_rows = [r for r in rows if r[4] < 0]
           total = sum(r[4] for r in rows)
+          win_total = sum(r[4] for r in win_rows)
+          loss_total = sum(r[4] for r in loss_rows)
 
           date_str = today.strftime("%d-%b-%Y")
           lines = [f"<b>📊 P&amp;L — {date_str}</b>", ""]
 
           if win_rows:
-              lines.append(f"<b>🟢 Winners ({len(win_rows)})</b>")
+              lines.append(f"<b>🟢 Winners ({len(win_rows)})  {win_total:+.2f} pts</b>")
               for sym, direction, entry, price, pnl, pct, tag in win_rows:
-                  arrow = "▲" if direction == "BUY" else "▼"
+                  icon = "📈" if direction == "BUY" else "📉"
                   tag_str = f" [{tag}]" if tag else ""
-                  lines.append(f"  {arrow} <b>{sym}</b>  {pnl:+.2f} pts ({pct:+.1f}%)  {entry:.1f}→{price:.1f}{tag_str}")
+                  lines.append(f"  {icon} <b>{sym}</b>  {pnl:+.2f} pts ({pct:+.1f}%)  {entry:.1f}→{price:.1f}{tag_str}")
 
           if loss_rows:
               if win_rows:
                   lines.append("")
-              lines.append(f"<b>🔴 Losers ({len(loss_rows)})</b>")
+              lines.append(f"<b>🔴 Losers ({len(loss_rows)})  {loss_total:+.2f} pts</b>")
               for sym, direction, entry, price, pnl, pct, tag in loss_rows:
-                  arrow = "▲" if direction == "BUY" else "▼"
+                  icon = "📈" if direction == "BUY" else "📉"
                   tag_str = f" [{tag}]" if tag else ""
-                  lines.append(f"  {arrow} <b>{sym}</b>  {pnl:+.2f} pts ({pct:+.1f}%)  {entry:.1f}→{price:.1f}{tag_str}")
+                  lines.append(f"  {icon} <b>{sym}</b>  {pnl:+.2f} pts ({pct:+.1f}%)  {entry:.1f}→{price:.1f}{tag_str}")
 
           if no_price:
               lines.append("")
