@@ -98,7 +98,8 @@ def monitor_active_signals(state, current_prices):
                 LOG.info("SIGNAL_TARGET_HIT | %s | BUY | T2 | target=%.2f | ltp=%.2f", symbol, t2, ltp)
             elif ltp >= t1 and prev not in ("T1_HIT", "T2_HIT", "T3_HIT"):
                 signal["highest_target_hit"] = "T1_HIT"
-                LOG.info("SIGNAL_TARGET_HIT | %s | BUY | T1 | target=%.2f | ltp=%.2f", symbol, t1, ltp)
+                signal["risk"]["sl"] = entry  # move SL to breakeven
+                LOG.info("SIGNAL_TARGET_HIT | %s | BUY | T1 | target=%.2f | ltp=%.2f | sl→BE %.2f", symbol, t1, ltp, entry)
 
         # SELL direction
         else:
@@ -126,6 +127,7 @@ def monitor_active_signals(state, current_prices):
                 LOG.info("SIGNAL_TARGET_HIT | %s | SELL | T2 | target=%.2f | ltp=%.2f", symbol, t2, ltp)
             elif ltp <= t1 and prev not in ("T1_HIT", "T2_HIT", "T3_HIT"):
                 signal["highest_target_hit"] = "T1_HIT"
-                LOG.info("SIGNAL_TARGET_HIT | %s | SELL | T1 | target=%.2f | ltp=%.2f", symbol, t1, ltp)
+                signal["risk"]["sl"] = entry  # move SL to breakeven
+                LOG.info("SIGNAL_TARGET_HIT | %s | SELL | T1 | target=%.2f | ltp=%.2f | sl→BE %.2f", symbol, t1, ltp, entry)
 
     return state
