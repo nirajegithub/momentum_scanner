@@ -166,6 +166,7 @@ def _build_confirmed_signal(item, setup, confirmation_ts, confirmation_close, or
         entry=entry,
         sl=sl,
         min_stop_distance_percent=SETTINGS.min_stop_distance_percent,
+        max_stop_distance_percent=SETTINGS.max_stop_distance_percent,
         t1_rr=SETTINGS.t1_rr,
         t2_rr=SETTINGS.t2_rr,
         t3_rr=SETTINGS.t3_rr,

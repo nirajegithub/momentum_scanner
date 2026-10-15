@@ -35,6 +35,7 @@ class Settings:
     t3_rr: float = float(os.getenv("T3_RR", "4.0"))
     min_rr: float = float(os.getenv("MIN_RR", "2.0"))
     min_stop_distance_percent: float = float(os.getenv("MIN_STOP_DISTANCE_PERCENT", "0.50"))
+    max_stop_distance_percent: float = float(os.getenv("MAX_STOP_DISTANCE_PERCENT", "1.5"))
     risk_percent: float = float(os.getenv("RISK_PERCENT", "1.0"))
     scan_start_hhmm: int = int(os.getenv("SCAN_START_HHMM", "930"))
     scan_end_hhmm: int = int(os.getenv("SCAN_END_HHMM", "1330"))

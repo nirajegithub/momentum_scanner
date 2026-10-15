@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 
-def build_risk_and_targets(direction: str, entry: float, sl: float, min_stop_distance_percent: float, t1_rr: float, t2_rr: float, t3_rr: float, min_rr: float, trailing_stop_pct: float = 5.0):
+def build_risk_and_targets(direction: str, entry: float, sl: float, min_stop_distance_percent: float, t1_rr: float, t2_rr: float, t3_rr: float, min_rr: float, trailing_stop_pct: float = 5.0, max_stop_distance_percent: float = 1.5):
     entry = float(entry)
     sl = float(sl)
     risk = entry - sl if direction == "BUY" else sl - entry
@@ -10,6 +10,8 @@ def build_risk_and_targets(direction: str, entry: float, sl: float, min_stop_dis
     risk_pct = risk / entry * 100.0
     if risk_pct < float(min_stop_distance_percent):
         return None, "STOP_DISTANCE_TOO_SMALL"
+    if risk_pct > float(max_stop_distance_percent):
+        return None, "STOP_DISTANCE_TOO_LARGE"
     if direction == "BUY":
         t1 = entry + float(t1_rr) * risk
         t2 = entry + float(t2_rr) * risk
