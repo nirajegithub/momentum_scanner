@@ -88,25 +88,17 @@ def monitor_active_signals(state, current_prices):
                     )
                 continue
 
-            # Check targets (in reverse order: highest first)
-            if ltp >= t3 and not signal.get("highest_target_hit"):
+            # Check targets — always record the highest reached so far
+            prev = signal.get("highest_target_hit")
+            if ltp >= t3 and prev != "T3_HIT":
                 signal["highest_target_hit"] = "T3_HIT"
-                LOG.info(
-                    "SIGNAL_TARGET_HIT | %s | BUY | T3 | target=%.2f | ltp=%.2f",
-                    symbol, t3, ltp,
-                )
-            elif ltp >= t2 and not signal.get("highest_target_hit"):
+                LOG.info("SIGNAL_TARGET_HIT | %s | BUY | T3 | target=%.2f | ltp=%.2f", symbol, t3, ltp)
+            elif ltp >= t2 and prev not in ("T2_HIT", "T3_HIT"):
                 signal["highest_target_hit"] = "T2_HIT"
-                LOG.info(
-                    "SIGNAL_TARGET_HIT | %s | BUY | T2 | target=%.2f | ltp=%.2f",
-                    symbol, t2, ltp,
-                )
-            elif ltp >= t1 and not signal.get("highest_target_hit"):
+                LOG.info("SIGNAL_TARGET_HIT | %s | BUY | T2 | target=%.2f | ltp=%.2f", symbol, t2, ltp)
+            elif ltp >= t1 and prev not in ("T1_HIT", "T2_HIT", "T3_HIT"):
                 signal["highest_target_hit"] = "T1_HIT"
-                LOG.info(
-                    "SIGNAL_TARGET_HIT | %s | BUY | T1 | target=%.2f | ltp=%.2f",
-                    symbol, t1, ltp,
-                )
+                LOG.info("SIGNAL_TARGET_HIT | %s | BUY | T1 | target=%.2f | ltp=%.2f", symbol, t1, ltp)
 
         # SELL direction
         else:
@@ -124,24 +116,16 @@ def monitor_active_signals(state, current_prices):
                     )
                 continue
 
-            # Check targets (in reverse order: lowest first)
-            if ltp <= t3 and not signal.get("highest_target_hit"):
+            # Check targets — always record the highest reached so far
+            prev = signal.get("highest_target_hit")
+            if ltp <= t3 and prev != "T3_HIT":
                 signal["highest_target_hit"] = "T3_HIT"
-                LOG.info(
-                    "SIGNAL_TARGET_HIT | %s | SELL | T3 | target=%.2f | ltp=%.2f",
-                    symbol, t3, ltp,
-                )
-            elif ltp <= t2 and not signal.get("highest_target_hit"):
+                LOG.info("SIGNAL_TARGET_HIT | %s | SELL | T3 | target=%.2f | ltp=%.2f", symbol, t3, ltp)
+            elif ltp <= t2 and prev not in ("T2_HIT", "T3_HIT"):
                 signal["highest_target_hit"] = "T2_HIT"
-                LOG.info(
-                    "SIGNAL_TARGET_HIT | %s | SELL | T2 | target=%.2f | ltp=%.2f",
-                    symbol, t2, ltp,
-                )
-            elif ltp <= t1 and not signal.get("highest_target_hit"):
+                LOG.info("SIGNAL_TARGET_HIT | %s | SELL | T2 | target=%.2f | ltp=%.2f", symbol, t2, ltp)
+            elif ltp <= t1 and prev not in ("T1_HIT", "T2_HIT", "T3_HIT"):
                 signal["highest_target_hit"] = "T1_HIT"
-                LOG.info(
-                    "SIGNAL_TARGET_HIT | %s | SELL | T1 | target=%.2f | ltp=%.2f",
-                    symbol, t1, ltp,
-                )
+                LOG.info("SIGNAL_TARGET_HIT | %s | SELL | T1 | target=%.2f | ltp=%.2f", symbol, t1, ltp)
 
     return state

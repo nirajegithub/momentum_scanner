@@ -539,6 +539,15 @@ def main():
         )
         return
 
+    # Monitor active signals on every run — regardless of scan window
+    try:
+        current_prices = _fetch_current_prices(dhan, state)
+        if current_prices:
+            state = monitor_active_signals(state, current_prices)
+            save(state)
+    except Exception as exc:
+        LOG.warning("Signal monitoring failed | %s", exc)
+
     if not _scan_window(ts):
         LOG.info("Outside scan window | now=%s | window=%s-%s", ts.strftime("%H:%M"), SETTINGS.scan_start_hhmm, SETTINGS.scan_end_hhmm)
         return
@@ -586,15 +595,6 @@ def main():
             del b1[sym]
         LOG.info("Cleared stale b1 entries | count=%d", len(stale_b1))
         save(state)
-
-    # Monitor active signals against current market prices
-    try:
-        current_prices = _fetch_current_prices(dhan, state)
-        if current_prices:
-            state = monitor_active_signals(state, current_prices)
-            save(state)
-    except Exception as exc:
-        LOG.warning("Signal monitoring failed | %s", exc)
 
     _process_b1(dhan, state, ts)
 
