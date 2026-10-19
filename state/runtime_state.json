@@ -471,503 +471,7 @@
       "prev_trading_day": "2026-10-16"
     }
   ],
-  "signals": {
-    "TECHM|BUY|2026-10-16T09:45:00+05:30|2026-10-16T09:45:00+05:30": {
-      "symbol": "TECHM",
-      "security_id": "13538",
-      "direction": "BUY",
-      "setup": "B1_ORB",
-      "setup_15m_timestamp": "2026-10-16T09:45:00+05:30",
-      "setup_15m_completion": "2026-10-16T09:50:00+05:30",
-      "setup_15m_open": 1741.1,
-      "setup_15m_high": 1759.0,
-      "setup_15m_low": 1741.0,
-      "setup_15m_close": 1757.0,
-      "setup_15m_rsi14": 88.9629678369578,
-      "setup_15m_previous_rsi14": 87.12933308762629,
-      "setup_15m_rvol": 2.261832769169836,
-      "daily_close": 1650.0,
-      "daily_volume": 8657928.0,
-      "trade_quality_score": 5.5,
-      "departure_score": 1.5,
-      "freshness_score": 2.0,
-      "base_candle_score": 2.0,
-      "base_candle_count": 3,
-      "zone_test_count": 0,
-      "zone_low": 1721.1,
-      "zone_high": 1743.0,
-      "curve_context": "NOT_AVAILABLE",
-      "market_trend_aligned": true,
-      "orb_timestamp": "2026-10-16T09:15:00+05:30",
-      "orb_high": 1738.9,
-      "orb_low": 1690.1,
-      "orb_close": 1720.4,
-      "confirmation_5m_timestamp": "2026-10-16T09:45:00+05:30",
-      "confirmation_5m_close": 1757.0,
-      "confirmation_lag_minutes": -5.0,
-      "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
-      "risk": {
-        "entry": 1757.0,
-        "sl": 1690.1,
-        "risk": 66.90000000000009,
-        "risk_percent": 3.8076266363119005,
-        "t1": 1823.9,
-        "t2": 1890.8000000000002,
-        "t3": 1957.7000000000003,
-        "rr_t1": 1.0,
-        "rr_t2": 2.0,
-        "rr_t3": 3.0,
-        "trailing_sl": 1669.1499999999999,
-        "trailing_stop_pct": 5.0
-      },
-      "entry": 1757.0,
-      "sl": 1690.1,
-      "t1": 1823.9,
-      "t2": 1890.8000000000002,
-      "t3": 1957.7000000000003
-    },
-    "CHENNPETRO|SELL|2026-10-16T10:05:00+05:30|2026-10-16T10:05:00+05:30": {
-      "symbol": "CHENNPETRO",
-      "security_id": "2049",
-      "direction": "SELL",
-      "setup": "B1_ORB",
-      "setup_15m_timestamp": "2026-10-16T10:05:00+05:30",
-      "setup_15m_completion": "2026-10-16T10:10:00+05:30",
-      "setup_15m_open": 1403.9,
-      "setup_15m_high": 1404.5,
-      "setup_15m_low": 1391.8,
-      "setup_15m_close": 1394.8,
-      "setup_15m_rsi14": 18.04290690878109,
-      "setup_15m_previous_rsi14": 21.509041337465234,
-      "setup_15m_rvol": 1.7841950290421855,
-      "daily_close": 1444.0,
-      "daily_volume": 2563511.0,
-      "trade_quality_score": 5.0,
-      "departure_score": 3.0,
-      "freshness_score": 0.0,
-      "base_candle_score": 2.0,
-      "base_candle_count": 3,
-      "zone_test_count": 5,
-      "zone_low": 1403.6,
-      "zone_high": 1413.2,
-      "curve_context": "NOT_AVAILABLE",
-      "market_trend_aligned": true,
-      "orb_timestamp": "2026-10-16T09:15:00+05:30",
-      "orb_high": 1448.3,
-      "orb_low": 1407.2,
-      "orb_close": 1410.0,
-      "confirmation_5m_timestamp": "2026-10-16T10:05:00+05:30",
-      "confirmation_5m_close": 1394.8,
-      "confirmation_lag_minutes": -5.0,
-      "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
-      "risk": {
-        "entry": 1394.8,
-        "sl": 1448.3,
-        "risk": 53.5,
-        "risk_percent": 3.8356753656438203,
-        "t1": 1341.3,
-        "t2": 1287.8,
-        "t3": 1234.3,
-        "rr_t1": 1.0,
-        "rr_t2": 2.0,
-        "rr_t3": 3.0,
-        "trailing_sl": 1464.54,
-        "trailing_stop_pct": 5.0
-      },
-      "entry": 1394.8,
-      "sl": 1448.3,
-      "t1": 1341.3,
-      "t2": 1287.8,
-      "t3": 1234.3
-    },
-    "JSWSTEEL|BUY|2026-10-16T10:05:00+05:30|2026-10-16T10:05:00+05:30": {
-      "symbol": "JSWSTEEL",
-      "security_id": "11723",
-      "direction": "BUY",
-      "setup": "B1_ORB",
-      "setup_15m_timestamp": "2026-10-16T10:05:00+05:30",
-      "setup_15m_completion": "2026-10-16T10:10:00+05:30",
-      "setup_15m_open": 1206.4,
-      "setup_15m_high": 1217.5,
-      "setup_15m_low": 1206.0,
-      "setup_15m_close": 1216.2,
-      "setup_15m_rsi14": 74.60240348986649,
-      "setup_15m_previous_rsi14": 58.67006451229739,
-      "setup_15m_rvol": 3.020181105474178,
-      "daily_close": 1200.4,
-      "daily_volume": 1547603.0,
-      "trade_quality_score": 3.5,
-      "departure_score": 1.5,
-      "freshness_score": 0.0,
-      "base_candle_score": 2.0,
-      "base_candle_count": 1,
-      "zone_test_count": 2,
-      "zone_low": 1204.0,
-      "zone_high": 1207.1,
-      "curve_context": "NOT_AVAILABLE",
-      "market_trend_aligned": true,
-      "orb_timestamp": "2026-10-16T09:15:00+05:30",
-      "orb_high": 1206.1,
-      "orb_low": 1194.3,
-      "orb_close": 1198.3,
-      "confirmation_5m_timestamp": "2026-10-16T10:05:00+05:30",
-      "confirmation_5m_close": 1216.2,
-      "confirmation_lag_minutes": -5.0,
-      "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
-      "risk": {
-        "entry": 1216.2,
-        "sl": 1194.3,
-        "risk": 21.90000000000009,
-        "risk_percent": 1.800690675875686,
-        "t1": 1238.1000000000001,
-        "t2": 1260.0000000000002,
-        "t3": 1281.9000000000003,
-        "rr_t1": 1.0,
-        "rr_t2": 2.0,
-        "rr_t3": 3.0,
-        "trailing_sl": 1155.39,
-        "trailing_stop_pct": 5.0
-      },
-      "entry": 1216.2,
-      "sl": 1194.3,
-      "t1": 1238.1000000000001,
-      "t2": 1260.0000000000002,
-      "t3": 1281.9000000000003
-    },
-    "BHARTIARTL|BUY|2026-10-16T10:15:00+05:30|2026-10-16T10:15:00+05:30": {
-      "symbol": "BHARTIARTL",
-      "security_id": "10604",
-      "direction": "BUY",
-      "setup": "B1_ORB",
-      "setup_15m_timestamp": "2026-10-16T10:15:00+05:30",
-      "setup_15m_completion": "2026-10-16T10:20:00+05:30",
-      "setup_15m_open": 1889.5,
-      "setup_15m_high": 1897.9,
-      "setup_15m_low": 1888.9,
-      "setup_15m_close": 1897.8,
-      "setup_15m_rsi14": 80.05591256338593,
-      "setup_15m_previous_rsi14": 74.98359815154795,
-      "setup_15m_rvol": 1.9308076247889556,
-      "daily_close": 1854.0,
-      "daily_volume": 11315521.0,
-      "trade_quality_score": 5.0,
-      "departure_score": 3.0,
-      "freshness_score": 0.0,
-      "base_candle_score": 2.0,
-      "base_candle_count": 1,
-      "zone_test_count": 2,
-      "zone_low": 1885.7,
-      "zone_high": 1888.9,
-      "curve_context": "NOT_AVAILABLE",
-      "market_trend_aligned": true,
-      "orb_timestamp": "2026-10-16T09:15:00+05:30",
-      "orb_high": 1881.4,
-      "orb_low": 1857.7,
-      "orb_close": 1868.6,
-      "confirmation_5m_timestamp": "2026-10-16T10:15:00+05:30",
-      "confirmation_5m_close": 1897.8,
-      "confirmation_lag_minutes": -5.0,
-      "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
-      "risk": {
-        "entry": 1897.8,
-        "sl": 1857.7,
-        "risk": 40.09999999999991,
-        "risk_percent": 2.1129729160080046,
-        "t1": 1937.8999999999999,
-        "t2": 1977.9999999999998,
-        "t3": 2018.0999999999997,
-        "rr_t1": 1.0,
-        "rr_t2": 2.0,
-        "rr_t3": 3.0,
-        "trailing_sl": 1802.9099999999999,
-        "trailing_stop_pct": 5.0
-      },
-      "entry": 1897.8,
-      "sl": 1857.7,
-      "t1": 1937.8999999999999,
-      "t2": 1977.9999999999998,
-      "t3": 2018.0999999999997
-    },
-    "CGPOWER|BUY|2026-10-16T10:15:00+05:30|2026-10-16T10:15:00+05:30": {
-      "symbol": "CGPOWER",
-      "security_id": "760",
-      "direction": "BUY",
-      "setup": "B1_ORB",
-      "setup_15m_timestamp": "2026-10-16T10:15:00+05:30",
-      "setup_15m_completion": "2026-10-16T10:20:00+05:30",
-      "setup_15m_open": 818.8,
-      "setup_15m_high": 825.65,
-      "setup_15m_low": 817.85,
-      "setup_15m_close": 824.7,
-      "setup_15m_rsi14": 70.77107189542863,
-      "setup_15m_previous_rsi14": 58.96884211362316,
-      "setup_15m_rvol": 2.3404119825321357,
-      "daily_close": 818.0,
-      "daily_volume": 4943006.0,
-      "trade_quality_score": 6.0,
-      "departure_score": 3.0,
-      "freshness_score": 1.0,
-      "base_candle_score": 2.0,
-      "base_candle_count": 1,
-      "zone_test_count": 1,
-      "zone_low": 816.15,
-      "zone_high": 819.2,
-      "curve_context": "NOT_AVAILABLE",
-      "market_trend_aligned": true,
-      "orb_timestamp": "2026-10-16T09:15:00+05:30",
-      "orb_high": 818.0,
-      "orb_low": 808.55,
-      "orb_close": 813.1,
-      "confirmation_5m_timestamp": "2026-10-16T10:15:00+05:30",
-      "confirmation_5m_close": 824.7,
-      "confirmation_lag_minutes": -5.0,
-      "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
-      "risk": {
-        "entry": 824.7,
-        "sl": 808.55,
-        "risk": 16.15000000000009,
-        "risk_percent": 1.9582878622529516,
-        "t1": 840.8500000000001,
-        "t2": 857.0000000000002,
-        "t3": 873.1500000000003,
-        "rr_t1": 1.0,
-        "rr_t2": 2.0,
-        "rr_t3": 3.0,
-        "trailing_sl": 783.465,
-        "trailing_stop_pct": 5.0
-      },
-      "entry": 824.7,
-      "sl": 808.55,
-      "t1": 840.8500000000001,
-      "t2": 857.0000000000002,
-      "t3": 873.1500000000003
-    },
-    "COHANCE|BUY|2026-10-16T11:45:00+05:30|2026-10-16T11:45:00+05:30": {
-      "symbol": "COHANCE",
-      "security_id": "17945",
-      "direction": "BUY",
-      "setup": "B1_ORB",
-      "setup_15m_timestamp": "2026-10-16T11:45:00+05:30",
-      "setup_15m_completion": "2026-10-16T11:50:00+05:30",
-      "setup_15m_open": 462.0,
-      "setup_15m_high": 465.85,
-      "setup_15m_low": 462.0,
-      "setup_15m_close": 465.35,
-      "setup_15m_rsi14": 69.15798546186363,
-      "setup_15m_previous_rsi14": 56.13064854943986,
-      "setup_15m_rvol": 5.9071390230810525,
-      "daily_close": 459.95,
-      "daily_volume": 2618808.0,
-      "trade_quality_score": 3.5,
-      "departure_score": 1.5,
-      "freshness_score": 0.0,
-      "base_candle_score": 2.0,
-      "base_candle_count": 1,
-      "zone_test_count": 5,
-      "zone_low": 461.9,
-      "zone_high": 462.3,
-      "curve_context": "HIGH",
-      "market_trend_aligned": true,
-      "orb_timestamp": "2026-10-16T09:15:00+05:30",
-      "orb_high": 462.95,
-      "orb_low": 458.1,
-      "orb_close": 461.1,
-      "confirmation_5m_timestamp": "2026-10-16T11:45:00+05:30",
-      "confirmation_5m_close": 465.35,
-      "confirmation_lag_minutes": -5.0,
-      "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
-      "risk": {
-        "entry": 465.35,
-        "sl": 458.1,
-        "risk": 7.25,
-        "risk_percent": 1.5579671215214355,
-        "t1": 472.6,
-        "t2": 479.85,
-        "t3": 487.1,
-        "rr_t1": 1.0,
-        "rr_t2": 2.0,
-        "rr_t3": 3.0,
-        "trailing_sl": 442.0825,
-        "trailing_stop_pct": 5.0
-      },
-      "entry": 465.35,
-      "sl": 458.1,
-      "t1": 472.6,
-      "t2": 479.85,
-      "t3": 487.1
-    },
-    "THELEELA|SELL|2026-10-16T12:25:00+05:30|2026-10-16T12:25:00+05:30": {
-      "symbol": "THELEELA",
-      "security_id": "757014",
-      "direction": "SELL",
-      "setup": "B1_ORB",
-      "setup_15m_timestamp": "2026-10-16T12:25:00+05:30",
-      "setup_15m_completion": "2026-10-16T12:30:00+05:30",
-      "setup_15m_open": 590.4,
-      "setup_15m_high": 590.7,
-      "setup_15m_low": 589.4,
-      "setup_15m_close": 589.85,
-      "setup_15m_rsi14": 34.69731119727928,
-      "setup_15m_previous_rsi14": 37.40014040548262,
-      "setup_15m_rvol": 3.768918829082368,
-      "daily_close": 596.5,
-      "daily_volume": 3557411.0,
-      "trade_quality_score": 5.0,
-      "departure_score": 3.0,
-      "freshness_score": 0.0,
-      "base_candle_score": 2.0,
-      "base_candle_count": 3,
-      "zone_test_count": 11,
-      "zone_low": 590.4,
-      "zone_high": 591.35,
-      "curve_context": "LOW",
-      "market_trend_aligned": true,
-      "orb_timestamp": "2026-10-16T09:15:00+05:30",
-      "orb_high": 604.8,
-      "orb_low": 590.45,
-      "orb_close": 595.05,
-      "confirmation_5m_timestamp": "2026-10-16T12:25:00+05:30",
-      "confirmation_5m_close": 589.85,
-      "confirmation_lag_minutes": -5.0,
-      "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
-      "risk": {
-        "entry": 589.85,
-        "sl": 604.8,
-        "risk": 14.949999999999932,
-        "risk_percent": 2.5345426803424482,
-        "t1": 574.9000000000001,
-        "t2": 559.9500000000002,
-        "t3": 545.0000000000002,
-        "rr_t1": 1.0,
-        "rr_t2": 2.0,
-        "rr_t3": 3.0,
-        "trailing_sl": 619.3425000000001,
-        "trailing_stop_pct": 5.0
-      },
-      "entry": 589.85,
-      "sl": 604.8,
-      "t1": 574.9000000000001,
-      "t2": 559.9500000000002,
-      "t3": 545.0000000000002
-    },
-    "JSWENERGY|BUY|2026-10-16T12:30:00+05:30|2026-10-16T12:30:00+05:30": {
-      "symbol": "JSWENERGY",
-      "security_id": "17869",
-      "direction": "BUY",
-      "setup": "B1_ORB",
-      "setup_15m_timestamp": "2026-10-16T12:30:00+05:30",
-      "setup_15m_completion": "2026-10-16T12:35:00+05:30",
-      "setup_15m_open": 485.95,
-      "setup_15m_high": 487.35,
-      "setup_15m_low": 485.9,
-      "setup_15m_close": 487.3,
-      "setup_15m_rsi14": 60.14647986758876,
-      "setup_15m_previous_rsi14": 53.5868534700509,
-      "setup_15m_rvol": 3.76691271836421,
-      "daily_close": 478.95,
-      "daily_volume": 2548651.0,
-      "trade_quality_score": 3.5,
-      "departure_score": 1.5,
-      "freshness_score": 0.0,
-      "base_candle_score": 2.0,
-      "base_candle_count": 1,
-      "zone_test_count": 12,
-      "zone_low": 485.15,
-      "zone_high": 486.0,
-      "curve_context": "HIGH",
-      "market_trend_aligned": true,
-      "orb_timestamp": "2026-10-16T09:15:00+05:30",
-      "orb_high": 481.95,
-      "orb_low": 475.15,
-      "orb_close": 477.5,
-      "confirmation_5m_timestamp": "2026-10-16T12:30:00+05:30",
-      "confirmation_5m_close": 487.3,
-      "confirmation_lag_minutes": -5.0,
-      "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
-      "risk": {
-        "entry": 487.3,
-        "sl": 475.15,
-        "risk": 12.150000000000034,
-        "risk_percent": 2.493330597168076,
-        "t1": 499.45000000000005,
-        "t2": 511.6000000000001,
-        "t3": 523.7500000000001,
-        "rr_t1": 1.0,
-        "rr_t2": 2.0,
-        "rr_t3": 3.0,
-        "trailing_sl": 462.935,
-        "trailing_stop_pct": 5.0
-      },
-      "entry": 487.3,
-      "sl": 475.15,
-      "t1": 499.45000000000005,
-      "t2": 511.6000000000001,
-      "t3": 523.7500000000001
-    },
-    "HINDCOPPER|BUY|2026-10-16T12:40:00+05:30|2026-10-16T12:40:00+05:30": {
-      "symbol": "HINDCOPPER",
-      "security_id": "17939",
-      "direction": "BUY",
-      "setup": "B1_ORB",
-      "setup_15m_timestamp": "2026-10-16T12:40:00+05:30",
-      "setup_15m_completion": "2026-10-16T12:45:00+05:30",
-      "setup_15m_open": 459.3,
-      "setup_15m_high": 462.0,
-      "setup_15m_low": 459.3,
-      "setup_15m_close": 460.5,
-      "setup_15m_rsi14": 69.09537583426817,
-      "setup_15m_previous_rsi14": 61.61326813728123,
-      "setup_15m_rvol": 5.796813986612578,
-      "daily_close": 453.05,
-      "daily_volume": 4223891.0,
-      "trade_quality_score": 5.0,
-      "departure_score": 3.0,
-      "freshness_score": 0.0,
-      "base_candle_score": 2.0,
-      "base_candle_count": 1,
-      "zone_test_count": 3,
-      "zone_low": 459.3,
-      "zone_high": 459.8,
-      "curve_context": "EQUILIBRIUM",
-      "market_trend_aligned": true,
-      "orb_timestamp": "2026-10-16T09:15:00+05:30",
-      "orb_high": 457.1,
-      "orb_low": 451.75,
-      "orb_close": 452.7,
-      "confirmation_5m_timestamp": "2026-10-16T12:40:00+05:30",
-      "confirmation_5m_close": 460.5,
-      "confirmation_lag_minutes": -5.0,
-      "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
-      "risk": {
-        "entry": 460.5,
-        "sl": 451.75,
-        "risk": 8.75,
-        "risk_percent": 1.9001085776330078,
-        "t1": 469.25,
-        "t2": 478.0,
-        "t3": 486.75,
-        "rr_t1": 1.0,
-        "rr_t2": 2.0,
-        "rr_t3": 3.0,
-        "trailing_sl": 437.47499999999997,
-        "trailing_stop_pct": 5.0
-      },
-      "entry": 460.5,
-      "sl": 451.75,
-      "t1": 469.25,
-      "t2": 478.0,
-      "t3": 486.75
-    }
-  },
+  "signals": {},
   "pending_setups": {},
   "daily_filters": {},
   "alert_state": {
@@ -2852,715 +2356,650 @@
   "b1": {
     "AEGISLOG": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 1429.0,
-        "low": 1358.5,
-        "close": 1362.3
+        "high": 1370.0,
+        "low": 1329.3,
+        "close": 1332.0
+      },
+      "orb_source": "TODAY_ORB",
+      "setup": null
+    },
+    "AIIL": {
+      "status": "WAITING_FOR_5M",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
+      "orb": {
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
+        "time": "09:15",
+        "high": 570.2,
+        "low": 559.45,
+        "close": 560.8
       },
       "orb_source": "TODAY_ORB",
       "setup": null
     },
     "ANANTRAJ": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 525.7,
-        "low": 516.1,
-        "close": 517.4
+        "high": 517.65,
+        "low": 502.85,
+        "close": 503.65
+      },
+      "orb_source": "TODAY_ORB",
+      "setup": null
+    },
+    "ANTHEM": {
+      "status": "WAITING_FOR_5M",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
+      "orb": {
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
+        "time": "09:15",
+        "high": 825.8,
+        "low": 813.45,
+        "close": 818.35
       },
       "orb_source": "TODAY_ORB",
       "setup": null
     },
     "BHARTIARTL": {
-      "status": "CONSUMED",
-      "last_processed_5m": "2026-10-16T10:15:00+05:30",
-      "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
-        "time": "09:15",
-        "high": 1881.4,
-        "low": 1857.7,
-        "close": 1868.6
-      },
-      "orb_source": "TODAY_ORB",
-      "setup": null,
-      "confirmation_5m_timestamp": "2026-10-16T10:15:00+05:30"
-    },
-    "BSE": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 3455.0,
-        "low": 3333.0,
-        "close": 3343.8
+        "high": 1929.6,
+        "low": 1903.4,
+        "close": 1906.0
       },
       "orb_source": "TODAY_ORB",
       "setup": null
     },
-    "CEMPRO": {
+    "BSE": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 1225.9,
-        "low": 1171.9,
-        "close": 1173.9
+        "high": 3396.4,
+        "low": 3355.5,
+        "close": 3360.6
+      },
+      "orb_source": "TODAY_ORB",
+      "setup": null
+    },
+    "CCL": {
+      "status": "WAITING_FOR_5M",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
+      "orb": {
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
+        "time": "09:15",
+        "high": 1022.5,
+        "low": 980.1,
+        "close": 984.0
       },
       "orb_source": "TODAY_ORB",
       "setup": null
     },
     "CGPOWER": {
-      "status": "CONSUMED",
-      "last_processed_5m": "2026-10-16T10:15:00+05:30",
-      "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
-        "time": "09:15",
-        "high": 818.0,
-        "low": 808.55,
-        "close": 813.1
-      },
-      "orb_source": "TODAY_ORB",
-      "setup": null,
-      "confirmation_5m_timestamp": "2026-10-16T10:15:00+05:30"
-    },
-    "CHENNPETRO": {
-      "status": "CONSUMED",
-      "last_processed_5m": "2026-10-16T10:05:00+05:30",
-      "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
-        "time": "09:15",
-        "high": 1448.3,
-        "low": 1407.2,
-        "close": 1410.0
-      },
-      "orb_source": "TODAY_ORB",
-      "setup": null,
-      "confirmation_5m_timestamp": "2026-10-16T10:05:00+05:30"
-    },
-    "COHANCE": {
-      "status": "CONSUMED",
-      "last_processed_5m": "2026-10-16T11:45:00+05:30",
-      "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
-        "time": "09:15",
-        "high": 462.95,
-        "low": 458.1,
-        "close": 461.1
-      },
-      "orb_source": "TODAY_ORB",
-      "setup": null,
-      "confirmation_5m_timestamp": "2026-10-16T11:45:00+05:30"
-    },
-    "CPPLUS": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 4166.0,
-        "low": 4032.4,
-        "close": 4085.7
+        "high": 861.9,
+        "low": 843.2,
+        "close": 858.5
       },
       "orb_source": "TODAY_ORB",
       "setup": null
     },
-    "ELECON": {
+    "CHENNPETRO": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 509.6,
-        "low": 475.9,
-        "close": 506.05
+        "high": 1456.7,
+        "low": 1411.0,
+        "close": 1428.7
       },
       "orb_source": "TODAY_ORB",
       "setup": null
     },
     "ENRIN": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 2983.6,
-        "low": 2900.1,
-        "close": 2911.1
+        "high": 2909.8,
+        "low": 2861.2,
+        "close": 2883.0
       },
       "orb_source": "TODAY_ORB",
       "setup": null
     },
     "GALLANTT": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 626.0,
-        "low": 609.0,
-        "close": 611.05
+        "high": 611.0,
+        "low": 584.65,
+        "close": 591.35
       },
       "orb_source": "TODAY_ORB",
       "setup": null
     },
-    "GESHIP": {
-      "status": "CONSUMED",
-      "last_processed_5m": "2026-10-16T10:40:00+05:30",
-      "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
-        "time": "09:15",
-        "high": 1492.0,
-        "low": 1460.1,
-        "close": 1465.2
-      },
-      "orb_source": "TODAY_ORB",
-      "setup": null
-    },
-    "GODREJIND": {
+    "HBLENGINE": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 1046.0,
-        "low": 1019.1,
-        "close": 1025.9
-      },
-      "orb_source": "TODAY_ORB",
-      "setup": null
-    },
-    "GODREJPROP": {
-      "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
-      "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
-        "time": "09:15",
-        "high": 1623.4,
-        "low": 1575.2,
-        "close": 1580.8
-      },
-      "orb_source": "TODAY_ORB",
-      "setup": null
-    },
-    "GRAPHITE": {
-      "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
-      "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
-        "time": "09:15",
-        "high": 772.3,
-        "low": 762.65,
-        "close": 767.7
-      },
-      "orb_source": "TODAY_ORB",
-      "setup": null
-    },
-    "GVT&D": {
-      "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
-      "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
-        "time": "09:15",
-        "high": 3978.8,
-        "low": 3920.0,
-        "close": 3941.9
+        "high": 832.85,
+        "low": 805.55,
+        "close": 807.5
       },
       "orb_source": "TODAY_ORB",
       "setup": null
     },
     "HDBFS": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 540.95,
-        "low": 530.65,
-        "close": 531.4
+        "high": 517.85,
+        "low": 504.1,
+        "close": 505.25
       },
       "orb_source": "TODAY_ORB",
       "setup": null
-    },
-    "HDFCAMC": {
-      "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
-      "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
-        "time": "09:15",
-        "high": 2458.7,
-        "low": 2398.4,
-        "close": 2406.4
-      },
-      "orb_source": "TODAY_ORB",
-      "setup": null
-    },
-    "HINDALCO": {
-      "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
-      "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
-        "time": "09:15",
-        "high": 903.0,
-        "low": 892.3,
-        "close": 894.85
-      },
-      "orb_source": "TODAY_ORB",
-      "setup": null
-    },
-    "HINDCOPPER": {
-      "status": "CONSUMED",
-      "last_processed_5m": "2026-10-16T12:40:00+05:30",
-      "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
-        "time": "09:15",
-        "high": 457.1,
-        "low": 451.75,
-        "close": 452.7
-      },
-      "orb_source": "TODAY_ORB",
-      "setup": null,
-      "confirmation_5m_timestamp": "2026-10-16T12:40:00+05:30"
     },
     "ICICIAMC": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 2870.0,
-        "low": 2839.0,
-        "close": 2840.7
+        "high": 2822.2,
+        "low": 2765.3,
+        "close": 2789.3
       },
       "orb_source": "TODAY_ORB",
       "setup": null
     },
-    "ICICIBANK": {
+    "INDHOTEL": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 1398.5,
-        "low": 1383.5,
-        "close": 1384.3
+        "high": 774.95,
+        "low": 762.35,
+        "close": 763.5
       },
       "orb_source": "TODAY_ORB",
       "setup": null
     },
-    "ICICIGI": {
-      "status": "CONSUMED",
-      "last_processed_5m": "2026-10-16T10:40:00+05:30",
-      "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
-        "time": "09:15",
-        "high": 1691.5,
-        "low": 1660.2,
-        "close": 1664.7
-      },
-      "orb_source": "TODAY_ORB",
-      "setup": null
-    },
-    "INDUSINDBK": {
+    "INFY": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 889.7,
-        "low": 877.0,
-        "close": 877.65
+        "high": 1156.95,
+        "low": 1134.35,
+        "close": 1139.9
       },
       "orb_source": "TODAY_ORB",
       "setup": null
     },
-    "JSWENERGY": {
-      "status": "CONSUMED",
-      "last_processed_5m": "2026-10-16T12:30:00+05:30",
-      "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
-        "time": "09:15",
-        "high": 481.95,
-        "low": 475.15,
-        "close": 477.5
-      },
-      "orb_source": "TODAY_ORB",
-      "setup": null,
-      "confirmation_5m_timestamp": "2026-10-16T12:30:00+05:30"
-    },
-    "JSWSTEEL": {
-      "status": "CONSUMED",
-      "last_processed_5m": "2026-10-16T10:05:00+05:30",
-      "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
-        "time": "09:15",
-        "high": 1206.1,
-        "low": 1194.3,
-        "close": 1198.3
-      },
-      "orb_source": "TODAY_ORB",
-      "setup": null,
-      "confirmation_5m_timestamp": "2026-10-16T10:05:00+05:30"
-    },
-    "KIRLOSENG": {
+    "KPITTECH": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 2079.7,
-        "low": 2039.0,
-        "close": 2047.1
+        "high": 558.7,
+        "low": 539.15,
+        "close": 542.2
       },
       "orb_source": "TODAY_ORB",
       "setup": null
     },
-    "MARUTI": {
+    "LICHSGFIN": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 11569.0,
-        "low": 11357.0,
-        "close": 11375.0
+        "high": 523.8,
+        "low": 519.15,
+        "close": 519.7
+      },
+      "orb_source": "TODAY_ORB",
+      "setup": null
+    },
+    "LTM": {
+      "status": "WAITING_FOR_5M",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
+      "orb": {
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
+        "time": "09:15",
+        "high": 4270.0,
+        "low": 4142.0,
+        "close": 4208.3
+      },
+      "orb_source": "TODAY_ORB",
+      "setup": null
+    },
+    "M&M": {
+      "status": "WAITING_FOR_5M",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
+      "orb": {
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
+        "time": "09:15",
+        "high": 2938.6,
+        "low": 2885.6,
+        "close": 2890.5
+      },
+      "orb_source": "TODAY_ORB",
+      "setup": null
+    },
+    "MANKIND": {
+      "status": "WAITING_FOR_5M",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
+      "orb": {
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
+        "time": "09:15",
+        "high": 2319.4,
+        "low": 2260.0,
+        "close": 2316.0
+      },
+      "orb_source": "TODAY_ORB",
+      "setup": null
+    },
+    "MAXHEALTH": {
+      "status": "WAITING_FOR_5M",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
+      "orb": {
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
+        "time": "09:15",
+        "high": 855.55,
+        "low": 842.4,
+        "close": 843.3
       },
       "orb_source": "TODAY_ORB",
       "setup": null
     },
     "NAM-INDIA": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 1093.8,
-        "low": 1060.5,
-        "close": 1061.9
+        "high": 1068.8,
+        "low": 1055.7,
+        "close": 1056.4
       },
       "orb_source": "TODAY_ORB",
       "setup": null
     },
-    "NESTLEIND": {
+    "NAUKRI": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 1289.7,
-        "low": 1257.1,
-        "close": 1265.9
+        "high": 1265.9,
+        "low": 1249.3,
+        "close": 1252.4
       },
       "orb_source": "TODAY_ORB",
       "setup": null
     },
-    "NETWEB": {
+    "PERSISTENT": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 4755.0,
-        "low": 4658.0,
-        "close": 4713.5
+        "high": 5909.0,
+        "low": 5635.0,
+        "close": 5806.0
       },
       "orb_source": "TODAY_ORB",
       "setup": null
     },
-    "POLICYBZR": {
+    "RRKABEL": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 1079.5,
-        "low": 1065.1,
-        "close": 1077.0
+        "high": 2383.7,
+        "low": 2326.0,
+        "close": 2347.3
       },
       "orb_source": "TODAY_ORB",
       "setup": null
     },
-    "RELIANCE": {
+    "SHYAMMETL": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 1215.0,
-        "low": 1196.9,
-        "close": 1199.0
+        "high": 1218.7,
+        "low": 1178.5,
+        "close": 1197.7
       },
       "orb_source": "TODAY_ORB",
       "setup": null
     },
-    "SAILIFE": {
+    "SYRMA": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 1403.2,
-        "low": 1380.6,
-        "close": 1402.2
+        "high": 1614.0,
+        "low": 1564.1,
+        "close": 1589.3
       },
       "orb_source": "TODAY_ORB",
       "setup": null
     },
-    "SUNTV": {
+    "TATAELXSI": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 644.5,
-        "low": 632.25,
-        "close": 638.95
+        "high": 3867.2,
+        "low": 3784.3,
+        "close": 3802.6
       },
       "orb_source": "TODAY_ORB",
       "setup": null
     },
-    "TATACOMM": {
+    "TATATECH": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 1769.0,
-        "low": 1722.3,
-        "close": 1729.5
+        "high": 725.45,
+        "low": 713.05,
+        "close": 716.9
+      },
+      "orb_source": "TODAY_ORB",
+      "setup": null
+    },
+    "TCS": {
+      "status": "WAITING_FOR_5M",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
+      "orb": {
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
+        "time": "09:15",
+        "high": 2487.4,
+        "low": 2432.1,
+        "close": 2467.1
       },
       "orb_source": "TODAY_ORB",
       "setup": null
     },
     "TECHM": {
-      "status": "CONSUMED",
-      "last_processed_5m": "2026-10-16T09:45:00+05:30",
+      "status": "WAITING_FOR_5M",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 1738.9,
-        "low": 1690.1,
-        "close": 1720.4
+        "high": 1792.3,
+        "low": 1752.7,
+        "close": 1772.7
       },
       "orb_source": "TODAY_ORB",
-      "setup": null,
-      "confirmation_5m_timestamp": "2026-10-16T09:45:00+05:30"
+      "setup": null
     },
     "THELEELA": {
-      "status": "CONSUMED",
-      "last_processed_5m": "2026-10-16T12:25:00+05:30",
+      "status": "WAITING_FOR_5M",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 604.8,
-        "low": 590.45,
-        "close": 595.05
+        "high": 612.85,
+        "low": 603.1,
+        "close": 609.4
       },
       "orb_source": "TODAY_ORB",
-      "setup": null,
-      "confirmation_5m_timestamp": "2026-10-16T12:25:00+05:30"
+      "setup": null
+    },
+    "TRITURBINE": {
+      "status": "WAITING_FOR_5M",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
+      "orb": {
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
+        "time": "09:15",
+        "high": 495.9,
+        "low": 489.6,
+        "close": 490.7
+      },
+      "orb_source": "TODAY_ORB",
+      "setup": null
+    },
+    "WAAREEENER": {
+      "status": "WAITING_FOR_5M",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
+      "orb": {
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
+        "time": "09:15",
+        "high": 2576.3,
+        "low": 2513.7,
+        "close": 2524.0
+      },
+      "orb_source": "TODAY_ORB",
+      "setup": null
     },
     "WELCORP": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-16T13:25:00+05:30",
+      "last_processed_5m": "2026-10-19T09:25:00+05:30",
       "orb": {
-        "timestamp": "2026-10-16T09:15:00+05:30",
-        "date": "2026-10-16",
+        "timestamp": "2026-10-19T09:15:00+05:30",
+        "date": "2026-10-19",
         "time": "09:15",
-        "high": 2615.0,
-        "low": 2500.0,
-        "close": 2605.0
+        "high": 2607.8,
+        "low": 2536.1,
+        "close": 2547.4
       },
       "orb_source": "TODAY_ORB",
       "setup": null
     }
   },
   "volume_gainer_baseline": {
-    "date": "2026-10-16",
+    "date": "2026-10-19",
     "symbols": {
       "20MICRONS": {
-        "avg_volume": 80629.1,
-        "last_close": 192.42,
+        "avg_volume": 76590.1,
+        "last_close": 193.32,
         "security_id": "16921"
       },
       "21STCENMGM": {
-        "avg_volume": 12517.8,
-        "last_close": 44.48,
+        "avg_volume": 14077.9,
+        "last_close": 46.15,
         "security_id": "4"
       },
       "360ONE": {
-        "avg_volume": 502570.8,
-        "last_close": 1073.0,
+        "avg_volume": 538028.2,
+        "last_close": 1075.0,
         "security_id": "13061"
       },
       "3BBLACKBIO": {
-        "avg_volume": 15591.4,
-        "last_close": 1456.5,
+        "avg_volume": 13402.5,
+        "last_close": 1446.4,
         "security_id": "762518"
       },
       "3MINDIA": {
-        "avg_volume": 3541.4,
-        "last_close": 30635.0,
+        "avg_volume": 3076.5,
+        "last_close": 30400.0,
         "security_id": "474"
       },
       "3PLAND": {
-        "avg_volume": 2378.9,
-        "last_close": 31.17,
+        "avg_volume": 1580.9,
+        "last_close": 31.52,
         "security_id": "2595"
       },
       "5PAISA": {
-        "avg_volume": 303982.8,
-        "last_close": 345.6,
+        "avg_volume": 299564.9,
+        "last_close": 346.55,
         "security_id": "445"
       },
       "63MOONS": {
-        "avg_volume": 666458.7,
-        "last_close": 920.85,
+        "avg_volume": 696469.4,
+        "last_close": 919.6,
         "security_id": "11868"
       },
       "A2ZINFRA": {
-        "avg_volume": 220268.5,
-        "last_close": 13.79,
+        "avg_volume": 186342.7,
+        "last_close": 13.77,
         "security_id": "20906"
       },
       "AAATECH": {
-        "avg_volume": 260042.8,
-        "last_close": 113.78,
+        "avg_volume": 286198.8,
+        "last_close": 113.01,
         "security_id": "12533"
       },
       "AADHARHFC": {
-        "avg_volume": 218525.6,
-        "last_close": 452.05,
+        "avg_volume": 167761.9,
+        "last_close": 447.0,
         "security_id": "23729"
       },
       "AAKASH": {
-        "avg_volume": 79580.0,
-        "last_close": 8.23,
+        "avg_volume": 75792.8,
+        "last_close": 8.21,
         "security_id": "235"
       },
       "AAREYDRUGS": {
-        "avg_volume": 252882.2,
-        "last_close": 108.74,
+        "avg_volume": 226631.7,
+        "last_close": 112.91,
         "security_id": "5245"
       },
       "AARON": {
-        "avg_volume": 8618.8,
-        "last_close": 128.15,
+        "avg_volume": 8790.6,
+        "last_close": 126.22,
         "security_id": "1030"
       },
       "AARTECH": {
-        "avg_volume": 47176.8,
-        "last_close": 45.86,
+        "avg_volume": 50465.6,
+        "last_close": 46.97,
         "security_id": "17145"
       },
       "AARTIDRUGS": {
-        "avg_volume": 122595.2,
-        "last_close": 396.45,
+        "avg_volume": 112360.5,
+        "last_close": 396.35,
         "security_id": "4481"
       },
       "AARTIIND": {
-        "avg_volume": 745201.4,
-        "last_close": 505.05,
+        "avg_volume": 830363.9,
+        "last_close": 503.0,
         "security_id": "7"
       },
       "AARTIPHARM": {
-        "avg_volume": 567882.1,
-        "last_close": 863.8,
+        "avg_volume": 532767.8,
+        "last_close": 873.65,
         "security_id": "13868"
       },
       "AARVI": {
-        "avg_volume": 6178.8,
-        "last_close": 139.0,
+        "avg_volume": 4528.0,
+        "last_close": 139.35,
         "security_id": "19073"
       },
       "AASTHA": {
-        "avg_volume": 530807.6,
-        "last_close": 27.58,
+        "avg_volume": 485699.2,
+        "last_close": 27.3,
         "security_id": "763800"
       },
       "AAVAS": {
-        "avg_volume": 88093.1,
-        "last_close": 1193.8,
+        "avg_volume": 74342.1,
+        "last_close": 1195.2,
         "security_id": "5385"
       },
       "ABANSENT": {
-        "avg_volume": 24102.5,
-        "last_close": 34.52,
+        "avg_volume": 28697.1,
+        "last_close": 36.23,
         "security_id": "762523"
       },
       "ABB": {
-        "avg_volume": 216873.5,
-        "last_close": 6816.0,
+        "avg_volume": 229952.0,
+        "last_close": 6801.0,
         "security_id": "13"
       },
       "ABBOTINDIA": {
-        "avg_volume": 5785.8,
-        "last_close": 26070.0,
+        "avg_volume": 5481.0,
+        "last_close": 26170.0,
         "security_id": "17903"
       },
       "ABCAPITAL": {
-        "avg_volume": 3761460.8,
-        "last_close": 382.25,
+        "avg_volume": 3495335.8,
+        "last_close": 379.4,
         "security_id": "21614"
       },
       "ABCOTS": {
-        "avg_volume": 2651.9,
-        "last_close": 192.32,
+        "avg_volume": 1893.7,
+        "last_close": 191.65,
         "security_id": "759130"
       },
       "ABDL": {
-        "avg_volume": 876367.1,
-        "last_close": 739.25,
+        "avg_volume": 797816.5,
+        "last_close": 748.65,
         "security_id": "24308"
       },
       "ABFRL": {
-        "avg_volume": 3921783.6,
-        "last_close": 44.86,
+        "avg_volume": 3525548.8,
+        "last_close": 44.83,
         "security_id": "30108"
       },
       "ABGSEC": {
@@ -3569,2323 +3008,2333 @@
         "security_id": "24404"
       },
       "ABLBL": {
-        "avg_volume": 2680746.7,
-        "last_close": 72.06,
+        "avg_volume": 2572844.2,
+        "last_close": 72.72,
         "security_id": "756843"
       },
       "ABMKNO": {
-        "avg_volume": 1478.3,
-        "last_close": 158.0,
+        "avg_volume": 1678.4,
+        "last_close": 160.55,
         "security_id": "762528"
       },
       "ABREL": {
-        "avg_volume": 288241.7,
-        "last_close": 1111.8,
+        "avg_volume": 254320.9,
+        "last_close": 1120.2,
         "security_id": "625"
       },
       "ABSL10BANK": {
-        "avg_volume": 43250.9,
-        "last_close": 166.96,
+        "avg_volume": 43145.5,
+        "last_close": 166.93,
         "security_id": "760247"
       },
       "ABSLAMC": {
-        "avg_volume": 192852.9,
-        "last_close": 981.6,
+        "avg_volume": 176401.9,
+        "last_close": 971.95,
         "security_id": "6018"
       },
       "ABSLBANETF": {
-        "avg_volume": 138584.8,
-        "last_close": 57.39,
+        "avg_volume": 138059.8,
+        "last_close": 57.32,
         "security_id": "13987"
       },
       "ABSLLIQUID": {
-        "avg_volume": 8556.7,
+        "avg_volume": 10283.2,
         "last_close": 1000.0,
         "security_id": "14518"
       },
       "ABSLMSCIN": {
-        "avg_volume": 1054.4,
-        "last_close": 28.18,
+        "avg_volume": 1191.1,
+        "last_close": 28.15,
         "security_id": "761066"
       },
       "ABSLNN50ET": {
-        "avg_volume": 14876.0,
-        "last_close": 72.4,
+        "avg_volume": 13499.6,
+        "last_close": 72.44,
         "security_id": "7339"
       },
       "ABSLPSE": {
-        "avg_volume": 79775.8,
-        "last_close": 9.63,
+        "avg_volume": 68244.7,
+        "last_close": 9.67,
         "security_id": "23806"
       },
       "ACC": {
-        "avg_volume": 100979.1,
-        "last_close": 1137.4,
+        "avg_volume": 125204.8,
+        "last_close": 1187.2,
         "security_id": "22"
       },
       "ACCELYA": {
-        "avg_volume": 43879.4,
-        "last_close": 1092.8,
+        "avg_volume": 41802.0,
+        "last_close": 1081.4,
         "security_id": "7053"
       },
       "ACCURACY": {
-        "avg_volume": 74523.6,
-        "last_close": 4.1,
+        "avg_volume": 78072.8,
+        "last_close": 4.05,
         "security_id": "1465"
       },
       "ACE": {
-        "avg_volume": 282757.6,
-        "last_close": 1155.7,
+        "avg_volume": 259096.6,
+        "last_close": 1136.3,
         "security_id": "13587"
       },
       "ACEINTEG": {
-        "avg_volume": 1095.1,
-        "last_close": 16.37,
+        "avg_volume": 1022.7,
+        "last_close": 16.74,
         "security_id": "11779"
       },
       "ACEVECTOR": {
-        "avg_volume": 44348530.222222224,
-        "last_close": 25.25,
+        "avg_volume": 40738322.5,
+        "last_close": 24.94,
         "security_id": "766382"
       },
       "ACGL": {
-        "avg_volume": 683.2,
-        "last_close": 1689.4,
+        "avg_volume": 4052.7,
+        "last_close": 1773.0,
         "security_id": "764558"
       },
       "ACI": {
-        "avg_volume": 350871.1,
-        "last_close": 471.75,
+        "avg_volume": 488028.6,
+        "last_close": 478.6,
         "security_id": "12024"
       },
       "ACL": {
-        "avg_volume": 7667.7,
-        "last_close": 38.87,
+        "avg_volume": 7540.7,
+        "last_close": 38.7,
         "security_id": "15420"
       },
       "ACMESOLAR": {
-        "avg_volume": 749404.2,
-        "last_close": 407.6,
+        "avg_volume": 694744.2,
+        "last_close": 410.0,
         "security_id": "27061"
       },
       "ACUTAAS": {
-        "avg_volume": 285214.1,
-        "last_close": 3132.5,
+        "avg_volume": 295327.4,
+        "last_close": 3206.0,
         "security_id": "5578"
       },
       "ADANIENSOL": {
-        "avg_volume": 2290512.9,
-        "last_close": 1354.2,
+        "avg_volume": 1717621.6,
+        "last_close": 1365.9,
         "security_id": "10217"
       },
       "ADANIENT": {
-        "avg_volume": 1748165.3,
-        "last_close": 2700.0,
+        "avg_volume": 1622978.5,
+        "last_close": 2692.0,
         "security_id": "25"
       },
       "ADANIGREEN": {
-        "avg_volume": 3234865.5,
-        "last_close": 1307.1,
+        "avg_volume": 2694966.1,
+        "last_close": 1302.0,
         "security_id": "3563"
       },
       "ADANIPORTS": {
-        "avg_volume": 3946664.8,
-        "last_close": 1743.2,
+        "avg_volume": 3856881.7,
+        "last_close": 1750.8,
         "security_id": "15083"
       },
       "ADANIPOWER": {
-        "avg_volume": 24030995.5,
-        "last_close": 196.5,
+        "avg_volume": 22231398.4,
+        "last_close": 195.85,
         "security_id": "17388"
       },
       "ADDIND": {
-        "avg_volume": 813.2,
-        "last_close": 79.5,
+        "avg_volume": 800.8,
+        "last_close": 79.49,
         "security_id": "764563"
       },
       "ADFFOODS": {
-        "avg_volume": 159743.5,
-        "last_close": 275.6,
+        "avg_volume": 139431.2,
+        "last_close": 271.25,
         "security_id": "19761"
       },
       "ADL": {
-        "avg_volume": 1322.5,
-        "last_close": 72.47,
+        "avg_volume": 655.5,
+        "last_close": 70.03,
         "security_id": "245"
       },
       "ADOR": {
-        "avg_volume": 29383.3,
-        "last_close": 1520.9,
+        "avg_volume": 29415.2,
+        "last_close": 1500.8,
         "security_id": "34"
       },
       "ADROITIND": {
-        "avg_volume": 873254.1,
-        "last_close": 191.37,
+        "avg_volume": 762566.6,
+        "last_close": 178.07,
         "security_id": "766273"
       },
       "ADSL": {
-        "avg_volume": 605856.6,
-        "last_close": 105.96,
+        "avg_volume": 597567.1,
+        "last_close": 106.39,
         "security_id": "14813"
       },
       "ADVAIT": {
-        "avg_volume": 31694.5,
-        "last_close": 1884.4,
+        "avg_volume": 30706.1,
+        "last_close": 1864.4,
         "security_id": "760657"
       },
       "ADVANCE": {
-        "avg_volume": 3487463.3,
-        "last_close": 158.43,
+        "avg_volume": 3566690.8,
+        "last_close": 158.08,
         "security_id": "759402"
       },
       "ADVANIHOTR": {
-        "avg_volume": 18193.8,
-        "last_close": 47.47,
+        "avg_volume": 16444.5,
+        "last_close": 48.05,
         "security_id": "14745"
       },
       "ADVENTHTL": {
-        "avg_volume": 103124.8,
-        "last_close": 123.02,
+        "avg_volume": 88635.8,
+        "last_close": 123.78,
         "security_id": "759769"
       },
       "ADVENZYMES": {
-        "avg_volume": 220548.5,
-        "last_close": 262.9,
+        "avg_volume": 215556.9,
+        "last_close": 267.0,
         "security_id": "18039"
       },
       "ADVIKCA": {
-        "avg_volume": 231478.1,
-        "last_close": 0.97,
+        "avg_volume": 234793.2,
+        "last_close": 0.96,
         "security_id": "765015"
       },
       "AEGISLOG": {
-        "avg_volume": 1282633.3,
-        "last_close": 1410.6,
+        "avg_volume": 1258257.0,
+        "last_close": 1366.7,
         "security_id": "40"
       },
       "AEGISVOPAK": {
-        "avg_volume": 862596.7,
-        "last_close": 281.9,
+        "avg_volume": 745698.2,
+        "last_close": 276.0,
         "security_id": "757336"
       },
       "AEPL": {
-        "avg_volume": 21061.2,
-        "last_close": 15.03,
+        "avg_volume": 19936.3,
+        "last_close": 14.82,
         "security_id": "761330"
       },
       "AEQUS": {
-        "avg_volume": 4701634.7,
-        "last_close": 259.2,
+        "avg_volume": 4357111.7,
+        "last_close": 262.2,
         "security_id": "760234"
       },
       "AEROENTER": {
-        "avg_volume": 974654.3,
-        "last_close": 125.99,
+        "avg_volume": 1025285.1,
+        "last_close": 127.87,
         "security_id": "12015"
       },
       "AEROFLEX": {
-        "avg_volume": 3695497.0,
-        "last_close": 510.95,
+        "avg_volume": 3857179.3,
+        "last_close": 525.8,
         "security_id": "18268"
       },
       "AERONEU": {
-        "avg_volume": 50620.4,
-        "last_close": 69.48,
+        "avg_volume": 50131.5,
+        "last_close": 69.5,
         "security_id": "13689"
       },
       "AEROPLANE": {
-        "avg_volume": 1179443.0,
-        "last_close": 232.15,
+        "avg_volume": 1249898.2,
+        "last_close": 234.78,
         "security_id": "761670"
       },
       "AETHER": {
-        "avg_volume": 385842.8,
-        "last_close": 1595.6,
+        "avg_volume": 398445.3,
+        "last_close": 1538.6,
         "security_id": "9810"
       },
       "AFCONS": {
-        "avg_volume": 335439.5,
-        "last_close": 245.8,
+        "avg_volume": 329447.4,
+        "last_close": 244.36,
         "security_id": "25977"
       },
       "AFFLE": {
-        "avg_volume": 119063.2,
-        "last_close": 1428.5,
+        "avg_volume": 136257.0,
+        "last_close": 1437.6,
         "security_id": "11343"
       },
       "AFFORDABLE": {
-        "avg_volume": 11942.6,
-        "last_close": 165.47,
+        "avg_volume": 13378.4,
+        "last_close": 168.68,
         "security_id": "25855"
       },
       "AFIL": {
-        "avg_volume": 363373.5,
-        "last_close": 8.09,
+        "avg_volume": 357313.5,
+        "last_close": 8.0,
         "security_id": "24159"
       },
       "AFSL": {
-        "avg_volume": 5680.1,
-        "last_close": 201.0,
+        "avg_volume": 2542.2,
+        "last_close": 201.12,
         "security_id": "13288"
       },
       "AGARIND": {
-        "avg_volume": 27695.5,
-        "last_close": 366.6,
+        "avg_volume": 27906.3,
+        "last_close": 370.25,
         "security_id": "3389"
       },
       "AGARWALEYE": {
-        "avg_volume": 243350.1,
-        "last_close": 477.15,
+        "avg_volume": 216314.3,
+        "last_close": 465.8,
         "security_id": "29452"
       },
       "AGI": {
-        "avg_volume": 76151.6,
-        "last_close": 750.7,
+        "avg_volume": 67741.7,
+        "last_close": 752.05,
         "security_id": "1412"
       },
       "AGIIL": {
-        "avg_volume": 216157.6,
-        "last_close": 246.7,
+        "avg_volume": 244193.0,
+        "last_close": 250.15,
         "security_id": "24445"
       },
       "AGL": {
-        "avg_volume": 1457074.3,
-        "last_close": 12.38,
+        "avg_volume": 1349296.9,
+        "last_close": 12.44,
         "security_id": "763784"
       },
       "AGOL": {
-        "avg_volume": 997577.75,
-        "last_close": 4.52,
+        "avg_volume": 954701.2,
+        "last_close": 4.71,
         "security_id": "766522"
       },
       "AGRITECH": {
-        "avg_volume": 7214.4,
-        "last_close": 96.18,
+        "avg_volume": 7044.1,
+        "last_close": 93.53,
         "security_id": "11072"
       },
       "AGROPHOS": {
-        "avg_volume": 18952.5,
-        "last_close": 22.79,
+        "avg_volume": 18469.1,
+        "last_close": 23.08,
         "security_id": "9046"
       },
       "AHCL": {
-        "avg_volume": 10654612.9,
-        "last_close": 27.59,
+        "avg_volume": 11667547.9,
+        "last_close": 26.85,
         "security_id": "758968"
       },
       "AHLADA": {
-        "avg_volume": 8051.1,
-        "last_close": 36.46,
+        "avg_volume": 8380.4,
+        "last_close": 36.05,
         "security_id": "2004"
       },
       "AHLEAST": {
-        "avg_volume": 743.2,
-        "last_close": 135.69,
+        "avg_volume": 821.6,
+        "last_close": 135.08,
         "security_id": "19438"
       },
       "AHLUCONT": {
-        "avg_volume": 59089.5,
-        "last_close": 563.25,
+        "avg_volume": 55709.1,
+        "last_close": 555.0,
         "security_id": "17833"
       },
       "AIAENG": {
-        "avg_volume": 34689.3,
-        "last_close": 3679.3,
+        "avg_volume": 37936.6,
+        "last_close": 3719.7,
         "security_id": "13086"
       },
       "AIIL": {
-        "avg_volume": 118684.9,
-        "last_close": 541.35,
+        "avg_volume": 165744.6,
+        "last_close": 571.9,
         "security_id": "23553"
       },
       "AIRAN": {
-        "avg_volume": 96574.5,
-        "last_close": 14.47,
+        "avg_volume": 94913.6,
+        "last_close": 14.77,
         "security_id": "9897"
       },
       "AIROLAM": {
-        "avg_volume": 5528.3,
-        "last_close": 88.09,
+        "avg_volume": 2826.7,
+        "last_close": 87.53,
         "security_id": "6068"
       },
       "AJANTPHARM": {
-        "avg_volume": 91396.4,
-        "last_close": 3359.4,
+        "avg_volume": 87656.3,
+        "last_close": 3329.0,
         "security_id": "8124"
       },
       "AJAXENGG": {
-        "avg_volume": 48139.9,
-        "last_close": 564.6,
+        "avg_volume": 45124.8,
+        "last_close": 559.7,
         "security_id": "29624"
       },
       "AJMERA": {
-        "avg_volume": 287642.3,
-        "last_close": 122.13,
+        "avg_volume": 418472.3,
+        "last_close": 129.17,
         "security_id": "17307"
       },
       "AJOONI": {
-        "avg_volume": 365760.2,
-        "last_close": 3.06,
+        "avg_volume": 343161.0,
+        "last_close": 3.02,
         "security_id": "3403"
       },
       "AKASH": {
-        "avg_volume": 7503.0,
-        "last_close": 25.37,
+        "avg_volume": 7662.0,
+        "last_close": 24.81,
         "security_id": "13510"
       },
       "AKCAPIT": {
-        "avg_volume": 1087.9,
-        "last_close": 1760.9,
+        "avg_volume": 1152.5,
+        "last_close": 1754.0,
         "security_id": "762538"
       },
       "AKG": {
-        "avg_volume": 15572.0,
-        "last_close": 9.51,
+        "avg_volume": 15148.2,
+        "last_close": 9.5,
         "security_id": "2176"
       },
       "AKSHAR": {
-        "avg_volume": 811028.8,
+        "avg_volume": 819035.1,
         "last_close": 0.42,
         "security_id": "9558"
       },
       "AKUMS": {
-        "avg_volume": 190029.8,
-        "last_close": 749.8,
+        "avg_volume": 185976.0,
+        "last_close": 731.45,
         "security_id": "24715"
       },
       "ALANKIT": {
-        "avg_volume": 190127.7,
-        "last_close": 7.2,
+        "avg_volume": 188524.0,
+        "last_close": 7.24,
         "security_id": "9921"
       },
       "ALBERTDAVD": {
-        "avg_volume": 3828.5,
-        "last_close": 790.7,
+        "avg_volume": 3114.0,
+        "last_close": 831.0,
         "security_id": "17256"
       },
       "ALEMBICLTD": {
-        "avg_volume": 450273.3,
-        "last_close": 96.13,
+        "avg_volume": 386484.3,
+        "last_close": 97.36,
         "security_id": "79"
       },
       "ALFREDHE": {
-        "avg_volume": 28.7,
-        "last_close": 2790.2,
+        "avg_volume": 31.2,
+        "last_close": 2815.4,
         "security_id": "764573"
       },
       "ALGOQUANT": {
-        "avg_volume": 1398038.3,
-        "last_close": 70.17,
+        "avg_volume": 1413489.9,
+        "last_close": 72.02,
         "security_id": "761270"
       },
       "ALICON": {
-        "avg_volume": 139803.6,
-        "last_close": 863.8,
+        "avg_volume": 54244.6,
+        "last_close": 854.65,
         "security_id": "13656"
       },
       "ALIVUS": {
-        "avg_volume": 92369.5,
-        "last_close": 1341.8,
+        "avg_volume": 84714.2,
+        "last_close": 1309.5,
         "security_id": "5265"
       },
       "ALKEM": {
-        "avg_volume": 146219.4,
-        "last_close": 5120.5,
+        "avg_volume": 133197.7,
+        "last_close": 5050.0,
         "security_id": "11703"
       },
       "ALKYLAMINE": {
-        "avg_volume": 368530.8,
-        "last_close": 1838.5,
+        "avg_volume": 366999.1,
+        "last_close": 1844.7,
         "security_id": "4487"
       },
       "ALLCARGO": {
-        "avg_volume": 4494339.4,
-        "last_close": 10.54,
+        "avg_volume": 4340172.9,
+        "last_close": 10.38,
         "security_id": "13501"
       },
       "ALLDIGI": {
-        "avg_volume": 10443.2,
-        "last_close": 814.75,
+        "avg_volume": 10309.6,
+        "last_close": 805.5,
         "security_id": "11798"
       },
       "ALLTIME": {
-        "avg_volume": 153689.5,
-        "last_close": 209.67,
+        "avg_volume": 148526.5,
+        "last_close": 207.38,
         "security_id": "758448"
       },
       "ALOKINDS": {
-        "avg_volume": 41652226.4,
-        "last_close": 8.53,
+        "avg_volume": 41930976.0,
+        "last_close": 8.5,
         "security_id": "17675"
       },
       "ALPA": {
-        "avg_volume": 8014.8,
-        "last_close": 55.96,
+        "avg_volume": 10767.7,
+        "last_close": 53.46,
         "security_id": "14848"
       },
       "ALPHA": {
-        "avg_volume": 1563724.0,
-        "last_close": 51.06,
+        "avg_volume": 1469059.3,
+        "last_close": 51.15,
         "security_id": "7412"
       },
       "ALPHAETF": {
-        "avg_volume": 623033.7,
-        "last_close": 25.07,
+        "avg_volume": 657278.6,
+        "last_close": 25.03,
         "security_id": "19640"
       },
       "ALPINETEX": {
-        "avg_volume": 108026.2,
-        "last_close": 41.84,
+        "avg_volume": 98635.8,
+        "last_close": 41.77,
         "security_id": "764186"
       },
       "ALPL30IETF": {
-        "avg_volume": 837058.9,
-        "last_close": 25.68,
+        "avg_volume": 842692.2,
+        "last_close": 25.77,
         "security_id": "22344"
       },
       "AMAGI": {
-        "avg_volume": 252716.6,
-        "last_close": 563.4,
+        "avg_volume": 167731.4,
+        "last_close": 569.75,
         "security_id": "760740"
       },
       "AMAL": {
-        "avg_volume": 163661.4,
-        "last_close": 932.85,
+        "avg_volume": 255836.1,
+        "last_close": 746.3,
         "security_id": "764583"
       },
+      "AMANTA": {
+        "avg_volume": 74458.4,
+        "last_close": 183.41,
+        "security_id": "758909"
+      },
       "AMBER": {
-        "avg_volume": 136426.7,
-        "last_close": 6690.0,
+        "avg_volume": 134716.6,
+        "last_close": 6668.0,
         "security_id": "1185"
       },
       "AMBICAAGAR": {
-        "avg_volume": 27284.7,
-        "last_close": 24.28,
+        "avg_volume": 28141.0,
+        "last_close": 24.17,
         "security_id": "11496"
       },
       "AMBIKCO": {
-        "avg_volume": 5272.7,
-        "last_close": 1500.0,
+        "avg_volume": 4646.3,
+        "last_close": 1502.8,
         "security_id": "15234"
       },
       "AMBUJACEM": {
-        "avg_volume": 2578748.2,
-        "last_close": 350.9,
+        "avg_volume": 2532073.9,
+        "last_close": 360.0,
         "security_id": "1270"
       },
       "AMJLAND": {
-        "avg_volume": 25474.9,
-        "last_close": 35.78,
+        "avg_volume": 30410.3,
+        "last_close": 35.42,
         "security_id": "2598"
       },
       "AMNPLST": {
-        "avg_volume": 55081.7,
-        "last_close": 167.15,
+        "avg_volume": 55003.1,
+        "last_close": 164.3,
         "security_id": "19867"
       },
       "AMRUTANJAN": {
-        "avg_volume": 35349.4,
-        "last_close": 506.0,
+        "avg_volume": 27661.9,
+        "last_close": 513.8,
         "security_id": "17547"
       },
       "ANANDRATHI": {
-        "avg_volume": 536038.4,
-        "last_close": 2142.6,
+        "avg_volume": 535836.1,
+        "last_close": 2159.7,
         "security_id": "7145"
       },
       "ANANTRAJ": {
-        "avg_volume": 1506864.6,
-        "last_close": 524.05,
+        "avg_volume": 1644544.3,
+        "last_close": 511.75,
         "security_id": "13620"
       },
       "ANDHRAPAP": {
-        "avg_volume": 873192.5,
-        "last_close": 68.38,
+        "avg_volume": 886825.5,
+        "last_close": 68.39,
         "security_id": "166"
       },
       "ANDHRSUGAR": {
-        "avg_volume": 372387.5,
-        "last_close": 88.49,
+        "avg_volume": 361569.0,
+        "last_close": 88.54,
         "security_id": "136"
       },
       "ANDREWYU": {
-        "avg_volume": 81950.8,
-        "last_close": 24.01,
+        "avg_volume": 81082.3,
+        "last_close": 24.96,
         "security_id": "5206"
       },
       "ANGELONE": {
-        "avg_volume": 7162199.0,
-        "last_close": 313.0,
+        "avg_volume": 8482383.2,
+        "last_close": 300.0,
         "security_id": "324"
       },
       "ANIKINDS": {
-        "avg_volume": 13876.1,
-        "last_close": 42.1,
+        "avg_volume": 14280.3,
+        "last_close": 43.0,
         "security_id": "16657"
       },
       "ANNAPURNA": {
-        "avg_volume": 34027.9,
-        "last_close": 123.11,
+        "avg_volume": 37296.7,
+        "last_close": 121.06,
         "security_id": "764471"
       },
       "ANNU": {
-        "avg_volume": 438419.2,
-        "last_close": 45.23,
+        "avg_volume": 410389.5,
+        "last_close": 44.17,
         "security_id": "765502"
       },
       "ANSALBU": {
-        "avg_volume": 1910.6,
-        "last_close": 83.66,
+        "avg_volume": 2258.9,
+        "last_close": 83.39,
         "security_id": "765020"
       },
       "ANTELOPUS": {
-        "avg_volume": 240122.2,
-        "last_close": 1060.6,
+        "avg_volume": 208463.4,
+        "last_close": 1003.1,
         "security_id": "13598"
       },
       "ANTGRAPHIC": {
-        "avg_volume": 135156.3,
+        "avg_volume": 136461.1,
         "last_close": 0.68,
         "security_id": "5194"
       },
       "ANTHEM": {
-        "avg_volume": 441724.2,
-        "last_close": 842.1,
+        "avg_volume": 436835.9,
+        "last_close": 822.15,
         "security_id": "757885"
       },
       "ANUHPHR": {
-        "avg_volume": 107533.0,
-        "last_close": 83.73,
+        "avg_volume": 99865.1,
+        "last_close": 82.57,
         "security_id": "28314"
       },
       "ANUP": {
-        "avg_volume": 16670.1,
-        "last_close": 1483.0,
+        "avg_volume": 14991.0,
+        "last_close": 1488.5,
         "security_id": "9014"
       },
       "ANURAS": {
-        "avg_volume": 344484.3,
-        "last_close": 1161.0,
+        "avg_volume": 368094.8,
+        "last_close": 1176.0,
         "security_id": "2829"
       },
       "AONEGOLD": {
-        "avg_volume": 407620.7,
-        "last_close": 13.54,
+        "avg_volume": 400821.3,
+        "last_close": 13.55,
         "security_id": "758904"
       },
       "AONELIQUID": {
-        "avg_volume": 86821.8,
-        "last_close": 1081.17,
+        "avg_volume": 93327.3,
+        "last_close": 1081.63,
         "security_id": "30472"
       },
       "AONENIFTY": {
-        "avg_volume": 181783.3,
-        "last_close": 9.47,
+        "avg_volume": 162973.0,
+        "last_close": 9.54,
         "security_id": "757096"
       },
       "AONESILVER": {
-        "avg_volume": 596545.2,
-        "last_close": 7.93,
+        "avg_volume": 659152.1,
+        "last_close": 7.98,
         "security_id": "760193"
       },
       "AONESTEELS": {
-        "avg_volume": 1923951.7,
-        "last_close": 391.4,
+        "avg_volume": 457479.6,
+        "last_close": 392.75,
         "security_id": "766314"
       },
       "AONETMMQ50": {
-        "avg_volume": 136842.3,
-        "last_close": 9.83,
+        "avg_volume": 110172.1,
+        "last_close": 9.85,
         "security_id": "759992"
       },
       "AONETOTAL": {
-        "avg_volume": 225611.5,
-        "last_close": 11.32,
+        "avg_volume": 202907.5,
+        "last_close": 11.4,
         "security_id": "29975"
       },
       "APARINDS": {
-        "avg_volume": 104489.5,
-        "last_close": 16914.0,
+        "avg_volume": 109288.4,
+        "last_close": 16033.0,
         "security_id": "11491"
       },
       "APCL": {
-        "avg_volume": 4071.0,
-        "last_close": 88.54,
+        "avg_volume": 4085.7,
+        "last_close": 90.0,
         "security_id": "20453"
       },
       "APCOTEXIND": {
-        "avg_volume": 57562.5,
-        "last_close": 587.9,
+        "avg_volume": 53554.8,
+        "last_close": 597.45,
         "security_id": "154"
       },
       "APEX": {
-        "avg_volume": 82764.0,
-        "last_close": 337.55,
+        "avg_volume": 74514.9,
+        "last_close": 340.65,
         "security_id": "21623"
       },
       "APLAPOLLO": {
-        "avg_volume": 532327.3,
-        "last_close": 2139.0,
+        "avg_volume": 394373.5,
+        "last_close": 2152.7,
         "security_id": "25780"
       },
       "APLLTD": {
-        "avg_volume": 157762.5,
-        "last_close": 792.65,
+        "avg_volume": 139820.0,
+        "last_close": 789.45,
         "security_id": "25328"
       },
       "APOLLO": {
-        "avg_volume": 6146486.6,
-        "last_close": 417.1,
+        "avg_volume": 7149195.3,
+        "last_close": 429.0,
         "security_id": "1134"
       },
       "APOLLOHOSP": {
-        "avg_volume": 828095.8,
-        "last_close": 7889.5,
+        "avg_volume": 788945.2,
+        "last_close": 7890.0,
         "security_id": "157"
       },
       "APOLLOPIPE": {
-        "avg_volume": 113554.5,
-        "last_close": 528.75,
+        "avg_volume": 105135.3,
+        "last_close": 530.0,
         "security_id": "14361"
       },
       "APOLLOTYRE": {
-        "avg_volume": 626181.8,
-        "last_close": 413.9,
+        "avg_volume": 589312.2,
+        "last_close": 408.85,
         "security_id": "163"
       },
       "APOLSINHOT": {
-        "avg_volume": 996.4,
-        "last_close": 1088.7,
+        "avg_volume": 994.1,
+        "last_close": 1138.9,
         "security_id": "6302"
       },
       "APTECHT": {
-        "avg_volume": 56665.0,
-        "last_close": 86.99,
+        "avg_volume": 59056.2,
+        "last_close": 86.25,
         "security_id": "10755"
       },
       "APTUS": {
-        "avg_volume": 1537950.9,
-        "last_close": 224.21,
+        "avg_volume": 1583515.3,
+        "last_close": 222.5,
         "security_id": "5435"
       },
       "AQYLON": {
-        "avg_volume": 1985544.6,
-        "last_close": 16.53,
+        "avg_volume": 2026685.2,
+        "last_close": 17.34,
         "security_id": "23365"
       },
       "ARCHIDPLY": {
-        "avg_volume": 19592.8,
-        "last_close": 104.85,
+        "avg_volume": 17823.4,
+        "last_close": 104.47,
         "security_id": "16795"
       },
       "ARCHIES": {
-        "avg_volume": 8595.0,
-        "last_close": 12.06,
+        "avg_volume": 9711.5,
+        "last_close": 11.91,
         "security_id": "5688"
       },
       "ARCIL": {
-        "avg_volume": 3158017.4,
-        "last_close": 139.55,
+        "avg_volume": 3081943.6,
+        "last_close": 138.85,
         "security_id": "766072"
       },
       "ARCL": {
-        "avg_volume": 1587.7,
-        "last_close": 226.67,
+        "avg_volume": 968.5,
+        "last_close": 223.0,
         "security_id": "764598"
       },
       "ARDEE": {
-        "avg_volume": 1768764.0,
-        "last_close": 47.58,
+        "avg_volume": 1691316.8,
+        "last_close": 47.81,
         "security_id": "764480"
       },
       "ARE&M": {
-        "avg_volume": 331898.9,
-        "last_close": 736.3,
+        "avg_volume": 308291.1,
+        "last_close": 743.0,
         "security_id": "100"
       },
       "ARFIN": {
-        "avg_volume": 7430356.5,
-        "last_close": 104.11,
+        "avg_volume": 7512840.7,
+        "last_close": 102.72,
         "security_id": "758700"
       },
       "ARIHANT": {
-        "avg_volume": 2307.3,
-        "last_close": 913.2,
+        "avg_volume": 2331.7,
+        "last_close": 920.95,
         "security_id": "13885"
       },
       "ARIHANTCAP": {
-        "avg_volume": 710482.4,
-        "last_close": 99.31,
+        "avg_volume": 726971.8,
+        "last_close": 97.31,
         "security_id": "3813"
       },
       "ARIHANTSUP": {
-        "avg_volume": 11519.6,
-        "last_close": 222.84,
+        "avg_volume": 12330.5,
+        "last_close": 234.62,
         "security_id": "20159"
       },
       "ARIS": {
-        "avg_volume": 1654362.2,
-        "last_close": 139.91,
+        "avg_volume": 1675925.5,
+        "last_close": 144.22,
         "security_id": "757614"
       },
       "ARKADE": {
-        "avg_volume": 166837.8,
-        "last_close": 119.01,
+        "avg_volume": 160250.7,
+        "last_close": 118.56,
         "security_id": "25398"
       },
       "ARMANFIN": {
-        "avg_volume": 27704.4,
-        "last_close": 1574.7,
+        "avg_volume": 29810.5,
+        "last_close": 1535.5,
         "security_id": "17263"
       },
       "ARMEE": {
-        "avg_volume": 1559928.7,
-        "last_close": 257.4,
+        "avg_volume": 877432.7,
+        "last_close": 260.55,
         "security_id": "766295"
       },
       "AROGRANITE": {
-        "avg_volume": 13149.9,
-        "last_close": 24.27,
+        "avg_volume": 46432.0,
+        "last_close": 23.83,
         "security_id": "14557"
       },
       "ARROWGREEN": {
-        "avg_volume": 30625.4,
-        "last_close": 819.85,
+        "avg_volume": 28650.6,
+        "last_close": 805.75,
         "security_id": "9260"
       },
       "ARSSBL": {
-        "avg_volume": 442623.1,
-        "last_close": 505.8,
+        "avg_volume": 432092.2,
+        "last_close": 500.9,
         "security_id": "759956"
       },
       "ARTEMISMED": {
-        "avg_volume": 306777.9,
-        "last_close": 303.0,
+        "avg_volume": 240745.4,
+        "last_close": 306.35,
         "security_id": "16913"
       },
       "ARTNIRMAN": {
-        "avg_volume": 11422.4,
-        "last_close": 39.08,
+        "avg_volume": 11256.0,
+        "last_close": 38.19,
         "security_id": "6156"
       },
       "ARVEE": {
-        "avg_volume": 11243.6,
-        "last_close": 225.9,
+        "avg_volume": 11762.0,
+        "last_close": 226.2,
         "security_id": "2814"
       },
       "ARVIND": {
-        "avg_volume": 529437.9,
-        "last_close": 515.75,
+        "avg_volume": 510710.9,
+        "last_close": 525.7,
         "security_id": "193"
       },
       "ARVINDFASN": {
-        "avg_volume": 201966.6,
-        "last_close": 398.9,
+        "avg_volume": 188323.0,
+        "last_close": 399.85,
         "security_id": "9111"
       },
       "ARVSMART": {
-        "avg_volume": 79740.1,
-        "last_close": 611.3,
+        "avg_volume": 81125.7,
+        "last_close": 610.75,
         "security_id": "10457"
       },
       "ARYAMAN": {
-        "avg_volume": 29.9,
-        "last_close": 627.45,
+        "avg_volume": 33.4,
+        "last_close": 610.0,
         "security_id": "764603"
       },
       "ASAHIINDIA": {
-        "avg_volume": 64075.8,
-        "last_close": 925.9,
+        "avg_volume": 59649.0,
+        "last_close": 923.55,
         "security_id": "5378"
       },
       "ASAL": {
-        "avg_volume": 11826.8,
-        "last_close": 414.75,
+        "avg_volume": 12717.4,
+        "last_close": 420.35,
         "security_id": "10634"
       },
       "ASALCBR": {
-        "avg_volume": 41347.6,
-        "last_close": 588.65,
+        "avg_volume": 39240.0,
+        "last_close": 593.95,
         "security_id": "17598"
       },
       "ASHAPURMIN": {
-        "avg_volume": 307634.2,
-        "last_close": 465.0,
+        "avg_volume": 301630.6,
+        "last_close": 464.4,
         "security_id": "203"
       },
       "ASHIANA": {
-        "avg_volume": 24358.3,
-        "last_close": 363.3,
+        "avg_volume": 22855.8,
+        "last_close": 361.45,
         "security_id": "24403"
       },
       "ASHIMASYN": {
-        "avg_volume": 98006.8,
-        "last_close": 14.25,
+        "avg_volume": 86743.3,
+        "last_close": 14.06,
         "security_id": "206"
       },
       "ASHOKA": {
-        "avg_volume": 861744.1,
-        "last_close": 105.02,
+        "avg_volume": 801057.3,
+        "last_close": 104.95,
         "security_id": "20182"
       },
       "ASHOKAMET": {
-        "avg_volume": 35966.5,
-        "last_close": 15.65,
+        "avg_volume": 56288.6,
+        "last_close": 15.43,
         "security_id": "16943"
       },
       "ASHOKLEY": {
-        "avg_volume": 14091521.9,
-        "last_close": 148.18,
+        "avg_volume": 13136246.1,
+        "last_close": 148.91,
         "security_id": "212"
       },
       "ASIANENE": {
-        "avg_volume": 243691.2,
-        "last_close": 454.8,
+        "avg_volume": 237212.6,
+        "last_close": 455.1,
         "security_id": "7030"
       },
       "ASIANHOTNR": {
-        "avg_volume": 14434.3,
-        "last_close": 328.0,
+        "avg_volume": 11687.0,
+        "last_close": 323.8,
         "security_id": "18422"
       },
       "ASIANPAINT": {
-        "avg_volume": 633262.9,
-        "last_close": 2350.0,
+        "avg_volume": 633902.1,
+        "last_close": 2331.9,
         "security_id": "236"
       },
       "ASIANTILES": {
-        "avg_volume": 4333597.7,
-        "last_close": 52.78,
+        "avg_volume": 4297631.4,
+        "last_close": 53.32,
         "security_id": "14889"
       },
       "ASIANTNE": {
-        "avg_volume": 15186.8,
-        "last_close": 8.98,
+        "avg_volume": 15205.8,
+        "last_close": 9.02,
         "security_id": "765025"
       },
       "ASKAUTOLTD": {
-        "avg_volume": 188769.4,
-        "last_close": 599.2,
+        "avg_volume": 166969.1,
+        "last_close": 588.0,
         "security_id": "20152"
       },
       "ASMS": {
-        "avg_volume": 151948.0,
-        "last_close": 5.85,
+        "avg_volume": 152092.4,
+        "last_close": 5.87,
         "security_id": "14064"
       },
       "ASPINWALL": {
-        "avg_volume": 6089.4,
-        "last_close": 235.25,
+        "avg_volume": 4333.5,
+        "last_close": 240.0,
         "security_id": "17270"
       },
       "ASSAMENT": {
-        "avg_volume": 16.77777777777778,
-        "last_close": 780.0,
+        "avg_volume": 21.3,
+        "last_close": 819.0,
         "security_id": "765237"
       },
       "ASTAR": {
-        "avg_volume": 229.3,
-        "last_close": 607.15,
+        "avg_volume": 204.3,
+        "last_close": 613.45,
         "security_id": "762553"
       },
       "ASTEC": {
-        "avg_volume": 75571.8,
-        "last_close": 726.5,
+        "avg_volume": 70522.5,
+        "last_close": 710.45,
         "security_id": "17728"
       },
       "ASTERDM": {
-        "avg_volume": 1165772.6,
-        "last_close": 682.65,
+        "avg_volume": 1082645.7,
+        "last_close": 674.35,
         "security_id": "1508"
       },
       "ASTRAL": {
-        "avg_volume": 386718.6,
-        "last_close": 1443.3,
+        "avg_volume": 385653.8,
+        "last_close": 1427.4,
         "security_id": "14418"
       },
       "ASTRAMICRO": {
-        "avg_volume": 280236.6,
-        "last_close": 1621.1,
+        "avg_volume": 266675.1,
+        "last_close": 1625.2,
         "security_id": "11618"
       },
       "ASTRAZEN": {
-        "avg_volume": 11754.2,
-        "last_close": 5937.0,
+        "avg_volume": 11608.1,
+        "last_close": 5970.5,
         "security_id": "5610"
       },
       "ATALREAL": {
-        "avg_volume": 1459546.3,
-        "last_close": 12.43,
+        "avg_volume": 1367797.7,
+        "last_close": 12.45,
         "security_id": "15649"
       },
       "ATAM": {
-        "avg_volume": 6417.3,
-        "last_close": 52.72,
+        "avg_volume": 6396.1,
+        "last_close": 52.89,
         "security_id": "15404"
       },
       "ATGL": {
-        "avg_volume": 531767.0,
-        "last_close": 576.8,
+        "avg_volume": 486613.5,
+        "last_close": 579.35,
         "security_id": "6066"
       },
       "ATHERENERG": {
-        "avg_volume": 3176635.6,
+        "avg_volume": 2896878.4,
         "last_close": 1470.0,
         "security_id": "757645"
       },
       "ATL": {
-        "avg_volume": 237945.9,
-        "last_close": 26.01,
+        "avg_volume": 341305.5,
+        "last_close": 28.12,
         "security_id": "17778"
       },
       "ATLANTAA": {
-        "avg_volume": 89405.3,
-        "last_close": 35.6,
+        "avg_volume": 45986.9,
+        "last_close": 35.25,
         "security_id": "13585"
       },
       "ATLANTAELE": {
-        "avg_volume": 287863.8,
-        "last_close": 1711.3,
+        "avg_volume": 260759.8,
+        "last_close": 1695.2,
         "security_id": "759007"
       },
       "ATLASCYCLE": {
-        "avg_volume": 3547.5,
-        "last_close": 92.4,
+        "avg_volume": 3229.1,
+        "last_close": 91.06,
         "security_id": "4568"
       },
       "ATUL": {
-        "avg_volume": 35270.8,
-        "last_close": 6197.0,
+        "avg_volume": 35023.9,
+        "last_close": 6196.5,
         "security_id": "263"
       },
       "ATULAUTO": {
-        "avg_volume": 122449.0,
-        "last_close": 421.65,
+        "avg_volume": 58824.2,
+        "last_close": 423.05,
         "security_id": "30023"
       },
       "AUBANK": {
-        "avg_volume": 1719131.8,
-        "last_close": 1002.7,
+        "avg_volume": 1573571.5,
+        "last_close": 989.4,
         "security_id": "21238"
       },
       "AUGMONT": {
-        "avg_volume": 926631.8,
-        "last_close": 1298.4,
+        "avg_volume": 718322.4,
+        "last_close": 1343.0,
         "security_id": "765451"
       },
       "AURIONPRO": {
-        "avg_volume": 190348.0,
-        "last_close": 627.25,
+        "avg_volume": 214504.0,
+        "last_close": 636.2,
         "security_id": "12022"
       },
       "AUROPHARMA": {
-        "avg_volume": 842489.0,
-        "last_close": 1677.9,
+        "avg_volume": 814756.7,
+        "last_close": 1666.9,
         "security_id": "275"
       },
       "AURUM": {
-        "avg_volume": 688298.8,
-        "last_close": 239.1,
+        "avg_volume": 1606930.3,
+        "last_close": 232.37,
         "security_id": "10310"
       },
       "AURUS": {
-        "avg_volume": 22139.2,
-        "last_close": 4.21,
+        "avg_volume": 22037.9,
+        "last_close": 4.28,
         "security_id": "31468"
       },
       "AUSOMENT": {
-        "avg_volume": 5051.3,
-        "last_close": 154.36,
+        "avg_volume": 5874.7,
+        "last_close": 157.2,
         "security_id": "4037"
       },
       "AUSTENG": {
-        "avg_volume": 8979.3,
-        "last_close": 141.22,
+        "avg_volume": 5854.5,
+        "last_close": 139.0,
         "security_id": "764608"
       },
       "AUTOAXLES": {
-        "avg_volume": 6744.7,
-        "last_close": 1610.6,
+        "avg_volume": 6038.1,
+        "last_close": 1631.8,
         "security_id": "278"
       },
       "AUTOBEES": {
-        "avg_volume": 260078.4,
-        "last_close": 264.7,
+        "avg_volume": 210160.5,
+        "last_close": 267.02,
         "security_id": "7880"
       },
       "AUTOIETF": {
-        "avg_volume": 765533.9,
-        "last_close": 26.53,
+        "avg_volume": 547914.4,
+        "last_close": 26.71,
         "security_id": "7844"
       },
       "AUTOIND": {
-        "avg_volume": 84406.8,
-        "last_close": 79.99,
+        "avg_volume": 81703.4,
+        "last_close": 83.59,
         "security_id": "14106"
       },
       "AVADHSUGAR": {
-        "avg_volume": 286347.4,
-        "last_close": 970.25,
+        "avg_volume": 285090.8,
+        "last_close": 995.4,
         "security_id": "21406"
       },
       "AVALON": {
-        "avg_volume": 340528.2,
-        "last_close": 2046.9,
+        "avg_volume": 341903.1,
+        "last_close": 1987.3,
         "security_id": "15058"
       },
       "AVANCE": {
-        "avg_volume": 3737831.3,
-        "last_close": 0.77,
+        "avg_volume": 3667802.5,
+        "last_close": 0.76,
         "security_id": "765030"
       },
       "AVANTEL": {
-        "avg_volume": 895150.7,
-        "last_close": 148.35,
+        "avg_volume": 825536.7,
+        "last_close": 151.61,
         "security_id": "24610"
       },
       "AVANTIFEED": {
-        "avg_volume": 190324.4,
-        "last_close": 729.15,
+        "avg_volume": 167501.6,
+        "last_close": 722.6,
         "security_id": "7936"
       },
       "AVG": {
-        "avg_volume": 15838.4,
-        "last_close": 162.45,
+        "avg_volume": 16111.1,
+        "last_close": 166.08,
         "security_id": "15589"
       },
       "AVL": {
-        "avg_volume": 144318.9,
-        "last_close": 568.0,
+        "avg_volume": 123488.1,
+        "last_close": 570.9,
         "security_id": "25984"
       },
       "AVONMORE": {
-        "avg_volume": 98952.3,
-        "last_close": 12.38,
+        "avg_volume": 105104.8,
+        "last_close": 12.81,
         "security_id": "13557"
       },
       "AVROIND": {
-        "avg_volume": 721429.2,
-        "last_close": 5.18,
+        "avg_volume": 792444.7,
+        "last_close": 5.69,
         "security_id": "8827"
       },
       "AVTNPL": {
-        "avg_volume": 1613438.8,
-        "last_close": 99.75,
+        "avg_volume": 1826034.0,
+        "last_close": 101.0,
         "security_id": "14008"
       },
       "AWFIS": {
-        "avg_volume": 588015.8,
-        "last_close": 241.63,
+        "avg_volume": 579794.3,
+        "last_close": 244.77,
         "security_id": "23864"
       },
       "AWHCL": {
-        "avg_volume": 78772.7,
-        "last_close": 333.7,
+        "avg_volume": 74583.8,
+        "last_close": 332.85,
         "security_id": "1797"
       },
       "AWL": {
-        "avg_volume": 2214297.5,
-        "last_close": 190.54,
+        "avg_volume": 2250200.1,
+        "last_close": 187.3,
         "security_id": "8110"
       },
       "AXISBANK": {
-        "avg_volume": 7573710.4,
-        "last_close": 1288.0,
+        "avg_volume": 7749901.2,
+        "last_close": 1290.0,
         "security_id": "5900"
       },
       "AXISCADES": {
-        "avg_volume": 227684.3,
-        "last_close": 2020.5,
+        "avg_volume": 180329.8,
+        "last_close": 2116.0,
         "security_id": "9436"
       },
       "AXITA": {
-        "avg_volume": 831388.9,
-        "last_close": 7.32,
+        "avg_volume": 833811.7,
+        "last_close": 7.3,
         "security_id": "9902"
       },
       "AXTEL": {
-        "avg_volume": 3661.7,
-        "last_close": 413.9,
+        "avg_volume": 3667.0,
+        "last_close": 418.8,
         "security_id": "764613"
       },
       "AYE": {
-        "avg_volume": 596971.7,
-        "last_close": 159.89,
+        "avg_volume": 630208.4,
+        "last_close": 153.28,
         "security_id": "760981"
       },
       "AYMSYNTEX": {
-        "avg_volume": 54159.7,
-        "last_close": 271.3,
+        "avg_volume": 40625.3,
+        "last_close": 272.25,
         "security_id": "10285"
       },
       "AZAD": {
-        "avg_volume": 780623.3,
-        "last_close": 2749.8,
+        "avg_volume": 718183.5,
+        "last_close": 2741.0,
         "security_id": "20905"
       },
       "AZADIND": {
-        "avg_volume": 66083.8,
-        "last_close": 80.31,
+        "avg_volume": 46195.3,
+        "last_close": 80.44,
         "security_id": "765035"
       },
       "BAGFILMS": {
-        "avg_volume": 52919.3,
-        "last_close": 3.97,
+        "avg_volume": 56465.0,
+        "last_close": 3.96,
         "security_id": "11226"
       },
       "BAIDFIN": {
-        "avg_volume": 45374.9,
-        "last_close": 10.0,
+        "avg_volume": 54622.1,
+        "last_close": 9.89,
         "security_id": "13794"
       },
       "BAJAJ-AUTO": {
-        "avg_volume": 399983.6,
-        "last_close": 10385.0,
+        "avg_volume": 269572.4,
+        "last_close": 10405.0,
         "security_id": "16669"
       },
       "BAJAJCON": {
-        "avg_volume": 1223006.3,
-        "last_close": 468.5,
+        "avg_volume": 1280235.8,
+        "last_close": 472.0,
         "security_id": "19531"
       },
       "BAJAJELEC": {
-        "avg_volume": 1021095.5,
-        "last_close": 306.7,
+        "avg_volume": 1056067.8,
+        "last_close": 301.3,
         "security_id": "15034"
       },
       "BAJAJFINSV": {
-        "avg_volume": 1088424.7,
-        "last_close": 1732.0,
+        "avg_volume": 976774.8,
+        "last_close": 1729.0,
         "security_id": "16675"
       },
       "BAJAJHCARE": {
-        "avg_volume": 144136.1,
-        "last_close": 338.8,
+        "avg_volume": 148008.1,
+        "last_close": 341.1,
         "security_id": "6863"
       },
       "BAJAJHFL": {
-        "avg_volume": 4035266.3,
-        "last_close": 83.78,
+        "avg_volume": 3695064.6,
+        "last_close": 83.36,
         "security_id": "25270"
       },
       "BAJAJHIND": {
-        "avg_volume": 18524580.4,
-        "last_close": 21.45,
+        "avg_volume": 18950721.4,
+        "last_close": 21.25,
         "security_id": "308"
       },
       "BAJAJHLDNG": {
-        "avg_volume": 39384.1,
-        "last_close": 11225.0,
+        "avg_volume": 38017.4,
+        "last_close": 11198.0,
         "security_id": "305"
       },
       "BAJAJINDEF": {
-        "avg_volume": 13455.2,
-        "last_close": 199.55,
+        "avg_volume": 13853.4,
+        "last_close": 201.18,
         "security_id": "29678"
       },
       "BAJAJST": {
-        "avg_volume": 7571.9,
-        "last_close": 327.35,
+        "avg_volume": 6742.0,
+        "last_close": 327.6,
         "security_id": "762563"
       },
       "BAJEL": {
-        "avg_volume": 210839.8,
-        "last_close": 157.08,
+        "avg_volume": 249052.8,
+        "last_close": 167.75,
         "security_id": "20531"
       },
       "BAJFINANCE": {
-        "avg_volume": 8177588.1,
-        "last_close": 965.25,
+        "avg_volume": 8388792.1,
+        "last_close": 982.1,
         "security_id": "317"
       },
       "BALAJEE": {
-        "avg_volume": 46073.4,
-        "last_close": 22.18,
+        "avg_volume": 47503.5,
+        "last_close": 22.08,
         "security_id": "25203"
       },
       "BALAJITELE": {
-        "avg_volume": 141675.2,
-        "last_close": 91.16,
+        "avg_volume": 109408.5,
+        "last_close": 90.83,
         "security_id": "9158"
       },
       "BALAMINES": {
-        "avg_volume": 473088.1,
-        "last_close": 2043.4,
+        "avg_volume": 459630.1,
+        "last_close": 2067.0,
         "security_id": "14501"
       },
       "BALAXI": {
-        "avg_volume": 20434.3,
-        "last_close": 22.13,
+        "avg_volume": 19727.9,
+        "last_close": 22.09,
         "security_id": "11309"
       },
       "BALKRISHNA": {
-        "avg_volume": 5086.6,
-        "last_close": 15.82,
+        "avg_volume": 5298.4,
+        "last_close": 15.74,
         "security_id": "10181"
       },
       "BALKRISIND": {
-        "avg_volume": 189902.0,
-        "last_close": 2052.3,
+        "avg_volume": 167105.4,
+        "last_close": 2052.8,
         "security_id": "335"
       },
       "BALMLAWRIE": {
-        "avg_volume": 131744.4,
-        "last_close": 159.12,
+        "avg_volume": 128184.5,
+        "last_close": 159.25,
         "security_id": "338"
       },
       "BALRAMCHIN": {
-        "avg_volume": 1335972.7,
-        "last_close": 726.0,
+        "avg_volume": 1388576.0,
+        "last_close": 721.15,
         "security_id": "341"
       },
       "BALUFORGE": {
-        "avg_volume": 509113.0,
-        "last_close": 476.45,
+        "avg_volume": 499064.8,
+        "last_close": 480.7,
         "security_id": "23607"
       },
       "BANARBEADS": {
-        "avg_volume": 2732.9,
-        "last_close": 114.55,
+        "avg_volume": 2760.6,
+        "last_close": 114.58,
         "security_id": "347"
       },
       "BANARISUG": {
-        "avg_volume": 891.3,
-        "last_close": 3380.4,
+        "avg_volume": 837.3,
+        "last_close": 3325.8,
         "security_id": "350"
       },
       "BANCOINDIA": {
-        "avg_volume": 58960.4,
-        "last_close": 602.15,
+        "avg_volume": 55669.8,
+        "last_close": 604.55,
         "security_id": "13880"
       },
       "BANDHANBNK": {
-        "avg_volume": 16004313.6,
-        "last_close": 170.34,
+        "avg_volume": 15403664.1,
+        "last_close": 167.5,
         "security_id": "2263"
       },
       "BANG": {
-        "avg_volume": 52088.7,
-        "last_close": 31.51,
+        "avg_volume": 59917.2,
+        "last_close": 31.2,
         "security_id": "15303"
       },
       "BANK10ADD": {
-        "avg_volume": 857783.5,
-        "last_close": 16.69,
+        "avg_volume": 856829.6,
+        "last_close": 16.75,
         "security_id": "761364"
       },
       "BANK10BETF": {
-        "avg_volume": 2431150.3,
-        "last_close": 20.18,
+        "avg_volume": 987103.1,
+        "last_close": 21.17,
         "security_id": "764183"
       },
       "BANKA": {
-        "avg_volume": 3584.7,
-        "last_close": 71.38,
+        "avg_volume": 2019.7,
+        "last_close": 70.49,
         "security_id": "822"
       },
       "BANKADD": {
-        "avg_volume": 110254.6,
-        "last_close": 57.19,
+        "avg_volume": 109866.2,
+        "last_close": 57.6,
         "security_id": "13644"
       },
       "BANKBARODA": {
-        "avg_volume": 8303194.8,
-        "last_close": 228.0,
+        "avg_volume": 7918216.1,
+        "last_close": 230.4,
         "security_id": "4668"
       },
       "BANKBEES": {
-        "avg_volume": 722241.6,
-        "last_close": 577.48,
+        "avg_volume": 737414.0,
+        "last_close": 578.69,
         "security_id": "11439"
       },
       "BANKBETA": {
-        "avg_volume": 558568.2,
-        "last_close": 57.63,
+        "avg_volume": 554500.1,
+        "last_close": 57.9,
         "security_id": "22440"
       },
       "BANKBETF": {
-        "avg_volume": 372814.9,
-        "last_close": 56.61,
+        "avg_volume": 373045.0,
+        "last_close": 57.0,
         "security_id": "21986"
       },
       "BANKETF": {
-        "avg_volume": 60586.5,
-        "last_close": 567.9,
+        "avg_volume": 55510.6,
+        "last_close": 569.47,
         "security_id": "17419"
       },
       "BANKIETF": {
-        "avg_volume": 1316113.8,
-        "last_close": 57.32,
+        "avg_volume": 1940442.1,
+        "last_close": 57.33,
         "security_id": "11037"
       },
       "BANKINDIA": {
-        "avg_volume": 8060886.7,
-        "last_close": 130.4,
+        "avg_volume": 8089388.0,
+        "last_close": 132.36,
         "security_id": "4745"
       },
       "BANKNIFTY1": {
-        "avg_volume": 1296843.0,
-        "last_close": 57.97,
+        "avg_volume": 1278302.4,
+        "last_close": 57.98,
         "security_id": "5851"
       },
       "BANKPSU": {
-        "avg_volume": 14042.8,
-        "last_close": 81.27,
+        "avg_volume": 51520.1,
+        "last_close": 81.61,
         "security_id": "25725"
       },
       "BANSALWIRE": {
-        "avg_volume": 101682.0,
-        "last_close": 63.12,
+        "avg_volume": 137928.0,
+        "last_close": 61.65,
         "security_id": "24386"
       },
       "BANSWRAS": {
-        "avg_volume": 14112.4,
-        "last_close": 102.03,
+        "avg_volume": 13140.2,
+        "last_close": 102.02,
         "security_id": "14511"
       },
       "BASF": {
-        "avg_volume": 12094.3,
-        "last_close": 3376.0,
+        "avg_volume": 11732.6,
+        "last_close": 3385.9,
         "security_id": "368"
       },
       "BASML": {
-        "avg_volume": 108396.6,
-        "last_close": 21.5,
+        "avg_volume": 103337.2,
+        "last_close": 21.68,
         "security_id": "12034"
       },
       "BATAINDIA": {
-        "avg_volume": 97489.6,
-        "last_close": 616.05,
+        "avg_volume": 133229.8,
+        "last_close": 638.65,
         "security_id": "371"
       },
       "BATLIBOI": {
-        "avg_volume": 81753.7,
-        "last_close": 92.51,
+        "avg_volume": 87099.8,
+        "last_close": 94.63,
         "security_id": "762568"
       },
       "BAYERCROP": {
-        "avg_volume": 25845.4,
-        "last_close": 3577.5,
+        "avg_volume": 24848.8,
+        "last_close": 3638.8,
         "security_id": "17927"
       },
       "BBETF0432": {
-        "avg_volume": 1364.0,
-        "last_close": 1328.98,
+        "avg_volume": 1342.1,
+        "last_close": 1329.07,
         "security_id": "7196"
       },
       "BBL": {
-        "avg_volume": 49849.4,
-        "last_close": 2508.6,
+        "avg_volume": 50107.0,
+        "last_close": 2443.0,
         "security_id": "13761"
       },
       "BBNPNBETF": {
-        "avg_volume": 1084.0,
-        "last_close": 56.2,
+        "avg_volume": 1061.4,
+        "last_close": 56.16,
         "security_id": "24117"
       },
       "BBNPPGOLD": {
-        "avg_volume": 9531.6,
-        "last_close": 140.45,
+        "avg_volume": 8595.2,
+        "last_close": 140.4,
         "security_id": "20547"
       },
       "BBOX": {
-        "avg_volume": 1739931.3,
-        "last_close": 880.2,
+        "avg_volume": 1747653.3,
+        "last_close": 907.25,
         "security_id": "3435"
       },
       "BBTC": {
-        "avg_volume": 80126.7,
-        "last_close": 1231.2,
+        "avg_volume": 80119.1,
+        "last_close": 1246.4,
         "security_id": "380"
       },
       "BBTCL": {
-        "avg_volume": 8146.7,
-        "last_close": 219.95,
+        "avg_volume": 8030.1,
+        "last_close": 221.5,
         "security_id": "12153"
       },
       "BCG": {
-        "avg_volume": 5101680.7,
-        "last_close": 9.02,
+        "avg_volume": 4705280.8,
+        "last_close": 9.1,
         "security_id": "8833"
       },
       "BCLIND": {
-        "avg_volume": 450969.9,
-        "last_close": 29.79,
+        "avg_volume": 429295.4,
+        "last_close": 29.9,
         "security_id": "2513"
       },
       "BCONCEPTS": {
-        "avg_volume": 7891.0,
-        "last_close": 134.4,
+        "avg_volume": 8976.6,
+        "last_close": 146.73,
         "security_id": "7780"
       },
       "BCPL": {
-        "avg_volume": 8817.3,
-        "last_close": 64.2,
+        "avg_volume": 8335.9,
+        "last_close": 65.06,
         "security_id": "761494"
       },
       "BDL": {
-        "avg_volume": 789251.6,
-        "last_close": 1126.3,
+        "avg_volume": 743645.4,
+        "last_close": 1114.7,
         "security_id": "2144"
       },
       "BEARDSELL": {
-        "avg_volume": 31591.7,
-        "last_close": 22.51,
+        "avg_volume": 30565.8,
+        "last_close": 23.29,
         "security_id": "17933"
       },
       "BECTORFOOD": {
-        "avg_volume": 670593.2,
-        "last_close": 209.1,
+        "avg_volume": 577760.7,
+        "last_close": 210.49,
         "security_id": "1628"
       },
       "BEDMUTHA": {
-        "avg_volume": 20396.7,
-        "last_close": 112.25,
+        "avg_volume": 21170.6,
+        "last_close": 111.1,
         "security_id": "20196"
       },
       "BEEKAY": {
-        "avg_volume": 2234.9,
-        "last_close": 423.25,
+        "avg_volume": 1920.4,
+        "last_close": 426.25,
         "security_id": "762573"
       },
       "BEL": {
-        "avg_volume": 11068580.5,
-        "last_close": 380.4,
+        "avg_volume": 10957893.4,
+        "last_close": 376.85,
         "security_id": "383"
       },
       "BELDING": {
-        "avg_volume": 14640.0,
-        "last_close": 954.7,
+        "avg_volume": 30268.2,
+        "last_close": 937.65,
         "security_id": "766517"
       },
       "BELLACASA": {
-        "avg_volume": 11002.4,
-        "last_close": 232.96,
+        "avg_volume": 11452.9,
+        "last_close": 234.95,
         "security_id": "757938"
       },
       "BELRISE": {
-        "avg_volume": 2066703.6,
-        "last_close": 229.9,
+        "avg_volume": 1820926.5,
+        "last_close": 231.51,
         "security_id": "757102"
       },
       "BEML": {
-        "avg_volume": 186001.2,
-        "last_close": 1935.2,
+        "avg_volume": 181513.5,
+        "last_close": 1968.5,
         "security_id": "395"
       },
       "BENARAS": {
-        "avg_volume": 104.9,
-        "last_close": 10211.0,
+        "avg_volume": 154.8,
+        "last_close": 10482.0,
         "security_id": "764618"
       },
       "BENGALASM": {
-        "avg_volume": 508.8,
-        "last_close": 5899.5,
+        "avg_volume": 478.4,
+        "last_close": 5908.0,
         "security_id": "762578"
       },
       "BEPL": {
-        "avg_volume": 1140804.9,
-        "last_close": 128.03,
+        "avg_volume": 1063876.2,
+        "last_close": 128.56,
         "security_id": "419"
       },
       "BERGEPAINT": {
-        "avg_volume": 299294.3,
-        "last_close": 470.05,
+        "avg_volume": 274301.9,
+        "last_close": 473.95,
         "security_id": "404"
       },
       "BESTAGRO": {
-        "avg_volume": 435818.9,
-        "last_close": 16.77,
+        "avg_volume": 551839.7,
+        "last_close": 16.47,
         "security_id": "2306"
       },
       "BETA": {
-        "avg_volume": 62771.7,
-        "last_close": 1750.3,
+        "avg_volume": 64554.5,
+        "last_close": 1783.0,
         "security_id": "759842"
       },
       "BFINVEST": {
-        "avg_volume": 11534.8,
-        "last_close": 431.5,
+        "avg_volume": 10987.4,
+        "last_close": 433.3,
         "security_id": "21113"
       },
       "BFSI": {
-        "avg_volume": 176988.2,
-        "last_close": 26.36,
+        "avg_volume": 139924.5,
+        "last_close": 26.39,
         "security_id": "5220"
       },
       "BFUTILITIE": {
-        "avg_volume": 48480.1,
-        "last_close": 465.2,
+        "avg_volume": 43133.7,
+        "last_close": 470.0,
         "security_id": "14567"
       },
       "BHAGCHEM": {
-        "avg_volume": 217698.4,
-        "last_close": 220.47,
+        "avg_volume": 220248.3,
+        "last_close": 213.08,
         "security_id": "6164"
       },
       "BHAGERIA": {
-        "avg_volume": 189173.6,
-        "last_close": 360.1,
+        "avg_volume": 168114.4,
+        "last_close": 363.3,
         "security_id": "13400"
       },
       "BHANDARI": {
-        "avg_volume": 142639.3,
-        "last_close": 2.86,
+        "avg_volume": 143225.9,
+        "last_close": 2.83,
         "security_id": "19556"
       },
       "BHARATCOAL": {
-        "avg_volume": 7613515.2,
-        "last_close": 31.96,
+        "avg_volume": 7309370.8,
+        "last_close": 31.79,
         "security_id": "760726"
       },
       "BHARATFORG": {
-        "avg_volume": 709510.9,
-        "last_close": 1852.4,
+        "avg_volume": 743249.2,
+        "last_close": 1835.0,
         "security_id": "422"
       },
       "BHARATGEAR": {
-        "avg_volume": 20170.8,
-        "last_close": 101.7,
+        "avg_volume": 19914.0,
+        "last_close": 102.67,
         "security_id": "426"
       },
       "BHARATRAS": {
-        "avg_volume": 12250.6,
-        "last_close": 985.3,
+        "avg_volume": 10952.5,
+        "last_close": 997.5,
         "security_id": "3834"
       },
       "BHARATSE": {
-        "avg_volume": 336699.5,
-        "last_close": 208.97,
+        "avg_volume": 320961.6,
+        "last_close": 208.61,
         "security_id": "30244"
       },
       "BHARATWIRE": {
-        "avg_volume": 235376.9,
-        "last_close": 162.47,
+        "avg_volume": 219154.5,
+        "last_close": 163.77,
         "security_id": "16123"
       },
       "BHARTIARTL": {
-        "avg_volume": 6920394.3,
-        "last_close": 1854.0,
+        "avg_volume": 8907839.3,
+        "last_close": 1905.0,
         "security_id": "10604"
       },
       "BHARTIHEXA": {
-        "avg_volume": 382744.9,
-        "last_close": 1650.5,
+        "avg_volume": 381206.2,
+        "last_close": 1621.9,
         "security_id": "23489"
       },
       "BHEL": {
-        "avg_volume": 16801541.1,
-        "last_close": 434.25,
+        "avg_volume": 16702653.6,
+        "last_close": 434.6,
         "security_id": "438"
       },
       "BIGBLOC": {
-        "avg_volume": 104761.4,
-        "last_close": 40.38,
+        "avg_volume": 203452.5,
+        "last_close": 43.24,
         "security_id": "18431"
       },
       "BIKAJI": {
-        "avg_volume": 301048.9,
-        "last_close": 464.95,
+        "avg_volume": 255262.6,
+        "last_close": 474.15,
         "security_id": "11966"
       },
       "BIL": {
-        "avg_volume": 14794.5,
-        "last_close": 1048.65,
+        "avg_volume": 13775.6,
+        "last_close": 1053.35,
         "security_id": "7848"
       },
       "BIMETAL": {
-        "avg_volume": 236.3,
-        "last_close": 636.4,
+        "avg_volume": 187.8,
+        "last_close": 634.0,
         "security_id": "762588"
       },
       "BIOCON": {
-        "avg_volume": 2783139.7,
-        "last_close": 352.0,
+        "avg_volume": 2718242.3,
+        "last_close": 349.2,
         "security_id": "11373"
       },
       "BIOFILCHEM": {
-        "avg_volume": 8069.1,
-        "last_close": 29.9,
+        "avg_volume": 6711.3,
+        "last_close": 30.18,
         "security_id": "4136"
       },
       "BIRLACABLE": {
-        "avg_volume": 367647.6,
-        "last_close": 360.35,
+        "avg_volume": 362169.7,
+        "last_close": 346.15,
         "security_id": "477"
       },
       "BIRLACORPN": {
-        "avg_volume": 81180.3,
-        "last_close": 793.4,
+        "avg_volume": 78426.8,
+        "last_close": 805.4,
         "security_id": "480"
       },
       "BIRLAMONEY": {
-        "avg_volume": 45920.1,
-        "last_close": 114.45,
+        "avg_volume": 47800.1,
+        "last_close": 112.45,
         "security_id": "15239"
       },
       "BIRLANU": {
-        "avg_volume": 20469.9,
-        "last_close": 1282.2,
+        "avg_volume": 20538.9,
+        "last_close": 1285.2,
         "security_id": "1455"
       },
       "BLACKBUCK": {
-        "avg_volume": 385140.6,
-        "last_close": 596.5,
+        "avg_volume": 359059.1,
+        "last_close": 594.45,
         "security_id": "27144"
       },
       "BLACKROSE": {
-        "avg_volume": 25895.0,
-        "last_close": 101.6,
+        "avg_volume": 21811.0,
+        "last_close": 101.34,
         "security_id": "762598"
       },
       "BLAL": {
-        "avg_volume": 16129.2,
-        "last_close": 159.16,
+        "avg_volume": 17876.6,
+        "last_close": 164.22,
         "security_id": "15067"
       },
       "BLBLIMITED": {
-        "avg_volume": 73952.5,
-        "last_close": 16.25,
+        "avg_volume": 72280.5,
+        "last_close": 16.22,
         "security_id": "8132"
       },
       "BLEL": {
-        "avg_volume": 1579593.8,
-        "last_close": 494.95,
+        "avg_volume": 1472058.2,
+        "last_close": 505.05,
         "security_id": "765291"
       },
       "BLIL": {
-        "avg_volume": 58813.0,
-        "last_close": 64.76,
+        "avg_volume": 54547.5,
+        "last_close": 64.89,
         "security_id": "762603"
       },
       "BLKASHYAP": {
-        "avg_volume": 1503367.1,
-        "last_close": 58.78,
+        "avg_volume": 1584986.3,
+        "last_close": 58.54,
         "security_id": "13290"
       },
       "BLS": {
-        "avg_volume": 1768601.9,
-        "last_close": 227.64,
+        "avg_volume": 1754584.8,
+        "last_close": 227.53,
         "security_id": "17279"
       },
       "BLSE": {
-        "avg_volume": 739923.5,
-        "last_close": 149.5,
+        "avg_volume": 718787.8,
+        "last_close": 146.65,
         "security_id": "22566"
       },
       "BLUECLOUDS": {
-        "avg_volume": 9246381.8,
-        "last_close": 19.87,
+        "avg_volume": 9154914.0,
+        "last_close": 19.78,
         "security_id": "765040"
       },
       "BLUECOAST": {
-        "avg_volume": 1646.4,
-        "last_close": 21.76,
+        "avg_volume": 1714.9,
+        "last_close": 23.08,
         "security_id": "7480"
       },
       "BLUEDART": {
-        "avg_volume": 17525.2,
-        "last_close": 4467.5,
+        "avg_volume": 17386.1,
+        "last_close": 4390.9,
         "security_id": "495"
       },
       "BLUEJET": {
-        "avg_volume": 272842.7,
-        "last_close": 519.45,
+        "avg_volume": 234275.3,
+        "last_close": 520.65,
         "security_id": "19686"
       },
       "BLUESTARCO": {
-        "avg_volume": 466061.1,
-        "last_close": 1592.0,
+        "avg_volume": 394772.0,
+        "last_close": 1567.6,
         "security_id": "8311"
       },
       "BLUESTONE": {
-        "avg_volume": 585250.8,
-        "last_close": 777.6,
+        "avg_volume": 521155.0,
+        "last_close": 778.9,
         "security_id": "759291"
       },
       "BLUSPRING": {
-        "avg_volume": 1399657.9,
-        "last_close": 172.68,
+        "avg_volume": 1420595.3,
+        "last_close": 165.19,
         "security_id": "757520"
       },
       "BMWVENTLTD": {
-        "avg_volume": 708335.4,
-        "last_close": 71.27,
+        "avg_volume": 755352.8,
+        "last_close": 71.38,
         "security_id": "759256"
       },
       "BNAGROCHEM": {
-        "avg_volume": 93141.7,
-        "last_close": 169.99,
+        "avg_volume": 52441.4,
+        "last_close": 166.34,
         "security_id": "762608"
       },
       "BNKETFAXIS": {
-        "avg_volume": 3567.9,
-        "last_close": 574.2,
+        "avg_volume": 3057.0,
+        "last_close": 577.28,
         "security_id": "1044"
       },
       "BOHRAIND": {
-        "avg_volume": 8734.1,
-        "last_close": 13.47,
+        "avg_volume": 6469.3,
+        "last_close": 13.44,
         "security_id": "11640"
       },
       "BOMDYEING": {
-        "avg_volume": 609553.5,
-        "last_close": 97.03,
+        "avg_volume": 623767.0,
+        "last_close": 98.66,
         "security_id": "513"
       },
       "BONLON": {
-        "avg_volume": 6198.9,
-        "last_close": 40.14,
+        "avg_volume": 6091.3,
+        "last_close": 39.77,
         "security_id": "761056"
       },
       "BORANA": {
-        "avg_volume": 22063.7,
-        "last_close": 268.25,
+        "avg_volume": 19423.7,
+        "last_close": 258.3,
         "security_id": "757919"
       },
       "BOROLTD": {
-        "avg_volume": 246570.5,
-        "last_close": 270.3,
+        "avg_volume": 197798.5,
+        "last_close": 270.9,
         "security_id": "19401"
       },
       "BORORENEW": {
-        "avg_volume": 262698.5,
-        "last_close": 427.55,
+        "avg_volume": 228147.7,
+        "last_close": 428.5,
         "security_id": "3149"
       },
       "BOROSCI": {
-        "avg_volume": 72271.0,
-        "last_close": 108.65,
+        "avg_volume": 68812.7,
+        "last_close": 107.42,
         "security_id": "24014"
       },
       "BOSCH-HCIL": {
-        "avg_volume": 54717.1,
-        "last_close": 1886.8,
+        "avg_volume": 44150.4,
+        "last_close": 1832.6,
         "security_id": "4491"
       },
       "BOSCHLTD": {
-        "avg_volume": 26264.7,
-        "last_close": 45035.0,
+        "avg_volume": 23099.6,
+        "last_close": 45560.0,
         "security_id": "2181"
       },
       "BPCL": {
-        "avg_volume": 5130971.3,
-        "last_close": 293.7,
+        "avg_volume": 4878727.9,
+        "last_close": 293.5,
         "security_id": "526"
       },
       "BPL": {
-        "avg_volume": 23048.4,
-        "last_close": 42.89,
+        "avg_volume": 23859.8,
+        "last_close": 42.93,
         "security_id": "530"
       },
       "BPLPHARMA": {
-        "avg_volume": 7705.4,
-        "last_close": 1865.7,
+        "avg_volume": 6805.5,
+        "last_close": 1804.0,
         "security_id": "764623"
       },
       "BRAHMINFRA": {
-        "avg_volume": 33917.3,
-        "last_close": 188.59,
+        "avg_volume": 34605.8,
+        "last_close": 183.22,
         "security_id": "764628"
       },
       "BRIGADE": {
-        "avg_volume": 343113.0,
-        "last_close": 581.45,
+        "avg_volume": 323180.6,
+        "last_close": 575.15,
         "security_id": "15184"
       },
       "BRIGHOTEL": {
-        "avg_volume": 72123.3,
-        "last_close": 55.84,
+        "avg_volume": 56254.3,
+        "last_close": 55.86,
         "security_id": "757794"
       },
       "BRIGHTBR": {
-        "avg_volume": 2394.3,
-        "last_close": 220.4,
+        "avg_volume": 3497.9,
+        "last_close": 206.2,
         "security_id": "764633"
       },
       "BRITANNIA": {
-        "avg_volume": 208852.9,
-        "last_close": 4850.0,
+        "avg_volume": 201492.1,
+        "last_close": 4764.0,
         "security_id": "547"
       },
       "BRNL": {
-        "avg_volume": 20316.2,
-        "last_close": 15.52,
+        "avg_volume": 19242.0,
+        "last_close": 15.64,
         "security_id": "21683"
       },
       "BROOKS": {
-        "avg_volume": 364839.5,
-        "last_close": 70.42,
+        "avg_volume": 373631.7,
+        "last_close": 67.57,
         "security_id": "25136"
       },
       "BSE": {
-        "avg_volume": 4975955.2,
-        "last_close": 3428.0,
+        "avg_volume": 4812405.0,
+        "last_close": 3363.0,
         "security_id": "19585"
       },
       "BSE500IETF": {
-        "avg_volume": 274971.7,
-        "last_close": 37.39,
+        "avg_volume": 231706.0,
+        "last_close": 37.59,
         "security_id": "3001"
       },
       "BSHSL": {
-        "avg_volume": 22265.2,
-        "last_close": 101.8,
+        "avg_volume": 25375.7,
+        "last_close": 94.99,
         "security_id": "809"
       },
       "BSL": {
-        "avg_volume": 4180.4,
-        "last_close": 123.57,
+        "avg_volume": 4342.7,
+        "last_close": 124.07,
         "security_id": "559"
       },
       "BSLGOLDETF": {
-        "avg_volume": 363927.5,
-        "last_close": 127.41,
+        "avg_volume": 329125.2,
+        "last_close": 127.99,
         "security_id": "23804"
       },
       "BSLNIFTY": {
-        "avg_volume": 1615499.8,
-        "last_close": 26.94,
+        "avg_volume": 1323415.5,
+        "last_close": 27.15,
         "security_id": "24781"
       },
       "BSLSENETFG": {
-        "avg_volume": 3508.7,
-        "last_close": 74.49,
+        "avg_volume": 3890.9,
+        "last_close": 75.55,
         "security_id": "5957"
       },
       "BSOFT": {
-        "avg_volume": 4188957.7,
-        "last_close": 309.5,
+        "avg_volume": 4421033.0,
+        "last_close": 318.2,
         "security_id": "6994"
       },
       "BTML": {
-        "avg_volume": 279252.1,
+        "avg_volume": 157506.0,
         "last_close": 6.9,
         "security_id": "14150"
       },
       "BTTL": {
-        "avg_volume": 13113.3,
-        "last_close": 38.25,
+        "avg_volume": 12951.2,
+        "last_close": 39.62,
         "security_id": "762618"
       },
       "BUILDPRO": {
-        "avg_volume": 302476.5,
-        "last_close": 242.0,
+        "avg_volume": 334183.6,
+        "last_close": 239.2,
         "security_id": "760594"
       },
       "BUTTERFLY": {
-        "avg_volume": 43200.8,
-        "last_close": 617.3,
+        "avg_volume": 50576.4,
+        "last_close": 603.5,
         "security_id": "2716"
       },
       "BVCL": {
-        "avg_volume": 14254.8,
-        "last_close": 40.23,
+        "avg_volume": 14786.7,
+        "last_close": 39.17,
         "security_id": "15073"
       },
       "BYKE": {
-        "avg_volume": 25947.0,
-        "last_close": 29.37,
+        "avg_volume": 24363.1,
+        "last_close": 29.68,
         "security_id": "7919"
       },
       "CAMLINFINE": {
-        "avg_volume": 476754.4,
-        "last_close": 89.49,
+        "avg_volume": 654362.2,
+        "last_close": 95.09,
         "security_id": "6216"
       },
       "CAMPUS": {
-        "avg_volume": 481895.0,
-        "last_close": 197.01,
+        "avg_volume": 535377.2,
+        "last_close": 202.79,
         "security_id": "9362"
       },
       "CAMS": {
-        "avg_volume": 1257436.2,
-        "last_close": 704.85,
+        "avg_volume": 1174536.1,
+        "last_close": 700.0,
         "security_id": "342"
       },
       "CANBK": {
-        "avg_volume": 23396247.5,
-        "last_close": 117.12,
+        "avg_volume": 25214241.5,
+        "last_close": 118.29,
         "security_id": "10794"
       },
       "CANFINHOME": {
-        "avg_volume": 356833.5,
-        "last_close": 734.95,
+        "avg_volume": 349407.3,
+        "last_close": 732.15,
         "security_id": "583"
       },
       "CANHLIFE": {
-        "avg_volume": 1092720.6,
-        "last_close": 134.73,
+        "avg_volume": 1373115.1,
+        "last_close": 130.37,
         "security_id": "759477"
       },
       "CANTABIL": {
-        "avg_volume": 177206.1,
-        "last_close": 249.91,
+        "avg_volume": 182352.5,
+        "last_close": 249.69,
         "security_id": "20160"
       },
       "CAPACITE": {
-        "avg_volume": 296434.2,
-        "last_close": 171.2,
+        "avg_volume": 282287.1,
+        "last_close": 172.97,
         "security_id": "21749"
       },
       "CAPILLARY": {
-        "avg_volume": 214261.9,
-        "last_close": 535.15,
+        "avg_volume": 187647.4,
+        "last_close": 545.4,
         "security_id": "759867"
       },
       "CAPITALSFB": {
-        "avg_volume": 42002.6,
-        "last_close": 271.75,
+        "avg_volume": 36023.3,
+        "last_close": 273.35,
         "security_id": "22675"
       },
       "CAPLIPOINT": {
-        "avg_volume": 140735.9,
-        "last_close": 2301.8,
+        "avg_volume": 131732.8,
+        "last_close": 2301.3,
         "security_id": "3906"
       },
       "CARBORUNIV": {
-        "avg_volume": 205116.7,
-        "last_close": 1104.4,
+        "avg_volume": 183133.7,
+        "last_close": 1110.1,
         "security_id": "595"
       },
       "CARERATING": {
-        "avg_volume": 49755.5,
-        "last_close": 1566.0,
+        "avg_volume": 47649.2,
+        "last_close": 1603.9,
         "security_id": "29113"
       },
       "CARRARO": {
-        "avg_volume": 78379.9,
-        "last_close": 507.95,
+        "avg_volume": 67728.4,
+        "last_close": 504.0,
         "security_id": "28879"
       },
       "CARTRADE": {
-        "avg_volume": 359405.9,
-        "last_close": 2964.0,
+        "avg_volume": 362102.8,
+        "last_close": 3011.4,
         "security_id": "5407"
       },
       "CARYSIL": {
-        "avg_volume": 91758.8,
-        "last_close": 1021.1,
+        "avg_volume": 62547.8,
+        "last_close": 1015.3,
         "security_id": "1879"
       },
       "CASHIETF": {
-        "avg_volume": 407008.3,
-        "last_close": 1083.91,
+        "avg_volume": 451646.4,
+        "last_close": 1084.41,
         "security_id": "30139"
       },
       "CASTROLIND": {
-        "avg_volume": 2023538.8,
-        "last_close": 196.23,
+        "avg_volume": 1956110.8,
+        "last_close": 197.74,
         "security_id": "1250"
       },
+      "CCAVENUE": {
+        "avg_volume": 13997455.4,
+        "last_close": 138.3,
+        "security_id": "16249"
+      },
       "CCCL": {
-        "avg_volume": 166929.3,
-        "last_close": 13.36,
+        "avg_volume": 149181.7,
+        "last_close": 12.89,
         "security_id": "14992"
       },
       "CCHHL": {
-        "avg_volume": 20964.0,
-        "last_close": 13.34,
+        "avg_volume": 21426.4,
+        "last_close": 13.52,
         "security_id": "6385"
       },
       "CCL": {
-        "avg_volume": 138263.2,
-        "last_close": 1085.4,
+        "avg_volume": 239444.6,
+        "last_close": 1008.3,
         "security_id": "11452"
       },
       "CDSL": {
-        "avg_volume": 855178.2,
-        "last_close": 1293.0,
+        "avg_volume": 805250.6,
+        "last_close": 1286.9,
         "security_id": "21174"
       },
       "CEATLTD": {
-        "avg_volume": 81542.5,
-        "last_close": 3222.1,
+        "avg_volume": 103565.5,
+        "last_close": 3294.9,
         "security_id": "15254"
       },
       "CEIGALL": {
-        "avg_volume": 332241.3,
-        "last_close": 389.0,
+        "avg_volume": 345555.5,
+        "last_close": 391.45,
         "security_id": "24742"
       },
       "CEINSYS": {
-        "avg_volume": 90941.1,
-        "last_close": 679.1,
+        "avg_volume": 89560.9,
+        "last_close": 696.6,
         "security_id": "761037"
       },
       "CELEBRITY": {
-        "avg_volume": 22452.4,
-        "last_close": 6.28,
+        "avg_volume": 21596.3,
+        "last_close": 6.35,
         "security_id": "13162"
       },
       "CELLO": {
-        "avg_volume": 3738059.3,
-        "last_close": 363.45,
+        "avg_volume": 3770050.2,
+        "last_close": 376.6,
         "security_id": "19795"
       },
       "CEMNTGROWW": {
-        "avg_volume": 65406.3,
-        "last_close": 13.42,
+        "avg_volume": 53648.8,
+        "last_close": 13.68,
         "security_id": "764285"
       },
       "CEMPRO": {
-        "avg_volume": 551158.7,
-        "last_close": 1221.4,
+        "avg_volume": 590152.7,
+        "last_close": 1197.7,
         "security_id": "5622"
       },
       "CENTENKA": {
-        "avg_volume": 30292.5,
-        "last_close": 553.65,
+        "avg_volume": 29211.1,
+        "last_close": 558.6,
         "security_id": "619"
       },
       "CENTEXT": {
-        "avg_volume": 174181.6,
-        "last_close": 18.95,
+        "avg_volume": 184002.6,
+        "last_close": 18.87,
         "security_id": "11511"
       },
       "CENTRALBK": {
-        "avg_volume": 5547286.8,
-        "last_close": 30.78,
+        "avg_volume": 5450809.2,
+        "last_close": 30.88,
         "security_id": "14894"
       },
       "CENTRUM": {
-        "avg_volume": 245378.9,
-        "last_close": 18.98,
+        "avg_volume": 216060.0,
+        "last_close": 19.38,
         "security_id": "2454"
       },
       "CENTUM": {
-        "avg_volume": 72205.8,
-        "last_close": 3981.0,
+        "avg_volume": 69684.8,
+        "last_close": 4026.2,
         "security_id": "14982"
       },
       "CENTURYPLY": {
-        "avg_volume": 50789.8,
-        "last_close": 671.6,
+        "avg_volume": 47661.8,
+        "last_close": 673.15,
         "security_id": "13305"
       },
       "CERA": {
-        "avg_volume": 4475.6,
-        "last_close": 5046.0,
+        "avg_volume": 4281.3,
+        "last_close": 5097.0,
         "security_id": "15039"
       },
       "CESC": {
-        "avg_volume": 1686090.7,
-        "last_close": 135.85,
+        "avg_volume": 1565636.7,
+        "last_close": 135.9,
         "security_id": "628"
       },
       "CEWATER": {
-        "avg_volume": 38124.9,
-        "last_close": 257.45,
+        "avg_volume": 33663.0,
+        "last_close": 256.5,
         "security_id": "28764"
       },
       "CGCL": {
-        "avg_volume": 2433770.9,
-        "last_close": 247.15,
+        "avg_volume": 2286516.5,
+        "last_close": 247.56,
         "security_id": "20329"
       },
       "CGPOWER": {
-        "avg_volume": 2483704.9,
-        "last_close": 818.0,
+        "avg_volume": 2802751.3,
+        "last_close": 846.0,
         "security_id": "760"
       },
       "CGVAK": {
-        "avg_volume": 4755.0,
-        "last_close": 134.46,
+        "avg_volume": 4668.4,
+        "last_close": 136.99,
         "security_id": "764643"
       },
       "CHALET": {
-        "avg_volume": 103384.1,
-        "last_close": 842.6,
+        "avg_volume": 92656.5,
+        "last_close": 850.25,
         "security_id": "8546"
       },
       "CHAMBLFERT": {
-        "avg_volume": 485447.6,
-        "last_close": 390.3,
+        "avg_volume": 460555.4,
+        "last_close": 388.1,
         "security_id": "637"
       },
       "CHEMBOND": {
-        "avg_volume": 12014.3,
-        "last_close": 190.79,
+        "avg_volume": 11391.7,
+        "last_close": 190.37,
         "security_id": "14618"
       },
       "CHEMBONDCH": {
-        "avg_volume": 17034.6,
-        "last_close": 253.56,
+        "avg_volume": 18043.6,
+        "last_close": 234.35,
         "security_id": "757989"
       },
       "CHEMCON": {
-        "avg_volume": 59715.0,
-        "last_close": 220.66,
+        "avg_volume": 54223.9,
+        "last_close": 219.08,
         "security_id": "270"
       },
       "CHEMCRUX": {
-        "avg_volume": 9091.7,
-        "last_close": 81.39,
+        "avg_volume": 9375.0,
+        "last_close": 81.06,
         "security_id": "765045"
       },
       "CHEMFAB": {
-        "avg_volume": 2851.3,
-        "last_close": 328.35,
+        "avg_volume": 2777.8,
+        "last_close": 328.85,
         "security_id": "2799"
       },
       "CHEMICAL": {
-        "avg_volume": 317310.4,
-        "last_close": 28.53,
+        "avg_volume": 304037.2,
+        "last_close": 28.51,
         "security_id": "759885"
       },
       "CHEMPLASTS": {
-        "avg_volume": 932278.1,
-        "last_close": 203.65,
+        "avg_volume": 952465.9,
+        "last_close": 212.35,
         "security_id": "5449"
       },
       "CHENNPETRO": {
-        "avg_volume": 4255182.8,
-        "last_close": 1444.0,
+        "avg_volume": 4216196.1,
+        "last_close": 1406.6,
         "security_id": "2049"
       },
       "CHEVIOT": {
-        "avg_volume": 864.5,
-        "last_close": 1143.6,
+        "avg_volume": 801.8,
+        "last_close": 1139.9,
         "security_id": "9879"
       },
       "CHOICEGOLD": {
-        "avg_volume": 21985.9,
-        "last_close": 143.82,
+        "avg_volume": 12720.6,
+        "last_close": 144.41,
         "security_id": "759610"
       },
       "CHOICEIN": {
-        "avg_volume": 395324.4,
-        "last_close": 736.0,
+        "avg_volume": 386039.8,
+        "last_close": 740.55,
         "security_id": "8866"
       },
       "CHOLAFIN": {
-        "avg_volume": 1635126.9,
-        "last_close": 1586.0,
+        "avg_volume": 1566508.6,
+        "last_close": 1574.4,
         "security_id": "685"
       },
       "CHOLAHLDNG": {
-        "avg_volume": 90953.7,
-        "last_close": 1377.6,
+        "avg_volume": 83130.5,
+        "last_close": 1360.0,
         "security_id": "21740"
       },
       "CIEINDIA": {
-        "avg_volume": 168565.5,
-        "last_close": 376.6,
+        "avg_volume": 153865.9,
+        "last_close": 377.2,
         "security_id": "14937"
       },
       "CIFL": {
-        "avg_volume": 132179.6,
-        "last_close": 19.33,
+        "avg_volume": 127492.5,
+        "last_close": 19.06,
         "security_id": "756015"
       },
       "CINELINE": {
-        "avg_volume": 28290.9,
-        "last_close": 89.35,
+        "avg_volume": 28958.9,
+        "last_close": 91.43,
         "security_id": "27161"
       },
       "CINEVISTA": {
-        "avg_volume": 68602.9,
-        "last_close": 14.32,
+        "avg_volume": 69219.3,
+        "last_close": 14.36,
         "security_id": "8024"
       },
       "CIPLA": {
-        "avg_volume": 814502.5,
-        "last_close": 1328.0,
+        "avg_volume": 807352.0,
+        "last_close": 1325.1,
         "security_id": "694"
       },
       "CLEAN": {
-        "avg_volume": 187113.1,
-        "last_close": 794.45,
+        "avg_volume": 167501.8,
+        "last_close": 783.8,
         "security_id": "5049"
       },
       "CLEANMAX": {
-        "avg_volume": 321297.8,
-        "last_close": 1255.5,
+        "avg_volume": 301288.9,
+        "last_close": 1276.0,
         "security_id": "760183"
       },
       "CLEDUCATE": {
-        "avg_volume": 26349.7,
-        "last_close": 54.22,
+        "avg_volume": 26375.3,
+        "last_close": 57.33,
         "security_id": "20223"
       },
       "CLSEL": {
-        "avg_volume": 57462.0,
-        "last_close": 274.5,
+        "avg_volume": 56156.5,
+        "last_close": 272.6,
         "security_id": "3482"
       },
       "CMLL": {
-        "avg_volume": 3689191.7,
-        "last_close": 563.55,
+        "avg_volume": 3745605.0,
+        "last_close": 582.35,
         "security_id": "764255"
       },
       "CMPDI": {
-        "avg_volume": 982066.5,
-        "last_close": 202.3,
+        "avg_volume": 769349.0,
+        "last_close": 204.64,
         "security_id": "761581"
       },
       "CMRGREEN": {
-        "avg_volume": 245513.8,
-        "last_close": 216.69,
+        "avg_volume": 222432.5,
+        "last_close": 219.96,
         "security_id": "30893"
       },
       "CMSINFO": {
-        "avg_volume": 536713.0,
-        "last_close": 218.01,
+        "avg_volume": 459832.5,
+        "last_close": 217.95,
         "security_id": "7603"
       },
       "CNL": {
-        "avg_volume": 16906.0,
-        "last_close": 1154.8,
+        "avg_volume": 17540.7,
+        "last_close": 1178.7,
         "security_id": "11155"
       },
       "COALINDIA": {
-        "avg_volume": 6587379.0,
-        "last_close": 418.0,
+        "avg_volume": 6278999.0,
+        "last_close": 417.2,
         "security_id": "20374"
       },
       "COASTCORP": {
-        "avg_volume": 67064.9,
-        "last_close": 36.53,
+        "avg_volume": 64935.1,
+        "last_close": 36.59,
         "security_id": "6006"
       },
       "COCHINSHIP": {
-        "avg_volume": 918775.2,
-        "last_close": 1254.0,
+        "avg_volume": 889220.2,
+        "last_close": 1248.8,
         "security_id": "21508"
       },
       "COCKERILL": {
-        "avg_volume": 3105.9,
-        "last_close": 7370.0,
+        "avg_volume": 3141.1,
+        "last_close": 7299.0,
         "security_id": "762623"
       },
       "COFFEEDAY": {
-        "avg_volume": 1712678.5,
-        "last_close": 29.98,
+        "avg_volume": 1216217.4,
+        "last_close": 30.74,
         "security_id": "11165"
       },
       "COFORGE": {
-        "avg_volume": 2464284.0,
-        "last_close": 1934.3,
+        "avg_volume": 2329533.9,
+        "last_close": 1951.9,
         "security_id": "11543"
       },
       "COHANCE": {
-        "avg_volume": 800296.2,
-        "last_close": 459.95,
+        "avg_volume": 808275.1,
+        "last_close": 464.05,
         "security_id": "17945"
       },
       "COLPAL": {
-        "avg_volume": 722432.1,
-        "last_close": 1781.1,
+        "avg_volume": 722839.9,
+        "last_close": 1770.9,
         "security_id": "15141"
       },
       "COMFINTE": {
-        "avg_volume": 336833.3,
-        "last_close": 6.46,
+        "avg_volume": 1104442.0,
+        "last_close": 7.74,
         "security_id": "762628"
       },
       "COMMOIETF": {
-        "avg_volume": 97655.5,
-        "last_close": 92.29,
+        "avg_volume": 212320.7,
+        "last_close": 93.04,
         "security_id": "13198"
       },
       "COMPEAU": {
@@ -5894,1426 +5343,1421 @@
         "security_id": "764648"
       },
       "COMPUSOFT": {
-        "avg_volume": 13873.7,
-        "last_close": 13.0,
+        "avg_volume": 13114.0,
+        "last_close": 12.96,
         "security_id": "31138"
       },
       "COMSYN": {
-        "avg_volume": 572765.2,
-        "last_close": 251.05,
+        "avg_volume": 582199.1,
+        "last_close": 251.4,
         "security_id": "21578"
       },
       "CONCOR": {
-        "avg_volume": 721556.0,
-        "last_close": 446.5,
+        "avg_volume": 708904.7,
+        "last_close": 447.95,
         "security_id": "4749"
       },
       "CONCORDBIO": {
-        "avg_volume": 81818.1,
-        "last_close": 1353.3,
+        "avg_volume": 71633.3,
+        "last_close": 1339.0,
         "security_id": "18060"
       },
       "CONFIPET": {
-        "avg_volume": 2300889.1,
-        "last_close": 81.26,
+        "avg_volume": 2179534.2,
+        "last_close": 81.54,
         "security_id": "10238"
       },
       "CONS": {
-        "avg_volume": 53227.7,
-        "last_close": 11.33,
+        "avg_volume": 46132.2,
+        "last_close": 11.54,
         "security_id": "10512"
       },
       "CONSUMAXIS": {
-        "avg_volume": 2090.1,
-        "last_close": 113.08,
+        "avg_volume": 1680.0,
+        "last_close": 113.64,
         "security_id": "5732"
       },
       "CONSUMBEES": {
-        "avg_volume": 72800.3,
-        "last_close": 122.83,
+        "avg_volume": 63786.5,
+        "last_close": 123.27,
         "security_id": "2435"
       },
       "CONSUMER": {
-        "avg_volume": 246537.1,
-        "last_close": 11.26,
+        "avg_volume": 223388.5,
+        "last_close": 11.32,
         "security_id": "28969"
       },
       "CONSUMIETF": {
-        "avg_volume": 12664.6,
-        "last_close": 113.84,
+        "avg_volume": 9857.3,
+        "last_close": 114.71,
         "security_id": "6446"
       },
       "CONTROLPR": {
-        "avg_volume": 18785.2,
-        "last_close": 592.7,
+        "avg_volume": 14715.8,
+        "last_close": 592.05,
         "security_id": "17477"
       },
       "CORALFINAC": {
-        "avg_volume": 38841.5,
-        "last_close": 31.06,
+        "avg_volume": 38288.8,
+        "last_close": 31.34,
         "security_id": "4007"
       },
       "CORDELIA": {
-        "avg_volume": 2726403.6,
-        "last_close": 96.62,
+        "avg_volume": 2657909.3,
+        "last_close": 97.66,
         "security_id": "762163"
       },
       "COROMANDEL": {
-        "avg_volume": 207066.0,
-        "last_close": 1765.3,
+        "avg_volume": 207673.3,
+        "last_close": 1758.6,
         "security_id": "739"
       },
       "CORONA": {
-        "avg_volume": 14876.2,
-        "last_close": 2044.8,
+        "avg_volume": 23552.5,
+        "last_close": 2003.9,
         "security_id": "760254"
       },
       "COSMOFIRST": {
-        "avg_volume": 39004.2,
-        "last_close": 818.6,
+        "avg_volume": 43813.7,
+        "last_close": 832.6,
         "security_id": "742"
       },
       "CPEDU": {
-        "avg_volume": 3186.0,
-        "last_close": 181.13,
+        "avg_volume": 3579.4,
+        "last_close": 179.05,
         "security_id": "758941"
       },
       "CPL": {
-        "avg_volume": 31579.7,
-        "last_close": 59.71,
+        "avg_volume": 28511.1,
+        "last_close": 59.78,
         "security_id": "764203"
       },
       "CPPLUS": {
-        "avg_volume": 461741.1,
-        "last_close": 4109.1,
+        "avg_volume": 477686.9,
+        "last_close": 4063.6,
         "security_id": "758858"
       },
       "CPSEETF": {
-        "avg_volume": 661561.6,
-        "last_close": 88.65,
+        "avg_volume": 627996.7,
+        "last_close": 88.64,
         "security_id": "2328"
       },
       "CRAFTSMAN": {
-        "avg_volume": 47459.9,
-        "last_close": 10941.0,
+        "avg_volume": 46195.2,
+        "last_close": 10960.0,
         "security_id": "2854"
       },
       "CRAMC": {
-        "avg_volume": 479629.6,
-        "last_close": 223.45,
+        "avg_volume": 453403.0,
+        "last_close": 226.74,
         "security_id": "759311"
       },
       "CRAVATEX": {
-        "avg_volume": 220.7,
-        "last_close": 346.1,
+        "avg_volume": 222.8,
+        "last_close": 341.2,
         "security_id": "764653"
       },
       "CREATIVEYE": {
-        "avg_volume": 20658.5,
-        "last_close": 6.11,
+        "avg_volume": 22440.6,
+        "last_close": 6.24,
         "security_id": "9384"
       },
       "CREDITACC": {
-        "avg_volume": 185529.4,
-        "last_close": 1262.4,
+        "avg_volume": 161000.7,
+        "last_close": 1233.2,
         "security_id": "4421"
       },
       "CREST": {
-        "avg_volume": 2683.1,
-        "last_close": 356.65,
+        "avg_volume": 2680.4,
+        "last_close": 360.0,
         "security_id": "13900"
       },
       "CRISIL": {
-        "avg_volume": 18766.0,
-        "last_close": 4415.5,
+        "avg_volume": 17900.9,
+        "last_close": 4547.9,
         "security_id": "757"
       },
       "CRIZAC": {
-        "avg_volume": 229502.7,
-        "last_close": 152.35,
+        "avg_volume": 237690.6,
+        "last_close": 156.35,
         "security_id": "757850"
       },
       "CROMPTON": {
-        "avg_volume": 4012365.7,
-        "last_close": 215.55,
+        "avg_volume": 5464997.8,
+        "last_close": 215.5,
         "security_id": "17094"
       },
       "CROWN": {
-        "avg_volume": 7583.1,
-        "last_close": 112.42,
+        "avg_volume": 6815.2,
+        "last_close": 110.99,
         "security_id": "8083"
       },
       "CSBBANK": {
-        "avg_volume": 460531.0,
-        "last_close": 311.05,
+        "avg_volume": 441280.8,
+        "last_close": 308.9,
         "security_id": "14966"
       },
       "CSLFINANCE": {
-        "avg_volume": 17081.8,
-        "last_close": 207.98,
+        "avg_volume": 18067.7,
+        "last_close": 206.46,
         "security_id": "10350"
       },
       "CSM": {
-        "avg_volume": 149571.4,
-        "last_close": 86.98,
+        "avg_volume": 170042.3,
+        "last_close": 88.41,
         "security_id": "763753"
       },
       "CUB": {
-        "avg_volume": 2197555.9,
-        "last_close": 224.02,
+        "avg_volume": 1824629.0,
+        "last_close": 227.38,
         "security_id": "5701"
       },
       "CUMMINSIND": {
-        "avg_volume": 462527.3,
-        "last_close": 4639.0,
+        "avg_volume": 478613.4,
+        "last_close": 4608.0,
         "security_id": "1901"
       },
       "CUPID": {
-        "avg_volume": 23009192.5,
-        "last_close": 352.5,
+        "avg_volume": 21993958.1,
+        "last_close": 353.7,
         "security_id": "18520"
       },
       "CYBERTECH": {
-        "avg_volume": 45874.3,
-        "last_close": 132.76,
+        "avg_volume": 48583.4,
+        "last_close": 139.14,
         "security_id": "6051"
       },
       "CYIENT": {
-        "avg_volume": 1000044.2,
-        "last_close": 1189.8,
+        "avg_volume": 998857.9,
+        "last_close": 1194.5,
         "security_id": "5748"
       },
       "CYIENTDLM": {
-        "avg_volume": 596595.2,
-        "last_close": 1030.1,
+        "avg_volume": 940235.6,
+        "last_close": 897.25,
         "security_id": "17187"
       },
       "DABUR": {
-        "avg_volume": 1637108.6,
-        "last_close": 383.3,
+        "avg_volume": 1451970.1,
+        "last_close": 385.0,
         "security_id": "772"
       },
       "DALBHARAT": {
-        "avg_volume": 39909.2,
-        "last_close": 1610.0,
+        "avg_volume": 63972.9,
+        "last_close": 1684.4,
         "security_id": "8075"
       },
       "DALMIASUG": {
-        "avg_volume": 692833.1,
-        "last_close": 482.35,
+        "avg_volume": 696085.3,
+        "last_close": 481.4,
         "security_id": "781"
       },
       "DAMCAPITAL": {
-        "avg_volume": 288975.9,
-        "last_close": 143.95,
+        "avg_volume": 261000.7,
+        "last_close": 144.73,
         "security_id": "28662"
       },
       "DAMODARIND": {
-        "avg_volume": 5138.9,
-        "last_close": 26.55,
+        "avg_volume": 4304.2,
+        "last_close": 27.17,
         "security_id": "17541"
       },
       "DANGEE": {
-        "avg_volume": 84821.1,
+        "avg_volume": 72572.8,
         "last_close": 3.08,
         "security_id": "1110"
       },
       "DATAMATICS": {
-        "avg_volume": 93271.8,
-        "last_close": 793.0,
+        "avg_volume": 96946.3,
+        "last_close": 789.35,
         "security_id": "11423"
       },
       "DATAPATTNS": {
-        "avg_volume": 275690.7,
-        "last_close": 4038.9,
+        "avg_volume": 263654.8,
+        "last_close": 4072.0,
         "security_id": "7358"
       },
       "DAVANGERE": {
-        "avg_volume": 6989080.8,
-        "last_close": 2.12,
+        "avg_volume": 7007354.1,
+        "last_close": 2.06,
         "security_id": "21794"
       },
       "DBCORP": {
-        "avg_volume": 141628.6,
-        "last_close": 166.57,
+        "avg_volume": 140961.5,
+        "last_close": 165.9,
         "security_id": "17881"
       },
       "DBEIL": {
-        "avg_volume": 350476.8,
-        "last_close": 6.37,
+        "avg_volume": 352645.6,
+        "last_close": 6.44,
         "security_id": "25892"
       },
       "DBL": {
-        "avg_volume": 100204.4,
-        "last_close": 393.45,
+        "avg_volume": 108024.0,
+        "last_close": 402.0,
         "security_id": "18086"
       },
       "DBOL": {
-        "avg_volume": 555146.1,
-        "last_close": 144.04,
+        "avg_volume": 548280.3,
+        "last_close": 140.73,
         "security_id": "10893"
       },
       "DBREALTY": {
-        "avg_volume": 1003961.5,
-        "last_close": 86.97,
+        "avg_volume": 932953.0,
+        "last_close": 87.12,
         "security_id": "18124"
       },
       "DBSTOCKBRO": {
-        "avg_volume": 9894.5,
-        "last_close": 31.03,
+        "avg_volume": 10445.9,
+        "last_close": 31.23,
         "security_id": "31107"
       },
       "DCAL": {
-        "avg_volume": 165189.2,
-        "last_close": 151.18,
+        "avg_volume": 128920.4,
+        "last_close": 149.83,
         "security_id": "21704"
       },
       "DCBBANK": {
-        "avg_volume": 1799242.4,
-        "last_close": 210.79,
+        "avg_volume": 1756013.0,
+        "last_close": 209.77,
         "security_id": "13725"
       },
       "DCI": {
-        "avg_volume": 93449.0,
-        "last_close": 336.3,
+        "avg_volume": 74214.8,
+        "last_close": 335.1,
         "security_id": "11566"
       },
       "DCM": {
-        "avg_volume": 6656.0,
-        "last_close": 71.2,
+        "avg_volume": 6501.2,
+        "last_close": 71.67,
         "security_id": "805"
       },
       "DCMFINSERV": {
-        "avg_volume": 17169.0,
-        "last_close": 5.27,
+        "avg_volume": 16935.9,
+        "last_close": 4.92,
         "security_id": "4775"
       },
       "DCMSHRIRAM": {
-        "avg_volume": 314028.1,
-        "last_close": 1012.85,
+        "avg_volume": 304280.9,
+        "last_close": 1014.2,
         "security_id": "811"
       },
       "DCMSIL": {
-        "avg_volume": 84380.6,
-        "last_close": 74.83,
+        "avg_volume": 76807.9,
+        "last_close": 73.88,
         "security_id": "760896"
       },
       "DCMSRIND": {
-        "avg_volume": 1201328.6,
-        "last_close": 40.18,
+        "avg_volume": 1191901.9,
+        "last_close": 39.92,
         "security_id": "7325"
       },
       "DCW": {
-        "avg_volume": 1062483.3,
-        "last_close": 44.78,
+        "avg_volume": 970501.9,
+        "last_close": 44.88,
         "security_id": "817"
       },
       "DCXINDIA": {
-        "avg_volume": 285179.6,
-        "last_close": 153.41,
+        "avg_volume": 277165.7,
+        "last_close": 152.56,
         "security_id": "11895"
       },
       "DDEVPLSTIK": {
-        "avg_volume": 87547.1,
-        "last_close": 260.22,
+        "avg_volume": 87443.5,
+        "last_close": 261.36,
         "security_id": "29098"
       },
       "DECCANCE": {
-        "avg_volume": 9174.3,
-        "last_close": 535.8,
+        "avg_volume": 9302.3,
+        "last_close": 529.55,
         "security_id": "14838"
       },
       "DECNGOLD": {
-        "avg_volume": 944392.8,
-        "last_close": 187.64,
+        "avg_volume": 836543.7,
+        "last_close": 188.07,
         "security_id": "762638"
       },
       "DEEDEV": {
-        "avg_volume": 198923.9,
-        "last_close": 574.7,
+        "avg_volume": 229132.0,
+        "last_close": 570.55,
         "security_id": "24154"
       },
       "DEEPA": {
-        "avg_volume": 6354630.7,
-        "last_close": 237.62,
+        "avg_volume": 6792139.8,
+        "last_close": 251.11,
         "security_id": "765931"
       },
       "DEEPAKFERT": {
-        "avg_volume": 291262.1,
-        "last_close": 1309.0,
+        "avg_volume": 292478.4,
+        "last_close": 1344.1,
         "security_id": "827"
       },
       "DEEPAKNTR": {
-        "avg_volume": 230776.2,
-        "last_close": 1599.6,
+        "avg_volume": 224805.1,
+        "last_close": 1598.5,
         "security_id": "19943"
       },
       "DEEPINDS": {
-        "avg_volume": 302177.9,
-        "last_close": 747.45,
+        "avg_volume": 271745.3,
+        "last_close": 753.35,
         "security_id": "3292"
       },
       "DEFENCE": {
-        "avg_volume": 225923.5,
-        "last_close": 76.81,
+        "avg_volume": 196806.8,
+        "last_close": 77.27,
         "security_id": "761046"
       },
       "DELHIVERY": {
-        "avg_volume": 2677884.9,
-        "last_close": 410.4,
+        "avg_volume": 2662994.3,
+        "last_close": 407.5,
         "security_id": "9599"
       },
       "DELTACORP": {
-        "avg_volume": 25453705.4,
-        "last_close": 79.72,
+        "avg_volume": 22817017.4,
+        "last_close": 81.04,
         "security_id": "15044"
       },
       "DELTAMAGNT": {
-        "avg_volume": 2877.0,
-        "last_close": 56.79,
+        "avg_volume": 2266.8,
+        "last_close": 55.76,
         "security_id": "1214"
       },
       "DEN": {
-        "avg_volume": 480197.5,
-        "last_close": 26.06,
+        "avg_volume": 504184.3,
+        "last_close": 26.15,
         "security_id": "17722"
       },
       "DENORA": {
-        "avg_volume": 7262.6,
-        "last_close": 697.1,
+        "avg_volume": 6295.9,
+        "last_close": 698.75,
         "security_id": "4279"
       },
       "DENTA": {
-        "avg_volume": 63823.7,
-        "last_close": 259.8,
+        "avg_volume": 59289.4,
+        "last_close": 257.0,
         "security_id": "29256"
       },
       "DEVIT": {
-        "avg_volume": 64122.4,
-        "last_close": 19.6,
+        "avg_volume": 56681.8,
+        "last_close": 19.66,
         "security_id": "8146"
       },
       "DEVX": {
-        "avg_volume": 181123.1,
-        "last_close": 42.67,
+        "avg_volume": 185184.3,
+        "last_close": 42.51,
         "security_id": "759079"
       },
       "DEVYANI": {
-        "avg_volume": 1062239.0,
-        "last_close": 121.57,
+        "avg_volume": 1011301.1,
+        "last_close": 121.93,
         "security_id": "5373"
       },
       "DGCONTENT": {
-        "avg_volume": 52586.9,
-        "last_close": 23.28,
+        "avg_volume": 59692.6,
+        "last_close": 22.67,
         "security_id": "10346"
       },
       "DHAMPURSUG": {
-        "avg_volume": 1737429.4,
-        "last_close": 196.99,
+        "avg_volume": 1765475.9,
+        "last_close": 197.67,
         "security_id": "857"
       },
       "DHANBANK": {
-        "avg_volume": 4558548.4,
-        "last_close": 33.42,
+        "avg_volume": 4851027.0,
+        "last_close": 35.79,
         "security_id": "11359"
       },
       "DHANUKA": {
-        "avg_volume": 38925.9,
-        "last_close": 875.4,
+        "avg_volume": 36749.9,
+        "last_close": 868.5,
         "security_id": "24409"
       },
       "DHARMAJ": {
-        "avg_volume": 58239.6,
-        "last_close": 260.4,
+        "avg_volume": 52312.0,
+        "last_close": 260.9,
         "security_id": "13001"
       },
       "DHATRE": {
-        "avg_volume": 39160.6,
-        "last_close": 3.89,
+        "avg_volume": 42354.8,
+        "last_close": 3.97,
         "security_id": "765060"
       },
       "DHOOTTRANS": {
-        "avg_volume": 968438.7,
-        "last_close": 1470.2,
+        "avg_volume": 1036062.0,
+        "last_close": 1551.8,
         "security_id": "764553"
       },
       "DHRUV": {
-        "avg_volume": 10898.2,
-        "last_close": 21.0,
+        "avg_volume": 10658.1,
+        "last_close": 20.22,
         "security_id": "6858"
       },
       "DHUNINV": {
-        "avg_volume": 743.0,
-        "last_close": 916.9,
+        "avg_volume": 765.3,
+        "last_close": 907.05,
         "security_id": "22233"
       },
       "DIAMINESQ": {
-        "avg_volume": 6171.9,
-        "last_close": 243.23,
+        "avg_volume": 6132.3,
+        "last_close": 243.04,
         "security_id": "18644"
       },
       "DIAMONDYD": {
-        "avg_volume": 13326.0,
-        "last_close": 1059.4,
+        "avg_volume": 11237.4,
+        "last_close": 1067.6,
         "security_id": "21840"
       },
       "DICIND": {
-        "avg_volume": 1701.6,
-        "last_close": 590.3,
+        "avg_volume": 1435.0,
+        "last_close": 598.9,
         "security_id": "703"
       },
       "DIFFNKG": {
-        "avg_volume": 176099.7,
-        "last_close": 411.1,
+        "avg_volume": 133967.7,
+        "last_close": 413.5,
         "security_id": "25672"
       },
       "DIGIDRIVE": {
-        "avg_volume": 19337.5,
-        "last_close": 18.88,
+        "avg_volume": 19666.6,
+        "last_close": 19.47,
         "security_id": "21247"
       },
       "DIGISPICE": {
-        "avg_volume": 40510.9,
-        "last_close": 15.83,
+        "avg_volume": 38642.8,
+        "last_close": 15.82,
         "security_id": "16683"
       },
       "DIGITIDE": {
-        "avg_volume": 434114.8,
-        "last_close": 73.42,
+        "avg_volume": 420567.0,
+        "last_close": 73.28,
         "security_id": "757515"
       },
       "DISAQ": {
-        "avg_volume": 79.4,
-        "last_close": 11350.0,
+        "avg_volume": 50.6,
+        "last_close": 11360.0,
         "security_id": "762643"
       },
       "DISHTV": {
-        "avg_volume": 1939801.1,
-        "last_close": 2.11,
+        "avg_volume": 1803631.9,
+        "last_close": 2.13,
         "security_id": "14537"
       },
       "DIVGIITTS": {
-        "avg_volume": 93487.9,
-        "last_close": 927.1,
+        "avg_volume": 104839.7,
+        "last_close": 987.4,
         "security_id": "14479"
       },
       "DIVIDEND": {
-        "avg_volume": 21702.2,
-        "last_close": 34.32,
+        "avg_volume": 44727.0,
+        "last_close": 34.68,
         "security_id": "760412"
       },
       "DIVISLAB": {
-        "avg_volume": 516814.2,
-        "last_close": 9030.0,
+        "avg_volume": 537936.0,
+        "last_close": 9144.5,
         "security_id": "10940"
       },
       "DIVOPPBEES": {
-        "avg_volume": 67390.8,
-        "last_close": 73.57,
+        "avg_volume": 65558.0,
+        "last_close": 74.43,
         "security_id": "2636"
       },
       "DIXON": {
-        "avg_volume": 194358.7,
-        "last_close": 12666.0,
+        "avg_volume": 216231.1,
+        "last_close": 12340.0,
         "security_id": "21690"
       },
       "DJML": {
-        "avg_volume": 80966.1,
-        "last_close": 70.39,
+        "avg_volume": 78197.1,
+        "last_close": 69.89,
         "security_id": "12749"
       },
       "DLF": {
-        "avg_volume": 3176838.7,
-        "last_close": 670.5,
+        "avg_volume": 2741116.2,
+        "last_close": 675.0,
         "security_id": "14732"
       },
       "DLINKINDIA": {
-        "avg_volume": 64956.4,
-        "last_close": 420.15,
+        "avg_volume": 64496.3,
+        "last_close": 420.25,
         "security_id": "17851"
       },
       "DMART": {
-        "avg_volume": 992517.3,
-        "last_close": 3378.4,
+        "avg_volume": 995332.6,
+        "last_close": 3342.0,
         "security_id": "19913"
       },
       "DMCC": {
-        "avg_volume": 515657.0,
-        "last_close": 318.3,
+        "avg_volume": 503952.5,
+        "last_close": 317.5,
         "security_id": "6973"
       },
       "DNAMEDIA": {
-        "avg_volume": 35136.4,
-        "last_close": 2.43,
+        "avg_volume": 33390.1,
+        "last_close": 2.42,
         "security_id": "641"
       },
       "DODLA": {
-        "avg_volume": 30661.5,
-        "last_close": 997.6,
+        "avg_volume": 24829.0,
+        "last_close": 1004.4,
         "security_id": "4822"
       },
       "DOLATALGO": {
-        "avg_volume": 119405.0,
-        "last_close": 60.36,
+        "avg_volume": 119334.3,
+        "last_close": 61.0,
         "security_id": "12124"
       },
       "DOLLAR": {
-        "avg_volume": 99573.2,
-        "last_close": 272.95,
+        "avg_volume": 87588.5,
+        "last_close": 275.0,
         "security_id": "20560"
       },
       "DOLLEX": {
-        "avg_volume": 17061.0,
-        "last_close": 36.02,
+        "avg_volume": 14995.6,
+        "last_close": 36.4,
         "security_id": "765977"
       },
       "DOLPHIN": {
-        "avg_volume": 39659.9,
-        "last_close": 634.15,
+        "avg_volume": 37815.7,
+        "last_close": 652.4,
         "security_id": "18139"
       },
       "DOMS": {
-        "avg_volume": 17473.7,
-        "last_close": 2124.8,
+        "avg_volume": 16473.9,
+        "last_close": 2104.5,
         "security_id": "20551"
       },
       "DONEAR": {
-        "avg_volume": 13371.8,
+        "avg_volume": 13119.7,
         "last_close": 80.86,
         "security_id": "13839"
       },
       "DPABHUSHAN": {
-        "avg_volume": 338305.4,
-        "last_close": 2392.5,
+        "avg_volume": 266388.9,
+        "last_close": 2293.5,
         "security_id": "936"
       },
       "DPWIRES": {
-        "avg_volume": 392374.1,
-        "last_close": 200.9,
+        "avg_volume": 402800.0,
+        "last_close": 204.11,
         "security_id": "16900"
       },
       "DRAGARWQ": {
-        "avg_volume": 1484.9,
-        "last_close": 5163.0,
+        "avg_volume": 2345.7,
+        "last_close": 5077.0,
         "security_id": "762648"
       },
       "DRCSYSTEMS": {
-        "avg_volume": 95727.8,
-        "last_close": 11.87,
+        "avg_volume": 86164.4,
+        "last_close": 11.57,
         "security_id": "2645"
       },
       "DREAMFOLKS": {
-        "avg_volume": 42416.9,
-        "last_close": 60.79,
+        "avg_volume": 38241.3,
+        "last_close": 60.29,
         "security_id": "10859"
       },
       "DREDGECORP": {
-        "avg_volume": 104660.8,
-        "last_close": 900.9,
+        "avg_volume": 99193.7,
+        "last_close": 896.45,
         "security_id": "11271"
       },
       "DRREDDY": {
-        "avg_volume": 2004851.4,
-        "last_close": 1218.8,
+        "avg_volume": 1870172.4,
+        "last_close": 1233.0,
         "security_id": "881"
       },
       "DSSL": {
-        "avg_volume": 61787.6,
-        "last_close": 1011.9,
+        "avg_volume": 63461.4,
+        "last_close": 1032.85,
         "security_id": "25690"
       },
       "DUCON": {
-        "avg_volume": 1297478.4,
-        "last_close": 1.36,
+        "avg_volume": 968244.3,
+        "last_close": 1.37,
         "security_id": "28952"
       },
       "DVL": {
-        "avg_volume": 8190.6,
-        "last_close": 289.7,
+        "avg_volume": 7491.5,
+        "last_close": 288.4,
         "security_id": "15214"
       },
       "DWARKESH": {
-        "avg_volume": 2875191.9,
-        "last_close": 46.65,
+        "avg_volume": 2921933.1,
+        "last_close": 46.38,
         "security_id": "11667"
       },
       "DYCL": {
-        "avg_volume": 206415.8,
-        "last_close": 411.0,
+        "avg_volume": 191251.9,
+        "last_close": 408.75,
         "security_id": "10417"
       },
       "DYNAMATECH": {
-        "avg_volume": 28051.7,
-        "last_close": 13638.0,
+        "avg_volume": 25751.6,
+        "last_close": 13774.0,
         "security_id": "4525"
       },
       "DYNPRO": {
-        "avg_volume": 9156.5,
-        "last_close": 239.02,
+        "avg_volume": 17176.2,
+        "last_close": 247.59,
         "security_id": "21314"
       },
       "EASEMYTRIP": {
-        "avg_volume": 8663452.3,
-        "last_close": 5.75,
+        "avg_volume": 8281107.9,
+        "last_close": 5.67,
         "security_id": "2792"
       },
       "EASTWEST": {
-        "avg_volume": 36925.3,
-        "last_close": 2.29,
+        "avg_volume": 36392.2,
+        "last_close": 2.35,
         "security_id": "765065"
       },
       "EBANK10": {
-        "avg_volume": 766.6,
-        "last_close": 16.61,
+        "avg_volume": 731.2,
+        "last_close": 16.6,
         "security_id": "764378"
       },
       "EBANKNIFTY": {
-        "avg_volume": 3186.0,
-        "last_close": 56.44,
+        "avg_volume": 3518.8,
+        "last_close": 56.4,
         "security_id": "25258"
       },
       "EBBETF0430": {
-        "avg_volume": 28462.4,
-        "last_close": 1602.86,
+        "avg_volume": 28629.8,
+        "last_close": 1602.73,
         "security_id": "16253"
       },
       "EBBETF0431": {
-        "avg_volume": 10172.5,
-        "last_close": 1424.34,
+        "avg_volume": 8696.3,
+        "last_close": 1424.37,
         "security_id": "22239"
       },
       "EBBETF0433": {
-        "avg_volume": 3250.0,
-        "last_close": 1291.46,
+        "avg_volume": 4806.8,
+        "last_close": 1297.75,
         "security_id": "13139"
       },
       "EBGNG": {
-        "avg_volume": 683645.8,
-        "last_close": 692.25,
+        "avg_volume": 634709.5,
+        "last_close": 708.05,
         "security_id": "757862"
       },
       "ECAPINSURE": {
-        "avg_volume": 64569.5,
-        "last_close": 23.0,
+        "avg_volume": 57885.1,
+        "last_close": 23.12,
         "security_id": "29019"
       },
       "ECLERX": {
-        "avg_volume": 181005.7,
-        "last_close": 1998.2,
+        "avg_volume": 187991.8,
+        "last_close": 1957.0,
         "security_id": "15179"
       },
       "ECORECO": {
-        "avg_volume": 12119.2,
-        "last_close": 406.45,
+        "avg_volume": 11121.1,
+        "last_close": 413.15,
         "security_id": "764663"
       },
       "ECOSMOBLTY": {
-        "avg_volume": 52704.9,
-        "last_close": 106.32,
+        "avg_volume": 51519.1,
+        "last_close": 106.6,
         "security_id": "25060"
       },
       "EDELWEISS": {
-        "avg_volume": 3635897.7,
-        "last_close": 134.47,
+        "avg_volume": 3291037.4,
+        "last_close": 134.84,
         "security_id": "15119"
       },
       "EFCIL": {
-        "avg_volume": 505131.6,
-        "last_close": 171.38,
+        "avg_volume": 504539.6,
+        "last_close": 170.2,
         "security_id": "758675"
       },
       "EGOLD": {
-        "avg_volume": 113893.6,
-        "last_close": 145.0,
+        "avg_volume": 114062.2,
+        "last_close": 145.45,
         "security_id": "19933"
       },
       "EICHERMOT": {
-        "avg_volume": 422097.9,
-        "last_close": 7225.0,
+        "avg_volume": 377209.0,
+        "last_close": 7284.5,
         "security_id": "910"
       },
       "EIDPARRY": {
-        "avg_volume": 301849.7,
-        "last_close": 701.95,
+        "avg_volume": 289226.8,
+        "last_close": 694.15,
         "security_id": "916"
       },
       "EIEL": {
-        "avg_volume": 1015060.5,
-        "last_close": 189.97,
+        "avg_volume": 977949.1,
+        "last_close": 186.73,
         "security_id": "27213"
       },
       "EIHAHOTELS": {
-        "avg_volume": 10583.4,
-        "last_close": 287.6,
+        "avg_volume": 13240.4,
+        "last_close": 293.1,
         "security_id": "15399"
       },
       "EIHOTEL": {
-        "avg_volume": 445718.6,
-        "last_close": 294.45,
+        "avg_volume": 450842.4,
+        "last_close": 302.25,
         "security_id": "919"
       },
       "EIMCOELECO": {
-        "avg_volume": 96360.4,
-        "last_close": 2326.4,
+        "avg_volume": 96494.2,
+        "last_close": 2295.3,
         "security_id": "4040"
       },
       "EKC": {
-        "avg_volume": 129315.6,
-        "last_close": 102.65,
+        "avg_volume": 120282.0,
+        "last_close": 103.07,
         "security_id": "13091"
       },
       "ELANTAS": {
-        "avg_volume": 2569.1,
-        "last_close": 13792.0,
+        "avg_volume": 2422.0,
+        "last_close": 14036.0,
         "security_id": "762653"
       },
       "ELCIDIN": {
         "avg_volume": 7.0,
-        "last_close": 102000.0,
+        "last_close": 100500.0,
         "security_id": "762658"
       },
       "ELDEHSG": {
-        "avg_volume": 593.6,
-        "last_close": 806.55,
+        "avg_volume": 455.5,
+        "last_close": 783.05,
         "security_id": "8953"
       },
       "ELECON": {
-        "avg_volume": 3413568.3,
-        "last_close": 493.05,
+        "avg_volume": 3540819.1,
+        "last_close": 480.35,
         "security_id": "13643"
       },
       "ELECTCAST": {
-        "avg_volume": 3132679.1,
-        "last_close": 76.32,
+        "avg_volume": 2737291.1,
+        "last_close": 76.7,
         "security_id": "928"
       },
       "ELECTHERM": {
-        "avg_volume": 18840.8,
-        "last_close": 687.6,
+        "avg_volume": 19547.8,
+        "last_close": 697.05,
         "security_id": "4469"
       },
       "ELEVATE": {
-        "avg_volume": 3018624.5,
-        "last_close": 313.05,
+        "avg_volume": 1542179.1,
+        "last_close": 320.5,
         "security_id": "766278"
       },
       "ELGIEQUIP": {
-        "avg_volume": 243664.5,
-        "last_close": 571.6,
+        "avg_volume": 214490.7,
+        "last_close": 572.2,
         "security_id": "937"
       },
       "ELGIRUBCO": {
-        "avg_volume": 63535.2,
-        "last_close": 53.64,
+        "avg_volume": 61248.2,
+        "last_close": 54.41,
         "security_id": "24924"
       },
       "ELIN": {
-        "avg_volume": 143544.3,
-        "last_close": 77.07,
+        "avg_volume": 105080.0,
+        "last_close": 77.79,
         "security_id": "13423"
       },
       "ELIQUID": {
-        "avg_volume": 47742.0,
-        "last_close": 1052.07,
+        "avg_volume": 51852.3,
+        "last_close": 1052.54,
         "security_id": "759466"
       },
       "ELITECON": {
-        "avg_volume": 5328992.6,
-        "last_close": 7.09,
+        "avg_volume": 5339838.8,
+        "last_close": 6.94,
         "security_id": "762663"
       },
       "ELLEN": {
-        "avg_volume": 753729.8,
-        "last_close": 335.5,
+        "avg_volume": 614081.5,
+        "last_close": 339.05,
         "security_id": "758563"
       },
       "ELM250": {
-        "avg_volume": 261500.7,
-        "last_close": 15.76,
+        "avg_volume": 270471.8,
+        "last_close": 15.84,
         "security_id": "758952"
       },
       "ELMDIV": {
-        "avg_volume": 1113.3,
-        "last_close": 34.69,
+        "avg_volume": 1066.2,
+        "last_close": 34.75,
         "security_id": "764367"
       },
       "ELPROINTL": {
-        "avg_volume": 6513.3,
-        "last_close": 172.6,
+        "avg_volume": 6049.2,
+        "last_close": 172.15,
         "security_id": "4471"
       },
       "EMAMILTD": {
-        "avg_volume": 1087408.5,
-        "last_close": 373.6,
+        "avg_volume": 889677.4,
+        "last_close": 376.15,
         "security_id": "13517"
       },
       "EMAMIREAL": {
-        "avg_volume": 7446.9,
-        "last_close": 68.8,
+        "avg_volume": 7241.0,
+        "last_close": 68.5,
         "security_id": "19277"
       },
       "EMBDL": {
-        "avg_volume": 2061151.1,
-        "last_close": 54.95,
+        "avg_volume": 1935687.8,
+        "last_close": 55.16,
         "security_id": "14450"
       },
       "EMCURE": {
-        "avg_volume": 103274.2,
-        "last_close": 1836.0,
+        "avg_volume": 100246.1,
+        "last_close": 1820.6,
         "security_id": "24398"
       },
       "EMETAL": {
-        "avg_volume": 12356.3,
-        "last_close": 12.08,
+        "avg_volume": 12125.2,
+        "last_close": 12.21,
         "security_id": "764288"
       },
       "EMIL": {
-        "avg_volume": 4493113.7,
-        "last_close": 182.11,
+        "avg_volume": 4229188.8,
+        "last_close": 182.81,
         "security_id": "11530"
       },
       "EMKAY": {
-        "avg_volume": 58669.4,
-        "last_close": 273.05,
+        "avg_volume": 54871.9,
+        "last_close": 277.2,
         "security_id": "13421"
       },
       "EMMBI": {
-        "avg_volume": 8513.1,
-        "last_close": 86.09,
+        "avg_volume": 8680.6,
+        "last_close": 82.11,
         "security_id": "18142"
       },
       "EMMVEE": {
-        "avg_volume": 2891633.8,
-        "last_close": 282.1,
+        "avg_volume": 3221991.6,
+        "last_close": 277.2,
         "security_id": "759728"
       },
       "EMPIND": {
-        "avg_volume": 4925.4,
-        "last_close": 989.3,
+        "avg_volume": 4978.3,
+        "last_close": 998.0,
         "security_id": "764673"
       },
       "EMPOWER": {
-        "avg_volume": 29981021.0,
-        "last_close": 1.81,
+        "avg_volume": 29886507.6,
+        "last_close": 1.72,
         "security_id": "762670"
       },
       "EMSLIMITED": {
-        "avg_volume": 149794.6,
-        "last_close": 321.0,
+        "avg_volume": 142202.0,
+        "last_close": 322.6,
         "security_id": "18593"
       },
       "EMUDHRA": {
-        "avg_volume": 418638.9,
-        "last_close": 534.9,
+        "avg_volume": 377590.8,
+        "last_close": 555.85,
         "security_id": "9756"
       },
       "EMULTIMQ": {
-        "avg_volume": 25052.9,
-        "last_close": 40.21,
+        "avg_volume": 23147.9,
+        "last_close": 39.81,
         "security_id": "25996"
       },
       "ENDURANCE": {
-        "avg_volume": 72221.1,
-        "last_close": 2407.8,
+        "avg_volume": 64878.6,
+        "last_close": 2406.4,
         "security_id": "18822"
       },
       "ENERGY": {
-        "avg_volume": 197960.8,
-        "last_close": 36.51,
+        "avg_volume": 212278.3,
+        "last_close": 36.43,
         "security_id": "759780"
       },
       "ENERGYAXIS": {
-        "avg_volume": 13365.1,
-        "last_close": 18.17,
+        "avg_volume": 12105.4,
+        "last_close": 18.19,
         "security_id": "765499"
       },
       "ENERGYDEV": {
-        "avg_volume": 21088.0,
-        "last_close": 14.28,
+        "avg_volume": 20985.5,
+        "last_close": 14.32,
         "security_id": "15049"
       },
       "ENEXT50": {
-        "avg_volume": 599.3,
-        "last_close": 68.5,
+        "avg_volume": 385.7,
+        "last_close": 68.83,
         "security_id": "763540"
       },
       "ENGINERSIN": {
-        "avg_volume": 5207398.3,
-        "last_close": 277.05,
+        "avg_volume": 4638380.3,
+        "last_close": 273.45,
         "security_id": "4907"
       },
       "ENIFTY": {
-        "avg_volume": 6158.1,
-        "last_close": 23.15,
+        "avg_volume": 5593.9,
+        "last_close": 23.43,
         "security_id": "759998"
       },
       "ENIL": {
-        "avg_volume": 11475.8,
-        "last_close": 90.25,
+        "avg_volume": 9922.9,
+        "last_close": 91.38,
         "security_id": "13192"
       },
       "ENKEIWHEL": {
-        "avg_volume": 1417.5,
-        "last_close": 391.0,
+        "avg_volume": 1210.8,
+        "last_close": 396.3,
         "security_id": "764678"
       },
       "ENRIN": {
-        "avg_volume": 642009.1,
-        "last_close": 2957.0,
+        "avg_volume": 561187.8,
+        "last_close": 2889.0,
         "security_id": "756871"
       },
       "ENTERO": {
-        "avg_volume": 93210.0,
-        "last_close": 1581.1,
+        "avg_volume": 79876.7,
+        "last_close": 1585.0,
         "security_id": "22717"
       },
       "EPACK": {
-        "avg_volume": 281381.2,
-        "last_close": 175.53,
+        "avg_volume": 271063.6,
+        "last_close": 173.47,
         "security_id": "22463"
       },
       "EPACKPEB": {
-        "avg_volume": 1062866.3,
-        "last_close": 243.34,
+        "avg_volume": 1039915.1,
+        "last_close": 241.55,
         "security_id": "759251"
       },
       "EPIGRAL": {
-        "avg_volume": 45321.6,
-        "last_close": 974.4,
+        "avg_volume": 39454.6,
+        "last_close": 995.8,
         "security_id": "5382"
       },
       "EPL": {
-        "avg_volume": 1404517.2,
-        "last_close": 236.35,
+        "avg_volume": 1190803.9,
+        "last_close": 232.07,
         "security_id": "981"
       },
       "EQUAL200": {
-        "avg_volume": 80986.2,
-        "last_close": 13.04,
+        "avg_volume": 83644.1,
+        "last_close": 13.07,
         "security_id": "30121"
       },
       "EQUAL50": {
-        "avg_volume": 12520.2,
-        "last_close": 314.0,
+        "avg_volume": 10596.7,
+        "last_close": 315.57,
         "security_id": "757142"
       },
       "EQUAL50ADD": {
-        "avg_volume": 21727.4,
-        "last_close": 324.05,
+        "avg_volume": 18315.0,
+        "last_close": 326.79,
         "security_id": "6606"
       },
       "EQUITASBNK": {
-        "avg_volume": 1168219.1,
-        "last_close": 68.28,
+        "avg_volume": 1177573.5,
+        "last_close": 70.37,
         "security_id": "913"
       },
       "ERIS": {
-        "avg_volume": 121087.0,
-        "last_close": 1148.8,
+        "avg_volume": 120285.0,
+        "last_close": 1144.4,
         "security_id": "21154"
       },
       "ESABINDIA": {
-        "avg_volume": 2626.9,
-        "last_close": 5479.5,
+        "avg_volume": 2352.6,
+        "last_close": 5453.0,
         "security_id": "955"
       },
       "ESCORTS": {
-        "avg_volume": 93456.9,
-        "last_close": 2726.6,
+        "avg_volume": 62336.9,
+        "last_close": 2751.0,
         "security_id": "958"
       },
       "ESDS": {
-        "avg_volume": 1422943.2,
-        "last_close": 1591.6,
+        "avg_volume": 1518712.6,
+        "last_close": 1512.1,
         "security_id": "765553"
       },
       "ESENSEX": {
-        "avg_volume": 837.7,
-        "last_close": 74.72,
+        "avg_volume": 762.2,
+        "last_close": 75.36,
         "security_id": "759995"
       },
       "ESG": {
-        "avg_volume": 24729.7,
-        "last_close": 39.17,
+        "avg_volume": 23841.8,
+        "last_close": 39.64,
         "security_id": "1200"
       },
       "ESILVER": {
-        "avg_volume": 232352.8,
-        "last_close": 207.0,
+        "avg_volume": 204631.7,
+        "last_close": 209.05,
         "security_id": "20257"
       },
       "ESSARSHPNG": {
-        "avg_volume": 349302.5,
-        "last_close": 16.02,
+        "avg_volume": 206999.2,
+        "last_close": 16.17,
         "security_id": "25634"
       },
       "ESSENTIA": {
-        "avg_volume": 1685446.8,
+        "avg_volume": 1636778.4,
         "last_close": 0.99,
         "security_id": "30323"
       },
       "ESTER": {
-        "avg_volume": 142010.2,
-        "last_close": 92.24,
+        "avg_volume": 72437.7,
+        "last_close": 91.25,
         "security_id": "24265"
       },
       "ETERNAL": {
-        "avg_volume": 21287961.0,
-        "last_close": 323.0,
+        "avg_volume": 19998895.3,
+        "last_close": 325.3,
         "security_id": "5097"
       },
       "ETHOSLTD": {
-        "avg_volume": 47702.2,
-        "last_close": 2573.4,
+        "avg_volume": 50172.7,
+        "last_close": 2611.4,
         "security_id": "9750"
       },
       "EUREKAFORB": {
-        "avg_volume": 190682.6,
-        "last_close": 342.1,
+        "avg_volume": 174959.6,
+        "last_close": 347.35,
         "security_id": "25162"
       },
       "EUROBOND": {
-        "avg_volume": 3449.8,
-        "last_close": 142.13,
+        "avg_volume": 3347.8,
+        "last_close": 136.14,
         "security_id": "757953"
       },
       "EUROPRATIK": {
-        "avg_volume": 230202.7,
-        "last_close": 161.14,
+        "avg_volume": 1717386.9,
+        "last_close": 183.37,
         "security_id": "759797"
       },
       "EVEREADY": {
-        "avg_volume": 77388.9,
-        "last_close": 318.7,
+        "avg_volume": 74025.1,
+        "last_close": 320.6,
         "security_id": "11782"
       },
       "EVERESTIND": {
-        "avg_volume": 27299.9,
-        "last_close": 484.75,
+        "avg_volume": 25428.9,
+        "last_close": 483.9,
         "security_id": "993"
       },
       "EVIETF": {
-        "avg_volume": 158260.8,
-        "last_close": 30.11,
+        "avg_volume": 154776.1,
+        "last_close": 30.27,
         "security_id": "755881"
       },
       "EVINDIA": {
-        "avg_volume": 174698.9,
-        "last_close": 30.2,
+        "avg_volume": 143735.4,
+        "last_close": 30.28,
         "security_id": "24461"
       },
       "EXCELINDUS": {
-        "avg_volume": 8788.9,
-        "last_close": 912.4,
+        "avg_volume": 8120.7,
+        "last_close": 931.6,
         "security_id": "11471"
       },
       "EXCELSOFT": {
-        "avg_volume": 700734.9,
-        "last_close": 83.43,
+        "avg_volume": 700902.1,
+        "last_close": 84.92,
         "security_id": "760007"
       },
       "EXICOM": {
-        "avg_volume": 576027.1,
-        "last_close": 142.5,
+        "avg_volume": 527058.2,
+        "last_close": 143.49,
         "security_id": "22947"
       },
       "EXIDEIND": {
-        "avg_volume": 1560770.5,
-        "last_close": 374.7,
+        "avg_volume": 1541227.9,
+        "last_close": 370.95,
         "security_id": "676"
       },
       "EXPLEOSOL": {
-        "avg_volume": 16089.9,
-        "last_close": 866.85,
+        "avg_volume": 18888.8,
+        "last_close": 896.65,
         "security_id": "17486"
       },
       "EXXARO": {
-        "avg_volume": 526677.7,
-        "last_close": 6.08,
+        "avg_volume": 513617.7,
+        "last_close": 6.11,
         "security_id": "5352"
       },
       "FABTECH": {
-        "avg_volume": 134435.6,
-        "last_close": 132.11,
+        "avg_volume": 133438.8,
+        "last_close": 130.3,
         "security_id": "760125"
       },
       "FACT": {
-        "avg_volume": 68731.4,
-        "last_close": 734.7,
+        "avg_volume": 63195.9,
+        "last_close": 733.2,
         "security_id": "1008"
       },
       "FAIRCHEMOR": {
-        "avg_volume": 81953.5,
-        "last_close": 758.55,
+        "avg_volume": 84452.5,
+        "last_close": 767.35,
         "security_id": "1614"
       },
+      "FARBEES": {
+        "avg_volume": 2521.0,
+        "last_close": 133.49,
+        "security_id": "766712"
+      },
       "FAZE3Q": {
-        "avg_volume": 34431.8,
-        "last_close": 406.1,
+        "avg_volume": 41279.6,
+        "last_close": 417.8,
         "security_id": "12000"
       },
       "FCL": {
-        "avg_volume": 27800947.9,
-        "last_close": 57.9,
+        "avg_volume": 26230657.5,
+        "last_close": 57.25,
         "security_id": "6198"
       },
       "FCSSOFT": {
-        "avg_volume": 1769999.0,
+        "avg_volume": 1794799.4,
         "last_close": 1.39,
         "security_id": "11999"
       },
       "FDC": {
-        "avg_volume": 115309.0,
-        "last_close": 351.4,
+        "avg_volume": 113672.5,
+        "last_close": 356.25,
         "security_id": "4898"
       },
       "FEDDERSHOL": {
-        "avg_volume": 15814872.5,
-        "last_close": 62.47,
+        "avg_volume": 10047269.9,
+        "last_close": 60.42,
         "security_id": "762675"
       },
       "FEDERALBNK": {
-        "avg_volume": 6579694.7,
-        "last_close": 335.0,
+        "avg_volume": 8304800.5,
+        "last_close": 338.0,
         "security_id": "1023"
       },
       "FEDFINA": {
-        "avg_volume": 1463571.5,
-        "last_close": 157.58,
+        "avg_volume": 1477981.9,
+        "last_close": 161.86,
         "security_id": "20322"
       },
       "FERMENTA": {
-        "avg_volume": 234316.9,
-        "last_close": 486.5,
+        "avg_volume": 196195.6,
+        "last_close": 486.0,
         "security_id": "762680"
       },
       "FIBERWEB": {
-        "avg_volume": 38142.8,
-        "last_close": 26.35,
+        "avg_volume": 37745.5,
+        "last_close": 26.25,
         "security_id": "8159"
       },
       "FIEMIND": {
-        "avg_volume": 68068.4,
-        "last_close": 1825.5,
+        "avg_volume": 65809.2,
+        "last_close": 1919.1,
         "security_id": "13710"
       },
       "FILATEX": {
-        "avg_volume": 2340012.0,
-        "last_close": 105.98,
+        "avg_volume": 2059596.5,
+        "last_close": 106.63,
         "security_id": "24532"
       },
       "FILATFASH": {
-        "avg_volume": 16810965.1,
+        "avg_volume": 17051365.1,
         "last_close": 0.18,
         "security_id": "23647"
       },
       "FINCABLES": {
-        "avg_volume": 454656.2,
-        "last_close": 1393.9,
+        "avg_volume": 421701.4,
+        "last_close": 1367.7,
         "security_id": "1038"
       },
       "FINEORG": {
-        "avg_volume": 31472.0,
-        "last_close": 5402.5,
+        "avg_volume": 31110.4,
+        "last_close": 5461.5,
         "security_id": "3744"
       },
       "FINIETF": {
-        "avg_volume": 284377.9,
+        "avg_volume": 250408.9,
         "last_close": 30.54,
         "security_id": "12578"
       },
       "FINKURVE": {
-        "avg_volume": 23980.5,
-        "last_close": 67.88,
+        "avg_volume": 16414.3,
+        "last_close": 68.51,
         "security_id": "759239"
       },
       "FINOPB": {
-        "avg_volume": 3100633.7,
-        "last_close": 132.75,
+        "avg_volume": 3102388.2,
+        "last_close": 134.1,
         "security_id": "6579"
       },
       "FINPIPE": {
-        "avg_volume": 391794.7,
-        "last_close": 154.75,
+        "avg_volume": 429157.1,
+        "last_close": 153.64,
         "security_id": "1041"
       },
       "FIRSTCRY": {
-        "avg_volume": 2364199.9,
-        "last_close": 180.65,
+        "avg_volume": 2290392.4,
+        "last_close": 178.63,
         "security_id": "24814"
       },
       "FISCHER": {
-        "avg_volume": 457007.7,
-        "last_close": 29.37,
+        "avg_volume": 503089.6,
+        "last_close": 29.66,
         "security_id": "757658"
       },
       "FIVESTAR": {
-        "avg_volume": 424958.9,
-        "last_close": 513.25,
+        "avg_volume": 395578.2,
+        "last_close": 506.15,
         "security_id": "12032"
       },
       "FLAIR": {
-        "avg_volume": 53549.1,
-        "last_close": 234.14,
+        "avg_volume": 44049.4,
+        "last_close": 237.31,
         "security_id": "20372"
       },
       "FLEXIADD": {
-        "avg_volume": 132647.7,
-        "last_close": 9.68,
+        "avg_volume": 118381.0,
+        "last_close": 9.73,
         "security_id": "759368"
       },
       "FLUOROCHEM": {
-        "avg_volume": 116482.6,
-        "last_close": 4512.5,
+        "avg_volume": 106778.9,
+        "last_close": 4402.9,
         "security_id": "13750"
       },
       "FMCGADD": {
-        "avg_volume": 15710.7,
-        "last_close": 45.09,
+        "avg_volume": 14344.2,
+        "last_close": 44.83,
         "security_id": "763530"
       },
       "FMCGIETF": {
-        "avg_volume": 1383547.2,
-        "last_close": 48.06,
+        "avg_volume": 1196337.1,
+        "last_close": 48.54,
         "security_id": "5306"
       },
       "FMGOETZE": {
-        "avg_volume": 125981.3,
-        "last_close": 450.3,
+        "avg_volume": 111139.1,
+        "last_close": 451.6,
         "security_id": "1190"
       },
       "FMNL": {
-        "avg_volume": 31038.7,
-        "last_close": 8.22,
+        "avg_volume": 26497.5,
+        "last_close": 7.98,
         "security_id": "21017"
       },
       "FOCUS": {
-        "avg_volume": 36633.2,
-        "last_close": 56.97,
+        "avg_volume": 31521.2,
+        "last_close": 55.91,
         "security_id": "6836"
       },
       "FOODSIN": {
-        "avg_volume": 55300.5,
-        "last_close": 47.46,
+        "avg_volume": 49868.1,
+        "last_close": 47.13,
         "security_id": "6673"
       },
       "FORCEMOT": {
-        "avg_volume": 61504.4,
-        "last_close": 17578.0,
+        "avg_volume": 54665.0,
+        "last_close": 17700.0,
         "security_id": "11573"
       },
       "FORTIS": {
-        "avg_volume": 2493845.5,
-        "last_close": 746.25,
+        "avg_volume": 1913752.8,
+        "last_close": 736.5,
         "security_id": "14592"
       },
       "FOSECOIND": {
-        "avg_volume": 8321.0,
-        "last_close": 6276.5,
+        "avg_volume": 8018.5,
+        "last_close": 6260.0,
         "security_id": "1073"
       },
       "FRACTAL": {
-        "avg_volume": 305441.1,
-        "last_close": 732.55,
+        "avg_volume": 294041.9,
+        "last_close": 736.95,
         "security_id": "760961"
       },
       "FREDUN": {
-        "avg_volume": 248997.6,
-        "last_close": 1462.1,
+        "avg_volume": 250099.3,
+        "last_close": 1477.7,
         "security_id": "764683"
       },
       "FRONTSP": {
-        "avg_volume": 21115.2,
-        "last_close": 1388.8,
+        "avg_volume": 18663.2,
+        "last_close": 1372.8,
         "security_id": "762685"
       },
       "FSL": {
-        "avg_volume": 4842279.3,
-        "last_close": 281.75,
+        "avg_volume": 4931367.0,
+        "last_close": 281.8,
         "security_id": "14304"
       },
       "FUSION": {
-        "avg_volume": 386664.6,
-        "last_close": 162.3,
+        "avg_volume": 377414.8,
+        "last_close": 159.12,
         "security_id": "11932"
       },
       "GABRIEL": {
-        "avg_volume": 212690.0,
-        "last_close": 1432.3,
+        "avg_volume": 191842.8,
+        "last_close": 1448.9,
         "security_id": "1085"
       },
       "GAEL": {
-        "avg_volume": 1135301.3,
-        "last_close": 173.7,
+        "avg_volume": 1152467.4,
+        "last_close": 174.14,
         "security_id": "8828"
       },
       "GAIL": {
-        "avg_volume": 8114839.7,
-        "last_close": 169.35,
+        "avg_volume": 8319360.2,
+        "last_close": 168.1,
         "security_id": "4717"
       },
       "GAJA": {
-        "avg_volume": 329306.2,
-        "last_close": 140.82,
+        "avg_volume": 292267.8,
+        "last_close": 139.98,
         "security_id": "765396"
       },
       "GALAPREC": {
-        "avg_volume": 40574.7,
-        "last_close": 1068.2,
+        "avg_volume": 35164.1,
+        "last_close": 1073.2,
         "security_id": "25134"
       },
       "GALAXYSURF": {
-        "avg_volume": 87145.6,
-        "last_close": 2504.8,
+        "avg_volume": 68501.1,
+        "last_close": 2502.0,
         "security_id": "1315"
       },
       "GALLANTT": {
-        "avg_volume": 5817972.5,
-        "last_close": 628.15,
+        "avg_volume": 6051967.4,
+        "last_close": 609.4,
         "security_id": "13337"
       },
       "GANDHAR": {
-        "avg_volume": 1048322.9,
-        "last_close": 299.1,
+        "avg_volume": 999953.0,
+        "last_close": 296.65,
         "security_id": "20303"
       },
       "GANDHITUBE": {
-        "avg_volume": 8292.3,
-        "last_close": 943.7,
+        "avg_volume": 5481.0,
+        "last_close": 934.4,
         "security_id": "14116"
       },
       "GANECOS": {
-        "avg_volume": 81962.5,
-        "last_close": 1012.9,
+        "avg_volume": 80379.1,
+        "last_close": 1027.0,
         "security_id": "6944"
       },
       "GANESHCP": {
-        "avg_volume": 270004.6,
-        "last_close": 163.02,
+        "avg_volume": 258503.2,
+        "last_close": 158.57,
         "security_id": "759012"
       },
       "GANESHHOU": {
-        "avg_volume": 37457.1,
-        "last_close": 680.6,
+        "avg_volume": 25061.6,
+        "last_close": 689.8,
         "security_id": "14339"
       },
       "GANGAFORGE": {
-        "avg_volume": 2206370.8,
-        "last_close": 1.49,
+        "avg_volume": 2090801.2,
+        "last_close": 1.45,
         "security_id": "4957"
-      },
-      "GANGESSECU": {
-        "avg_volume": 2572.5,
-        "last_close": 116.03,
-        "security_id": "21399"
-      },
-      "GARFIBRES": {
-        "avg_volume": 25275.6,
-        "last_close": 765.65,
-        "security_id": "1100"
       }
     }
   },
-  "volume_gainers_last_refresh": "2026-10-16T13:30:00+05:30"
+  "volume_gainers_last_refresh": "2026-10-19T09:30:00+05:30"
 }
