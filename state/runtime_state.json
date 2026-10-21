@@ -775,6 +775,116 @@
       "t1": 1159.1999999999998,
       "t2": 1121.2999999999997,
       "t3": 1083.3999999999996
+    },
+    "FINCABLES|SELL|2026-10-21T11:15:00+05:30|2026-10-21T11:15:00+05:30": {
+      "symbol": "FINCABLES",
+      "security_id": "1038",
+      "direction": "SELL",
+      "setup": "B1_ORB",
+      "setup_15m_timestamp": "2026-10-21T11:15:00+05:30",
+      "setup_15m_completion": "2026-10-21T11:20:00+05:30",
+      "setup_15m_open": 1232.6,
+      "setup_15m_high": 1232.6,
+      "setup_15m_low": 1228.0,
+      "setup_15m_close": 1228.8,
+      "setup_15m_rsi14": 16.870721759494202,
+      "setup_15m_previous_rsi14": 18.868523493770283,
+      "setup_15m_rvol": 2.5934394209226173,
+      "daily_close": 1282.5,
+      "daily_volume": 1225139.0,
+      "trade_quality_score": 4.5,
+      "departure_score": 1.5,
+      "freshness_score": 1.0,
+      "base_candle_score": 2.0,
+      "base_candle_count": 2,
+      "zone_test_count": 1,
+      "zone_low": 1230.1,
+      "zone_high": 1234.6,
+      "curve_context": "LOW",
+      "market_trend_aligned": true,
+      "orb_timestamp": "2026-10-21T09:15:00+05:30",
+      "orb_high": 1295.6,
+      "orb_low": 1273.8,
+      "orb_close": 1277.6,
+      "confirmation_5m_timestamp": "2026-10-21T11:15:00+05:30",
+      "confirmation_5m_close": 1228.8,
+      "confirmation_lag_minutes": -5.0,
+      "confirmation_lag_5m_candles": -1,
+      "status": "ACTIVE",
+      "risk": {
+        "entry": 1228.8,
+        "sl": 1295.6,
+        "risk": 66.79999999999995,
+        "risk_percent": 5.4361979166666625,
+        "t1": 1162.0,
+        "t2": 1095.2,
+        "t3": 1028.4,
+        "rr_t1": 1.0,
+        "rr_t2": 2.0,
+        "rr_t3": 3.0,
+        "trailing_sl": 1290.24,
+        "trailing_stop_pct": 5.0
+      },
+      "entry": 1228.8,
+      "sl": 1295.6,
+      "t1": 1162.0,
+      "t2": 1095.2,
+      "t3": 1028.4
+    },
+    "TRENT|SELL|2026-10-21T11:15:00+05:30|2026-10-21T11:15:00+05:30": {
+      "symbol": "TRENT",
+      "security_id": "1964",
+      "direction": "SELL",
+      "setup": "B1_ORB",
+      "setup_15m_timestamp": "2026-10-21T11:15:00+05:30",
+      "setup_15m_completion": "2026-10-21T11:20:00+05:30",
+      "setup_15m_open": 2856.7,
+      "setup_15m_high": 2857.5,
+      "setup_15m_low": 2850.2,
+      "setup_15m_close": 2850.5,
+      "setup_15m_rsi14": 33.78370109982177,
+      "setup_15m_previous_rsi14": 38.391966443990384,
+      "setup_15m_rvol": 1.5827639101938362,
+      "daily_close": 2891.6,
+      "daily_volume": 813750.0,
+      "trade_quality_score": 4.5,
+      "departure_score": 1.5,
+      "freshness_score": 1.0,
+      "base_candle_score": 2.0,
+      "base_candle_count": 1,
+      "zone_test_count": 1,
+      "zone_low": 2852.0,
+      "zone_high": 2856.7,
+      "curve_context": "LOW",
+      "market_trend_aligned": true,
+      "orb_timestamp": "2026-10-21T09:15:00+05:30",
+      "orb_high": 2895.5,
+      "orb_low": 2871.4,
+      "orb_close": 2881.7,
+      "confirmation_5m_timestamp": "2026-10-21T11:15:00+05:30",
+      "confirmation_5m_close": 2850.5,
+      "confirmation_lag_minutes": -5.0,
+      "confirmation_lag_5m_candles": -1,
+      "status": "ACTIVE",
+      "risk": {
+        "entry": 2850.5,
+        "sl": 2895.5,
+        "risk": 45.0,
+        "risk_percent": 1.578670408700228,
+        "t1": 2805.5,
+        "t2": 2760.5,
+        "t3": 2715.5,
+        "rr_t1": 1.0,
+        "rr_t2": 2.0,
+        "rr_t3": 3.0,
+        "trailing_sl": 2993.025,
+        "trailing_stop_pct": 5.0
+      },
+      "entry": 2850.5,
+      "sl": 2895.5,
+      "t1": 2805.5,
+      "t2": 2760.5,
+      "t3": 2715.5
     }
   },
   "pending_setups": {},
@@ -2753,6 +2863,20 @@
       "setup_15m_timestamp": "2026-10-21T10:10:00+05:30",
       "confirmation_5m_timestamp": "2026-10-21T10:10:00+05:30",
       "recorded_at": "2026-10-21T10:15:41.408928+05:30"
+    },
+    "FINCABLES|SELL|2026-10-21T11:15:00+05:30": {
+      "symbol": "FINCABLES",
+      "direction": "SELL",
+      "setup_15m_timestamp": "2026-10-21T11:15:00+05:30",
+      "confirmation_5m_timestamp": "2026-10-21T11:15:00+05:30",
+      "recorded_at": "2026-10-21T11:20:31.621382+05:30"
+    },
+    "TRENT|SELL|2026-10-21T11:15:00+05:30": {
+      "symbol": "TRENT",
+      "direction": "SELL",
+      "setup_15m_timestamp": "2026-10-21T11:15:00+05:30",
+      "confirmation_5m_timestamp": "2026-10-21T11:15:00+05:30",
+      "recorded_at": "2026-10-21T11:20:31.621382+05:30"
     }
   },
   "orb": {},
@@ -2774,7 +2898,7 @@
     },
     "ABB": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -2788,7 +2912,7 @@
     },
     "AEGISLOG": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -2817,7 +2941,7 @@
     },
     "ANURAS": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -2831,7 +2955,7 @@
     },
     "AUBANK": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -2845,7 +2969,7 @@
     },
     "AUROPHARMA": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -2859,7 +2983,7 @@
     },
     "AXISBANK": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -2873,7 +2997,7 @@
     },
     "BAJFINANCE": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -2887,7 +3011,7 @@
     },
     "BHARTIARTL": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -2901,7 +3025,7 @@
     },
     "DEEPAKFERT": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -2929,8 +3053,8 @@
       "confirmation_5m_timestamp": "2026-10-21T09:45:00+05:30"
     },
     "FINCABLES": {
-      "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "status": "CONSUMED",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -2940,11 +3064,12 @@
         "close": 1277.6
       },
       "orb_source": "TODAY_ORB",
-      "setup": null
+      "setup": null,
+      "confirmation_5m_timestamp": "2026-10-21T11:15:00+05:30"
     },
     "GALLANTT": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -2973,7 +3098,7 @@
     },
     "HDFCBANK": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -2987,7 +3112,7 @@
     },
     "HSCL": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -3001,7 +3126,7 @@
     },
     "INFY": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -3015,7 +3140,7 @@
     },
     "IRCTC": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -3029,7 +3154,7 @@
     },
     "JSWSTEEL": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -3043,7 +3168,7 @@
     },
     "KPITTECH": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -3057,7 +3182,7 @@
     },
     "LICHSGFIN": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -3071,7 +3196,7 @@
     },
     "LODHA": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -3085,7 +3210,7 @@
     },
     "MAXHEALTH": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -3114,7 +3239,7 @@
     },
     "NATCOPHARM": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -3128,7 +3253,7 @@
     },
     "NAUKRI": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -3142,7 +3267,7 @@
     },
     "PGEL": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -3156,7 +3281,7 @@
     },
     "POLICYBZR": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -3185,7 +3310,7 @@
     },
     "SYRMA": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -3199,7 +3324,7 @@
     },
     "TEJASNET": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -3212,8 +3337,8 @@
       "setup": null
     },
     "TRENT": {
-      "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "status": "CONSUMED",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -3223,11 +3348,12 @@
         "close": 2881.7
       },
       "orb_source": "TODAY_ORB",
-      "setup": null
+      "setup": null,
+      "confirmation_5m_timestamp": "2026-10-21T11:15:00+05:30"
     },
     "ULTRACEMCO": {
       "status": "WAITING_FOR_5M",
-      "last_processed_5m": "2026-10-21T11:10:00+05:30",
+      "last_processed_5m": "2026-10-21T11:15:00+05:30",
       "orb": {
         "timestamp": "2026-10-21T09:15:00+05:30",
         "date": "2026-10-21",
@@ -7140,5 +7266,5 @@
       }
     }
   },
-  "volume_gainers_last_refresh": "2026-10-21T11:10:00+05:30"
+  "volume_gainers_last_refresh": "2026-10-21T11:20:00+05:30"
 }
