@@ -194,9 +194,11 @@ def _build_confirmed_signal(item, setup, confirmation_ts, confirmation_close, or
         "confirmation_5m_close": entry,
         "confirmation_lag_minutes": round(lag_minutes, 1),
         "confirmation_lag_5m_candles": lag_5m_candles,
-        "status": "ACTIVE",
+        "status": "NEW",
+        "signal_time": confirmation_timestamp.isoformat(),
     }
     signal["risk"] = risk
+    signal["risk"]["original_sl"] = risk["sl"]   # locked forever; trade_manager uses this
     signal["entry"] = risk["entry"]
     signal["sl"] = risk["sl"]
     signal["t1"] = risk["t1"]

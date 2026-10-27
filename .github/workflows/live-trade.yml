@@ -1,0 +1,81 @@
+name: Live Trade Manager
+
+# Schedule: every 5 min, 09:00–13:00 IST (03:30–07:30 UTC) Mon–Fri
+on:
+  schedule:
+    - cron: "*/5 3-6 * * 1-5"               # 09:00–12:59 IST every 5 min
+    - cron: "0,5,10,15,20,25,30 7 * * 1-5"  # 12:30–13:00 IST every 5 min
+  workflow_dispatch:
+    inputs:
+      paper_mode:
+        description: "Run in paper mode (true/false)"
+        required: false
+        default: "true"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: dhan-api-access
+  cancel-in-progress: false
+
+jobs:
+  trade:
+    name: Trade Manager Cycle
+    runs-on: ubuntu-latest
+    env:
+      DHAN_CLIENT_ID:    ${{ secrets.DHAN_CLIENT_ID }}
+      DHAN_ACCESS_TOKEN: ${{ secrets.DHAN_ACCESS_TOKEN }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      # Reuse the existing token-management chat — no new secret needed
+      TELEGRAM_CHAT_ID:  ${{ secrets.TELEGRAM_TOKEN_ALERT_CHAT_ID }}
+      PAPER_MODE:        ${{ github.event.inputs.paper_mode || 'true' }}
+      TRADE_QTY:         "1"
+      MAX_SIGNAL_AGE_MIN: "15"
+      MAX_ENTRY_HHMM:    "1230"
+      MAX_PENDING_MIN:   "15"
+      MIN_TRAIL_INC:     "2.0"
+      LOG_LEVEL:         "INFO"
+      PYTHONUNBUFFERED:  "1"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Compile Python files
+        run: python -m compileall -q app
+
+      - name: Run trade manager
+        run: python -m app.trade_manager
+
+      - name: Commit trade state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state/runtime_state.json
+          if git diff --cached --quiet; then
+            echo "No state changes."
+          else
+            git commit -m "Update trade state [paper=${{ env.PAPER_MODE }}]"
+            git push
+          fi

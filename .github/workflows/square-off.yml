@@ -1,0 +1,75 @@
+name: EOD Square Off
+
+# Schedule: 15:05 IST = 09:35 UTC Mon–Fri
+on:
+  schedule:
+    - cron: "35 9 * * 1-5"    # 15:05 IST = 09:35 UTC
+  workflow_dispatch:
+    inputs:
+      paper_mode:
+        description: "Run in paper mode (true/false)"
+        required: false
+        default: "true"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: dhan-api-access
+  cancel-in-progress: false
+
+jobs:
+  square-off:
+    name: EOD Square Off + Daily Summary
+    runs-on: ubuntu-latest
+    env:
+      DHAN_CLIENT_ID:    ${{ secrets.DHAN_CLIENT_ID }}
+      DHAN_ACCESS_TOKEN: ${{ secrets.DHAN_ACCESS_TOKEN }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID:  ${{ secrets.TELEGRAM_TOKEN_ALERT_CHAT_ID }}
+      PAPER_MODE:        ${{ github.event.inputs.paper_mode || 'true' }}
+      TRADE_QTY:         "1"
+      LOG_LEVEL:         "INFO"
+      PYTHONUNBUFFERED:  "1"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Compile Python files
+        run: python -m compileall -q app
+
+      - name: Square off all open positions
+        run: python -m app.square_off
+
+      - name: Commit final state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state/runtime_state.json
+          if git diff --cached --quiet; then
+            echo "No state changes."
+          else
+            git commit -m "EOD square off state [paper=${{ env.PAPER_MODE }}]"
+            git push
+          fi
