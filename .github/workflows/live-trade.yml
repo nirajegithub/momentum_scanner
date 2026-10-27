@@ -1,10 +1,6 @@
 name: Live Trade Manager
 
-# Schedule: every 5 min, 09:00–13:00 IST (03:30–07:30 UTC) Mon–Fri
 on:
-  schedule:
-    - cron: "*/5 3-6 * * 1-5"               # 09:00–12:59 IST every 5 min
-    - cron: "0,5,10,15,20,25,30 7 * * 1-5"  # 12:30–13:00 IST every 5 min
   workflow_dispatch:
     inputs:
       paper_mode:
