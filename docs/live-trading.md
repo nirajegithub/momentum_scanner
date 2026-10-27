@@ -1,6 +1,6 @@
 # Live Trading Implementation — NSE ORB Scanner × DhanHQ
 
-> **Status**: Phase 1 — Paper Trade (code complete, awaiting first run)
+> **Status**: Phase 1 — Paper Trade 🟢 LIVE (crons active, first market run tomorrow)
 > **Strategy**: Opening Range Breakout · Intraday MIS · Breakeven + TSL at T1
 > **Last updated**: 2026-10-27
 
@@ -8,7 +8,7 @@
 
 ## Project Status
 
-### What Has Been Achieved
+### Confirmed Working (2026-10-27)
 
 | # | Item | File | Status |
 |---|------|------|--------|
@@ -19,15 +19,37 @@
 | 5 | Trade engine — entry, fill poll, SL-M placement, TSL, emergency exit | `app/trade_manager.py` | ✅ Done |
 | 6 | Position reconciler — manual exit detection, manual trade adoption, F-3 duplicate guard | `app/position_tracker.py` | ✅ Done |
 | 7 | EOD square-off + daily P&L summary to Telegram | `app/square_off.py` | ✅ Done |
-| 8 | Live trade workflow — every 5 min, `PAPER_MODE=true` default | `.github/workflows/live-trade.yml` | ✅ Done |
-| 9 | Square-off workflow — 15:05 IST | `.github/workflows/square-off.yml` | ✅ Done |
+| 8 | Live trade workflow — `workflow_dispatch`, `PAPER_MODE=true` default | `.github/workflows/live-trade.yml` | ✅ Done |
+| 9 | Square-off workflow — `workflow_dispatch` | `.github/workflows/square-off.yml` | ✅ Done |
 | 10 | Telegram notifications — all trade events (17 message types) | `app/telegram_notify.py` | ✅ Done |
 | 11 | Edge case matrix — 24 scenarios, 4 categories, priority tiers | `docs/live-trading.md §8.9` | ✅ Done |
 | 12 | Telegram reuse — same chat as token management (`TELEGRAM_TOKEN_ALERT_CHAT_ID`) | `live-trade.yml env` | ✅ Done |
+| 13 | Unit tests — 29 tests, all passing | `tests/test_trade_manager.py` | ✅ Done |
+| 14 | GHA run confirmed clean — market hours guard works, no errors | `live-trade.yml` run log | ✅ Verified |
+| 15 | External cron — live-trade `*/5 9-14 * * 1-5` (IST) configured | External cron | ✅ Active |
+| 16 | External cron — square-off `15:05 IST` Mon–Fri configured | External cron | ✅ Active |
+| 17 | `daily_summary()` signature mismatch fixed | `app/square_off.py` | ✅ Fixed |
+| 18 | Scanner alert window confirmed: 09:30–13:30 IST | `momentum-scan.yml` | ✅ Confirmed |
 
 ---
 
-### What Is Left (Before First Paper Run)
+### Schedule Overview
+
+```
+09:00 IST  ┌── live-trade cron starts (*/5 9-14)
+09:15 IST  │   market opens
+09:30 IST  ├── scanner fires first signals → NEW status in state
+09:30 IST  ├── trade_manager picks up → paper LIMIT entries placed
+           │   every 5 min: new signals → entries + TSL on ACTIVE positions
+13:30 IST  ├── last scanner signal (entry window closes)
+13:30 IST  ├── trade_manager: TSL monitoring only
+14:59 IST  └── last live-trade cycle
+15:05 IST  └── square-off fires → market close all MIS + daily summary to Telegram
+```
+
+---
+
+### What Is Left
 
 | # | Item | File | Priority |
 |---|------|------|----------|
@@ -35,24 +57,31 @@
 | 2 | `app/symbol_map.py` — fallback lookup from `dhan_instruments.csv` | `app/symbol_map.py` | 🟡 Medium |
 | 3 | `data/dhan_instruments.csv` — download Dhan scrip master | `data/` | 🟡 Medium |
 | 4 | `.github/workflows/refresh-instruments.yml` — auto-refresh CSV at 08:00 IST | `.github/workflows/` | 🟡 Medium |
-| 5 | Add cron triggers to `live-trade.yml` and `square-off.yml` | Both workflows | 🔴 High |
-| 6 | Add `TRADE_QTY`, `MAX_ENTRY_HHMM`, `MIN_TRAIL_INC` to GHA secrets/vars | GitHub repo settings | 🔴 High |
-| 7 | Verify `app/dhan_client.py` exposes `DhanClient()` compatible with `DhanContext` | `app/dhan_client.py` | 🔴 High |
-| 8 | First paper run — trigger `live-trade.yml` manually, watch Telegram | — | 🔴 High |
+| 5 | First live paper run — watch Telegram 09:30 IST for signal → order events | — | 🔴 Tomorrow |
 
 ---
 
 ### Planning — Future Phases
 
-| Phase | What | When |
-|-------|------|------|
-| **Phase 1** | Paper trading — 3–5 days, verify signal→order→SL→TSL→square-off flow via Telegram | Now |
+| Phase | What | Status |
+|-------|------|--------|
+| **Phase 1** | Paper trading — 3–5 days, verify signal→order→SL→TSL→square-off via Telegram | 🟢 Running |
 | **Phase 2** | Live trading, qty=1 — max ~₹300/day at risk, 1 clean week target | After Phase 1 passes |
-| **Phase 3** | WebSocket monitor (`app/ws_monitor.py`) — real-time SL/TSL on VPS or long-running GHA job | After Phase 2 stable |
+| **Phase 3** | WebSocket monitor (`app/ws_monitor.py`) — real-time SL/TSL, eliminates 5-min blind window | After Phase 2 stable |
 | **Phase 4** | MCP server (`app/mcp_server.py`) — query positions/P&L via Claude in plain English | After Phase 3 |
-| **Phase 5** | Multi-account support — run same signals on 2+ Dhan accounts (family / capital split) | After Phase 4 |
+| **Phase 5** | Multi-account support — run same signals on 2+ Dhan accounts (family / capital split) | Future |
 | **Phase 6** | Dynamic qty sizing — size proportional to RVOL score and SL tightness | Future |
 | **Phase 7** | Dashboard — live positions, P&L curve, signal log | Future |
+
+---
+
+### Graduate Phase 1 → Phase 2 When
+
+- [ ] Paper P&L within ±5% of `pnl-check.yml` over 5 consecutive days
+- [ ] Zero duplicate orders in GHA logs
+- [ ] Every `ACTIVE` signal has a matching SL log entry
+- [ ] Telegram fires for all events: signal, skip, fill, SL, square-off, summary
+- [ ] No `ENTRY_PLACED` signals stuck > 15 min without resolution
 
 ---
 
