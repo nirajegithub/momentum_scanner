@@ -132,10 +132,11 @@ def main() -> None:
         )
     ]
     tg.daily_summary(trades=trades, qty=TRADE_QTY, paper=PAPER_MODE)
+    won     = sum(1 for t in trades if t["pnl_pts"] >= 0)
+    pnl_pts = round(sum(t["pnl_pts"] for t in trades), 2)
     LOG.info(
-        "DAILY_SUMMARY | date=%s | total=%d | won=%d | lost=%d | skipped=%d | pnl=%.2f pts",
-        now.date(), summary["total"], summary["won"], summary["lost"],
-        summary["skipped"], summary["pnl_pts"],
+        "DAILY_SUMMARY | date=%s | total=%d | won=%d | lost=%d | pnl=%.2f pts",
+        now.date(), len(trades), won, len(trades) - won, pnl_pts,
     )
 
 
