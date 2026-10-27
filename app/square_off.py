@@ -117,16 +117,21 @@ def main() -> None:
 
     square_off_all(dhan, state, qty=TRADE_QTY, paper=PAPER_MODE)
 
-    summary = _compute_daily_summary(state)
-    tg.daily_summary(
-        date     = now.date().isoformat(),
-        total    = summary["total"],
-        won      = summary["won"],
-        lost     = summary["lost"],
-        skipped  = summary["skipped"],
-        pnl_pts  = summary["pnl_pts"],
-        paper    = PAPER_MODE,
-    )
+    # Build trades list in the format telegram_notify.daily_summary expects
+    trades = [
+        {"symbol": sym, "pnl_pts": pts}
+        for sym, pts in (
+            (
+                sig["symbol"],
+                (float(sig.get("exit_price", sig["risk"]["entry"])) - float(sig["risk"]["entry"]))
+                if sig["direction"] == "BUY"
+                else (float(sig["risk"]["entry"]) - float(sig.get("exit_price", sig["risk"]["entry"])))
+            )
+            for sig in state.get("signals", {}).values()
+            if sig.get("status") == "EXITED" and sig.get("exit_reason") != "SKIPPED"
+        )
+    ]
+    tg.daily_summary(trades=trades, qty=TRADE_QTY, paper=PAPER_MODE)
     LOG.info(
         "DAILY_SUMMARY | date=%s | total=%d | won=%d | lost=%d | skipped=%d | pnl=%.2f pts",
         now.date(), summary["total"], summary["won"], summary["lost"],
