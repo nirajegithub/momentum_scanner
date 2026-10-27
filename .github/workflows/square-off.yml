@@ -1,9 +1,6 @@
 name: EOD Square Off
 
-# Schedule: 15:05 IST = 09:35 UTC Mon–Fri
 on:
-  schedule:
-    - cron: "35 9 * * 1-5"    # 15:05 IST = 09:35 UTC
   workflow_dispatch:
     inputs:
       paper_mode:
