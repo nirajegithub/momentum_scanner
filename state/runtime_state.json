@@ -766,7 +766,7 @@
       "confirmation_5m_close": 1050.5,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "risk": {
         "entry": 1050.5,
         "sl": 1033.6,
@@ -785,7 +785,10 @@
       "sl": 1033.6,
       "t1": 1067.4,
       "t2": 1084.3000000000002,
-      "t3": 1101.2000000000003
+      "t3": 1101.2000000000003,
+      "exit_price": 1050.5,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-27T22:50:18.730871+05:30"
     },
     "LAURUSLABS|BUY|2026-10-27T10:00:00+05:30|2026-10-27T10:00:00+05:30": {
       "symbol": "LAURUSLABS",
@@ -821,7 +824,7 @@
       "confirmation_5m_close": 2116.0,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "risk": {
         "entry": 2116.0,
         "sl": 2067.4,
@@ -840,7 +843,10 @@
       "sl": 2067.4,
       "t1": 2164.6,
       "t2": 2213.2,
-      "t3": 2261.7999999999997
+      "t3": 2261.7999999999997,
+      "exit_price": 2116.0,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-27T22:50:18.730871+05:30"
     },
     "GRANULES|BUY|2026-10-27T10:10:00+05:30|2026-10-27T10:10:00+05:30": {
       "symbol": "GRANULES",
@@ -876,7 +882,7 @@
       "confirmation_5m_close": 851.6,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "risk": {
         "entry": 851.6,
         "sl": 817.0,
@@ -895,7 +901,10 @@
       "sl": 817.0,
       "t1": 886.2,
       "t2": 920.8000000000001,
-      "t3": 955.4000000000001
+      "t3": 955.4000000000001,
+      "exit_price": 851.6,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-27T22:50:18.730871+05:30"
     },
     "SONACOMS|BUY|2026-10-27T10:30:00+05:30|2026-10-27T10:30:00+05:30": {
       "symbol": "SONACOMS",
@@ -931,7 +940,7 @@
       "confirmation_5m_close": 848.45,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "risk": {
         "entry": 848.45,
         "sl": 808.0,
@@ -950,7 +959,10 @@
       "sl": 808.0,
       "t1": 888.9000000000001,
       "t2": 929.3500000000001,
-      "t3": 969.8000000000002
+      "t3": 969.8000000000002,
+      "exit_price": 848.45,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-27T22:50:18.730871+05:30"
     },
     "BSE|BUY|2026-10-27T10:35:00+05:30|2026-10-27T10:35:00+05:30": {
       "symbol": "BSE",
@@ -986,7 +998,7 @@
       "confirmation_5m_close": 3415.9,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "risk": {
         "entry": 3415.9,
         "sl": 3375.1,
@@ -1005,7 +1017,10 @@
       "sl": 3375.1,
       "t1": 3456.7000000000003,
       "t2": 3497.5000000000005,
-      "t3": 3538.3000000000006
+      "t3": 3538.3000000000006,
+      "exit_price": 3415.9,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-27T22:50:18.730871+05:30"
     },
     "INDHOTEL|BUY|2026-10-27T10:35:00+05:30|2026-10-27T10:35:00+05:30": {
       "symbol": "INDHOTEL",
@@ -1041,7 +1056,7 @@
       "confirmation_5m_close": 807.1,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "risk": {
         "entry": 807.1,
         "sl": 790.1,
@@ -1060,7 +1075,10 @@
       "sl": 790.1,
       "t1": 824.1,
       "t2": 841.1,
-      "t3": 858.1
+      "t3": 858.1,
+      "exit_price": 807.1,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-27T22:50:18.730871+05:30"
     },
     "GVT&D|BUY|2026-10-27T10:55:00+05:30|2026-10-27T10:55:00+05:30": {
       "symbol": "GVT&D",
@@ -1096,7 +1114,7 @@
       "confirmation_5m_close": 3975.0,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "risk": {
         "entry": 3975.0,
         "sl": 3808.2,
@@ -1115,7 +1133,10 @@
       "sl": 3808.2,
       "t1": 4141.8,
       "t2": 4308.6,
-      "t3": 4475.400000000001
+      "t3": 4475.400000000001,
+      "exit_price": 3975.0,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-27T22:50:18.730871+05:30"
     },
     "JSWSTEEL|BUY|2026-10-27T11:05:00+05:30|2026-10-27T11:05:00+05:30": {
       "symbol": "JSWSTEEL",
@@ -1151,7 +1172,7 @@
       "confirmation_5m_close": 1261.1,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "risk": {
         "entry": 1261.1,
         "sl": 1227.7,
@@ -1170,7 +1191,10 @@
       "sl": 1227.7,
       "t1": 1294.4999999999998,
       "t2": 1327.8999999999996,
-      "t3": 1361.2999999999995
+      "t3": 1361.2999999999995,
+      "exit_price": 1261.1,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-27T22:50:18.730871+05:30"
     },
     "BDL|SELL|2026-10-27T11:15:00+05:30|2026-10-27T11:15:00+05:30": {
       "symbol": "BDL",
@@ -1206,7 +1230,7 @@
       "confirmation_5m_close": 1026.6,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "risk": {
         "entry": 1026.6,
         "sl": 1047.7,
@@ -1225,7 +1249,10 @@
       "sl": 1047.7,
       "t1": 1005.4999999999998,
       "t2": 984.3999999999996,
-      "t3": 963.2999999999995
+      "t3": 963.2999999999995,
+      "exit_price": 1026.6,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-27T22:50:18.730871+05:30"
     },
     "MCX|BUY|2026-10-27T11:15:00+05:30|2026-10-27T11:15:00+05:30": {
       "symbol": "MCX",
@@ -1261,7 +1288,7 @@
       "confirmation_5m_close": 3173.0,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "risk": {
         "entry": 3173.0,
         "sl": 3098.0,
@@ -1280,7 +1307,10 @@
       "sl": 3098.0,
       "t1": 3248.0,
       "t2": 3323.0,
-      "t3": 3398.0
+      "t3": 3398.0,
+      "exit_price": 3173.0,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-27T22:50:18.730871+05:30"
     },
     "APLAPOLLO|BUY|2026-10-27T11:25:00+05:30|2026-10-27T11:25:00+05:30": {
       "symbol": "APLAPOLLO",
@@ -1316,7 +1346,7 @@
       "confirmation_5m_close": 2171.8,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "risk": {
         "entry": 2171.8,
         "sl": 2100.0,
@@ -1335,7 +1365,10 @@
       "sl": 2100.0,
       "t1": 2243.6000000000004,
       "t2": 2315.4000000000005,
-      "t3": 2387.2000000000007
+      "t3": 2387.2000000000007,
+      "exit_price": 2171.8,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-27T22:50:18.730871+05:30"
     },
     "INDGN|BUY|2026-10-27T11:35:00+05:30|2026-10-27T11:35:00+05:30": {
       "symbol": "INDGN",
@@ -1371,7 +1404,7 @@
       "confirmation_5m_close": 604.65,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "risk": {
         "entry": 604.65,
         "sl": 595.65,
@@ -1390,7 +1423,10 @@
       "sl": 595.65,
       "t1": 613.65,
       "t2": 622.65,
-      "t3": 631.65
+      "t3": 631.65,
+      "exit_price": 604.65,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-27T22:50:18.730871+05:30"
     },
     "INFY|BUY|2026-10-27T11:40:00+05:30|2026-10-27T11:40:00+05:30": {
       "symbol": "INFY",
@@ -1426,7 +1462,7 @@
       "confirmation_5m_close": 1155.4,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "risk": {
         "entry": 1155.4,
         "sl": 1131.05,
@@ -1445,7 +1481,10 @@
       "sl": 1131.05,
       "t1": 1179.7500000000002,
       "t2": 1204.1000000000004,
-      "t3": 1228.4500000000005
+      "t3": 1228.4500000000005,
+      "exit_price": 1155.4,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-27T22:50:18.730871+05:30"
     },
     "ZENSARTECH|BUY|2026-10-27T11:40:00+05:30|2026-10-27T11:40:00+05:30": {
       "symbol": "ZENSARTECH",
@@ -1481,7 +1520,7 @@
       "confirmation_5m_close": 507.5,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "risk": {
         "entry": 507.5,
         "sl": 492.15,
@@ -1500,7 +1539,10 @@
       "sl": 492.15,
       "t1": 522.85,
       "t2": 538.2,
-      "t3": 553.5500000000001
+      "t3": 553.5500000000001,
+      "exit_price": 507.5,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-27T22:50:18.730871+05:30"
     },
     "KPITTECH|BUY|2026-10-27T11:45:00+05:30|2026-10-27T11:45:00+05:30": {
       "symbol": "KPITTECH",
@@ -1536,7 +1578,7 @@
       "confirmation_5m_close": 536.6,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "risk": {
         "entry": 536.6,
         "sl": 523.75,
@@ -1555,7 +1597,10 @@
       "sl": 523.75,
       "t1": 549.45,
       "t2": 562.3000000000001,
-      "t3": 575.1500000000001
+      "t3": 575.1500000000001,
+      "exit_price": 536.6,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-27T22:50:18.730871+05:30"
     },
     "UPL|BUY|2026-10-27T12:15:00+05:30|2026-10-27T12:15:00+05:30": {
       "symbol": "UPL",
@@ -1591,7 +1636,7 @@
       "confirmation_5m_close": 504.35,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "risk": {
         "entry": 504.35,
         "sl": 494.25,
@@ -1610,7 +1655,10 @@
       "sl": 494.25,
       "t1": 514.45,
       "t2": 524.5500000000001,
-      "t3": 534.6500000000001
+      "t3": 534.6500000000001,
+      "exit_price": 504.35,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-27T22:50:18.730871+05:30"
     },
     "GLENMARK|BUY|2026-10-27T12:20:00+05:30|2026-10-27T12:20:00+05:30": {
       "symbol": "GLENMARK",
@@ -1646,7 +1694,7 @@
       "confirmation_5m_close": 2252.0,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "risk": {
         "entry": 2252.0,
         "sl": 2214.6,
@@ -1665,7 +1713,10 @@
       "sl": 2214.6,
       "t1": 2289.4,
       "t2": 2326.8,
-      "t3": 2364.2000000000003
+      "t3": 2364.2000000000003,
+      "exit_price": 2252.0,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-27T22:50:18.730871+05:30"
     },
     "DRREDDY|BUY|2026-10-27T12:55:00+05:30|2026-10-27T12:55:00+05:30": {
       "symbol": "DRREDDY",
@@ -1701,7 +1752,7 @@
       "confirmation_5m_close": 1322.6,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "risk": {
         "entry": 1322.6,
         "sl": 1299.4,
@@ -1720,7 +1771,10 @@
       "sl": 1299.4,
       "t1": 1345.7999999999997,
       "t2": 1368.9999999999995,
-      "t3": 1392.1999999999994
+      "t3": 1392.1999999999994,
+      "exit_price": 1322.6,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-27T22:50:18.730871+05:30"
     }
   },
   "pending_setups": {},
