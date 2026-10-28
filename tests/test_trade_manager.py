@@ -295,8 +295,57 @@ class TestApplyTsl:
         # floor_sl = t1 = 105; trail = 111 - 5 = 106 → new_sl = max(105, 106) = 106
         call_args = mock_mod.call_args
         if call_args:
-            new_sl = call_args[0][2]  # positional: dhan, signal, new_sl
+            new_sl = call_args[0][2]
             assert new_sl >= 105.0
+
+
+# ── _partial_exit_t3 ──────────────────────────────────────────────────────────
+
+class TestPartialExitT3:
+    def test_exits_half_qty_paper(self):
+        from app.trade_manager import _partial_exit_t3
+        sig = _sig(direction="BUY", entry=100.0)
+        sig["qty"] = 10
+        with patch("app.trade_manager.tg"):
+            _partial_exit_t3(dhan=None, signal=sig, ltp=115.0, paper=True)
+        assert sig["qty"] == 5
+        assert sig["t3_partial_done"] is True
+
+    def test_skip_when_qty_is_one(self):
+        from app.trade_manager import _partial_exit_t3
+        sig = _sig(direction="BUY", entry=100.0)
+        sig["qty"] = 1
+        with patch("app.trade_manager.tg"):
+            _partial_exit_t3(dhan=None, signal=sig, ltp=115.0, paper=True)
+        assert sig["qty"] == 1           # unchanged
+        assert sig["t3_partial_done"] is True
+
+    def test_skip_when_already_done(self):
+        from app.trade_manager import _partial_exit_t3
+        sig = _sig(direction="BUY", entry=100.0)
+        sig["qty"] = 10
+        sig["t3_partial_done"] = True
+        with patch("app.trade_manager.tg") as mock_tg:
+            _partial_exit_t3(dhan=None, signal=sig, ltp=115.0, paper=True)
+        assert sig["qty"] == 10          # unchanged — already exited
+        mock_tg.manual_exit.assert_not_called()
+
+    def test_odd_qty_floors_correctly(self):
+        from app.trade_manager import _partial_exit_t3
+        sig = _sig(direction="BUY", entry=100.0)
+        sig["qty"] = 7
+        with patch("app.trade_manager.tg"):
+            _partial_exit_t3(dhan=None, signal=sig, ltp=115.0, paper=True)
+        # exit_qty = 7//2 = 3, remaining = 4
+        assert sig["qty"] == 4
+
+    def test_sell_direction(self):
+        from app.trade_manager import _partial_exit_t3
+        sig = _sig(direction="SELL", entry=100.0, sl=105.0)
+        sig["qty"] = 6
+        with patch("app.trade_manager.tg"):
+            _partial_exit_t3(dhan=None, signal=sig, ltp=85.0, paper=True)
+        assert sig["qty"] == 3
 
 
 # ── position_tracker ─────────────────────────────────────────────────────────

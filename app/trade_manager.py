@@ -19,6 +19,7 @@ MAX_ENTRY_HHMM     = int(os.environ.get("MAX_ENTRY_HHMM", "1230"))
 MAX_PENDING_MIN    = int(os.environ.get("MAX_PENDING_MIN", "15"))
 MIN_TRAIL_INC      = float(os.environ.get("MIN_TRAIL_INC", "2.0"))
 MAX_OPEN_POSITIONS = int(os.environ.get("MAX_OPEN_POSITIONS", "5"))
+PARTIAL_EXIT_T3    = os.environ.get("PARTIAL_EXIT_T3", "true").lower() == "true"
 
 
 def _now_ist() -> datetime:
@@ -250,6 +251,69 @@ def modify_sl_order(dhan, signal: dict, new_sl: float, paper: bool) -> bool:
         return False
 
 
+# ── Partial exit at T3 ───────────────────────────────────────────────────────
+
+def _partial_exit_t3(dhan, signal: dict, ltp: float, paper: bool) -> None:
+    """
+    At T3 hit: exit 50% qty at market, trail remaining 50%.
+    Skipped if qty=1 (can't split) or already done (t3_partial_done flag).
+    """
+    if signal.get("t3_partial_done"):
+        return
+
+    qty = int(signal.get("qty", TRADE_QTY))
+    if qty < 2:
+        LOG.info("PARTIAL_EXIT_SKIP | %s | qty=%d — cannot split", signal["symbol"], qty)
+        signal["t3_partial_done"] = True
+        return
+
+    exit_qty      = qty // 2
+    remaining_qty = qty - exit_qty
+    sym           = signal["symbol"]
+    direction     = signal["direction"]
+    sec_id        = str(signal.get("security_id", ""))
+
+    if not paper:
+        try:
+            dhan.place_order(
+                security_id      = sec_id,
+                exchange_segment = dhan.NSE,
+                transaction_type = dhan.SELL if direction == "BUY" else dhan.BUY,
+                quantity         = exit_qty,
+                order_type       = dhan.MARKET,
+                product_type     = dhan.INTRA,
+                price            = 0,
+            )
+        except Exception as exc:
+            LOG.error("PARTIAL_EXIT_FAILED | %s | %s", sym, exc)
+            tg.error_alert(f"T3 partial exit failed — {sym}", str(exc))
+            signal["t3_partial_done"] = True
+            return
+
+        # Reduce SL order qty to match remaining position
+        sl_oid = signal.get("sl_order_id")
+        if sl_oid:
+            try:
+                dhan.modify_order(
+                    order_id      = sl_oid,
+                    order_type    = dhan.SL_M,
+                    quantity      = remaining_qty,
+                    price         = 0,
+                    trigger_price = float(signal["risk"]["sl"]),
+                )
+            except Exception as exc:
+                LOG.warning("PARTIAL_EXIT_SL_QTY_MODIFY_FAILED | %s | %s", sym, exc)
+
+    entry   = float(signal["risk"]["entry"])
+    pnl_pts = (ltp - entry) if direction == "BUY" else (entry - ltp)
+    LOG.info("PARTIAL_EXIT_T3 | %s | exit_qty=%d | remaining=%d | ltp=%.2f | pnl=%.2f pts",
+             sym, exit_qty, remaining_qty, ltp, pnl_pts)
+    tg.manual_exit(signal, ltp, exit_qty, reason=f"T3 PARTIAL ({exit_qty} of {qty})")
+
+    signal["qty"]             = remaining_qty
+    signal["t3_partial_done"] = True
+
+
 # ── TSL ───────────────────────────────────────────────────────────────────────
 
 def _apply_tsl(dhan, signal: dict, paper: bool) -> None:
@@ -282,6 +346,10 @@ def _apply_tsl(dhan, signal: dict, paper: bool) -> None:
         floor_sl = t2
     else:
         return
+
+    # Partial exit at T3 (50% qty) — before activating trail
+    if tier == "T3_HIT" and PARTIAL_EXIT_T3:
+        _partial_exit_t3(dhan, signal, ltp, paper)
 
     # Activate trailing on T1
     if not signal.get("trailing_active") and tier in ("T1_HIT", "T2_HIT", "T3_HIT"):
