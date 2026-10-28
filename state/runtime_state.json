@@ -791,7 +791,7 @@
       "confirmation_5m_close": 3187.5,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-10-28T09:45:00+05:30",
       "risk": {
         "entry": 3187.5,
@@ -817,7 +817,10 @@
       "fill_price": 3187.5,
       "qty": 1,
       "live_managed": true,
-      "sl_order_id": "PAPER_SL_MCX_1793161529"
+      "sl_order_id": "PAPER_SL_MCX_1793161529",
+      "exit_price": 3187.5,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-28T15:05:26.260127+05:30"
     },
     "MANKIND|SELL|2026-10-28T09:50:00+05:30|2026-10-28T09:50:00+05:30": {
       "symbol": "MANKIND",
@@ -853,7 +856,7 @@
       "confirmation_5m_close": 2484.8,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-10-28T09:50:00+05:30",
       "risk": {
         "entry": 2484.8,
@@ -879,7 +882,10 @@
       "fill_price": 2484.8,
       "qty": 1,
       "live_managed": true,
-      "sl_order_id": "PAPER_SL_MANKIND_1793162427"
+      "sl_order_id": "PAPER_SL_MANKIND_1793162427",
+      "exit_price": 2484.8,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-28T15:05:26.260127+05:30"
     },
     "UPL|BUY|2026-10-28T09:50:00+05:30|2026-10-28T09:50:00+05:30": {
       "symbol": "UPL",
@@ -915,7 +921,7 @@
       "confirmation_5m_close": 527.0,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-10-28T09:50:00+05:30",
       "risk": {
         "entry": 527.0,
@@ -941,7 +947,10 @@
       "fill_price": 527.0,
       "qty": 1,
       "live_managed": true,
-      "sl_order_id": "PAPER_SL_UPL_1793162429"
+      "sl_order_id": "PAPER_SL_UPL_1793162429",
+      "exit_price": 527.0,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-28T15:05:26.260127+05:30"
     },
     "PAYTM|SELL|2026-10-28T10:15:00+05:30|2026-10-28T10:15:00+05:30": {
       "symbol": "PAYTM",
@@ -977,7 +986,7 @@
       "confirmation_5m_close": 1609.3,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-10-28T10:15:00+05:30",
       "risk": {
         "entry": 1609.3,
@@ -1003,7 +1012,10 @@
       "fill_price": 1609.3,
       "qty": 1,
       "live_managed": true,
-      "sl_order_id": "PAPER_SL_PAYTM_1793163328"
+      "sl_order_id": "PAPER_SL_PAYTM_1793163328",
+      "exit_price": 1609.3,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-28T15:05:26.260127+05:30"
     },
     "TRENT|BUY|2026-10-28T11:00:00+05:30|2026-10-28T11:00:00+05:30": {
       "symbol": "TRENT",
@@ -1039,7 +1051,7 @@
       "confirmation_5m_close": 2853.2,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-10-28T11:00:00+05:30",
       "risk": {
         "entry": 2853.2,
@@ -1065,7 +1077,10 @@
       "fill_price": 2853.2,
       "qty": 1,
       "live_managed": true,
-      "sl_order_id": "PAPER_SL_TRENT_1793166027"
+      "sl_order_id": "PAPER_SL_TRENT_1793166027",
+      "exit_price": 2853.2,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-28T15:05:26.260127+05:30"
     },
     "MOTILALOFS|BUY|2026-10-28T11:05:00+05:30|2026-10-28T11:05:00+05:30": {
       "symbol": "MOTILALOFS",
@@ -1101,7 +1116,7 @@
       "confirmation_5m_close": 977.25,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-10-28T11:05:00+05:30",
       "risk": {
         "entry": 977.25,
@@ -1127,7 +1142,10 @@
       "fill_price": 977.25,
       "qty": 1,
       "live_managed": true,
-      "sl_order_id": "PAPER_SL_MOTILALOFS_1793166934"
+      "sl_order_id": "PAPER_SL_MOTILALOFS_1793166934",
+      "exit_price": 977.25,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-28T15:05:26.260127+05:30"
     },
     "AUBANK|BUY|2026-10-28T11:30:00+05:30|2026-10-28T11:30:00+05:30": {
       "symbol": "AUBANK",
@@ -1163,7 +1181,7 @@
       "confirmation_5m_close": 875.5,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-10-28T11:30:00+05:30",
       "risk": {
         "entry": 875.5,
@@ -1189,7 +1207,10 @@
       "fill_price": 875.5,
       "qty": 1,
       "live_managed": true,
-      "sl_order_id": "PAPER_SL_AUBANK_1793167835"
+      "sl_order_id": "PAPER_SL_AUBANK_1793167835",
+      "exit_price": 875.5,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-28T15:05:26.260127+05:30"
     },
     "LAURUSLABS|BUY|2026-10-28T11:25:00+05:30|2026-10-28T11:25:00+05:30": {
       "symbol": "LAURUSLABS",
@@ -1225,7 +1246,7 @@
       "confirmation_5m_close": 2190.0,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-10-28T11:25:00+05:30",
       "risk": {
         "entry": 2190.0,
@@ -1251,7 +1272,10 @@
       "fill_price": 2190.0,
       "qty": 1,
       "live_managed": true,
-      "sl_order_id": "PAPER_SL_LAURUSLABS_1793167837"
+      "sl_order_id": "PAPER_SL_LAURUSLABS_1793167837",
+      "exit_price": 2190.0,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-28T15:05:26.260127+05:30"
     },
     "SONACOMS|BUY|2026-10-28T11:20:00+05:30|2026-10-28T11:20:00+05:30": {
       "symbol": "SONACOMS",
@@ -1287,7 +1311,7 @@
       "confirmation_5m_close": 869.3,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-10-28T11:20:00+05:30",
       "risk": {
         "entry": 869.3,
@@ -1313,7 +1337,10 @@
       "fill_price": 869.3,
       "qty": 1,
       "live_managed": true,
-      "sl_order_id": "PAPER_SL_SONACOMS_1793167839"
+      "sl_order_id": "PAPER_SL_SONACOMS_1793167839",
+      "exit_price": 869.3,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-28T15:05:26.260127+05:30"
     },
     "DATAPATTNS|SELL|2026-10-28T11:40:00+05:30|2026-10-28T11:40:00+05:30": {
       "symbol": "DATAPATTNS",
@@ -1349,7 +1376,7 @@
       "confirmation_5m_close": 3978.0,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-10-28T11:40:00+05:30",
       "risk": {
         "entry": 3978.0,
@@ -1375,7 +1402,10 @@
       "fill_price": 3978.0,
       "qty": 1,
       "live_managed": true,
-      "sl_order_id": "PAPER_SL_DATAPATTNS_1793168726"
+      "sl_order_id": "PAPER_SL_DATAPATTNS_1793168726",
+      "exit_price": 3978.0,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-28T15:05:26.260127+05:30"
     },
     "GRSE|SELL|2026-10-28T11:50:00+05:30|2026-10-28T11:50:00+05:30": {
       "symbol": "GRSE",
@@ -1411,7 +1441,7 @@
       "confirmation_5m_close": 1885.8,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-10-28T11:50:00+05:30",
       "risk": {
         "entry": 1885.8,
@@ -1437,7 +1467,10 @@
       "fill_price": 1885.8,
       "qty": 1,
       "live_managed": true,
-      "sl_order_id": "PAPER_SL_GRSE_1793169932"
+      "sl_order_id": "PAPER_SL_GRSE_1793169932",
+      "exit_price": 1885.8,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-28T15:05:26.260127+05:30"
     },
     "PGEL|BUY|2026-10-28T12:00:00+05:30|2026-10-28T12:00:00+05:30": {
       "symbol": "PGEL",
@@ -1473,7 +1506,7 @@
       "confirmation_5m_close": 535.05,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-10-28T12:00:00+05:30",
       "risk": {
         "entry": 535.05,
@@ -1499,7 +1532,10 @@
       "fill_price": 535.05,
       "qty": 1,
       "live_managed": true,
-      "sl_order_id": "PAPER_SL_PGEL_1793169933"
+      "sl_order_id": "PAPER_SL_PGEL_1793169933",
+      "exit_price": 535.05,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-28T15:05:26.260127+05:30"
     },
     "HBLENGINE|BUY|2026-10-28T12:15:00+05:30|2026-10-28T12:15:00+05:30": {
       "symbol": "HBLENGINE",
@@ -1535,7 +1571,7 @@
       "confirmation_5m_close": 811.75,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-10-28T12:15:00+05:30",
       "risk": {
         "entry": 811.75,
@@ -1561,7 +1597,10 @@
       "fill_price": 811.75,
       "qty": 1,
       "live_managed": true,
-      "sl_order_id": "PAPER_SL_HBLENGINE_1793170531"
+      "sl_order_id": "PAPER_SL_HBLENGINE_1793170531",
+      "exit_price": 811.75,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-28T15:05:26.260127+05:30"
     },
     "INDHOTEL|BUY|2026-10-28T12:15:00+05:30|2026-10-28T12:15:00+05:30": {
       "symbol": "INDHOTEL",
@@ -1597,7 +1636,7 @@
       "confirmation_5m_close": 814.75,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-10-28T12:15:00+05:30",
       "risk": {
         "entry": 814.75,
@@ -1623,7 +1662,10 @@
       "fill_price": 814.75,
       "qty": 1,
       "live_managed": true,
-      "sl_order_id": "PAPER_SL_INDHOTEL_1793170533"
+      "sl_order_id": "PAPER_SL_INDHOTEL_1793170533",
+      "exit_price": 814.75,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-28T15:05:26.260127+05:30"
     },
     "JSWENERGY|BUY|2026-10-28T12:30:00+05:30|2026-10-28T12:30:00+05:30": {
       "symbol": "JSWENERGY",
@@ -1659,7 +1701,7 @@
       "confirmation_5m_close": 471.9,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-10-28T12:30:00+05:30",
       "risk": {
         "entry": 471.9,
@@ -1685,7 +1727,10 @@
       "fill_price": 471.9,
       "qty": 1,
       "live_managed": true,
-      "sl_order_id": "PAPER_SL_JSWENERGY_1793171435"
+      "sl_order_id": "PAPER_SL_JSWENERGY_1793171435",
+      "exit_price": 471.9,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-28T15:05:26.260127+05:30"
     },
     "PREMIERENE|BUY|2026-10-28T12:40:00+05:30|2026-10-28T12:40:00+05:30": {
       "symbol": "PREMIERENE",
@@ -1721,7 +1766,7 @@
       "confirmation_5m_close": 845.2,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-10-28T12:40:00+05:30",
       "risk": {
         "entry": 845.2,
@@ -1747,7 +1792,10 @@
       "fill_price": 845.2,
       "qty": 1,
       "live_managed": true,
-      "sl_order_id": "PAPER_SL_PREMIERENE_1793172325"
+      "sl_order_id": "PAPER_SL_PREMIERENE_1793172325",
+      "exit_price": 845.2,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-28T15:05:26.260127+05:30"
     },
     "JINDALSTEL|BUY|2026-10-28T12:55:00+05:30|2026-10-28T12:55:00+05:30": {
       "symbol": "JINDALSTEL",
