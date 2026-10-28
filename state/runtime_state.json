@@ -1535,7 +1535,7 @@
       "confirmation_5m_close": 811.75,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-10-28T12:15:00+05:30",
       "risk": {
         "entry": 811.75,
@@ -1556,7 +1556,12 @@
       "sl": 779.3,
       "t1": 844.2,
       "t2": 876.6500000000001,
-      "t3": 909.1000000000001
+      "t3": 909.1000000000001,
+      "entry_order_id": "PAPER_HBLENGINE_1793170530",
+      "fill_price": 811.75,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_HBLENGINE_1793170531"
     },
     "INDHOTEL|BUY|2026-10-28T12:15:00+05:30|2026-10-28T12:15:00+05:30": {
       "symbol": "INDHOTEL",
@@ -1592,7 +1597,7 @@
       "confirmation_5m_close": 814.75,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-10-28T12:15:00+05:30",
       "risk": {
         "entry": 814.75,
@@ -1613,7 +1618,12 @@
       "sl": 801.5,
       "t1": 828.0,
       "t2": 841.25,
-      "t3": 854.5
+      "t3": 854.5,
+      "entry_order_id": "PAPER_INDHOTEL_1793170532",
+      "fill_price": 814.75,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_INDHOTEL_1793170533"
     }
   },
   "pending_setups": {},
