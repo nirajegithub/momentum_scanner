@@ -977,7 +977,7 @@
       "confirmation_5m_close": 1609.3,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-10-28T10:15:00+05:30",
       "risk": {
         "entry": 1609.3,
@@ -998,7 +998,12 @@
       "sl": 1641.8,
       "t1": 1576.8,
       "t2": 1544.3,
-      "t3": 1511.8
+      "t3": 1511.8,
+      "entry_order_id": "PAPER_PAYTM_1793163327",
+      "fill_price": 1609.3,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_PAYTM_1793163328"
     }
   },
   "pending_setups": {},
@@ -1852,7 +1857,7 @@
       "setup": null
     }
   },
-  "_tg_update_id": 170211584,
+  "_tg_update_id": 170211585,
   "volume_gainer_baseline": {
     "date": "2026-10-28",
     "symbols": {
