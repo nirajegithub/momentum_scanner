@@ -437,36 +437,39 @@ class TestPositionTracker:
 # ── check_daily_halt (#8) ─────────────────────────────────────────────────────
 
 class TestCheckDailyHalt:
-    def _exited_sig(self, direction, entry, exit_price):
+    def _exited_sig(self, direction, entry, exit_price, qty=10):
         sig = _sig(direction=direction, entry=entry, status="EXITED")
         sig["exit_price"] = exit_price
+        sig["qty"] = qty
         return sig
 
     def test_no_halt_when_pnl_above_threshold(self):
         from app.trade_manager import check_daily_halt
+        # +10 pts × qty=10 = +Rs 100 — above threshold
         state = {"signals": {
-            "s1": self._exited_sig("BUY", 100.0, 110.0),  # +10 pts
+            "s1": self._exited_sig("BUY", 100.0, 110.0, qty=10),
         }}
         import app.trade_manager as tm
-        orig = tm.DAILY_LOSS_HALT_PTS
-        tm.DAILY_LOSS_HALT_PTS = -50.0
+        orig = tm.DAILY_LOSS_HALT_INR
+        tm.DAILY_LOSS_HALT_INR = -500.0
         with patch("app.trade_manager.tg"):
             result = check_daily_halt(state)
-        tm.DAILY_LOSS_HALT_PTS = orig
+        tm.DAILY_LOSS_HALT_INR = orig
         assert result is False
         assert not state.get("trading_halted")
 
     def test_halt_fires_when_pnl_below_threshold(self):
         from app.trade_manager import check_daily_halt
+        # -60 pts × qty=10 = -Rs 600 — below -500 threshold
         state = {"signals": {
-            "s1": self._exited_sig("BUY", 100.0, 40.0),   # -60 pts
+            "s1": self._exited_sig("BUY", 100.0, 40.0, qty=10),
         }}
         import app.trade_manager as tm
-        orig = tm.DAILY_LOSS_HALT_PTS
-        tm.DAILY_LOSS_HALT_PTS = -50.0
+        orig = tm.DAILY_LOSS_HALT_INR
+        tm.DAILY_LOSS_HALT_INR = -500.0
         with patch("app.trade_manager.tg") as mock_tg:
             result = check_daily_halt(state)
-        tm.DAILY_LOSS_HALT_PTS = orig
+        tm.DAILY_LOSS_HALT_INR = orig
         assert result is True
         assert state.get("trading_halted") is True
         mock_tg.system_halt.assert_called_once()
@@ -487,14 +490,23 @@ class TestCheckDailyHalt:
             result = pre_trade_ok(sig, state)
         assert result is False
 
-    def test_sell_loss_counted_correctly(self):
-        from app.trade_manager import check_daily_halt, _daily_closed_pnl
-        # SELL entry 100, exit 160 = -60 pts (price rose, short lost)
+    def test_sell_loss_counted_in_rupees(self):
+        from app.trade_manager import _daily_closed_pnl
+        # SELL entry=100, exit=160 → -60 pts × qty=5 = -Rs 300
         state = {"signals": {
-            "s1": self._exited_sig("SELL", 100.0, 160.0),
+            "s1": self._exited_sig("SELL", 100.0, 160.0, qty=5),
         }}
         pnl = _daily_closed_pnl(state)
-        assert pnl == pytest.approx(-60.0)
+        assert pnl == pytest.approx(-300.0)
+
+    def test_pnl_multiplies_by_qty(self):
+        from app.trade_manager import _daily_closed_pnl
+        # BUY entry=100, exit=90 → -10 pts × qty=7 = -Rs 70
+        state = {"signals": {
+            "s1": self._exited_sig("BUY", 100.0, 90.0, qty=7),
+        }}
+        pnl = _daily_closed_pnl(state)
+        assert pnl == pytest.approx(-70.0)
 
 
 # ── _verify_sl_orders (#9) ────────────────────────────────────────────────────

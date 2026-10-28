@@ -20,7 +20,7 @@ MAX_PENDING_MIN      = int(os.environ.get("MAX_PENDING_MIN", "15"))
 MIN_TRAIL_INC        = float(os.environ.get("MIN_TRAIL_INC", "2.0"))
 MAX_OPEN_POSITIONS   = int(os.environ.get("MAX_OPEN_POSITIONS", "5"))
 PARTIAL_EXIT_T3      = os.environ.get("PARTIAL_EXIT_T3", "true").lower() == "true"
-DAILY_LOSS_HALT_PTS  = float(os.environ.get("DAILY_LOSS_HALT_PTS", "-50"))
+DAILY_LOSS_HALT_INR  = float(os.environ.get("DAILY_LOSS_HALT_INR", "-5000"))
 
 
 def _now_ist() -> datetime:
@@ -34,30 +34,31 @@ def _hhmm(dt: datetime) -> int:
 # ── Guards ────────────────────────────────────────────────────────────────────
 
 def _daily_closed_pnl(state: dict) -> float:
-    """Sum P&L (in points) of all EXITED signals for today."""
+    """Sum P&L in rupees (pts × qty) of all EXITED signals for today."""
     total = 0.0
     for sig in state.get("signals", {}).values():
         if sig.get("status") != "EXITED":
             continue
         entry = float(sig["risk"]["entry"])
         exit_ = float(sig.get("exit_price", entry))
+        qty   = int(sig.get("qty", 1))
         pts   = (exit_ - entry) if sig["direction"] == "BUY" else (entry - exit_)
-        total += pts
+        total += pts * qty
     return total
 
 
 def check_daily_halt(state: dict) -> bool:
     """
-    If today's closed P&L ≤ DAILY_LOSS_HALT_PTS, set trading_halted=True,
-    fire Telegram, and return True.  Returns False when not yet halted.
+    If today's closed P&L (in rupees) ≤ DAILY_LOSS_HALT_INR, set
+    trading_halted=True, fire Telegram, and return True.
     """
     if state.get("trading_halted"):
         return True
     pnl = _daily_closed_pnl(state)
-    if pnl <= DAILY_LOSS_HALT_PTS:
+    if pnl <= DAILY_LOSS_HALT_INR:
         state["trading_halted"] = True
-        LOG.warning("DAILY_LOSS_HALT | pnl=%.2f <= threshold=%.2f", pnl, DAILY_LOSS_HALT_PTS)
-        tg.system_halt(f"Daily loss halt — P&L {pnl:+.1f} pts ≤ threshold {DAILY_LOSS_HALT_PTS:.0f} pts")
+        LOG.warning("DAILY_LOSS_HALT | pnl=Rs %.2f <= threshold=Rs %.2f", pnl, DAILY_LOSS_HALT_INR)
+        tg.system_halt(f"Daily loss halt — P&L ₹{pnl:+.0f} ≤ threshold ₹{DAILY_LOSS_HALT_INR:.0f}")
         return True
     return False
 
