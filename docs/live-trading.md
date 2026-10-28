@@ -62,11 +62,8 @@
 
 | # | Item | File | Priority |
 |---|------|------|----------|
-| 1 | `security_id` in signal — verify scanner writes it (needed for live orders) | `app/main.py` | 🔴 High |
-| 2 | `app/symbol_map.py` — fallback lookup from `dhan_instruments.csv` | `app/symbol_map.py` | 🟡 Medium |
-| 3 | `data/dhan_instruments.csv` — download Dhan scrip master | `data/` | 🟡 Medium |
-| 4 | `.github/workflows/refresh-instruments.yml` — auto-refresh CSV at 08:00 IST | `.github/workflows/` | 🟡 Medium |
-| 5 | Switch `PAPER_MODE=false` when paper run completes 5 clean days | `live-trade.yml` | 🔵 When ready |
+| 1 | Run paper for 5 clean days; confirm Telegram fires for all events | — | 🔴 Next |
+| 2 | Switch `PAPER_MODE=false` when paper run passes | `live-trade.yml` | 🔵 When ready |
 
 ---
 
@@ -281,8 +278,7 @@ app/
 ├── telegram_cmd.py         ← /halt /resume /squareoff /status command polling (new)
 ├── telegram_notify.py      ← all trade events + brokerage breakdown in daily summary
 ├── websocket_monitor.py    ← live tick feed + continuous TSL trailing
-├── square_off.py           ← 15:05 market-exit all open intraday positions
-└── symbol_map.py           ← NSE symbol → DhanHQ security_id lookup
+└── square_off.py           ← 15:05 market-exit all open intraday positions
 
 .github/workflows/
 ├── live-trade.yml          ← workflow_dispatch, PAPER_MODE=true default
@@ -1707,10 +1703,9 @@ print(should_place_entry(signal, ltp=1425.0))  # → (True,  'OK')  wait for ret
 - [x] **Step 15** — 54 unit tests, all passing
 
 ### Before Going Live
-- [ ] **Step 16** — Verify `security_id` is written by scanner for each signal
-- [ ] **Step 17** — Download `data/dhan_instruments.csv` + create `app/symbol_map.py`
-- [ ] **Step 18** — Run paper for 5 clean days; P&L within ±5% of `pnl-check.yml`
-- [ ] **Step 19** — Set `PAPER_MODE=false`, `TRADE_QTY=1` → Phase 2 live
+- [x] **Step 16** — `security_id` already written by `main.py` from universe config onto every signal — `trade_manager.py` reads `signal.get("security_id")` directly; no separate symbol map needed
+- [ ] **Step 17** — Run paper for 5 clean days; P&L within ±5% of `pnl-check.yml`
+- [ ] **Step 18** — Set `PAPER_MODE=false`, `TRADE_QTY=1` → Phase 2 live
 
 ### Future
 - [ ] **Step 20** — `app/ws_monitor.py` — WebSocket real-time SL/TSL (Phase 3)
