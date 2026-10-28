@@ -791,7 +791,7 @@
       "confirmation_5m_close": 3187.5,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-10-28T09:45:00+05:30",
       "risk": {
         "entry": 3187.5,
@@ -812,7 +812,12 @@
       "sl": 3132.5,
       "t1": 3242.5,
       "t2": 3297.5,
-      "t3": 3352.5
+      "t3": 3352.5,
+      "entry_order_id": "PAPER_MCX_1793161528",
+      "fill_price": 3187.5,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_MCX_1793161529"
     }
   },
   "pending_setups": {},
