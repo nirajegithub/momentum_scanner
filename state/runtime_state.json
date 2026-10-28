@@ -853,7 +853,7 @@
       "confirmation_5m_close": 2484.8,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-10-28T09:50:00+05:30",
       "risk": {
         "entry": 2484.8,
@@ -874,7 +874,12 @@
       "sl": 2524.7,
       "t1": 2444.9000000000005,
       "t2": 2405.000000000001,
-      "t3": 2365.1000000000013
+      "t3": 2365.1000000000013,
+      "entry_order_id": "PAPER_MANKIND_1793162426",
+      "fill_price": 2484.8,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_MANKIND_1793162427"
     },
     "UPL|BUY|2026-10-28T09:50:00+05:30|2026-10-28T09:50:00+05:30": {
       "symbol": "UPL",
@@ -910,7 +915,7 @@
       "confirmation_5m_close": 527.0,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-10-28T09:50:00+05:30",
       "risk": {
         "entry": 527.0,
@@ -931,7 +936,12 @@
       "sl": 505.3,
       "t1": 548.7,
       "t2": 570.4,
-      "t3": 592.0999999999999
+      "t3": 592.0999999999999,
+      "entry_order_id": "PAPER_UPL_1793162428",
+      "fill_price": 527.0,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_UPL_1793162429"
     }
   },
   "pending_setups": {},
