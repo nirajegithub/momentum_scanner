@@ -12,14 +12,15 @@ from app.state import load, save
 IST = ZoneInfo("Asia/Kolkata")
 LOG = logging.getLogger(__name__)
 
-PAPER_MODE         = os.environ.get("PAPER_MODE", "true").lower() == "true"
-TRADE_QTY          = int(os.environ.get("TRADE_QTY", "1"))
-MAX_SIGNAL_AGE_MIN = int(os.environ.get("MAX_SIGNAL_AGE_MIN", "15"))
-MAX_ENTRY_HHMM     = int(os.environ.get("MAX_ENTRY_HHMM", "1230"))
-MAX_PENDING_MIN    = int(os.environ.get("MAX_PENDING_MIN", "15"))
-MIN_TRAIL_INC      = float(os.environ.get("MIN_TRAIL_INC", "2.0"))
-MAX_OPEN_POSITIONS = int(os.environ.get("MAX_OPEN_POSITIONS", "5"))
-PARTIAL_EXIT_T3    = os.environ.get("PARTIAL_EXIT_T3", "true").lower() == "true"
+PAPER_MODE           = os.environ.get("PAPER_MODE", "true").lower() == "true"
+TRADE_QTY            = int(os.environ.get("TRADE_QTY", "1"))
+MAX_SIGNAL_AGE_MIN   = int(os.environ.get("MAX_SIGNAL_AGE_MIN", "15"))
+MAX_ENTRY_HHMM       = int(os.environ.get("MAX_ENTRY_HHMM", "1230"))
+MAX_PENDING_MIN      = int(os.environ.get("MAX_PENDING_MIN", "15"))
+MIN_TRAIL_INC        = float(os.environ.get("MIN_TRAIL_INC", "2.0"))
+MAX_OPEN_POSITIONS   = int(os.environ.get("MAX_OPEN_POSITIONS", "5"))
+PARTIAL_EXIT_T3      = os.environ.get("PARTIAL_EXIT_T3", "true").lower() == "true"
+DAILY_LOSS_HALT_PTS  = float(os.environ.get("DAILY_LOSS_HALT_PTS", "-50"))
 
 
 def _now_ist() -> datetime:
@@ -32,9 +33,42 @@ def _hhmm(dt: datetime) -> int:
 
 # ── Guards ────────────────────────────────────────────────────────────────────
 
+def _daily_closed_pnl(state: dict) -> float:
+    """Sum P&L (in points) of all EXITED signals for today."""
+    total = 0.0
+    for sig in state.get("signals", {}).values():
+        if sig.get("status") != "EXITED":
+            continue
+        entry = float(sig["risk"]["entry"])
+        exit_ = float(sig.get("exit_price", entry))
+        pts   = (exit_ - entry) if sig["direction"] == "BUY" else (entry - exit_)
+        total += pts
+    return total
+
+
+def check_daily_halt(state: dict) -> bool:
+    """
+    If today's closed P&L ≤ DAILY_LOSS_HALT_PTS, set trading_halted=True,
+    fire Telegram, and return True.  Returns False when not yet halted.
+    """
+    if state.get("trading_halted"):
+        return True
+    pnl = _daily_closed_pnl(state)
+    if pnl <= DAILY_LOSS_HALT_PTS:
+        state["trading_halted"] = True
+        LOG.warning("DAILY_LOSS_HALT | pnl=%.2f <= threshold=%.2f", pnl, DAILY_LOSS_HALT_PTS)
+        tg.system_halt(f"Daily loss halt — P&L {pnl:+.1f} pts ≤ threshold {DAILY_LOSS_HALT_PTS:.0f} pts")
+        return True
+    return False
+
+
 def pre_trade_ok(signal: dict, state: dict) -> bool:
     """Return False (and fire Telegram) if the signal should not be entered."""
     now = _now_ist()
+
+    if state.get("trading_halted"):
+        tg.signal_skipped(signal, "DAILY_LOSS_HALT")
+        return False
 
     if _hhmm(now) > MAX_ENTRY_HHMM:
         tg.signal_skipped(signal, f"PAST_ENTRY_CUTOFF {MAX_ENTRY_HHMM}")
@@ -388,6 +422,7 @@ def run(dhan, state: dict, qty: int = TRADE_QTY, paper: bool = PAPER_MODE) -> No
     hhmm = _hhmm(now)
 
     # Step 2: entry placement
+    check_daily_halt(state)   # sets trading_halted if threshold crossed
     if hhmm <= MAX_ENTRY_HHMM:
         for key, signal in list(state.get("signals", {}).items()):
             if signal.get("status") != "NEW":

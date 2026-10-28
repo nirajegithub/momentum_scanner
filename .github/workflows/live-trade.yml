@@ -33,6 +33,7 @@ jobs:
       MIN_TRAIL_INC:     "2.0"
       MAX_OPEN_POSITIONS: "35"
       PARTIAL_EXIT_T3:    "true"
+      DAILY_LOSS_HALT_PTS: "-50"
       LOG_LEVEL:         "INFO"
       PYTHONUNBUFFERED:  "1"
 

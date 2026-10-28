@@ -72,6 +72,9 @@ def reconcile(dhan, state: dict, qty: int, paper: bool) -> None:
         _adopt_manual(state, sym, pos, qty)
         save(state)
 
+    # 4. Verify SL orders are still alive in broker — re-place if missing
+    _verify_sl_orders(dhan, state, qty)
+
 
 def _reconcile_paper(state: dict) -> None:
     """Paper mode: no broker calls; check SL/target hit via last_ltp written by signal_monitor."""
@@ -137,6 +140,46 @@ def _check_drift(sig: dict, pos: dict) -> None:
         LOG.warning("FILL_DRIFT | %s | expected=%.2f actual=%.2f drift=%.1f%%",
                     sym, expected, actual, drift_pct)
         tg.trade_drift_alert(sym, expected, actual, drift_pct)
+
+
+def _verify_sl_orders(dhan, state: dict, qty: int) -> None:
+    """
+    For each ACTIVE signal, confirm its SL order is still PENDING in the broker.
+    If the order is missing or has been cancelled/rejected, re-place SL immediately.
+    Called at the end of every reconcile cycle (live mode only).
+    """
+    from app.trade_manager import place_sl_order
+
+    signals = state.get("signals", {})
+    for key, sig in list(signals.items()):
+        if sig.get("status") != "ACTIVE":
+            continue
+        sl_oid = sig.get("sl_order_id")
+        if not sl_oid or sl_oid.startswith("PAPER_"):
+            continue
+        sym = sig["symbol"]
+        try:
+            data   = (dhan.get_order_by_id(sl_oid).get("data") or {})
+            status = data.get("orderStatus", "")
+        except Exception as exc:
+            LOG.warning("SL_HEALTH_CHECK_FAILED | %s | %s", sym, exc)
+            continue
+
+        if status in ("PENDING", "TRANSIT", "OPEN"):
+            continue  # SL is alive — nothing to do
+
+        LOG.warning(
+            "SL_ORDER_MISSING | %s | sl_oid=%s | broker_status=%s — re-placing",
+            sym, sl_oid, status or "NOT_FOUND",
+        )
+        tg.error_alert(
+            f"SL order gone — {sym} — re-placing",
+            f"sl_oid={sl_oid} broker_status={status or 'NOT_FOUND'}",
+        )
+        new_oid = place_sl_order(dhan, sig, int(sig.get("qty", qty)), paper=False)
+        if new_oid:
+            sig["sl_order_id"] = new_oid
+            save(state)
 
 
 def _adopt_manual(state: dict, sym: str, pos: dict, qty: int) -> None:

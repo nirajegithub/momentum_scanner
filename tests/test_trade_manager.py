@@ -432,3 +432,126 @@ class TestPositionTracker:
             _reconcile_paper(state)
 
         assert sig["status"] == "ACTIVE"
+
+
+# ── check_daily_halt (#8) ─────────────────────────────────────────────────────
+
+class TestCheckDailyHalt:
+    def _exited_sig(self, direction, entry, exit_price):
+        sig = _sig(direction=direction, entry=entry, status="EXITED")
+        sig["exit_price"] = exit_price
+        return sig
+
+    def test_no_halt_when_pnl_above_threshold(self):
+        from app.trade_manager import check_daily_halt
+        state = {"signals": {
+            "s1": self._exited_sig("BUY", 100.0, 110.0),  # +10 pts
+        }}
+        import app.trade_manager as tm
+        orig = tm.DAILY_LOSS_HALT_PTS
+        tm.DAILY_LOSS_HALT_PTS = -50.0
+        with patch("app.trade_manager.tg"):
+            result = check_daily_halt(state)
+        tm.DAILY_LOSS_HALT_PTS = orig
+        assert result is False
+        assert not state.get("trading_halted")
+
+    def test_halt_fires_when_pnl_below_threshold(self):
+        from app.trade_manager import check_daily_halt
+        state = {"signals": {
+            "s1": self._exited_sig("BUY", 100.0, 40.0),   # -60 pts
+        }}
+        import app.trade_manager as tm
+        orig = tm.DAILY_LOSS_HALT_PTS
+        tm.DAILY_LOSS_HALT_PTS = -50.0
+        with patch("app.trade_manager.tg") as mock_tg:
+            result = check_daily_halt(state)
+        tm.DAILY_LOSS_HALT_PTS = orig
+        assert result is True
+        assert state.get("trading_halted") is True
+        mock_tg.system_halt.assert_called_once()
+
+    def test_already_halted_returns_true_without_recalc(self):
+        from app.trade_manager import check_daily_halt
+        state = {"trading_halted": True, "signals": {}}
+        with patch("app.trade_manager.tg") as mock_tg:
+            result = check_daily_halt(state)
+        assert result is True
+        mock_tg.system_halt.assert_not_called()  # no duplicate Telegram
+
+    def test_pre_trade_ok_blocked_when_halted(self):
+        from app.trade_manager import pre_trade_ok
+        sig   = _sig()
+        state = {"trading_halted": True, "signals": {}}
+        with patch("app.trade_manager.tg"):
+            result = pre_trade_ok(sig, state)
+        assert result is False
+
+    def test_sell_loss_counted_correctly(self):
+        from app.trade_manager import check_daily_halt, _daily_closed_pnl
+        # SELL entry 100, exit 160 = -60 pts (price rose, short lost)
+        state = {"signals": {
+            "s1": self._exited_sig("SELL", 100.0, 160.0),
+        }}
+        pnl = _daily_closed_pnl(state)
+        assert pnl == pytest.approx(-60.0)
+
+
+# ── _verify_sl_orders (#9) ────────────────────────────────────────────────────
+
+class TestVerifySlOrders:
+    def test_no_action_when_sl_pending(self):
+        from app.position_tracker import _verify_sl_orders
+        sig = _sig(direction="BUY", status="ACTIVE")
+        sig["sl_order_id"] = "SL_LIVE_001"
+        state = {"signals": {"s1": sig}}
+
+        mock_dhan = MagicMock()
+        mock_dhan.get_order_by_id.return_value = {"data": {"orderStatus": "PENDING"}}
+
+        with patch("app.position_tracker.tg"):
+            with patch("app.position_tracker.save"):
+                _verify_sl_orders(mock_dhan, state, qty=1)
+
+        mock_dhan.get_order_by_id.assert_called_once_with("SL_LIVE_001")
+
+    def test_replaces_sl_when_order_cancelled(self):
+        from app.position_tracker import _verify_sl_orders
+        sig = _sig(direction="BUY", status="ACTIVE")
+        sig["sl_order_id"] = "SL_GONE_001"
+        state = {"signals": {"s1": sig}}
+
+        mock_dhan = MagicMock()
+        mock_dhan.get_order_by_id.return_value = {"data": {"orderStatus": "CANCELLED"}}
+
+        with patch("app.position_tracker.tg"):
+            with patch("app.position_tracker.save"):
+                with patch("app.trade_manager.place_sl_order", return_value="SL_NEW_001") as mock_place:
+                    _verify_sl_orders(mock_dhan, state, qty=1)
+
+        mock_place.assert_called_once()
+        assert sig["sl_order_id"] == "SL_NEW_001"
+
+    def test_skips_paper_sl_orders(self):
+        from app.position_tracker import _verify_sl_orders
+        sig = _sig(direction="BUY", status="ACTIVE")
+        sig["sl_order_id"] = "PAPER_SL_TEST"
+        state = {"signals": {"s1": sig}}
+
+        mock_dhan = MagicMock()
+        with patch("app.position_tracker.tg"):
+            _verify_sl_orders(mock_dhan, state, qty=1)
+
+        mock_dhan.get_order_by_id.assert_not_called()
+
+    def test_skips_non_active_signals(self):
+        from app.position_tracker import _verify_sl_orders
+        sig = _sig(direction="BUY", status="EXITED")
+        sig["sl_order_id"] = "SL_EXITED_001"
+        state = {"signals": {"s1": sig}}
+
+        mock_dhan = MagicMock()
+        with patch("app.position_tracker.tg"):
+            _verify_sl_orders(mock_dhan, state, qty=1)
+
+        mock_dhan.get_order_by_id.assert_not_called()

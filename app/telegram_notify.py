@@ -206,11 +206,12 @@ def trade_drift_alert(sym: str, drift_type: str, detail: str) -> None:
     )
 
 
-def manual_exit_detected(sym: str, direction: str) -> None:
+def manual_exit_detected(sym: str, direction: str, sl_cancelled: bool = False) -> None:
     """User closed a bot-managed position outside the bot — signal archived."""
+    sl_note = "  ·  SL order cancelled ✓" if sl_cancelled else "  ·  ⚠️ Check SL order manually"
     _send(
         f"👤 <b>MANUAL EXIT</b>  ·  {sym} {direction}\n"
-        f"Position closed outside bot — signal archived\n"
+        f"Position closed outside bot — signal archived{sl_note}\n"
         f"{_now_str()}"
     )
 
