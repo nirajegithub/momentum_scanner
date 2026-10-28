@@ -26,6 +26,7 @@ jobs:
       TELEGRAM_CHAT_ID:  ${{ secrets.TELEGRAM_TOKEN_ALERT_CHAT_ID }}
       PAPER_MODE:        ${{ github.event.inputs.paper_mode || 'true' }}
       TRADE_QTY:         "1"
+      BROKERAGE_PER_TRADE: "40"
       LOG_LEVEL:         "INFO"
       PYTHONUNBUFFERED:  "1"
 

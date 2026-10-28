@@ -9,9 +9,10 @@ import requests
 IST = ZoneInfo("Asia/Kolkata")
 LOG = logging.getLogger(__name__)
 
-_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
-_CHAT_ID   = os.environ.get("TELEGRAM_CHAT_ID", "")
-_ENABLED   = bool(_BOT_TOKEN and _CHAT_ID)
+_BOT_TOKEN           = os.environ.get("TELEGRAM_BOT_TOKEN", "")
+_CHAT_ID             = os.environ.get("TELEGRAM_CHAT_ID", "")
+_ENABLED             = bool(_BOT_TOKEN and _CHAT_ID)
+BROKERAGE_PER_TRADE  = float(os.environ.get("BROKERAGE_PER_TRADE", "40"))  # Rs 20 entry + Rs 20 exit
 
 
 # ── Internal sender ───────────────────────────────────────────────────────────
@@ -169,20 +170,26 @@ def daily_summary(
         _send(f"📊 No trades today  |  {_now_str()}")
         return
 
-    wins   = [t for t in trades if t["pnl_pts"] >= 0]
-    losses = [t for t in trades if t["pnl_pts"] < 0]
-    total  = sum(t["pnl_pts"] for t in trades)
-    wr     = len(wins) / len(trades) * 100
-    best   = max(trades, key=lambda t: t["pnl_pts"])
-    worst  = min(trades, key=lambda t: t["pnl_pts"])
-    label  = "📝 PAPER " if paper else ""
+    wins       = [t for t in trades if t["pnl_pts"] >= 0]
+    losses     = [t for t in trades if t["pnl_pts"] < 0]
+    gross_pts  = sum(t["pnl_pts"] for t in trades)
+    gross_inr  = gross_pts * qty
+    brokerage  = BROKERAGE_PER_TRADE * len(trades)
+    net_inr    = gross_inr - brokerage
+    wr         = len(wins) / len(trades) * 100
+    best       = max(trades, key=lambda t: t["pnl_pts"])
+    worst      = min(trades, key=lambda t: t["pnl_pts"])
+    label      = "📝 PAPER " if paper else ""
+    net_icon   = "🟢" if net_inr >= 0 else "🔴"
 
     _send(
         f"📊 {label}<b>DAY SUMMARY</b>  ·  {datetime.now(IST).strftime('%a %d %b')}\n"
         f"Trades: {len(trades)}  |  {len(wins)}W/{len(losses)}L  |  WR: {wr:.0f}%\n"
-        f"P&L: {total:+.1f} pts  ({_inr(total, qty)}  ×  qty {qty})\n"
-        f"Best:  {best['symbol']} {best['pnl_pts']:+.1f} pts\n"
-        f"Worst: {worst['symbol']} {worst['pnl_pts']:+.1f} pts"
+        f"Gross P&L:  {gross_pts:+.1f} pts  (₹{gross_inr:+,.0f}  ×  qty {qty})\n"
+        f"Brokerage:  −₹{brokerage:,.0f}  ({len(trades)} trades × ₹{BROKERAGE_PER_TRADE:.0f})\n"
+        f"{net_icon} Net P&L:   ₹{net_inr:+,.0f}\n"
+        f"Best:   {best['symbol']} {best['pnl_pts']:+.1f} pts\n"
+        f"Worst:  {worst['symbol']} {worst['pnl_pts']:+.1f} pts"
     )
 
 
