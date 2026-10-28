@@ -1,14 +1,14 @@
 # Live Trading Implementation — NSE ORB Scanner × DhanHQ
 
-> **Status**: Phase 1 — Paper Trade 🟢 LIVE (crons active, first market run tomorrow)
-> **Strategy**: Opening Range Breakout · Intraday MIS · Breakeven + TSL at T1
-> **Last updated**: 2026-10-27
+> **Status**: Phase 1 — Paper Trade 🟢 LIVE (crons active, running)
+> **Strategy**: Opening Range Breakout · Intraday MIS · Breakeven + TSL at T1 · Partial exit at T3 · Telegram command control
+> **Last updated**: 2026-10-28
 
 ---
 
 ## Project Status
 
-### Confirmed Working (2026-10-27)
+### Confirmed Working (2026-10-28)
 
 | # | Item | File | Status |
 |---|------|------|--------|
@@ -24,12 +24,21 @@
 | 10 | Telegram notifications — all trade events (17 message types) | `app/telegram_notify.py` | ✅ Done |
 | 11 | Edge case matrix — 24 scenarios, 4 categories, priority tiers | `docs/live-trading.md §8.9` | ✅ Done |
 | 12 | Telegram reuse — same chat as token management (`TELEGRAM_TOKEN_ALERT_CHAT_ID`) | `live-trade.yml env` | ✅ Done |
-| 13 | Unit tests — 29 tests, all passing | `tests/test_trade_manager.py` | ✅ Done |
+| 13 | Unit tests — 54 tests, all passing | `tests/test_trade_manager.py` | ✅ Done |
 | 14 | GHA run confirmed clean — market hours guard works, no errors | `live-trade.yml` run log | ✅ Verified |
 | 15 | External cron — live-trade `*/5 9-14 * * 1-5` (IST) configured | External cron | ✅ Active |
 | 16 | External cron — square-off `15:05 IST` Mon–Fri configured | External cron | ✅ Active |
 | 17 | `daily_summary()` signature mismatch fixed | `app/square_off.py` | ✅ Fixed |
 | 18 | Scanner alert window confirmed: 09:30–13:30 IST | `momentum-scan.yml` | ✅ Confirmed |
+| 19 | `MAX_SIGNAL_AGE_MIN` extended 15 → **30 min** (GHA startup buffer) | `live-trade.yml` | ✅ Done |
+| 20 | `MAX_ENTRY_HHMM` extended 12:30 → **13:00** (more entry window) | `live-trade.yml` | ✅ Done |
+| 21 | `MAX_OPEN_POSITIONS` raised 5 → **35** (for ₹1L capital, qty=1) | `live-trade.yml` | ✅ Done |
+| 22 | Partial exit at T3 — **50% qty market exit**, trail remaining 50% | `app/trade_manager.py` | ✅ Done |
+| 23 | **Daily loss halt** — `DAILY_LOSS_HALT_INR=-1000` halts new entries if P&L ≤ -₹1,000 (1% of ₹1L) | `app/trade_manager.py` | ✅ Done |
+| 24 | **SL order health check** — verifies each ACTIVE signal's SL is still PENDING every 5-min cycle; re-places if missing | `app/position_tracker.py` | ✅ Done |
+| 25 | **Actual Dhan brokerage formula** — min(₹20, 0.03%×turnover)×2 + STT + exchange + GST + stamp (~₹1.62 at qty=1) | `app/telegram_notify.py` | ✅ Done |
+| 26 | **Brokerage breakdown** in daily Telegram summary — gross P&L, brokerage cost, net P&L | `app/telegram_notify.py` | ✅ Done |
+| 27 | **Telegram command system** — `/halt` `/resume` `/squareoff` `/status` polled each cycle | `app/telegram_cmd.py` | ✅ Done |
 
 ---
 
@@ -57,7 +66,7 @@
 | 2 | `app/symbol_map.py` — fallback lookup from `dhan_instruments.csv` | `app/symbol_map.py` | 🟡 Medium |
 | 3 | `data/dhan_instruments.csv` — download Dhan scrip master | `data/` | 🟡 Medium |
 | 4 | `.github/workflows/refresh-instruments.yml` — auto-refresh CSV at 08:00 IST | `.github/workflows/` | 🟡 Medium |
-| 5 | First live paper run — watch Telegram 09:30 IST for signal → order events | — | 🔴 Tomorrow |
+| 5 | Switch `PAPER_MODE=false` when paper run completes 5 clean days | `live-trade.yml` | 🔵 When ready |
 
 ---
 
@@ -267,14 +276,16 @@ feed = marketfeed.DhanFeed(ctx, instruments, marketfeed.Ticker)
 
 ```
 app/
-├── trade_manager.py        ← entry checks, order placement, SL modify, emergency exit
-├── position_tracker.py     ← reconciles DhanHQ positions vs state (manual trade detection)
+├── trade_manager.py        ← entry checks, order placement, SL modify, TSL, emergency exit, daily halt
+├── position_tracker.py     ← reconcile DhanHQ positions vs state; SL health check (#9)
+├── telegram_cmd.py         ← /halt /resume /squareoff /status command polling (new)
+├── telegram_notify.py      ← all trade events + brokerage breakdown in daily summary
 ├── websocket_monitor.py    ← live tick feed + continuous TSL trailing
 ├── square_off.py           ← 15:05 market-exit all open intraday positions
 └── symbol_map.py           ← NSE symbol → DhanHQ security_id lookup
 
 .github/workflows/
-├── live-trade.yml          ← triggers after momentum-scan.yml
+├── live-trade.yml          ← workflow_dispatch, PAPER_MODE=true default
 ├── square-off.yml          ← cron 15:05 IST daily Mon–Fri
 └── refresh-instruments.yml ← downloads dhan_instruments.csv at 08:00 IST
 
@@ -324,9 +335,10 @@ Price through the SL means the breakout premise is gone. In every other case —
 ### Guards
 
 ```python
-MAX_SIGNAL_AGE_MIN = 15   # skip if signal is older than 15 min (momentum gone)
-MAX_ENTRY_HHMM     = 1230 # no new entries after 12:30 (leaves 2.5h before square-off)
+MAX_SIGNAL_AGE_MIN = 30   # skip if signal is older than 30 min (was 15 — extended for GHA startup buffer)
+MAX_ENTRY_HHMM     = 1300 # no new entries after 13:00 (was 12:30)
 MAX_PENDING_MIN    = 15   # cancel unfilled LIMIT after 15 min
+MAX_OPEN_POSITIONS = 35   # max simultaneous ACTIVE positions (qty=1, ₹1L capital)
 ```
 
 ### `should_place_entry()`
@@ -337,8 +349,8 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 IST = ZoneInfo("Asia/Kolkata")
 
-MAX_SIGNAL_AGE_MIN = 15
-MAX_ENTRY_HHMM     = 1230
+MAX_SIGNAL_AGE_MIN = 30
+MAX_ENTRY_HHMM     = 1300
 MAX_PENDING_MIN    = 15
 
 def should_place_entry(signal, ltp):
@@ -371,9 +383,11 @@ def should_place_entry(signal, ltp):
 |-----------|:------------:|-------|
 | LTP anywhere above SL (BUY) | ✅ | Exactly signal entry |
 | LTP at or below SL (BUY) | ❌ | — |
-| Signal older than 15 min | ❌ | — |
-| After 12:30 IST | ❌ | — |
+| Signal older than 30 min | ❌ | — |
+| After 13:00 IST | ❌ | — |
 | LIMIT not filled in 15 min | ❌ cancelled | — |
+| Daily P&L ≤ -₹1,000 (loss halt) | ❌ | — |
+| `MAX_OPEN_POSITIONS` (35) reached | ❌ | — |
 
 ---
 
@@ -597,10 +611,15 @@ On each tick / 5-min poll (if trailing_active):
 │
 T2 hit ──► SL floor jumps to T1  (override if trail still below T1)
 │
-T3 hit ──► SL floor jumps to T2  (override if trail still below T2)
+T3 hit ──► SL floor jumps to T2
+│          PARTIAL_EXIT_T3=true: exit 50% qty at market immediately
+│          Remaining 50% continues trailing from T2 floor
+│          (skipped if qty=1 — cannot split)
 │
 15:05  ──► market-exit all → square_off()
 ```
+
+**Env var:** `PARTIAL_EXIT_T3=true` (default). Set `false` to disable partial exit and trail full qty through T3.
 
 ### Implementation in `signal_monitor.py`
 
@@ -1181,6 +1200,27 @@ Best:  ATHERENERG +33.0 pts
 Worst: NETWEB -22.5 pts
 ```
 
+### Telegram Commands (real-time control)
+
+Send these to the bot's chat from any device during market hours. The bot polls `getUpdates` (non-blocking, `timeout=0`) at the **start of every 5-min GHA cycle** and processes any new commands.
+
+| Command | Effect | Telegram reply |
+|---------|--------|----------------|
+| `/halt` | Sets `trading_halted=True` — no new entries placed until `/resume` | 🔴 TRADING HALTED |
+| `/resume` | Clears `trading_halted` — entries re-enabled | 🟢 TRADING RESUMED |
+| `/squareoff` | Closes all open positions at market immediately | ⏰ MANUAL SQUARE-OFF triggered |
+| `/status` | Reports open positions + unrealised P&L + today's closed P&L + halt status | 📋 STATUS |
+
+**Security**: commands from any chat ID other than `TELEGRAM_CHAT_ID` are silently dropped.
+
+**Offset persistence**: last processed `update_id` is stored in `state["_tg_update_id"]` so commands are never replayed across GHA runs.
+
+**Implementation**: `app/telegram_cmd.py` → `poll_and_process(dhan, state, paper)`, called as Step 0 in `trade_manager.run()`.
+
+**Latency**: up to 5 min (next GHA cycle). For immediate action, use DhanHQ app directly.
+
+---
+
 ### Rate Limit
 
 Telegram allows 1 msg/s to the same chat. On peak days (33 signals), add a 0.5 s gap in `square_off.py`:
@@ -1456,13 +1496,23 @@ BLACKLIST: set[str] = {
 ### Limits
 
 ```python
-MAX_OPEN_POSITIONS = 15     # simultaneous open trades
-MAX_SL_PCT         = 3.0    # skip if stop > 3% from entry
-# Daily loss halt scales with qty:
-# qty=1  → halt at -₹100   (≈ 10 full-stop losses)
-# qty=5  → halt at -₹500
-# qty=10 → halt at -₹1,000
+MAX_OPEN_POSITIONS   = 35      # simultaneous ACTIVE signals (set for ₹1L capital, qty=1)
+DAILY_LOSS_HALT_INR  = -1000   # halt new entries if daily P&L (pts × qty, rupees) ≤ -₹1,000
+                                # = 1% daily loss limit on ₹1L capital
+MAX_SIGNAL_AGE_MIN   = 30      # skip signal older than 30 min
+MAX_ENTRY_HHMM       = 1300    # no new entries after 13:00 IST
+MIN_TRAIL_INC        = 2.0     # minimum pts improvement before calling modify_order (rate-limit guard)
 ```
+
+**Daily loss halt logic**: sums `(exit_price − entry) × qty` for all EXITED signals each cycle. When total ≤ `DAILY_LOSS_HALT_INR`, sets `state["trading_halted"] = True` and fires Telegram 🔴. Reset only by `/resume` command or manual state edit.
+
+**Capital guidance**:
+
+| Capital | Recommended qty | `DAILY_LOSS_HALT_INR` |
+|---------|----------------|----------------------|
+| ₹1,00,000 | 1 | -1000 (1%) |
+| ₹5,00,000 | 3–5 | -5000 (1%) |
+| ₹10,00,000 | 5–10 | -10000 (1%) |
 
 ### Key rule
 
@@ -1476,14 +1526,33 @@ MAX_SL_PCT         = 3.0    # skip if stop > 3% from entry
 
 ## 15. Environment Variables
 
-| Variable | Store as | Description |
-|----------|----------|-------------|
-| `DHAN_CLIENT_ID` | GitHub Secret | DhanHQ numeric client ID |
-| `DHAN_ACCESS_TOKEN` | GitHub Secret | DhanHQ token — refresh daily before 09:15 |
-| `TELEGRAM_BOT_TOKEN` | GitHub Secret | Bot token from `@BotFather` |
-| `TELEGRAM_CHAT_ID` | GitHub Secret | Private channel ID (negative integer) |
-| `PAPER_MODE` | Workflow env | `"true"` = paper, `"false"` = live |
-| `TRADE_QTY` | Workflow env | Shares per signal (start `"1"`) |
+| Variable | Store as | Default | Description |
+|----------|----------|---------|-------------|
+| `DHAN_CLIENT_ID` | GitHub Secret | — | DhanHQ numeric client ID |
+| `DHAN_ACCESS_TOKEN` | GitHub Secret | — | DhanHQ token — refresh daily before 09:15 |
+| `TELEGRAM_BOT_TOKEN` | GitHub Secret | — | Bot token from `@BotFather` |
+| `TELEGRAM_CHAT_ID` | GitHub Secret | — | Private channel / chat ID (used for both notifications and command input) |
+| `PAPER_MODE` | Workflow env | `"true"` | `"true"` = paper, `"false"` = live |
+| `TRADE_QTY` | Workflow env | `"1"` | Shares per signal |
+| `MAX_SIGNAL_AGE_MIN` | Workflow env | `"30"` | Skip signals older than N min |
+| `MAX_ENTRY_HHMM` | Workflow env | `"1300"` | No new entries after this HHMM (IST) |
+| `MAX_PENDING_MIN` | Workflow env | `"15"` | Cancel unfilled LIMIT after N min |
+| `MIN_TRAIL_INC` | Workflow env | `"2.0"` | Min pts improvement before SL modify |
+| `MAX_OPEN_POSITIONS` | Workflow env | `"35"` | Max simultaneous ACTIVE positions |
+| `PARTIAL_EXIT_T3` | Workflow env | `"true"` | Exit 50% qty at market when T3 hit |
+| `DAILY_LOSS_HALT_INR` | Workflow env | `"-1000"` | Halt entries if daily P&L (₹) ≤ this |
+| `BROKERAGE_PER_TRADE` | Workflow env | `"0"` | Override per-trade brokerage cost; `0` = auto-compute from Dhan formula |
+| `LOG_LEVEL` | Workflow env | `"INFO"` | Python logging level |
+
+**Live-trade.yml current values** (for ₹1L capital, qty=1):
+```yaml
+TRADE_QTY:          "1"
+MAX_SIGNAL_AGE_MIN: "30"
+MAX_ENTRY_HHMM:     "1300"
+MAX_OPEN_POSITIONS: "35"
+PARTIAL_EXIT_T3:    "true"
+DAILY_LOSS_HALT_INR: "-1000"
+```
 
 **Local `.env`** (never commit — already in `.gitignore`):
 ```
@@ -1493,6 +1562,10 @@ TELEGRAM_BOT_TOKEN=7123456789:AAF...
 TELEGRAM_CHAT_ID=-100xxxxxxxxxx
 PAPER_MODE=true
 TRADE_QTY=1
+MAX_SIGNAL_AGE_MIN=30
+MAX_ENTRY_HHMM=1300
+MAX_OPEN_POSITIONS=35
+DAILY_LOSS_HALT_INR=-1000
 ```
 
 ---
@@ -1550,9 +1623,20 @@ Or: DhanHQ app → Positions → INTRADAY filter.
 |-------|----------------|
 | `⚠️ ERROR · SL placement failed` | Urgent — place SL manually or exit |
 | `⚠️ ERROR · EMERGENCY_EXIT_FAILED` | Critical — exit manually in DhanHQ immediately |
+| `⚠️ SL order gone — {sym} — re-placing` | Bot detected missing SL and re-placed — verify in DhanHQ |
 | `⚠️ MARGIN_FAIL` | Add funds or reduce `TRADE_QTY` |
 | No `⏰ SQUARE-OFF` by 15:10 | Check GHA logs, exit manually in app |
-| `🔴 TRADING HALTED` | Normal — daily loss limit, no action needed |
+| `🔴 TRADING HALTED` (daily loss) | Auto-halt — resumes next day or send `/resume` if intentional |
+| `🔴 TRADING HALTED` (manual /halt) | You sent `/halt` — send `/resume` when ready |
+
+### Real-time control via Telegram
+
+```
+/halt       → stop new entries immediately (takes effect next GHA cycle, ≤5 min)
+/resume     → re-enable entries
+/squareoff  → close all open positions now
+/status     → see open positions + P&L summary
+```
 
 ---
 
@@ -1608,25 +1692,27 @@ print(should_place_entry(signal, ltp=1425.0))  # → (True,  'OK')  wait for ret
 ### Code Complete (no action needed)
 - [x] **Step 1** — `app/main.py`: status `NEW`, `signal_time`, `original_sl` added
 - [x] **Step 2** — `app/signal_monitor.py`: `live_managed` guard on T1 SL write
-- [x] **Step 3** — `app/trade_manager.py`: full implementation (entry, fill, SL-M, TSL, emergency exit)
-- [x] **Step 4** — `app/position_tracker.py`: reconcile, manual adopt, F-3 duplicate guard
-- [x] **Step 5** — `app/square_off.py`: EOD market exit + daily summary
-- [x] **Step 6** — `app/telegram_notify.py`: all 17 event types
-- [x] **Step 7** — `.github/workflows/live-trade.yml`: 5-min cycle, `PAPER_MODE=true`
-- [x] **Step 8** — `.github/workflows/square-off.yml`: 15:05 IST square-off
+- [x] **Step 3** — `app/trade_manager.py`: entry, fill, SL-M, TSL, emergency exit, daily loss halt
+- [x] **Step 4** — `app/position_tracker.py`: reconcile, manual adopt, F-3 duplicate guard, SL health check
+- [x] **Step 5** — `app/square_off.py`: EOD market exit + brokerage-aware daily summary
+- [x] **Step 6** — `app/telegram_notify.py`: all event types + brokerage breakdown + Dhan fee formula
+- [x] **Step 7** — `app/telegram_cmd.py`: `/halt` `/resume` `/squareoff` `/status` command polling
+- [x] **Step 8** — `.github/workflows/live-trade.yml`: `workflow_dispatch`, all risk vars set
+- [x] **Step 9** — `.github/workflows/square-off.yml`: 15:05 IST square-off
+- [x] **Step 10** — `MAX_SIGNAL_AGE_MIN=30` (extended from 15 for GHA startup)
+- [x] **Step 11** — `MAX_ENTRY_HHMM=1300` (extended from 12:30)
+- [x] **Step 12** — `MAX_OPEN_POSITIONS=35` (raised from 5 for ₹1L capital)
+- [x] **Step 13** — `PARTIAL_EXIT_T3=true` — 50% qty exit at T3, trail remaining
+- [x] **Step 14** — `DAILY_LOSS_HALT_INR=-1000` — 1% daily loss limit on ₹1L
+- [x] **Step 15** — 54 unit tests, all passing
 
-### Before First Paper Run
-- [ ] **Step 9** — Add cron to `live-trade.yml` (`*/5 3-6 * * 1-5`) and `square-off.yml` (`35 9 * * 1-5`)
-- [ ] **Step 10** — Verify `app/dhan_client.py` wraps `DhanContext` + `dhanhq` correctly
-- [ ] **Step 11** — Download `data/dhan_instruments.csv` from Dhan scrip master URL
-- [ ] **Step 12** — Create `app/symbol_map.py` (security_id lookup — needed for live orders)
-- [ ] **Step 13** — Trigger `live-trade.yml` manually (`workflow_dispatch`, `paper_mode=true`), watch Telegram
-
-### Paper → Live
-- [ ] **Step 14** — Run paper for 3–5 days; P&L within ±5% of `pnl-check.yml`
-- [ ] **Step 15** — Set `PAPER_MODE=false`, `TRADE_QTY=1` → Phase 2 live
+### Before Going Live
+- [ ] **Step 16** — Verify `security_id` is written by scanner for each signal
+- [ ] **Step 17** — Download `data/dhan_instruments.csv` + create `app/symbol_map.py`
+- [ ] **Step 18** — Run paper for 5 clean days; P&L within ±5% of `pnl-check.yml`
+- [ ] **Step 19** — Set `PAPER_MODE=false`, `TRADE_QTY=1` → Phase 2 live
 
 ### Future
-- [ ] **Step 16** — `app/ws_monitor.py` — WebSocket real-time SL/TSL (Phase 3)
-- [ ] **Step 17** — `app/mcp_server.py` — Claude queries live state via MCP (Phase 4)
-- [ ] **Step 18** — Multi-account loop in `trade_manager.run()` (Phase 5)
+- [ ] **Step 20** — `app/ws_monitor.py` — WebSocket real-time SL/TSL (Phase 3)
+- [ ] **Step 21** — `app/mcp_server.py` — Claude queries live state via MCP (Phase 4)
+- [ ] **Step 22** — Multi-account loop in `trade_manager.run()` (Phase 5)
