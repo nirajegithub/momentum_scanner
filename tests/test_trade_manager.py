@@ -567,3 +567,142 @@ class TestVerifySlOrders:
             _verify_sl_orders(mock_dhan, state, qty=1)
 
         mock_dhan.get_order_by_id.assert_not_called()
+
+
+# ── telegram_cmd (#10) ────────────────────────────────────────────────────────
+
+class TestTelegramCmd:
+    """Tests for app/telegram_cmd.py — command polling and processing."""
+
+    def _make_update(self, update_id, text, chat_id="12345"):
+        return {
+            "update_id": update_id,
+            "message": {
+                "text": text,
+                "chat": {"id": chat_id},
+            },
+        }
+
+    def test_halt_sets_trading_halted(self):
+        from app.telegram_cmd import poll_and_process
+        import app.telegram_cmd as cmd_mod
+        orig_cid = cmd_mod.CHAT_ID
+        cmd_mod.CHAT_ID = "12345"
+        state = {"signals": {}}
+        updates = [self._make_update(1, "/halt")]
+        with patch("app.telegram_cmd.BOT_TOKEN", "fake"):
+            with patch("app.telegram_cmd._get_updates", return_value=updates):
+                with patch("app.telegram_cmd._reply"):
+                    with patch("app.telegram_cmd.save"):
+                        poll_and_process(MagicMock(), state, paper=True)
+        cmd_mod.CHAT_ID = orig_cid
+        assert state.get("trading_halted") is True
+        assert state["_tg_update_id"] == 2
+
+    def test_resume_clears_trading_halted(self):
+        from app.telegram_cmd import poll_and_process
+        import app.telegram_cmd as cmd_mod
+        orig_cid = cmd_mod.CHAT_ID
+        cmd_mod.CHAT_ID = "12345"
+        state = {"signals": {}, "trading_halted": True}
+        updates = [self._make_update(5, "/resume")]
+        with patch("app.telegram_cmd.BOT_TOKEN", "fake"):
+            with patch("app.telegram_cmd._get_updates", return_value=updates):
+                with patch("app.telegram_cmd._reply"):
+                    with patch("app.telegram_cmd.save"):
+                        poll_and_process(MagicMock(), state, paper=True)
+        cmd_mod.CHAT_ID = orig_cid
+        assert state.get("trading_halted") is False
+
+    def test_squareoff_calls_square_off_all(self):
+        from app.telegram_cmd import poll_and_process
+        import app.telegram_cmd as cmd_mod
+        orig_cid = cmd_mod.CHAT_ID
+        cmd_mod.CHAT_ID = "12345"
+        state = {"signals": {}}
+        updates = [self._make_update(10, "/squareoff")]
+        with patch("app.telegram_cmd.BOT_TOKEN", "fake"):
+            with patch("app.telegram_cmd._get_updates", return_value=updates):
+                with patch("app.telegram_cmd._reply"):
+                    with patch("app.telegram_cmd.save"):
+                        with patch("app.square_off.square_off_all") as mock_sqa:
+                            poll_and_process(MagicMock(), state, paper=True)
+        cmd_mod.CHAT_ID = orig_cid
+        mock_sqa.assert_called_once()
+
+    def test_status_sends_reply(self):
+        from app.telegram_cmd import poll_and_process
+        import app.telegram_cmd as cmd_mod
+        orig_cid = cmd_mod.CHAT_ID
+        cmd_mod.CHAT_ID = "12345"
+        state = {"signals": {}}
+        updates = [self._make_update(20, "/status")]
+        with patch("app.telegram_cmd.BOT_TOKEN", "fake"):
+            with patch("app.telegram_cmd._get_updates", return_value=updates):
+                with patch("app.telegram_cmd._reply") as mock_reply:
+                    with patch("app.telegram_cmd.save"):
+                        poll_and_process(MagicMock(), state, paper=True)
+        cmd_mod.CHAT_ID = orig_cid
+        mock_reply.assert_called_once()
+        assert "STATUS" in mock_reply.call_args[0][0]
+
+    def test_unknown_command_replies_help(self):
+        from app.telegram_cmd import poll_and_process
+        import app.telegram_cmd as cmd_mod
+        orig_cid = cmd_mod.CHAT_ID
+        cmd_mod.CHAT_ID = "12345"
+        state = {"signals": {}}
+        updates = [self._make_update(30, "/foobar")]
+        with patch("app.telegram_cmd.BOT_TOKEN", "fake"):
+            with patch("app.telegram_cmd._get_updates", return_value=updates):
+                with patch("app.telegram_cmd._reply") as mock_reply:
+                    with patch("app.telegram_cmd.save"):
+                        poll_and_process(MagicMock(), state, paper=True)
+        cmd_mod.CHAT_ID = orig_cid
+        mock_reply.assert_called_once()
+        assert "Unknown command" in mock_reply.call_args[0][0]
+
+    def test_unauthorized_chat_ignored(self):
+        from app.telegram_cmd import poll_and_process
+        import app.telegram_cmd as cmd_mod
+        orig_cid = cmd_mod.CHAT_ID
+        cmd_mod.CHAT_ID = "ALLOWED_CHAT"
+        state = {"signals": {}}
+        updates = [self._make_update(40, "/halt", chat_id="ATTACKER")]
+        with patch("app.telegram_cmd.BOT_TOKEN", "fake"):
+            with patch("app.telegram_cmd._get_updates", return_value=updates):
+                with patch("app.telegram_cmd._reply") as mock_reply:
+                    with patch("app.telegram_cmd.save"):
+                        poll_and_process(MagicMock(), state, paper=True)
+        cmd_mod.CHAT_ID = orig_cid
+        assert not state.get("trading_halted")
+        mock_reply.assert_not_called()
+
+    def test_offset_advances_across_multiple_updates(self):
+        from app.telegram_cmd import poll_and_process
+        import app.telegram_cmd as cmd_mod
+        orig_cid = cmd_mod.CHAT_ID
+        cmd_mod.CHAT_ID = "12345"
+        state = {"signals": {}}
+        updates = [
+            self._make_update(100, "hello"),
+            self._make_update(101, "/status"),
+        ]
+        with patch("app.telegram_cmd.BOT_TOKEN", "fake"):
+            with patch("app.telegram_cmd._get_updates", return_value=updates):
+                with patch("app.telegram_cmd._reply"):
+                    with patch("app.telegram_cmd.save"):
+                        poll_and_process(MagicMock(), state, paper=True)
+        cmd_mod.CHAT_ID = orig_cid
+        assert state["_tg_update_id"] == 102
+
+    def test_no_poll_when_bot_token_missing(self):
+        from app.telegram_cmd import poll_and_process
+        import app.telegram_cmd as cmd_mod
+        orig_tok = cmd_mod.BOT_TOKEN
+        cmd_mod.BOT_TOKEN = ""
+        state = {"signals": {}}
+        with patch("app.telegram_cmd._get_updates") as mock_get:
+            poll_and_process(MagicMock(), state, paper=True)
+        cmd_mod.BOT_TOKEN = orig_tok
+        mock_get.assert_not_called()

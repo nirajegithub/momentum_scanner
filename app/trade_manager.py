@@ -409,11 +409,16 @@ def _apply_tsl(dhan, signal: dict, paper: bool) -> None:
 def run(dhan, state: dict, qty: int = TRADE_QTY, paper: bool = PAPER_MODE) -> None:
     """
     Called by live-trade.yml every 5 min.
+      0. Poll Telegram commands (/halt /resume /squareoff /status)
       1. Reconcile positions (detect manual trades / exits)
       2. Place entries for NEW signals (scan window only)
       3. Apply TSL for ACTIVE signals
     """
     from app.position_tracker import reconcile
+    from app.telegram_cmd import poll_and_process
+
+    # Step 0: Telegram command poll (non-blocking, timeout=0)
+    poll_and_process(dhan, state, paper)
 
     # Step 1: reconcile before anything else
     reconcile(dhan, state, qty, paper)
