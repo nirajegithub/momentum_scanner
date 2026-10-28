@@ -1411,7 +1411,7 @@
       "confirmation_5m_close": 1885.8,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-10-28T11:50:00+05:30",
       "risk": {
         "entry": 1885.8,
@@ -1432,7 +1432,12 @@
       "sl": 1919.0,
       "t1": 1852.6,
       "t2": 1819.3999999999999,
-      "t3": 1786.1999999999998
+      "t3": 1786.1999999999998,
+      "entry_order_id": "PAPER_GRSE_1793169930",
+      "fill_price": 1885.8,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_GRSE_1793169932"
     },
     "PGEL|BUY|2026-10-28T12:00:00+05:30|2026-10-28T12:00:00+05:30": {
       "symbol": "PGEL",
@@ -1468,7 +1473,7 @@
       "confirmation_5m_close": 535.05,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-10-28T12:00:00+05:30",
       "risk": {
         "entry": 535.05,
@@ -1489,7 +1494,12 @@
       "sl": 506.4,
       "t1": 563.6999999999999,
       "t2": 592.3499999999999,
-      "t3": 620.9999999999999
+      "t3": 620.9999999999999,
+      "entry_order_id": "PAPER_PGEL_1793169932",
+      "fill_price": 535.05,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_PGEL_1793169933"
     }
   },
   "pending_setups": {},
