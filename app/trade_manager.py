@@ -406,13 +406,38 @@ def _apply_tsl(dhan, signal: dict, paper: bool) -> None:
 
 # ── Main entry point ──────────────────────────────────────────────────────────
 
+def _refresh_ltps(dhan, state: dict) -> None:
+    """
+    Fetch current LTPs for all ACTIVE signals and write them onto the signal
+    dicts as last_ltp.  Also runs signal_monitor so T1/T2/T3/SL hits are
+    detected and highest_target_hit is set before _apply_tsl() runs.
+    """
+    from app.main import _fetch_current_prices
+    from app.signal_monitor import monitor_active_signals
+
+    has_active = any(
+        s.get("status") == "ACTIVE" for s in state.get("signals", {}).values()
+    )
+    if not has_active:
+        return
+
+    current_prices = _fetch_current_prices(dhan, state)
+    if current_prices:
+        state["current_prices"] = current_prices
+        monitor_active_signals(state, current_prices)
+        LOG.info("LTP_REFRESH | updated %d symbols", len(current_prices))
+    else:
+        LOG.warning("LTP_REFRESH | no prices returned — last_ltp unchanged")
+
+
 def run(dhan, state: dict, qty: int = TRADE_QTY, paper: bool = PAPER_MODE) -> None:
     """
     Called by live-trade.yml every 5 min.
       0. Poll Telegram commands (/halt /resume /squareoff /status)
       1. Reconcile positions (detect manual trades / exits)
-      2. Place entries for NEW signals (scan window only)
-      3. Apply TSL for ACTIVE signals
+      2. Refresh LTPs for ACTIVE signals (sets last_ltp + detects T1/T2/T3 hits)
+      3. Place entries for NEW signals (scan window only)
+      4. Apply TSL for ACTIVE signals
     """
     from app.position_tracker import reconcile
     from app.telegram_cmd import poll_and_process
@@ -424,10 +449,14 @@ def run(dhan, state: dict, qty: int = TRADE_QTY, paper: bool = PAPER_MODE) -> No
     reconcile(dhan, state, qty, paper)
     save(state)
 
+    # Step 2: refresh LTPs so TSL has current prices
+    _refresh_ltps(dhan, state)
+    save(state)
+
     now  = _now_ist()
     hhmm = _hhmm(now)
 
-    # Step 2: entry placement
+    # Step 3: entry placement
     check_daily_halt(state)   # sets trading_halted if threshold crossed
     if hhmm <= MAX_ENTRY_HHMM:
         for key, signal in list(state.get("signals", {}).items()):
@@ -475,7 +504,7 @@ def run(dhan, state: dict, qty: int = TRADE_QTY, paper: bool = PAPER_MODE) -> No
             # if sl_oid is None, _emergency_exit already fired inside place_sl_order
             save(state)
 
-    # Step 3: TSL management
+    # Step 4: TSL management
     for key, signal in list(state.get("signals", {}).items()):
         if signal.get("status") == "ACTIVE":
             _apply_tsl(dhan, signal, paper)
