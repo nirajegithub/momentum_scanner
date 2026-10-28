@@ -133,6 +133,32 @@ class TestPreTradeOk:
                 result = pre_trade_ok(sig, state={})
         assert not result
 
+    def test_max_open_positions_skipped(self):
+        from app.trade_manager import pre_trade_ok
+        sig = _sig()
+        # 5 ACTIVE signals already in state (hits MAX_OPEN_POSITIONS=5 default)
+        state = {"signals": {
+            f"s{i}": {**_sig(symbol=f"SYM{i}"), "status": "ACTIVE"}
+            for i in range(5)
+        }}
+        with patch("app.trade_manager._hhmm", return_value=1000):
+            with patch("app.trade_manager.tg"):
+                result = pre_trade_ok(sig, state=state)
+        assert not result
+
+    def test_below_max_open_passes(self):
+        from app.trade_manager import pre_trade_ok
+        sig = _sig()
+        # Only 4 ACTIVE — under the cap of 5
+        state = {"signals": {
+            f"s{i}": {**_sig(symbol=f"SYM{i}"), "status": "ACTIVE"}
+            for i in range(4)
+        }}
+        with patch("app.trade_manager._hhmm", return_value=1000):
+            with patch("app.trade_manager.tg"):
+                result = pre_trade_ok(sig, state=state)
+        assert result
+
 
 # ── place_entry_order (paper) ─────────────────────────────────────────────────
 

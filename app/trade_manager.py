@@ -18,6 +18,7 @@ MAX_SIGNAL_AGE_MIN = int(os.environ.get("MAX_SIGNAL_AGE_MIN", "15"))
 MAX_ENTRY_HHMM     = int(os.environ.get("MAX_ENTRY_HHMM", "1230"))
 MAX_PENDING_MIN    = int(os.environ.get("MAX_PENDING_MIN", "15"))
 MIN_TRAIL_INC      = float(os.environ.get("MIN_TRAIL_INC", "2.0"))
+MAX_OPEN_POSITIONS = int(os.environ.get("MAX_OPEN_POSITIONS", "5"))
 
 
 def _now_ist() -> datetime:
@@ -32,8 +33,7 @@ def _hhmm(dt: datetime) -> int:
 
 def pre_trade_ok(signal: dict, state: dict) -> bool:
     """Return False (and fire Telegram) if the signal should not be entered."""
-    now  = _now_ist()
-    sym  = signal["symbol"]
+    now = _now_ist()
 
     if _hhmm(now) > MAX_ENTRY_HHMM:
         tg.signal_skipped(signal, f"PAST_ENTRY_CUTOFF {MAX_ENTRY_HHMM}")
@@ -45,6 +45,14 @@ def pre_trade_ok(signal: dict, state: dict) -> bool:
         if age_min > MAX_SIGNAL_AGE_MIN:
             tg.signal_skipped(signal, f"STALE age={age_min:.0f}m > {MAX_SIGNAL_AGE_MIN}m")
             return False
+
+    open_count = sum(
+        1 for s in state.get("signals", {}).values()
+        if s.get("status") == "ACTIVE"
+    )
+    if open_count >= MAX_OPEN_POSITIONS:
+        tg.signal_skipped(signal, f"MAX_POSITIONS {open_count}/{MAX_OPEN_POSITIONS}")
+        return False
 
     return True
 
