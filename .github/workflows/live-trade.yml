@@ -28,7 +28,7 @@ jobs:
       PAPER_MODE:        ${{ github.event.inputs.paper_mode || 'true' }}
       TRADE_QTY:         "1"
       MAX_SIGNAL_AGE_MIN: "15"
-      MAX_ENTRY_HHMM:    "1230"
+      MAX_ENTRY_HHMM:    "1300"
       MAX_PENDING_MIN:   "15"
       MIN_TRAIL_INC:     "2.0"
       MAX_OPEN_POSITIONS: "35"
