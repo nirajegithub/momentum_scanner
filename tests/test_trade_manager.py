@@ -111,7 +111,7 @@ class TestPreTradeOk:
     def test_stale_signal_skipped(self):
         from app.trade_manager import pre_trade_ok
         ist_offset = timezone(timedelta(hours=5, minutes=30))
-        old_time = (datetime.now(ist_offset) - timedelta(minutes=20)).isoformat()
+        old_time = (datetime.now(ist_offset) - timedelta(minutes=35)).isoformat()
         sig = _sig(signal_time=old_time)
         with patch("app.trade_manager.tg") as mock_tg:
             result = pre_trade_ok(sig, state={})

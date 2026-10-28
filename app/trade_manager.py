@@ -14,7 +14,7 @@ LOG = logging.getLogger(__name__)
 
 PAPER_MODE           = os.environ.get("PAPER_MODE", "true").lower() == "true"
 TRADE_QTY            = int(os.environ.get("TRADE_QTY", "1"))
-MAX_SIGNAL_AGE_MIN   = int(os.environ.get("MAX_SIGNAL_AGE_MIN", "15"))
+MAX_SIGNAL_AGE_MIN   = int(os.environ.get("MAX_SIGNAL_AGE_MIN", "30"))
 MAX_ENTRY_HHMM       = int(os.environ.get("MAX_ENTRY_HHMM", "1230"))
 MAX_PENDING_MIN      = int(os.environ.get("MAX_PENDING_MIN", "15"))
 MIN_TRAIL_INC        = float(os.environ.get("MIN_TRAIL_INC", "2.0"))
