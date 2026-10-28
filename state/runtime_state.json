@@ -1101,7 +1101,7 @@
       "confirmation_5m_close": 977.25,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-10-28T11:05:00+05:30",
       "risk": {
         "entry": 977.25,
@@ -1122,7 +1122,12 @@
       "sl": 958.75,
       "t1": 995.75,
       "t2": 1014.25,
-      "t3": 1032.75
+      "t3": 1032.75,
+      "entry_order_id": "PAPER_MOTILALOFS_1793166933",
+      "fill_price": 977.25,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_MOTILALOFS_1793166934"
     }
   },
   "pending_setups": {},
