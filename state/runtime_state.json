@@ -1039,7 +1039,7 @@
       "confirmation_5m_close": 2853.2,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-10-28T11:00:00+05:30",
       "risk": {
         "entry": 2853.2,
@@ -1060,7 +1060,12 @@
       "sl": 2790.7,
       "t1": 2915.7,
       "t2": 2978.2,
-      "t3": 3040.7
+      "t3": 3040.7,
+      "entry_order_id": "PAPER_TRENT_1793166026",
+      "fill_price": 2853.2,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_TRENT_1793166027"
     }
   },
   "pending_setups": {},
