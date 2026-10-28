@@ -118,19 +118,19 @@ def main() -> None:
     square_off_all(dhan, state, qty=TRADE_QTY, paper=PAPER_MODE)
 
     # Build trades list in the format telegram_notify.daily_summary expects
-    trades = [
-        {"symbol": sym, "pnl_pts": pts}
-        for sym, pts in (
-            (
-                sig["symbol"],
-                (float(sig.get("exit_price", sig["risk"]["entry"])) - float(sig["risk"]["entry"]))
-                if sig["direction"] == "BUY"
-                else (float(sig["risk"]["entry"]) - float(sig.get("exit_price", sig["risk"]["entry"])))
-            )
-            for sig in state.get("signals", {}).values()
-            if sig.get("status") == "EXITED" and sig.get("exit_reason") != "SKIPPED"
-        )
-    ]
+    trades = []
+    for sig in state.get("signals", {}).values():
+        if sig.get("status") != "EXITED" or sig.get("exit_reason") == "SKIPPED":
+            continue
+        entry = float(sig["risk"]["entry"])
+        exit_ = float(sig.get("exit_price", entry))
+        pts   = (exit_ - entry) if sig["direction"] == "BUY" else (entry - exit_)
+        trades.append({
+            "symbol" : sig["symbol"],
+            "pnl_pts": pts,
+            "entry"  : entry,
+            "qty"    : int(sig.get("qty", TRADE_QTY)),
+        })
     tg.daily_summary(trades=trades, qty=TRADE_QTY, paper=PAPER_MODE)
     won     = sum(1 for t in trades if t["pnl_pts"] >= 0)
     pnl_pts = round(sum(t["pnl_pts"] for t in trades), 2)

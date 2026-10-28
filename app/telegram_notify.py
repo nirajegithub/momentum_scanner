@@ -12,7 +12,7 @@ LOG = logging.getLogger(__name__)
 _BOT_TOKEN           = os.environ.get("TELEGRAM_BOT_TOKEN", "")
 _CHAT_ID             = os.environ.get("TELEGRAM_CHAT_ID", "")
 _ENABLED             = bool(_BOT_TOKEN and _CHAT_ID)
-BROKERAGE_PER_TRADE  = float(os.environ.get("BROKERAGE_PER_TRADE", "40"))  # Rs 20 entry + Rs 20 exit
+BROKERAGE_PER_TRADE  = float(os.environ.get("BROKERAGE_PER_TRADE", "0"))   # 0 = auto-compute from Dhan fee structure
 
 
 # ── Internal sender ───────────────────────────────────────────────────────────
@@ -42,6 +42,32 @@ def _send(text: str, retries: int = 2) -> bool:
 
 def _now_str() -> str:
     return datetime.now(IST).strftime("%H:%M IST")
+
+
+def _round_trip_cost(entry: float, qty: int) -> float:
+    """
+    Estimate total intraday round-trip cost using Dhan's actual fee structure.
+
+    Dhan intraday equity:
+      Brokerage  : 0.03% per order OR Rs 20, whichever is LOWER
+      STT        : 0.025% on sell-side turnover
+      Exchange   : NSE 0.00297% on total turnover
+      GST        : 18% on (brokerage + exchange charges)
+      Stamp duty : 0.003% on buy-side turnover
+
+    For override, set BROKERAGE_PER_TRADE env var to a flat amount (Rs).
+    """
+    if BROKERAGE_PER_TRADE > 0:
+        return BROKERAGE_PER_TRADE
+
+    turnover   = entry * qty
+    broker_one = min(20.0, 0.0003 * turnover)   # per order
+    brokerage  = broker_one * 2                   # entry + exit
+    stt        = 0.00025  * turnover              # sell side only (intraday)
+    exchange   = 0.0000297 * turnover * 2         # both sides
+    gst        = 0.18 * (brokerage + exchange)
+    stamp      = 0.00003  * turnover              # buy side
+    return round(brokerage + stt + exchange + gst + stamp, 2)
 
 
 def _inr(pts: float, qty: int) -> str:
@@ -165,29 +191,33 @@ def daily_summary(
     qty: int,
     paper: bool = True,
 ) -> None:
-    """End-of-day summary sent after square-off."""
+    """End-of-day summary sent after square-off.
+
+    Each trade dict: {"symbol": str, "pnl_pts": float, "entry": float, "qty": int}
+    entry and qty are used for accurate per-trade fee calculation.
+    """
     if not trades:
         _send(f"📊 No trades today  |  {_now_str()}")
         return
 
-    wins       = [t for t in trades if t["pnl_pts"] >= 0]
-    losses     = [t for t in trades if t["pnl_pts"] < 0]
-    gross_pts  = sum(t["pnl_pts"] for t in trades)
-    gross_inr  = gross_pts * qty
-    brokerage  = BROKERAGE_PER_TRADE * len(trades)
-    net_inr    = gross_inr - brokerage
-    wr         = len(wins) / len(trades) * 100
-    best       = max(trades, key=lambda t: t["pnl_pts"])
-    worst      = min(trades, key=lambda t: t["pnl_pts"])
-    label      = "📝 PAPER " if paper else ""
-    net_icon   = "🟢" if net_inr >= 0 else "🔴"
+    wins      = [t for t in trades if t["pnl_pts"] >= 0]
+    losses    = [t for t in trades if t["pnl_pts"] < 0]
+    gross_pts = sum(t["pnl_pts"] for t in trades)
+    gross_inr = sum(t["pnl_pts"] * t.get("qty", qty) for t in trades)
+    brokerage = sum(_round_trip_cost(t.get("entry", 0), t.get("qty", qty)) for t in trades)
+    net_inr   = gross_inr - brokerage
+    wr        = len(wins) / len(trades) * 100
+    best      = max(trades, key=lambda t: t["pnl_pts"])
+    worst     = min(trades, key=lambda t: t["pnl_pts"])
+    label     = "📝 PAPER " if paper else ""
+    net_icon  = "🟢" if net_inr >= 0 else "🔴"
 
     _send(
         f"📊 {label}<b>DAY SUMMARY</b>  ·  {datetime.now(IST).strftime('%a %d %b')}\n"
         f"Trades: {len(trades)}  |  {len(wins)}W/{len(losses)}L  |  WR: {wr:.0f}%\n"
-        f"Gross P&L:  {gross_pts:+.1f} pts  (₹{gross_inr:+,.0f}  ×  qty {qty})\n"
-        f"Brokerage:  −₹{brokerage:,.0f}  ({len(trades)} trades × ₹{BROKERAGE_PER_TRADE:.0f})\n"
-        f"{net_icon} Net P&L:   ₹{net_inr:+,.0f}\n"
+        f"Gross P&L:  {gross_pts:+.1f} pts  (₹{gross_inr:+,.0f})\n"
+        f"Brokerage:  −₹{brokerage:,.2f}  ({len(trades)} trades)\n"
+        f"{net_icon} Net P&L:   ₹{net_inr:+,.2f}\n"
         f"Best:   {best['symbol']} {best['pnl_pts']:+.1f} pts\n"
         f"Worst:  {worst['symbol']} {worst['pnl_pts']:+.1f} pts"
     )
