@@ -1206,7 +1206,7 @@
       "confirmation_5m_close": 10288.0,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-10-29T12:30:00+05:30",
       "risk": {
         "entry": 10288.0,
@@ -1227,7 +1227,12 @@
       "sl": 10542.0,
       "t1": 10034.0,
       "t2": 9780.0,
-      "t3": 9526.0
+      "t3": 9526.0,
+      "entry_order_id": "PAPER_BAJAJ-AUTO_1793257830",
+      "fill_price": 10288.0,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_BAJAJ-AUTO_1793257831"
     },
     "BLUESTARCO|BUY|2026-10-29T12:30:00+05:30|2026-10-29T12:30:00+05:30": {
       "symbol": "BLUESTARCO",
@@ -1263,7 +1268,7 @@
       "confirmation_5m_close": 1646.7,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-10-29T12:30:00+05:30",
       "risk": {
         "entry": 1646.7,
@@ -1284,7 +1289,12 @@
       "sl": 1581.0,
       "t1": 1712.4,
       "t2": 1778.1000000000001,
-      "t3": 1843.8000000000002
+      "t3": 1843.8000000000002,
+      "entry_order_id": "PAPER_BLUESTARCO_1793257832",
+      "fill_price": 1646.7,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_BLUESTARCO_1793257833"
     }
   },
   "pending_setups": {},
