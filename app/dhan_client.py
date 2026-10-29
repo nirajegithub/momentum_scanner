@@ -201,8 +201,12 @@ class DhanClient:
                 continue
 
             if not isinstance(payload, dict):
-                LOG.warning("Dhan quote_data returned non-dict payload for chunk %d-%d", start, start + len(chunk))
+                LOG.warning("Dhan quote_data returned non-dict payload for chunk %d-%d: type=%s repr=%s", start, start + len(chunk), type(payload).__name__, repr(payload)[:300])
                 continue
+
+            LOG.info("Dhan quote_data raw payload for chunk %d-%d: status=%s data_type=%s data_repr=%s",
+                     start, start + len(chunk),
+                     payload.get("status"), type(payload.get("data")).__name__, repr(payload.get("data"))[:400])
 
             data = payload.get("data", payload)
             segment_rows = data.get("NSE_EQ", {}) if isinstance(data, dict) else {}
