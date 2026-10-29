@@ -648,7 +648,7 @@
       "confirmation_5m_close": 1646.6,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-10-29T10:10:00+05:30",
       "risk": {
         "entry": 1646.6,
@@ -669,7 +669,12 @@
       "sl": 1563.0,
       "t1": 1730.1999999999998,
       "t2": 1813.7999999999997,
-      "t3": 1897.3999999999996
+      "t3": 1897.3999999999996,
+      "entry_order_id": "PAPER_SYRMA_1793249726",
+      "fill_price": 1646.6,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_SYRMA_1793249728"
     }
   },
   "pending_setups": {},
