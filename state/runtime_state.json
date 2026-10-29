@@ -1082,7 +1082,7 @@
       "confirmation_5m_close": 513.15,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-10-29T12:00:00+05:30",
       "risk": {
         "entry": 513.15,
@@ -1103,7 +1103,12 @@
       "sl": 504.2,
       "t1": 522.0999999999999,
       "t2": 531.05,
-      "t3": 540.0
+      "t3": 540.0,
+      "entry_order_id": "PAPER_HINDZINC_1793256033",
+      "fill_price": 513.15,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_HINDZINC_1793256034"
     },
     "PNBHOUSING|SELL|2026-10-29T11:50:00+05:30|2026-10-29T11:50:00+05:30": {
       "symbol": "PNBHOUSING",
@@ -1139,7 +1144,7 @@
       "confirmation_5m_close": 1087.3,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-10-29T11:50:00+05:30",
       "risk": {
         "entry": 1087.3,
@@ -1160,7 +1165,12 @@
       "sl": 1177.3,
       "t1": 997.3,
       "t2": 907.3,
-      "t3": 817.3
+      "t3": 817.3,
+      "entry_order_id": "PAPER_PNBHOUSING_1793256035",
+      "fill_price": 1087.3,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_PNBHOUSING_1793256036"
     }
   },
   "pending_setups": {},
