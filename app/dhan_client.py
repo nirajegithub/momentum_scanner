@@ -207,24 +207,31 @@ class DhanClient:
             data = payload.get("data", payload)
             segment_rows = data.get("NSE_EQ", {}) if isinstance(data, dict) else {}
             if not isinstance(segment_rows, dict):
-                LOG.warning("Dhan quote_data NSE_EQ payload not a dict for chunk %d-%d", start, start + len(chunk))
+                LOG.warning("Dhan quote_data NSE_EQ payload not a dict for chunk %d-%d: %s", start, start + len(chunk), str(payload)[:200])
                 continue
+            if not segment_rows:
+                LOG.warning("Dhan quote_data NSE_EQ empty for chunk %d-%d — payload keys: %s", start, start + len(chunk), list(data.keys()) if isinstance(data, dict) else type(data).__name__)
 
             for sec_id, row in segment_rows.items():
                 if not isinstance(row, dict):
                     continue
-                ltp = row.get("last_price") or row.get("LTP") or row.get("ltp")
-                volume = (
+                ltp_raw = (
+                    row.get("last_price")
+                    or row.get("lastPrice")
+                    or row.get("LTP")
+                    or row.get("ltp")
+                )
+                vol_raw = (
                     row.get("volume")
                     or row.get("total_traded_volume")
                     or row.get("totalTradedVolume")
                 )
                 try:
-                    ltp = float(ltp) if ltp is not None else None
-                    volume = float(volume) if volume is not None else None
+                    ltp    = float(ltp_raw)    if ltp_raw is not None else None
+                    volume = float(vol_raw)    if vol_raw  is not None else None
                 except (TypeError, ValueError):
                     ltp, volume = None, None
-                if ltp is not None and volume is not None:
+                if ltp is not None:   # volume is optional — LTP is all we need
                     result[str(sec_id)] = {"ltp": ltp, "volume": volume}
 
         return result
