@@ -433,25 +433,26 @@ def _refresh_ltps(dhan, state: dict) -> None:
 def run(dhan, state: dict, qty: int = TRADE_QTY, paper: bool = PAPER_MODE) -> None:
     """
     Called by live-trade.yml every 5 min.
-      0. Poll Telegram commands (/halt /resume /squareoff /status)
-      1. Reconcile positions (detect manual trades / exits)
-      2. Refresh LTPs for ACTIVE signals (sets last_ltp + detects T1/T2/T3 hits)
+      0. Reconcile positions (detect manual trades / exits)
+      1. Refresh LTPs for ACTIVE signals (sets last_ltp + detects T1/T2/T3 hits)
+      2. Poll Telegram commands (/halt /resume /squareoff /status)
+         — LTPs are fresh so /status reports accurate open P&L
       3. Place entries for NEW signals (scan window only)
       4. Apply TSL for ACTIVE signals
     """
     from app.position_tracker import reconcile
     from app.telegram_cmd import poll_and_process
 
-    # Step 0: Telegram command poll (non-blocking, timeout=0)
-    poll_and_process(dhan, state, paper)
-
-    # Step 1: reconcile before anything else
+    # Step 0: reconcile before anything else
     reconcile(dhan, state, qty, paper)
     save(state)
 
-    # Step 2: refresh LTPs so TSL has current prices
+    # Step 1: refresh LTPs so TSL and /status both have current prices
     _refresh_ltps(dhan, state)
     save(state)
+
+    # Step 2: Telegram command poll (non-blocking, timeout=0; LTPs now fresh)
+    poll_and_process(dhan, state, paper)
 
     now  = _now_ist()
     hhmm = _hhmm(now)
