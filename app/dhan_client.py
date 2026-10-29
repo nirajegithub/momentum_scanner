@@ -190,33 +190,62 @@ class DhanClient:
         confirmed against a live account before relying on it in production.
         """
         result: dict[str, dict] = {}
-        ids = [str(s) for s in security_ids]
+        # SDK example uses integers; convert so we match the documented format
+        ids = [int(s) for s in security_ids]
 
         for start in range(0, len(ids), chunk_size):
             chunk = ids[start:start + chunk_size]
-            try:
-                payload = self.dhan.quote_data({"NSE_EQ": chunk})
-            except Exception as exc:
-                LOG.warning("Dhan quote_data batch failed (chunk %d-%d): %s", start, start + len(chunk), exc)
-                continue
 
-            if not isinstance(payload, dict):
-                LOG.warning("Dhan quote_data returned non-dict payload for chunk %d-%d: type=%s repr=%s", start, start + len(chunk), type(payload).__name__, repr(payload)[:300])
-                continue
+            # Try ticker_data (/marketfeed/ltp) first — simpler payload, same
+            # subscription tier as quote_data but fewer fields returned.
+            # Fall back to quote_data if ticker_data also fails.
+            payload = None
+            for method_name, method_fn in [
+                ("ticker_data", self.dhan.ticker_data),
+                ("quote_data",  self.dhan.quote_data),
+            ]:
+                try:
+                    resp = method_fn({"NSE_EQ": chunk})
+                except Exception as exc:
+                    LOG.warning("Dhan %s batch failed (chunk %d-%d): %s", method_name, start, start + len(chunk), exc)
+                    continue
 
-            LOG.info("Dhan quote_data raw payload for chunk %d-%d: status=%s data_type=%s data_repr=%s",
-                     start, start + len(chunk),
-                     payload.get("status"), type(payload.get("data")).__name__, repr(payload.get("data"))[:400])
+                if not isinstance(resp, dict):
+                    LOG.warning("Dhan %s returned non-dict (chunk %d-%d): type=%s", method_name, start, start + len(chunk), type(resp).__name__)
+                    continue
+
+                status = resp.get("status", "")
+                data = resp.get("data", resp)
+                LOG.info("Dhan %s chunk %d-%d: status=%s remarks=%s data_type=%s data_repr=%s",
+                         method_name, start, start + len(chunk),
+                         status, repr(resp.get("remarks"))[:200],
+                         type(data).__name__, repr(data)[:400])
+
+                if not isinstance(data, dict):
+                    LOG.warning("Dhan %s data not a dict (chunk %d-%d): %s", method_name, start, start + len(chunk), type(data).__name__)
+                    continue
+
+                segment_rows = data.get("NSE_EQ", {})
+                if not isinstance(segment_rows, dict) or not segment_rows:
+                    LOG.warning("Dhan %s NSE_EQ empty (chunk %d-%d) — data keys: %s", method_name, start, start + len(chunk), list(data.keys()))
+                    continue
+
+                # Got data — use this method's response
+                payload = resp
+                LOG.info("Dhan %s succeeded for chunk %d-%d (%d rows)", method_name, start, start + len(chunk), len(segment_rows))
+                break
+
+            if payload is None:
+                continue
 
             data = payload.get("data", payload)
             segment_rows = data.get("NSE_EQ", {}) if isinstance(data, dict) else {}
-            if not isinstance(segment_rows, dict):
-                LOG.warning("Dhan quote_data NSE_EQ payload not a dict for chunk %d-%d: %s", start, start + len(chunk), str(payload)[:200])
-                continue
-            if not segment_rows:
-                LOG.warning("Dhan quote_data NSE_EQ empty for chunk %d-%d — payload keys: %s", start, start + len(chunk), list(data.keys()) if isinstance(data, dict) else type(data).__name__)
 
             for sec_id, row in segment_rows.items():
+                # ticker_data may return a plain float instead of a nested dict
+                if isinstance(row, (int, float)):
+                    result[str(sec_id)] = {"ltp": float(row), "volume": None}
+                    continue
                 if not isinstance(row, dict):
                     continue
                 ltp_raw = (
@@ -231,11 +260,11 @@ class DhanClient:
                     or row.get("totalTradedVolume")
                 )
                 try:
-                    ltp    = float(ltp_raw)    if ltp_raw is not None else None
-                    volume = float(vol_raw)    if vol_raw  is not None else None
+                    ltp    = float(ltp_raw) if ltp_raw is not None else None
+                    volume = float(vol_raw) if vol_raw  is not None else None
                 except (TypeError, ValueError):
                     ltp, volume = None, None
-                if ltp is not None:   # volume is optional — LTP is all we need
+                if ltp is not None:
                     result[str(sec_id)] = {"ltp": ltp, "volume": volume}
 
         return result
