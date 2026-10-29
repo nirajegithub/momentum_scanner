@@ -710,7 +710,7 @@
       "confirmation_5m_close": 509.8,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-10-29T11:10:00+05:30",
       "risk": {
         "entry": 509.8,
@@ -731,7 +731,12 @@
       "sl": 490.3,
       "t1": 529.3,
       "t2": 548.8,
-      "t3": 568.3
+      "t3": 568.3,
+      "entry_order_id": "PAPER_JSWENERGY_1793253326",
+      "fill_price": 509.8,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_JSWENERGY_1793253328"
     }
   },
   "pending_setups": {},
