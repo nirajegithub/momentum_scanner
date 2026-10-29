@@ -896,7 +896,7 @@
       "confirmation_5m_close": 1351.6,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-10-29T11:35:00+05:30",
       "risk": {
         "entry": 1351.6,
@@ -917,7 +917,12 @@
       "sl": 1336.1,
       "t1": 1367.1,
       "t2": 1382.6,
-      "t3": 1398.1
+      "t3": 1398.1,
+      "entry_order_id": "PAPER_DRREDDY_1793255137",
+      "fill_price": 1351.6,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_DRREDDY_1793255138"
     },
     "RKFORGE|BUY|2026-10-29T11:45:00+05:30|2026-10-29T11:45:00+05:30": {
       "symbol": "RKFORGE",
@@ -953,7 +958,7 @@
       "confirmation_5m_close": 657.55,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-10-29T11:45:00+05:30",
       "risk": {
         "entry": 657.55,
@@ -974,7 +979,12 @@
       "sl": 640.15,
       "t1": 674.9499999999999,
       "t2": 692.3499999999999,
-      "t3": 709.7499999999999
+      "t3": 709.7499999999999,
+      "entry_order_id": "PAPER_RKFORGE_1793255139",
+      "fill_price": 657.55,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_RKFORGE_1793255140"
     },
     "SUNTV|SELL|2026-10-29T11:45:00+05:30|2026-10-29T11:45:00+05:30": {
       "symbol": "SUNTV",
@@ -1010,7 +1020,7 @@
       "confirmation_5m_close": 622.25,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-10-29T11:45:00+05:30",
       "risk": {
         "entry": 622.25,
@@ -1031,7 +1041,12 @@
       "sl": 635.5,
       "t1": 609.0,
       "t2": 595.75,
-      "t3": 582.5
+      "t3": 582.5,
+      "entry_order_id": "PAPER_SUNTV_1793255141",
+      "fill_price": 622.25,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_SUNTV_1793255142"
     }
   },
   "pending_setups": {},
