@@ -87,37 +87,60 @@ def _cmd_squareoff(dhan, state: dict, paper: bool) -> None:
 
 
 def _cmd_status(state: dict) -> None:
-    signals  = state.get("signals", {})
-    active   = [s for s in signals.values() if s.get("status") == "ACTIVE"]
-    exited   = [s for s in signals.values() if s.get("status") == "EXITED"]
+    today_str = datetime.now(IST).strftime("%Y-%m-%d")
+    signals   = state.get("signals", {})
 
-    pnl_open = 0.0
+    active  = [s for s in signals.values() if s.get("status") == "ACTIVE"]
+    exited  = [s for s in signals.values()
+               if s.get("status") == "EXITED"
+               and (s.get("exit_time") or s.get("signal_time", "")).startswith(today_str)]
+    skipped = [s for s in signals.values()
+               if s.get("status") == "SKIPPED"
+               and s.get("signal_time", "").startswith(today_str)]
+
+    # Open positions P&L (uses last_ltp set by _refresh_ltps)
+    pnl_open   = 0.0
     lines_open = []
-    for s in active:
+    for s in sorted(active, key=lambda x: x["symbol"]):
         entry = float(s["risk"]["entry"])
         ltp   = float(s.get("last_ltp") or entry)
         pts   = (ltp - entry) if s["direction"] == "BUY" else (entry - ltp)
         pnl_open += pts
+        tier  = s.get("highest_target_hit", "")
+        tier_tag = f"  <code>[{tier.replace('_HIT','')}✓]</code>" if tier else ""
         icon  = "🟢" if pts >= 0 else "🔴"
-        lines_open.append(f"  {icon} {s['symbol']} {s['direction']}  {pts:+.1f} pts  (ltp ₹{ltp:,.2f})")
+        dir_arrow = "↑" if s["direction"] == "BUY" else "↓"
+        lines_open.append(
+            f"  {icon} {s['symbol']} {dir_arrow}{tier_tag}  {pts:+.1f} pts  ·  ₹{ltp:,.0f}"
+        )
 
-    pnl_closed = sum(
-        (float(s.get("exit_price", s["risk"]["entry"])) - float(s["risk"]["entry"]))
-        if s["direction"] == "BUY" else
-        (float(s["risk"]["entry"]) - float(s.get("exit_price", s["risk"]["entry"])))
-        for s in exited
-    )
+    # Closed P&L (today only; exit_price is accurate post _refresh_ltps fix)
+    pnl_closed = 0.0
+    for s in exited:
+        entry      = float(s["risk"]["entry"])
+        exit_price = float(s.get("exit_price") or entry)
+        pts        = (exit_price - entry) if s["direction"] == "BUY" else (entry - exit_price)
+        pnl_closed += pts
 
-    halted  = state.get("trading_halted", False)
-    halt_ln = "🔴 Entries HALTED" if halted else "🟢 Entries active"
+    halted   = state.get("trading_halted", False)
+    halt_tag = "🔴 <b>HALTED</b>" if halted else "🟢 Entries active"
+    date_str = datetime.now(IST).strftime("%a %d %b")
 
-    msg = f"📋 <b>STATUS</b>  ·  {_now_str()}\n{halt_ln}\n\n"
+    msg = f"📋 <b>STATUS</b>  ·  {date_str}  ·  {_now_str()}\n{halt_tag}\n"
+
     if active:
-        msg += f"<b>Open positions ({len(active)}):</b>\n" + "\n".join(lines_open) + "\n"
-        msg += f"Unrealised: {pnl_open:+.1f} pts\n\n"
+        msg += f"\n<b>Open ({len(active)})</b>  ·  unrealised {pnl_open:+.1f} pts\n"
+        msg += "\n".join(lines_open) + "\n"
     else:
-        msg += "No open positions\n\n"
-    msg += f"Closed today: {len(exited)} trades  ·  P&L: {pnl_closed:+.1f} pts"
+        msg += "\nNo open positions\n"
+
+    closed_icon = "🟢" if pnl_closed >= 0 else "🔴"
+    msg += (
+        f"\n{closed_icon} Closed today  {len(exited)} trades  ·  {pnl_closed:+.1f} pts"
+    )
+    if skipped:
+        msg += f"\n⏭ Skipped  {len(skipped)}"
+
     _reply(msg)
 
 
