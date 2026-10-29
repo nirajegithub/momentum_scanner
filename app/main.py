@@ -433,26 +433,34 @@ def refresh_universe(dhan, state, ts):
 
 
 def _fetch_current_prices(dhan, state):
-    """Fetch current LTP for all active signals via a single batched quote call.
+    """Fetch current LTP for all active signals.
 
-    Falls back to last_ltp stored on each signal (written by monitor_active_signals
-    during intraday scans) when the live API call fails or returns no data.
+    Attempt order (most-to-least preferred):
+      1. Batched market feed API (quote_batch) — fast, one call for all symbols.
+         Requires Dhan market feed subscription; silently returns {} if unavailable.
+      2. Historical intraday API (per symbol, 1-min candles) — always available,
+         last candle close ≈ LTP within ~1 min lag.  Slower: one call per signal.
+      3. Stored last_ltp on each signal — stale but better than nothing.
     """
-    # Build symbol -> security_id map from signals
+    # Build symbol -> security_id map from active signals only
     sym_to_sid = {}
     for signal in state.get("signals", {}).values():
+        if signal.get("status") != "ACTIVE":
+            continue
         symbol = signal.get("symbol")
         security_id = signal.get("security_id")
         if symbol and security_id is not None and symbol not in sym_to_sid:
             sym_to_sid[symbol] = str(security_id)
 
     if not sym_to_sid:
-        LOG.warning("_fetch_current_prices: no signals with security_id found")
+        LOG.warning("_fetch_current_prices: no active signals with security_id found")
         return {}
 
-    LOG.info("_fetch_current_prices: fetching LTP for %d signals", len(sym_to_sid))
+    LOG.info("_fetch_current_prices: fetching LTP for %d active signals", len(sym_to_sid))
     sid_to_sym = {sid: sym for sym, sid in sym_to_sid.items()}
     current_prices = {}
+
+    # ── Attempt 1: batch market feed ─────────────────────────────────────────
     try:
         batch = dhan.quote_batch(list(sym_to_sid.values()))
         LOG.info("_fetch_current_prices: quote_batch returned %d rows", len(batch))
@@ -465,16 +473,41 @@ def _fetch_current_prices(dhan, state):
         LOG.warning("_fetch_current_prices: quote_batch failed: %s", exc)
 
     if current_prices:
+        LOG.info("_fetch_current_prices: market feed OK — %d/%d symbols", len(current_prices), len(sym_to_sid))
         return current_prices
 
-    # Fallback: use last_ltp stored on signals during intraday monitoring
-    LOG.warning("_fetch_current_prices: quote_batch empty, using stored last_ltp")
+    # ── Attempt 2: intraday API per symbol (always available) ────────────────
+    LOG.warning("_fetch_current_prices: market feed empty — falling back to intraday API")
+    today_str = datetime.now(IST).strftime("%Y-%m-%d")
+    for sym, sec_id in sym_to_sid.items():
+        if sym in current_prices:
+            continue
+        try:
+            df = dhan.historical_intraday_df(
+                sec_id,
+                from_date=today_str,
+                to_date=today_str,
+                interval=1,
+                retry_on_empty=False,
+                max_retries=1,
+            )
+            if df is not None and not df.empty:
+                current_prices[sym] = float(df.iloc[-1]["close"])
+        except Exception as exc:
+            LOG.warning("_fetch_current_prices: intraday fallback failed for %s: %s", sym, exc)
+
+    if current_prices:
+        LOG.info("_fetch_current_prices: intraday fallback returned %d/%d symbols", len(current_prices), len(sym_to_sid))
+        return current_prices
+
+    # ── Attempt 3: stored last_ltp (stale) ───────────────────────────────────
+    LOG.warning("_fetch_current_prices: intraday fallback also empty — using stored last_ltp")
     for signal in state.get("signals", {}).values():
         sym = signal.get("symbol")
         ltp = signal.get("last_ltp")
         if sym and ltp and sym not in current_prices:
             current_prices[sym] = float(ltp)
-    LOG.info("_fetch_current_prices: last_ltp fallback returned %d symbols", len(current_prices))
+    LOG.info("_fetch_current_prices: stored last_ltp returned %d symbols", len(current_prices))
     return current_prices
 
 
