@@ -772,7 +772,7 @@
       "confirmation_5m_close": 574.0,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-10-29T11:25:00+05:30",
       "risk": {
         "entry": 574.0,
@@ -793,7 +793,12 @@
       "sl": 595.0,
       "t1": 553.0,
       "t2": 532.0,
-      "t3": 511.0
+      "t3": 511.0,
+      "entry_order_id": "PAPER_JUBLINGREA_1793254229",
+      "fill_price": 574.0,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_JUBLINGREA_1793254230"
     },
     "TITAGARH|SELL|2026-10-29T11:25:00+05:30|2026-10-29T11:25:00+05:30": {
       "symbol": "TITAGARH",
@@ -829,7 +834,7 @@
       "confirmation_5m_close": 667.7,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-10-29T11:25:00+05:30",
       "risk": {
         "entry": 667.7,
@@ -850,7 +855,12 @@
       "sl": 714.9,
       "t1": 620.5000000000001,
       "t2": 573.3000000000002,
-      "t3": 526.1000000000003
+      "t3": 526.1000000000003,
+      "entry_order_id": "PAPER_TITAGARH_1793254230",
+      "fill_price": 667.7,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_TITAGARH_1793254231"
     }
   },
   "pending_setups": {},
