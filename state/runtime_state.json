@@ -743,7 +743,7 @@
       "signal_time": "2026-10-30T10:00:00+05:30",
       "risk": {
         "entry": 1368.1,
-        "sl": 1363.4,
+        "sl": 1361.3,
         "risk": 37.700000000000045,
         "risk_percent": 2.7556465170674693,
         "t1": 1330.3999999999999,
@@ -766,7 +766,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_DALBHARAT_1793335236",
-      "last_ltp": 1325.7,
+      "last_ltp": 1323.6,
       "price_history": [
         {
           "time": "2026-10-30T10:15:37.825075+05:30",
@@ -835,6 +835,10 @@
         {
           "time": "2026-10-30T11:35:23.758346+05:30",
           "ltp": 1325.7
+        },
+        {
+          "time": "2026-10-30T11:40:29.747659+05:30",
+          "ltp": 1323.6
         }
       ],
       "highest_target_hit": "T1_HIT",
@@ -5516,6 +5520,6 @@
   },
   "volume_gainers_last_refresh": "2026-10-30T10:00:00+05:30",
   "current_prices": {
-    "DALBHARAT": 1325.7
+    "DALBHARAT": 1323.6
   }
 }
