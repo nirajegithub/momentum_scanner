@@ -766,7 +766,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_DALBHARAT_1793335236",
-      "last_ltp": 1351.8,
+      "last_ltp": 1351.5,
       "price_history": [
         {
           "time": "2026-10-30T10:15:37.825075+05:30",
@@ -923,6 +923,10 @@
         {
           "time": "2026-10-30T13:25:25.384028+05:30",
           "ltp": 1351.8
+        },
+        {
+          "time": "2026-10-30T13:30:46.305387+05:30",
+          "ltp": 1351.5
         }
       ],
       "highest_target_hit": "T1_HIT",
@@ -5604,6 +5608,6 @@
   },
   "volume_gainers_last_refresh": "2026-10-30T10:00:00+05:30",
   "current_prices": {
-    "DALBHARAT": 1351.8
+    "DALBHARAT": 1351.5
   }
 }
