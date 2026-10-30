@@ -76,5 +76,21 @@ jobs:
             echo "No scanner state changes."
           else
             git commit -m "Update NSE momentum scanner state"
-            git push
+            for i in 1 2 3; do
+              if git push; then
+                echo "Push succeeded on attempt $i"
+                break
+              fi
+              if [ $i -lt 3 ]; then
+                echo "Push rejected (attempt $i) — rebasing onto remote..."
+                if ! git pull --rebase origin main; then
+                  git checkout --theirs -- state/runtime_state.json
+                  git add state/runtime_state.json
+                  GIT_EDITOR=true git rebase --continue
+                fi
+              else
+                echo "Push failed after 3 attempts"
+                exit 1
+              fi
+            done
           fi
