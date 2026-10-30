@@ -739,7 +739,7 @@
       "confirmation_5m_close": 1368.1,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-10-30T10:00:00+05:30",
       "risk": {
         "entry": 1368.1,
@@ -1003,7 +1003,10 @@
       ],
       "highest_target_hit": "T1_HIT",
       "trailing_active": true,
-      "trail_distance": 37.700000000000045
+      "trail_distance": 37.700000000000045,
+      "exit_price": 1335.0,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-10-30T15:05:27.400735+05:30"
     }
   },
   "pending_setups": {},
