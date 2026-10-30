@@ -739,7 +739,7 @@
       "confirmation_5m_close": 1368.1,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-10-30T10:00:00+05:30",
       "risk": {
         "entry": 1368.1,
@@ -760,7 +760,12 @@
       "sl": 1405.8,
       "t1": 1330.3999999999999,
       "t2": 1292.6999999999998,
-      "t3": 1254.9999999999998
+      "t3": 1254.9999999999998,
+      "entry_order_id": "PAPER_DALBHARAT_1793335235",
+      "fill_price": 1368.1,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_DALBHARAT_1793335236"
     }
   },
   "pending_setups": {},
