@@ -753,7 +753,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_SONACOMS_1793593842",
-      "last_ltp": 899.8,
+      "last_ltp": 900.0,
       "price_history": [
         {
           "time": "2026-11-02T10:05:58.067191+05:30",
@@ -794,6 +794,10 @@
         {
           "time": "2026-11-02T10:51:03.064954+05:30",
           "ltp": 899.8
+        },
+        {
+          "time": "2026-11-02T10:55:30.917569+05:30",
+          "ltp": 900.0
         }
       ]
     },
@@ -858,7 +862,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_INDUSINDBK_1793593844",
-      "last_ltp": 834.65,
+      "last_ltp": 834.3,
       "price_history": [
         {
           "time": "2026-11-02T10:05:58.067191+05:30",
@@ -899,6 +903,10 @@
         {
           "time": "2026-11-02T10:51:03.064954+05:30",
           "ltp": 834.65
+        },
+        {
+          "time": "2026-11-02T10:55:30.917569+05:30",
+          "ltp": 834.3
         }
       ]
     },
@@ -963,7 +971,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_DIXON_1793595651",
-      "last_ltp": 12160.0,
+      "last_ltp": 12220.0,
       "price_history": [
         {
           "time": "2026-11-02T10:35:57.628413+05:30",
@@ -980,6 +988,10 @@
         {
           "time": "2026-11-02T10:51:03.064954+05:30",
           "ltp": 12160.0
+        },
+        {
+          "time": "2026-11-02T10:55:30.917569+05:30",
+          "ltp": 12220.0
         }
       ]
     },
@@ -1044,11 +1056,15 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_COCHINSHIP_1793596537",
-      "last_ltp": 1162.1,
+      "last_ltp": 1160.0,
       "price_history": [
         {
           "time": "2026-11-02T10:51:03.064954+05:30",
           "ltp": 1162.1
+        },
+        {
+          "time": "2026-11-02T10:55:30.917569+05:30",
+          "ltp": 1160.0
         }
       ]
     },
@@ -1113,11 +1129,15 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_PAYTM_1793596539",
-      "last_ltp": 1657.0,
+      "last_ltp": 1657.6,
       "price_history": [
         {
           "time": "2026-11-02T10:51:03.064954+05:30",
           "ltp": 1657.0
+        },
+        {
+          "time": "2026-11-02T10:55:30.917569+05:30",
+          "ltp": 1657.6
         }
       ]
     }
@@ -5803,9 +5823,11 @@
   },
   "volume_gainers_last_refresh": "2026-11-02T10:50:00+05:30",
   "current_prices": {
-    "SONACOMS": 899.85,
-    "INDUSINDBK": 836.0,
-    "DIXON": 12134.0
+    "SONACOMS": 900.0,
+    "INDUSINDBK": 834.3,
+    "DIXON": 12220.0,
+    "COCHINSHIP": 1160.0,
+    "PAYTM": 1657.6
   },
   "_tg_update_id": 170211597
 }
