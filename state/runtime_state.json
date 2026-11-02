@@ -753,7 +753,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_SONACOMS_1793593842",
-      "last_ltp": 902.8,
+      "last_ltp": 904.9,
       "price_history": [
         {
           "time": "2026-11-02T10:05:58.067191+05:30",
@@ -834,6 +834,10 @@
         {
           "time": "2026-11-02T11:41:04.397521+05:30",
           "ltp": 902.8
+        },
+        {
+          "time": "2026-11-02T11:45:32.800998+05:30",
+          "ltp": 904.9
         }
       ]
     },
@@ -898,7 +902,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_INDUSINDBK_1793593844",
-      "last_ltp": 830.5,
+      "last_ltp": 830.25,
       "price_history": [
         {
           "time": "2026-11-02T10:05:58.067191+05:30",
@@ -979,6 +983,10 @@
         {
           "time": "2026-11-02T11:41:04.397521+05:30",
           "ltp": 830.5
+        },
+        {
+          "time": "2026-11-02T11:45:32.800998+05:30",
+          "ltp": 830.25
         }
       ]
     },
@@ -1043,7 +1051,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_DIXON_1793595651",
-      "last_ltp": 12363.0,
+      "last_ltp": 12379.0,
       "price_history": [
         {
           "time": "2026-11-02T10:35:57.628413+05:30",
@@ -1100,6 +1108,10 @@
         {
           "time": "2026-11-02T11:41:04.397521+05:30",
           "ltp": 12363.0
+        },
+        {
+          "time": "2026-11-02T11:45:32.800998+05:30",
+          "ltp": 12379.0
         }
       ]
     },
@@ -1164,7 +1176,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_COCHINSHIP_1793596537",
-      "last_ltp": 1175.0,
+      "last_ltp": 1174.5,
       "price_history": [
         {
           "time": "2026-11-02T10:51:03.064954+05:30",
@@ -1209,6 +1221,10 @@
         {
           "time": "2026-11-02T11:41:04.397521+05:30",
           "ltp": 1175.0
+        },
+        {
+          "time": "2026-11-02T11:45:32.800998+05:30",
+          "ltp": 1174.5
         }
       ]
     },
@@ -1273,7 +1289,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_PAYTM_1793596539",
-      "last_ltp": 1653.5,
+      "last_ltp": 1653.0,
       "price_history": [
         {
           "time": "2026-11-02T10:51:03.064954+05:30",
@@ -1318,6 +1334,10 @@
         {
           "time": "2026-11-02T11:41:04.397521+05:30",
           "ltp": 1653.5
+        },
+        {
+          "time": "2026-11-02T11:45:32.800998+05:30",
+          "ltp": 1653.0
         }
       ]
     },
@@ -1382,7 +1402,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_SHRIRAMFIN_1793597435",
-      "last_ltp": 865.65,
+      "last_ltp": 863.7,
       "price_history": [
         {
           "time": "2026-11-02T11:05:58.036672+05:30",
@@ -1415,6 +1435,10 @@
         {
           "time": "2026-11-02T11:41:04.397521+05:30",
           "ltp": 865.65
+        },
+        {
+          "time": "2026-11-02T11:45:32.800998+05:30",
+          "ltp": 863.7
         }
       ]
     },
@@ -1479,7 +1503,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_GRSE_1793599251",
-      "last_ltp": 2014.7,
+      "last_ltp": 2012.9,
       "price_history": [
         {
           "time": "2026-11-02T11:35:58.971725+05:30",
@@ -1488,6 +1512,10 @@
         {
           "time": "2026-11-02T11:41:04.397521+05:30",
           "ltp": 2014.7
+        },
+        {
+          "time": "2026-11-02T11:45:32.800998+05:30",
+          "ltp": 2012.9
         }
       ]
     },
@@ -1552,7 +1580,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_JYOTICNC_1793599253",
-      "last_ltp": 941.4,
+      "last_ltp": 941.25,
       "price_history": [
         {
           "time": "2026-11-02T11:35:58.971725+05:30",
@@ -1561,6 +1589,10 @@
         {
           "time": "2026-11-02T11:41:04.397521+05:30",
           "ltp": 941.4
+        },
+        {
+          "time": "2026-11-02T11:45:32.800998+05:30",
+          "ltp": 941.25
         }
       ]
     },
@@ -1598,7 +1630,7 @@
       "confirmation_5m_close": 818.8,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-11-02T11:35:00+05:30",
       "risk": {
         "entry": 818.8,
@@ -1619,7 +1651,12 @@
       "sl": 795.95,
       "t1": 841.6499999999999,
       "t2": 864.4999999999998,
-      "t3": 887.3499999999997
+      "t3": 887.3499999999997,
+      "entry_order_id": "PAPER_HBLENGINE_1793600133",
+      "fill_price": 818.8,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_HBLENGINE_1793600134"
     },
     "MAZDOCK|BUY|2026-11-02T11:35:00+05:30|2026-11-02T11:35:00+05:30": {
       "symbol": "MAZDOCK",
@@ -1655,7 +1692,7 @@
       "confirmation_5m_close": 1764.5,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-11-02T11:35:00+05:30",
       "risk": {
         "entry": 1764.5,
@@ -1676,7 +1713,12 @@
       "sl": 1710.5,
       "t1": 1818.5,
       "t2": 1872.5,
-      "t3": 1926.5
+      "t3": 1926.5,
+      "entry_order_id": "PAPER_MAZDOCK_1793600134",
+      "fill_price": 1764.5,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_MAZDOCK_1793600135"
     }
   },
   "pending_setups": {},
@@ -6400,12 +6442,14 @@
   },
   "volume_gainers_last_refresh": "2026-11-02T11:40:00+05:30",
   "current_prices": {
-    "SONACOMS": 903.15,
-    "INDUSINDBK": 835.15,
-    "DIXON": 12362.0,
-    "COCHINSHIP": 1169.3,
-    "PAYTM": 1659.8,
-    "SHRIRAMFIN": 864.2
+    "SONACOMS": 904.9,
+    "INDUSINDBK": 830.25,
+    "DIXON": 12379.0,
+    "COCHINSHIP": 1174.5,
+    "PAYTM": 1653.0,
+    "SHRIRAMFIN": 863.7,
+    "GRSE": 2012.9,
+    "JYOTICNC": 941.25
   },
   "_tg_update_id": 170211597
 }
