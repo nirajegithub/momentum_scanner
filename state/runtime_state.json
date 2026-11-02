@@ -752,7 +752,14 @@
       "fill_price": 907.0,
       "qty": 1,
       "live_managed": true,
-      "sl_order_id": "PAPER_SL_SONACOMS_1793593842"
+      "sl_order_id": "PAPER_SL_SONACOMS_1793593842",
+      "last_ltp": 905.15,
+      "price_history": [
+        {
+          "time": "2026-11-02T10:05:29.855365+05:30",
+          "ltp": 905.15
+        }
+      ]
     },
     "INDUSINDBK|SELL|2026-11-02T09:50:00+05:30|2026-11-02T09:50:00+05:30": {
       "symbol": "INDUSINDBK",
@@ -814,7 +821,14 @@
       "fill_price": 836.05,
       "qty": 1,
       "live_managed": true,
-      "sl_order_id": "PAPER_SL_INDUSINDBK_1793593844"
+      "sl_order_id": "PAPER_SL_INDUSINDBK_1793593844",
+      "last_ltp": 834.5,
+      "price_history": [
+        {
+          "time": "2026-11-02T10:05:29.855365+05:30",
+          "ltp": 834.5
+        }
+      ]
     }
   },
   "pending_setups": {},
@@ -5472,5 +5486,9 @@
       }
     }
   },
-  "volume_gainers_last_refresh": "2026-11-02T09:50:00+05:30"
+  "volume_gainers_last_refresh": "2026-11-02T09:50:00+05:30",
+  "current_prices": {
+    "SONACOMS": 905.15,
+    "INDUSINDBK": 834.5
+  }
 }
