@@ -726,7 +726,7 @@
       "confirmation_5m_close": 907.0,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-11-02T09:45:00+05:30",
       "risk": {
         "entry": 907.0,
@@ -747,7 +747,12 @@
       "sl": 890.05,
       "t1": 923.95,
       "t2": 940.9000000000001,
-      "t3": 957.8500000000001
+      "t3": 957.8500000000001,
+      "entry_order_id": "PAPER_SONACOMS_1793593525",
+      "fill_price": 907.0,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_SONACOMS_1793593526"
     }
   },
   "pending_setups": {},
