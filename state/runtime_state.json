@@ -753,7 +753,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_SONACOMS_1793593842",
-      "last_ltp": 899.8,
+      "last_ltp": 900.2,
       "price_history": [
         {
           "time": "2026-11-02T10:05:58.067191+05:30",
@@ -782,6 +782,10 @@
         {
           "time": "2026-11-02T10:35:57.628413+05:30",
           "ltp": 899.8
+        },
+        {
+          "time": "2026-11-02T10:40:33.246749+05:30",
+          "ltp": 900.2
         }
       ]
     },
@@ -846,7 +850,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_INDUSINDBK_1793593844",
-      "last_ltp": 835.5,
+      "last_ltp": 835.55,
       "price_history": [
         {
           "time": "2026-11-02T10:05:58.067191+05:30",
@@ -875,6 +879,10 @@
         {
           "time": "2026-11-02T10:35:57.628413+05:30",
           "ltp": 835.5
+        },
+        {
+          "time": "2026-11-02T10:40:33.246749+05:30",
+          "ltp": 835.55
         }
       ]
     },
@@ -939,11 +947,15 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_DIXON_1793595651",
-      "last_ltp": 12100.0,
+      "last_ltp": 12095.0,
       "price_history": [
         {
           "time": "2026-11-02T10:35:57.628413+05:30",
           "ltp": 12100.0
+        },
+        {
+          "time": "2026-11-02T10:40:33.246749+05:30",
+          "ltp": 12095.0
         }
       ]
     },
@@ -981,7 +993,7 @@
       "confirmation_5m_close": 1161.5,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-11-02T10:30:00+05:30",
       "risk": {
         "entry": 1161.5,
@@ -1002,7 +1014,12 @@
       "sl": 1118.5,
       "t1": 1204.5,
       "t2": 1247.5,
-      "t3": 1290.5
+      "t3": 1290.5,
+      "entry_order_id": "PAPER_COCHINSHIP_1793596234",
+      "fill_price": 1161.5,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_COCHINSHIP_1793596235"
     },
     "PAYTM|BUY|2026-11-02T10:30:00+05:30|2026-11-02T10:30:00+05:30": {
       "symbol": "PAYTM",
@@ -1038,7 +1055,7 @@
       "confirmation_5m_close": 1656.8,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-11-02T10:30:00+05:30",
       "risk": {
         "entry": 1656.8,
@@ -1059,7 +1076,12 @@
       "sl": 1629.0,
       "t1": 1684.6,
       "t2": 1712.3999999999999,
-      "t3": 1740.1999999999998
+      "t3": 1740.1999999999998,
+      "entry_order_id": "PAPER_PAYTM_1793596235",
+      "fill_price": 1656.8,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_PAYTM_1793596236"
     }
   },
   "pending_setups": {},
@@ -5743,7 +5765,9 @@
   },
   "volume_gainers_last_refresh": "2026-11-02T10:30:00+05:30",
   "current_prices": {
-    "SONACOMS": 899.0,
-    "INDUSINDBK": 837.0
-  }
+    "SONACOMS": 900.2,
+    "INDUSINDBK": 835.55,
+    "DIXON": 12095.0
+  },
+  "_tg_update_id": 170211597
 }
