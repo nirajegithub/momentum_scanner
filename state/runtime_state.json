@@ -753,7 +753,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_SONACOMS_1793593842",
-      "last_ltp": 903.2,
+      "last_ltp": 903.15,
       "price_history": [
         {
           "time": "2026-11-02T10:05:58.067191+05:30",
@@ -822,6 +822,10 @@
         {
           "time": "2026-11-02T11:25:52.752642+05:30",
           "ltp": 903.2
+        },
+        {
+          "time": "2026-11-02T11:30:49.814271+05:30",
+          "ltp": 903.15
         }
       ]
     },
@@ -886,7 +890,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_INDUSINDBK_1793593844",
-      "last_ltp": 832.85,
+      "last_ltp": 835.15,
       "price_history": [
         {
           "time": "2026-11-02T10:05:58.067191+05:30",
@@ -955,6 +959,10 @@
         {
           "time": "2026-11-02T11:25:52.752642+05:30",
           "ltp": 832.85
+        },
+        {
+          "time": "2026-11-02T11:30:49.814271+05:30",
+          "ltp": 835.15
         }
       ]
     },
@@ -1019,7 +1027,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_DIXON_1793595651",
-      "last_ltp": 12346.0,
+      "last_ltp": 12362.0,
       "price_history": [
         {
           "time": "2026-11-02T10:35:57.628413+05:30",
@@ -1064,6 +1072,10 @@
         {
           "time": "2026-11-02T11:25:52.752642+05:30",
           "ltp": 12346.0
+        },
+        {
+          "time": "2026-11-02T11:30:49.814271+05:30",
+          "ltp": 12362.0
         }
       ]
     },
@@ -1161,6 +1173,10 @@
         {
           "time": "2026-11-02T11:25:52.752642+05:30",
           "ltp": 1169.3
+        },
+        {
+          "time": "2026-11-02T11:30:49.814271+05:30",
+          "ltp": 1169.3
         }
       ]
     },
@@ -1225,7 +1241,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_PAYTM_1793596539",
-      "last_ltp": 1658.5,
+      "last_ltp": 1659.8,
       "price_history": [
         {
           "time": "2026-11-02T10:51:03.064954+05:30",
@@ -1258,6 +1274,10 @@
         {
           "time": "2026-11-02T11:25:52.752642+05:30",
           "ltp": 1658.5
+        },
+        {
+          "time": "2026-11-02T11:30:49.814271+05:30",
+          "ltp": 1659.8
         }
       ]
     },
@@ -1322,7 +1342,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_SHRIRAMFIN_1793597435",
-      "last_ltp": 859.75,
+      "last_ltp": 864.2,
       "price_history": [
         {
           "time": "2026-11-02T11:05:58.036672+05:30",
@@ -1343,6 +1363,10 @@
         {
           "time": "2026-11-02T11:25:52.752642+05:30",
           "ltp": 859.75
+        },
+        {
+          "time": "2026-11-02T11:30:49.814271+05:30",
+          "ltp": 864.2
         }
       ]
     },
@@ -1380,7 +1404,7 @@
       "confirmation_5m_close": 2017.8,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-11-02T11:15:00+05:30",
       "risk": {
         "entry": 2017.8,
@@ -1401,7 +1425,12 @@
       "sl": 1914.8,
       "t1": 2120.8,
       "t2": 2223.8,
-      "t3": 2326.8
+      "t3": 2326.8,
+      "entry_order_id": "PAPER_GRSE_1793599250",
+      "fill_price": 2017.8,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_GRSE_1793599251"
     },
     "JYOTICNC|BUY|2026-11-02T11:10:00+05:30|2026-11-02T11:10:00+05:30": {
       "symbol": "JYOTICNC",
@@ -1437,7 +1466,7 @@
       "confirmation_5m_close": 943.95,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-11-02T11:10:00+05:30",
       "risk": {
         "entry": 943.95,
@@ -1458,7 +1487,12 @@
       "sl": 910.2,
       "t1": 977.7,
       "t2": 1011.45,
-      "t3": 1045.2
+      "t3": 1045.2,
+      "entry_order_id": "PAPER_JYOTICNC_1793599252",
+      "fill_price": 943.95,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_JYOTICNC_1793599253"
     }
   },
   "pending_setups": {},
@@ -6166,12 +6200,12 @@
   },
   "volume_gainers_last_refresh": "2026-11-02T11:20:00+05:30",
   "current_prices": {
-    "SONACOMS": 900.95,
-    "INDUSINDBK": 833.3,
-    "DIXON": 12330.0,
-    "COCHINSHIP": 1164.7,
-    "PAYTM": 1660.0,
-    "SHRIRAMFIN": 851.45
+    "SONACOMS": 903.15,
+    "INDUSINDBK": 835.15,
+    "DIXON": 12362.0,
+    "COCHINSHIP": 1169.3,
+    "PAYTM": 1659.8,
+    "SHRIRAMFIN": 864.2
   },
   "_tg_update_id": 170211597
 }
