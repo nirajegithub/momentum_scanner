@@ -726,7 +726,7 @@
       "confirmation_5m_close": 907.0,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-11-02T09:45:00+05:30",
       "risk": {
         "entry": 907.0,
@@ -999,7 +999,10 @@
           "time": "2026-11-02T15:05:33.059496+05:30",
           "ltp": 899.15
         }
-      ]
+      ],
+      "exit_price": 899.25,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-11-02T15:06:02.668885+05:30"
     },
     "INDUSINDBK|SELL|2026-11-02T09:50:00+05:30|2026-11-02T09:50:00+05:30": {
       "symbol": "INDUSINDBK",
@@ -1035,7 +1038,7 @@
       "confirmation_5m_close": 836.05,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-11-02T09:50:00+05:30",
       "risk": {
         "entry": 836.05,
@@ -1308,7 +1311,10 @@
           "time": "2026-11-02T15:05:33.059496+05:30",
           "ltp": 835.55
         }
-      ]
+      ],
+      "exit_price": 835.45,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-11-02T15:06:02.668885+05:30"
     },
     "DIXON|BUY|2026-11-02T10:15:00+05:30|2026-11-02T10:15:00+05:30": {
       "symbol": "DIXON",
@@ -1344,7 +1350,7 @@
       "confirmation_5m_close": 12020.0,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-11-02T10:15:00+05:30",
       "risk": {
         "entry": 12020.0,
@@ -1593,7 +1599,10 @@
           "time": "2026-11-02T15:05:33.059496+05:30",
           "ltp": 12370.0
         }
-      ]
+      ],
+      "exit_price": 12362.0,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-11-02T15:06:02.668885+05:30"
     },
     "COCHINSHIP|BUY|2026-11-02T10:30:00+05:30|2026-11-02T10:30:00+05:30": {
       "symbol": "COCHINSHIP",
@@ -1629,7 +1638,7 @@
       "confirmation_5m_close": 1161.5,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-11-02T10:30:00+05:30",
       "risk": {
         "entry": 1161.5,
@@ -1866,7 +1875,10 @@
           "time": "2026-11-02T15:05:33.059496+05:30",
           "ltp": 1165.9
         }
-      ]
+      ],
+      "exit_price": 1165.6,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-11-02T15:06:02.668885+05:30"
     },
     "PAYTM|BUY|2026-11-02T10:30:00+05:30|2026-11-02T10:30:00+05:30": {
       "symbol": "PAYTM",
@@ -1902,7 +1914,7 @@
       "confirmation_5m_close": 1656.8,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-11-02T10:30:00+05:30",
       "risk": {
         "entry": 1656.8,
@@ -2139,7 +2151,10 @@
           "time": "2026-11-02T15:05:33.059496+05:30",
           "ltp": 1643.6
         }
-      ]
+      ],
+      "exit_price": 1649.6,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-11-02T15:06:02.668885+05:30"
     },
     "SHRIRAMFIN|BUY|2026-11-02T10:50:00+05:30|2026-11-02T10:50:00+05:30": {
       "symbol": "SHRIRAMFIN",
@@ -2175,7 +2190,7 @@
       "confirmation_5m_close": 847.85,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-11-02T10:50:00+05:30",
       "risk": {
         "entry": 847.85,
@@ -2403,7 +2418,10 @@
       ],
       "highest_target_hit": "T1_HIT",
       "trailing_active": true,
-      "trail_distance": 18.25
+      "trail_distance": 18.25,
+      "exit_price": 863.05,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-11-02T15:06:02.668885+05:30"
     },
     "GRSE|BUY|2026-11-02T11:15:00+05:30|2026-11-02T11:15:00+05:30": {
       "symbol": "GRSE",
@@ -2439,7 +2457,7 @@
       "confirmation_5m_close": 2017.8,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-11-02T11:15:00+05:30",
       "risk": {
         "entry": 2017.8,
@@ -2640,7 +2658,10 @@
           "time": "2026-11-02T15:05:33.059496+05:30",
           "ltp": 2053.8
         }
-      ]
+      ],
+      "exit_price": 2055.8,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-11-02T15:06:02.668885+05:30"
     },
     "JYOTICNC|BUY|2026-11-02T11:10:00+05:30|2026-11-02T11:10:00+05:30": {
       "symbol": "JYOTICNC",
@@ -2676,7 +2697,7 @@
       "confirmation_5m_close": 943.95,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-11-02T11:10:00+05:30",
       "risk": {
         "entry": 943.95,
@@ -2877,7 +2898,10 @@
           "time": "2026-11-02T15:05:33.059496+05:30",
           "ltp": 943.2
         }
-      ]
+      ],
+      "exit_price": 938.05,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-11-02T15:06:02.668885+05:30"
     },
     "HBLENGINE|BUY|2026-11-02T11:35:00+05:30|2026-11-02T11:35:00+05:30": {
       "symbol": "HBLENGINE",
@@ -2913,7 +2937,7 @@
       "confirmation_5m_close": 818.8,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-11-02T11:35:00+05:30",
       "risk": {
         "entry": 818.8,
@@ -3102,7 +3126,10 @@
           "time": "2026-11-02T15:05:33.059496+05:30",
           "ltp": 819.35
         }
-      ]
+      ],
+      "exit_price": 819.65,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-11-02T15:06:02.668885+05:30"
     },
     "MAZDOCK|BUY|2026-11-02T11:35:00+05:30|2026-11-02T11:35:00+05:30": {
       "symbol": "MAZDOCK",
@@ -3138,7 +3165,7 @@
       "confirmation_5m_close": 1764.5,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-11-02T11:35:00+05:30",
       "risk": {
         "entry": 1764.5,
@@ -3327,7 +3354,10 @@
           "time": "2026-11-02T15:05:33.059496+05:30",
           "ltp": 1741.0
         }
-      ]
+      ],
+      "exit_price": 1739.5,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-11-02T15:06:02.668885+05:30"
     },
     "INFY|SELL|2026-11-02T12:05:00+05:30|2026-11-02T12:05:00+05:30": {
       "symbol": "INFY",
@@ -3363,7 +3393,7 @@
       "confirmation_5m_close": 1168.2,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-11-02T12:05:00+05:30",
       "risk": {
         "entry": 1168.2,
@@ -3528,7 +3558,10 @@
           "time": "2026-11-02T15:05:33.059496+05:30",
           "ltp": 1155.0
         }
-      ]
+      ],
+      "exit_price": 1156.4,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-11-02T15:06:02.668885+05:30"
     },
     "PERSISTENT|BUY|2026-11-02T12:15:00+05:30|2026-11-02T12:15:00+05:30": {
       "symbol": "PERSISTENT",
@@ -3564,7 +3597,7 @@
       "confirmation_5m_close": 6102.0,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-11-02T12:15:00+05:30",
       "risk": {
         "entry": 6102.0,
@@ -3717,7 +3750,10 @@
           "time": "2026-11-02T15:05:33.059496+05:30",
           "ltp": 6070.5
         }
-      ]
+      ],
+      "exit_price": 6072.0,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-11-02T15:06:02.668885+05:30"
     },
     "TATATECH|BUY|2026-11-02T12:15:00+05:30|2026-11-02T12:15:00+05:30": {
       "symbol": "TATATECH",
@@ -3753,7 +3789,7 @@
       "confirmation_5m_close": 660.4,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-11-02T12:15:00+05:30",
       "risk": {
         "entry": 660.4,
@@ -3906,7 +3942,10 @@
           "time": "2026-11-02T15:05:33.059496+05:30",
           "ltp": 656.3
         }
-      ]
+      ],
+      "exit_price": 657.25,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-11-02T15:06:02.668885+05:30"
     },
     "TIINDIA|BUY|2026-11-02T12:10:00+05:30|2026-11-02T12:10:00+05:30": {
       "symbol": "TIINDIA",
@@ -3942,7 +3981,7 @@
       "confirmation_5m_close": 2159.6,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-11-02T12:10:00+05:30",
       "risk": {
         "entry": 2159.6,
@@ -4095,7 +4134,10 @@
           "time": "2026-11-02T15:05:33.059496+05:30",
           "ltp": 2169.6
         }
-      ]
+      ],
+      "exit_price": 2169.6,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-11-02T15:06:02.668885+05:30"
     },
     "SYRMA|SELL|2026-11-02T12:30:00+05:30|2026-11-02T12:30:00+05:30": {
       "symbol": "SYRMA",
@@ -4131,7 +4173,7 @@
       "confirmation_5m_close": 1527.0,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "ACTIVE",
+      "status": "EXITED",
       "signal_time": "2026-11-02T12:30:00+05:30",
       "risk": {
         "entry": 1527.0,
@@ -4272,7 +4314,10 @@
           "time": "2026-11-02T15:05:33.059496+05:30",
           "ltp": 1532.1
         }
-      ]
+      ],
+      "exit_price": 1529.7,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-11-02T15:06:02.668885+05:30"
     },
     "UPL|BUY|2026-11-02T12:30:00+05:30|2026-11-02T12:30:00+05:30": {
       "symbol": "UPL",
