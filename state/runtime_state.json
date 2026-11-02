@@ -753,7 +753,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_SONACOMS_1793593842",
-      "last_ltp": 899.0,
+      "last_ltp": 899.5,
       "price_history": [
         {
           "time": "2026-11-02T10:05:58.067191+05:30",
@@ -778,6 +778,10 @@
         {
           "time": "2026-11-02T10:30:49.547612+05:30",
           "ltp": 899.0
+        },
+        {
+          "time": "2026-11-02T10:35:28.840746+05:30",
+          "ltp": 899.5
         }
       ]
     },
@@ -842,7 +846,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_INDUSINDBK_1793593844",
-      "last_ltp": 837.0,
+      "last_ltp": 835.2,
       "price_history": [
         {
           "time": "2026-11-02T10:05:58.067191+05:30",
@@ -867,6 +871,10 @@
         {
           "time": "2026-11-02T10:30:49.547612+05:30",
           "ltp": 837.0
+        },
+        {
+          "time": "2026-11-02T10:35:28.840746+05:30",
+          "ltp": 835.2
         }
       ]
     },
@@ -930,7 +938,14 @@
       "fill_price": 12020.0,
       "qty": 1,
       "live_managed": true,
-      "sl_order_id": "PAPER_SL_DIXON_1793595651"
+      "sl_order_id": "PAPER_SL_DIXON_1793595651",
+      "last_ltp": 12100.0,
+      "price_history": [
+        {
+          "time": "2026-11-02T10:35:28.840746+05:30",
+          "ltp": 12100.0
+        }
+      ]
     }
   },
   "pending_setups": {},
@@ -5598,7 +5613,9 @@
   },
   "volume_gainers_last_refresh": "2026-11-02T10:20:00+05:30",
   "current_prices": {
-    "SONACOMS": 899.0,
-    "INDUSINDBK": 837.0
-  }
+    "SONACOMS": 899.5,
+    "INDUSINDBK": 835.2,
+    "DIXON": 12100.0
+  },
+  "_tg_update_id": 170211597
 }
