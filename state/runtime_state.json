@@ -726,7 +726,7 @@
       "confirmation_5m_close": 907.0,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-11-02T09:45:00+05:30",
       "risk": {
         "entry": 907.0,
@@ -747,7 +747,12 @@
       "sl": 890.05,
       "t1": 923.95,
       "t2": 940.9000000000001,
-      "t3": 957.8500000000001
+      "t3": 957.8500000000001,
+      "entry_order_id": "PAPER_SONACOMS_1793593841",
+      "fill_price": 907.0,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_SONACOMS_1793593842"
     },
     "INDUSINDBK|SELL|2026-11-02T09:50:00+05:30|2026-11-02T09:50:00+05:30": {
       "symbol": "INDUSINDBK",
@@ -783,7 +788,7 @@
       "confirmation_5m_close": 836.05,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-11-02T09:50:00+05:30",
       "risk": {
         "entry": 836.05,
@@ -804,7 +809,12 @@
       "sl": 847.1,
       "t1": 824.9999999999999,
       "t2": 813.9499999999998,
-      "t3": 802.8999999999997
+      "t3": 802.8999999999997,
+      "entry_order_id": "PAPER_INDUSINDBK_1793593843",
+      "fill_price": 836.05,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_INDUSINDBK_1793593844"
     }
   },
   "pending_setups": {},
