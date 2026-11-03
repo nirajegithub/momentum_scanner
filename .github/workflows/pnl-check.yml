@@ -46,11 +46,10 @@ jobs:
           sys.path.insert(0, ".")
           from app.dhan_client import DhanClient
           from app.telegram import send
-          from app.calendar import previous_trading_day
+          from app.calendar import previous_trading_day  # noqa: F401 (used by _daily_values path)
 
           IST = ZoneInfo("Asia/Kolkata")
           today = datetime.now(IST).date()
-          prev_day = previous_trading_day(today)
 
           state = json.loads(Path("state/runtime_state.json").read_text(encoding="utf-8"))
           signals = state.get("signals", {})
@@ -219,16 +218,23 @@ jobs:
 
           # Append to cumulative pnl_history.json for artifact auto-update
           day_label = today.strftime("%b%d")  # e.g. "Nov03"
+          # Margin: sum entry prices of symbols that actually had price data (in `rows`).
+          # Symbols in no_price are excluded — they were never traded.
+          # Divisor 5 encodes 5x leverage (Dhan intraday default).
+          _LEVERAGE = 5
+          traded_symbols = {r[0] for r in rows}
+          margin = round(sum(
+              float(s.get("risk", {}).get("entry", 0))
+              for s in signals.values()
+              if s.get("symbol") in traded_symbols
+          ) / _LEVERAGE)
           summary = {
               "date":   day_label,
               "pnl":    round(total, 2),
               "wins":   len(win_rows),
               "losses": len(loss_rows),
               "total":  len(rows),
-              "margin": round(sum(
-                  float(s.get("risk", {}).get("entry", 0))
-                  for s in signals.values()
-              ) / 5),
+              "margin": margin,
               "trades": [
                   [day_label, r[0], round(r[4], 2), r[1]]
                   for r in rows
@@ -257,11 +263,39 @@ jobs:
             for i in 1 2 3; do
               if git push; then echo "Push succeeded on attempt $i"; break; fi
               if [ $i -lt 3 ]; then
-                echo "Push rejected (attempt $i) — rebasing..."
-                if ! git pull --rebase origin main; then
-                  git checkout --theirs -- state/pnl_history.json
-                  git add state/pnl_history.json
-                  GIT_EDITOR=true git rebase --continue
+                echo "Push rejected (attempt $i) — merging pnl_history.json with remote..."
+                git fetch origin main
+                # Pre-merge: union-join local and remote pnl_history.json by date key.
+                # This avoids silent data loss from git checkout --theirs during rebase.
+                python3 - <<'PYEOF'
+import json, subprocess, sys
+try:
+    remote_json = subprocess.check_output(
+        ["git", "show", "origin/main:state/pnl_history.json"],
+        stderr=subprocess.DEVNULL,
+    ).decode()
+    remote = json.loads(remote_json)
+except Exception:
+    remote = []
+try:
+    with open("state/pnl_history.json", encoding="utf-8") as fh:
+        local = json.load(fh)
+except Exception:
+    local = []
+merged = {e["date"]: e for e in remote}
+for e in local:
+    if e.get("date") not in merged:
+        merged[e["date"]] = e
+result = sorted(merged.values(), key=lambda e: e.get("date", ""))
+with open("state/pnl_history.json", "w", encoding="utf-8") as fh:
+    json.dump(result, fh, indent=2)
+print(f"Merged pnl_history.json: {len(result)} entries")
+PYEOF
+                git add state/pnl_history.json
+                git commit --amend --no-edit
+                if ! git rebase origin/main; then
+                  git rebase --abort
+                  echo "Rebase failed and aborted on attempt $i; retrying..."
                 fi
               else
                 echo "Push failed after 3 attempts"; exit 1

@@ -48,8 +48,13 @@ def _frame(direction="BUY", rows=30):
     close.iloc[-1] = breakout_close
     rvol.iloc[-1] = 1.8
 
+    body = (close - open_).abs()
+    candle_range = (high - low).replace(0, pd.NA)
+    body_ratio = (body / candle_range).fillna(0.0)
+
     return pd.DataFrame({
-        "open": open_, "high": high, "low": low, "close": close, "rsi14": rsi, "rvol": rvol,
+        "open": open_, "high": high, "low": low, "close": close,
+        "rsi14": rsi, "rvol": rvol, "body_ratio": body_ratio,
     }, index=idx)
 
 
@@ -69,14 +74,13 @@ def test_sell_breakout_passes_all_filters():
 
 def test_buy_rsi_out_of_band_rejected():
     frame = _frame("BUY")
-    frame.iloc[-1, frame.columns.get_loc("rsi14")] = 75.0  # above buy_rsi_max
+    frame.iloc[-1, frame.columns.get_loc("rsi14")] = 90.0  # at buy_rsi_max boundary (not < 90)
     assert evaluate_b1_breakout(frame, ORB, 500, 600_000) is None
 
 
-def test_buy_rsi_momentum_not_aligned_rejected():
+def test_buy_rsi_at_lower_boundary_rejected():
     frame = _frame("BUY")
-    frame.iloc[-1, frame.columns.get_loc("rsi14")] = 56.0
-    frame.iloc[-2, frame.columns.get_loc("rsi14")] = 65.0  # falling, not rising
+    frame.iloc[-1, frame.columns.get_loc("rsi14")] = 45.0  # at buy_rsi_min (not > 45)
     assert evaluate_b1_breakout(frame, ORB, 500, 600_000) is None
 
 
