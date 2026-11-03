@@ -843,7 +843,7 @@
       "confirmation_5m_close": 1575.0,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-11-03T09:45:00+05:30",
       "risk": {
         "entry": 1575.0,
@@ -864,7 +864,12 @@
       "sl": 1516.3,
       "t1": 1633.7,
       "t2": 1692.4,
-      "t3": 1751.1000000000001
+      "t3": 1751.1000000000001,
+      "entry_order_id": "PAPER_CHENNPETRO_1793680236",
+      "fill_price": 1575.0,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_CHENNPETRO_1793680237"
     },
     "COCHINSHIP|BUY|2026-11-03T09:45:00+05:30|2026-11-03T09:45:00+05:30": {
       "symbol": "COCHINSHIP",
@@ -900,7 +905,7 @@
       "confirmation_5m_close": 1196.0,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-11-03T09:45:00+05:30",
       "risk": {
         "entry": 1196.0,
@@ -921,7 +926,12 @@
       "sl": 1169.4,
       "t1": 1222.6,
       "t2": 1249.1999999999998,
-      "t3": 1275.7999999999997
+      "t3": 1275.7999999999997,
+      "entry_order_id": "PAPER_COCHINSHIP_1793680238",
+      "fill_price": 1196.0,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_COCHINSHIP_1793680239"
     },
     "HINDZINC|BUY|2026-11-03T09:50:00+05:30|2026-11-03T09:50:00+05:30": {
       "symbol": "HINDZINC",
@@ -957,7 +967,7 @@
       "confirmation_5m_close": 526.0,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-11-03T09:50:00+05:30",
       "risk": {
         "entry": 526.0,
@@ -978,7 +988,12 @@
       "sl": 513.9,
       "t1": 538.1,
       "t2": 550.2,
-      "t3": 562.3000000000001
+      "t3": 562.3000000000001,
+      "entry_order_id": "PAPER_HINDZINC_1793680240",
+      "fill_price": 526.0,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_HINDZINC_1793680241"
     }
   },
   "pending_setups": {},
