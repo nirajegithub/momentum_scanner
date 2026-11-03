@@ -217,7 +217,7 @@ jobs:
           sent = send(msg)
           print("Telegram sent:", sent)
 
-          # Write structured JSON for artifact auto-update
+          # Append to cumulative pnl_history.json for artifact auto-update
           day_label = today.strftime("%b%d")  # e.g. "Nov03"
           summary = {
               "date":   day_label,
@@ -234,28 +234,33 @@ jobs:
                   for r in rows
               ],
           }
-          Path("state/daily_summary.json").write_text(
-              json.dumps(summary, indent=2), encoding="utf-8"
-          )
-          print(f"Written state/daily_summary.json: {day_label}  pnl={summary['pnl']:+.2f}  trades={summary['total']}")
+          history_path = Path("state/pnl_history.json")
+          try:
+              history = json.loads(history_path.read_text(encoding="utf-8"))
+          except Exception:
+              history = []
+          history = [e for e in history if e.get("date") != day_label]
+          history.append(summary)
+          history_path.write_text(json.dumps(history, indent=2), encoding="utf-8")
+          print(f"Written state/pnl_history.json: {day_label}  pnl={summary['pnl']:+.2f}  trades={summary['total']}  total_days={len(history)}")
           EOF
 
-      - name: Commit daily summary
+      - name: Commit P&L history
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add state/daily_summary.json
+          git add state/pnl_history.json
           if git diff --cached --quiet; then
-            echo "No summary changes."
+            echo "No history changes."
           else
-            git commit -m "Daily P&L summary snapshot"
+            git commit -m "pnl-check: append daily summary to pnl_history.json"
             for i in 1 2 3; do
               if git push; then echo "Push succeeded on attempt $i"; break; fi
               if [ $i -lt 3 ]; then
                 echo "Push rejected (attempt $i) — rebasing..."
                 if ! git pull --rebase origin main; then
-                  git checkout --theirs -- state/daily_summary.json
-                  git add state/daily_summary.json
+                  git checkout --theirs -- state/pnl_history.json
+                  git add state/pnl_history.json
                   GIT_EDITOR=true git rebase --continue
                 fi
               else
