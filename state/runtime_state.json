@@ -869,7 +869,14 @@
       "fill_price": 1575.0,
       "qty": 1,
       "live_managed": true,
-      "sl_order_id": "PAPER_SL_CHENNPETRO_1793680237"
+      "sl_order_id": "PAPER_SL_CHENNPETRO_1793680237",
+      "last_ltp": 1562.2,
+      "price_history": [
+        {
+          "time": "2026-11-03T10:05:42.664048+05:30",
+          "ltp": 1562.2
+        }
+      ]
     },
     "COCHINSHIP|BUY|2026-11-03T09:45:00+05:30|2026-11-03T09:45:00+05:30": {
       "symbol": "COCHINSHIP",
@@ -931,7 +938,14 @@
       "fill_price": 1196.0,
       "qty": 1,
       "live_managed": true,
-      "sl_order_id": "PAPER_SL_COCHINSHIP_1793680239"
+      "sl_order_id": "PAPER_SL_COCHINSHIP_1793680239",
+      "last_ltp": 1208.5,
+      "price_history": [
+        {
+          "time": "2026-11-03T10:05:42.664048+05:30",
+          "ltp": 1208.5
+        }
+      ]
     },
     "HINDZINC|BUY|2026-11-03T09:50:00+05:30|2026-11-03T09:50:00+05:30": {
       "symbol": "HINDZINC",
@@ -993,7 +1007,14 @@
       "fill_price": 526.0,
       "qty": 1,
       "live_managed": true,
-      "sl_order_id": "PAPER_SL_HINDZINC_1793680241"
+      "sl_order_id": "PAPER_SL_HINDZINC_1793680241",
+      "last_ltp": 526.75,
+      "price_history": [
+        {
+          "time": "2026-11-03T10:05:42.664048+05:30",
+          "ltp": 526.75
+        }
+      ]
     }
   },
   "pending_setups": {},
@@ -5795,5 +5816,10 @@
       }
     }
   },
-  "volume_gainers_last_refresh": "2026-11-03T09:50:00+05:30"
+  "volume_gainers_last_refresh": "2026-11-03T09:50:00+05:30",
+  "current_prices": {
+    "CHENNPETRO": 1562.2,
+    "COCHINSHIP": 1208.5,
+    "HINDZINC": 526.75
+  }
 }
