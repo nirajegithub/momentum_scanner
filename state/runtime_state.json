@@ -870,11 +870,15 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_CHENNPETRO_1793680237",
-      "last_ltp": 1562.2,
+      "last_ltp": 1562.9,
       "price_history": [
         {
           "time": "2026-11-03T10:06:08.904067+05:30",
           "ltp": 1562.2
+        },
+        {
+          "time": "2026-11-03T10:10:27.394731+05:30",
+          "ltp": 1562.9
         }
       ]
     },
@@ -939,11 +943,15 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_COCHINSHIP_1793680239",
-      "last_ltp": 1210.3,
+      "last_ltp": 1209.9,
       "price_history": [
         {
           "time": "2026-11-03T10:06:08.904067+05:30",
           "ltp": 1210.3
+        },
+        {
+          "time": "2026-11-03T10:10:27.394731+05:30",
+          "ltp": 1209.9
         }
       ]
     },
@@ -1008,11 +1016,15 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_HINDZINC_1793680241",
-      "last_ltp": 526.8,
+      "last_ltp": 527.0,
       "price_history": [
         {
           "time": "2026-11-03T10:06:08.904067+05:30",
           "ltp": 526.8
+        },
+        {
+          "time": "2026-11-03T10:10:27.394731+05:30",
+          "ltp": 527.0
         }
       ]
     },
@@ -1050,7 +1062,7 @@
       "confirmation_5m_close": 2439.4,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-11-03T09:55:00+05:30",
       "risk": {
         "entry": 2439.4,
@@ -1071,7 +1083,12 @@
       "sl": 2368.8,
       "t1": 2510.0,
       "t2": 2580.6,
-      "t3": 2651.2
+      "t3": 2651.2,
+      "entry_order_id": "PAPER_HDFCAMC_1793680827",
+      "fill_price": 2439.4,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_HDFCAMC_1793680828"
     },
     "NAM-INDIA|BUY|2026-11-03T09:55:00+05:30|2026-11-03T09:55:00+05:30": {
       "symbol": "NAM-INDIA",
@@ -1107,7 +1124,7 @@
       "confirmation_5m_close": 993.35,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-11-03T09:55:00+05:30",
       "risk": {
         "entry": 993.35,
@@ -1128,7 +1145,12 @@
       "sl": 961.45,
       "t1": 1025.25,
       "t2": 1057.15,
-      "t3": 1089.05
+      "t3": 1089.05,
+      "entry_order_id": "PAPER_NAM-INDIA_1793680829",
+      "fill_price": 993.35,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_NAM-INDIA_1793680830"
     }
   },
   "pending_setups": {},
@@ -5946,5 +5968,10 @@
       }
     }
   },
-  "volume_gainers_last_refresh": "2026-11-03T10:00:00+05:30"
+  "volume_gainers_last_refresh": "2026-11-03T10:00:00+05:30",
+  "current_prices": {
+    "CHENNPETRO": 1562.9,
+    "COCHINSHIP": 1209.9,
+    "HINDZINC": 527.0
+  }
 }
