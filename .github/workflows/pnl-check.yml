@@ -267,32 +267,7 @@ jobs:
               if [ $i -lt 3 ]; then
                 echo "Push rejected (attempt $i) — merging pnl_history.json with remote..."
                 git fetch origin main
-                # Pre-merge: union-join local and remote pnl_history.json by date key.
-                # This avoids silent data loss from git checkout --theirs during rebase.
-                python3 - <<'PYEOF'
-import json, subprocess, sys
-try:
-    remote_json = subprocess.check_output(
-        ["git", "show", "origin/main:state/pnl_history.json"],
-        stderr=subprocess.DEVNULL,
-    ).decode()
-    remote = json.loads(remote_json)
-except Exception:
-    remote = []
-try:
-    with open("state/pnl_history.json", encoding="utf-8") as fh:
-        local = json.load(fh)
-except Exception:
-    local = []
-merged = {e["date"]: e for e in remote}
-for e in local:
-    if e.get("date") not in merged:
-        merged[e["date"]] = e
-result = sorted(merged.values(), key=lambda e: e.get("date", ""))
-with open("state/pnl_history.json", "w", encoding="utf-8") as fh:
-    json.dump(result, fh, indent=2)
-print(f"Merged pnl_history.json: {len(result)} entries")
-PYEOF
+                python3 scripts/merge_pnl_history.py
                 git add state/pnl_history.json
                 git commit --amend --no-edit
                 if ! git rebase origin/main; then
