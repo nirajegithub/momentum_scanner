@@ -870,7 +870,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_CHENNPETRO_1793680237",
-      "last_ltp": 1546.4,
+      "last_ltp": 1545.8,
       "price_history": [
         {
           "time": "2026-11-03T10:06:08.904067+05:30",
@@ -935,6 +935,10 @@
         {
           "time": "2026-11-03T11:20:58.643114+05:30",
           "ltp": 1546.4
+        },
+        {
+          "time": "2026-11-03T11:25:33.912987+05:30",
+          "ltp": 1545.8
         }
       ]
     },
@@ -999,7 +1003,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_COCHINSHIP_1793680239",
-      "last_ltp": 1213.0,
+      "last_ltp": 1210.5,
       "price_history": [
         {
           "time": "2026-11-03T10:06:08.904067+05:30",
@@ -1064,6 +1068,10 @@
         {
           "time": "2026-11-03T11:20:58.643114+05:30",
           "ltp": 1213.0
+        },
+        {
+          "time": "2026-11-03T11:25:33.912987+05:30",
+          "ltp": 1210.5
         }
       ]
     },
@@ -1128,7 +1136,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_HINDZINC_1793680241",
-      "last_ltp": 525.3,
+      "last_ltp": 525.95,
       "price_history": [
         {
           "time": "2026-11-03T10:06:08.904067+05:30",
@@ -1193,6 +1201,10 @@
         {
           "time": "2026-11-03T11:20:58.643114+05:30",
           "ltp": 525.3
+        },
+        {
+          "time": "2026-11-03T11:25:33.912987+05:30",
+          "ltp": 525.95
         }
       ]
     },
@@ -1257,7 +1269,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_HDFCAMC_1793681135",
-      "last_ltp": 2433.4,
+      "last_ltp": 2438.5,
       "price_history": [
         {
           "time": "2026-11-03T10:20:55.861033+05:30",
@@ -1310,6 +1322,10 @@
         {
           "time": "2026-11-03T11:20:58.643114+05:30",
           "ltp": 2433.4
+        },
+        {
+          "time": "2026-11-03T11:25:33.912987+05:30",
+          "ltp": 2438.5
         }
       ]
     },
@@ -1374,7 +1390,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_NAM-INDIA_1793681137",
-      "last_ltp": 991.0,
+      "last_ltp": 992.45,
       "price_history": [
         {
           "time": "2026-11-03T10:20:55.861033+05:30",
@@ -1427,6 +1443,10 @@
         {
           "time": "2026-11-03T11:20:58.643114+05:30",
           "ltp": 991.0
+        },
+        {
+          "time": "2026-11-03T11:25:33.912987+05:30",
+          "ltp": 992.45
         }
       ]
     },
@@ -1491,7 +1511,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_GRSE_1793682057",
-      "last_ltp": 2191.0,
+      "last_ltp": 2193.4,
       "price_history": [
         {
           "time": "2026-11-03T10:36:11.944339+05:30",
@@ -1532,6 +1552,10 @@
         {
           "time": "2026-11-03T11:20:58.643114+05:30",
           "ltp": 2191.0
+        },
+        {
+          "time": "2026-11-03T11:25:33.912987+05:30",
+          "ltp": 2193.4
         }
       ]
     },
@@ -1596,7 +1620,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_LODHA_1793682937",
-      "last_ltp": 1053.7,
+      "last_ltp": 1061.2,
       "price_history": [
         {
           "time": "2026-11-03T10:51:06.517012+05:30",
@@ -1625,6 +1649,10 @@
         {
           "time": "2026-11-03T11:20:58.643114+05:30",
           "ltp": 1053.7
+        },
+        {
+          "time": "2026-11-03T11:25:33.912987+05:30",
+          "ltp": 1061.2
         }
       ]
     },
@@ -1689,7 +1717,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_MAXHEALTH_1793683844",
-      "last_ltp": 895.5,
+      "last_ltp": 895.85,
       "price_history": [
         {
           "time": "2026-11-03T11:06:04.866068+05:30",
@@ -1706,6 +1734,10 @@
         {
           "time": "2026-11-03T11:20:58.643114+05:30",
           "ltp": 895.5
+        },
+        {
+          "time": "2026-11-03T11:25:33.912987+05:30",
+          "ltp": 895.85
         }
       ]
     },
@@ -1743,7 +1775,7 @@
       "confirmation_5m_close": 880.3,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-11-03T11:10:00+05:30",
       "risk": {
         "entry": 880.3,
@@ -1764,7 +1796,12 @@
       "sl": 889.0,
       "t1": 871.5999999999999,
       "t2": 862.8999999999999,
-      "t3": 854.1999999999998
+      "t3": 854.1999999999998,
+      "entry_order_id": "PAPER_PREMIERENE_1793685334",
+      "fill_price": 880.3,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_PREMIERENE_1793685335"
     }
   },
   "pending_setups": {},
@@ -6616,14 +6653,14 @@
   },
   "volume_gainers_last_refresh": "2026-11-03T11:20:00+05:30",
   "current_prices": {
-    "CHENNPETRO": 1547.2,
-    "COCHINSHIP": 1213.0,
-    "HINDZINC": 525.9,
-    "HDFCAMC": 2435.0,
-    "NAM-INDIA": 990.0,
-    "GRSE": 2199.7,
-    "LODHA": 1053.9,
-    "MAXHEALTH": 895.95
+    "CHENNPETRO": 1545.8,
+    "COCHINSHIP": 1210.5,
+    "HINDZINC": 525.95,
+    "HDFCAMC": 2438.5,
+    "NAM-INDIA": 992.45,
+    "GRSE": 2193.4,
+    "LODHA": 1061.2,
+    "MAXHEALTH": 895.85
   },
   "_tg_update_id": 170211598
 }
