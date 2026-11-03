@@ -785,6 +785,65 @@ class DhanClient:
 
         return df
 
+    # ------------------------------------------------------------------
+    # Margin / funds
+    # ------------------------------------------------------------------
+
+    def get_margin_required(
+        self,
+        security_id: str,
+        exchange_segment: str,
+        direction: str,
+        qty: int,
+        price: float,
+        product_type: str = "INTRA",
+    ) -> float | None:
+        """Return the total margin (₹) required for this order from Dhan.
+
+        Uses Dhan's margin_calculator API so each stock's actual intraday
+        leverage is respected (not a hardcoded 5× divisor).
+        Returns None on any API failure (caller should fail-open).
+        """
+        try:
+            resp = self.dhan.margin_calculator(
+                security_id=str(security_id),
+                exchange_segment=exchange_segment.upper(),
+                transaction_type=direction.upper(),
+                quantity=int(qty),
+                product_type=product_type.upper(),
+                price=float(price),
+            )
+            data = resp.get("data", resp) if isinstance(resp, dict) else {}
+            total = data.get("totalMargin") or data.get("total_margin")
+            if total is not None:
+                return float(total)
+            LOG.warning("margin_calculator: unexpected response shape: %s", resp)
+            return None
+        except Exception as exc:
+            LOG.warning("margin_calculator failed: %s", exc)
+            return None
+
+    def get_available_balance(self) -> float | None:
+        """Return the available intraday balance (₹) from Dhan fund limits.
+
+        Returns None on any API failure (caller should fail-open).
+        """
+        try:
+            resp = self.dhan.get_fund_limits()
+            data = resp.get("data", resp) if isinstance(resp, dict) else {}
+            bal = (
+                data.get("availabelBalance")   # Dhan's documented spelling (sic)
+                or data.get("availableBalance")
+                or data.get("net")
+            )
+            if bal is not None:
+                return float(bal)
+            LOG.warning("get_fund_limits: unexpected response shape: %s", resp)
+            return None
+        except Exception as exc:
+            LOG.warning("get_fund_limits failed: %s", exc)
+            return None
+
 
 # ----------------------------------------------------------------------
 # NSE regular-session filter

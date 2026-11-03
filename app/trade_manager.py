@@ -93,6 +93,37 @@ def pre_trade_ok(signal: dict, state: dict) -> bool:
     return True
 
 
+def _margin_ok(dhan, signal: dict, qty: int) -> tuple[bool, str]:
+    """Check Dhan margin_calculator for the actual margin required.
+
+    Each stock has its own intraday leverage (not a uniform 5×), so we call
+    Dhan's API for the exact figure. Fails open (returns True) when the API
+    is unreachable — Dhan will reject the order itself if funds are short.
+    """
+    sec_id   = str(signal.get("security_id", ""))
+    exch_seg = signal.get("exchange_segment", "NSE_EQ")
+    direction = signal["direction"]
+    entry    = float(signal["risk"]["entry"])
+
+    required = dhan.get_margin_required(sec_id, exch_seg, direction, qty, entry)
+    if required is None:
+        LOG.warning("MARGIN_CHECK | %s | margin_calculator unavailable — failing open", signal["symbol"])
+        return True, ""
+
+    available = dhan.get_available_balance()
+    if available is None:
+        LOG.warning("MARGIN_CHECK | %s | get_fund_limits unavailable — failing open", signal["symbol"])
+        return True, ""
+
+    if available < required:
+        reason = f"INSUFFICIENT_MARGIN required=₹{required:.0f} available=₹{available:.0f}"
+        LOG.warning("MARGIN_CHECK | %s | %s", signal["symbol"], reason)
+        return False, reason
+
+    LOG.info("MARGIN_CHECK | %s | OK required=₹%.0f available=₹%.0f", signal["symbol"], required, available)
+    return True, ""
+
+
 def should_place_entry(signal: dict, ltp: float) -> tuple[bool, str]:
     """
     Strict LIMIT logic: always place at signal entry price.
@@ -475,6 +506,14 @@ def run(dhan, state: dict, qty: int = TRADE_QTY, paper: bool = PAPER_MODE) -> No
                 if not ok:
                     signal["status"] = "SKIPPED"
                     tg.signal_skipped(signal, reason, ltp=float(ltp))
+                    save(state)
+                    continue
+
+            if not paper:
+                ok, reason = _margin_ok(dhan, signal, qty)
+                if not ok:
+                    signal["status"] = "SKIPPED"
+                    tg.signal_skipped(signal, reason)
                     save(state)
                     continue
 
