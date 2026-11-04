@@ -73,14 +73,22 @@ class TestShouldPlaceEntry:
 
     def test_buy_pass_when_ltp_above_sl(self):
         from app.trade_manager import should_place_entry
-        ok, _ = should_place_entry(_sig(direction="BUY", sl=95.0), ltp=102.0)
+        # ltp=101.0 is within +1.5% of entry=100 → valid zone
+        ok, _ = should_place_entry(_sig(direction="BUY", entry=100.0, sl=95.0), ltp=101.0)
         assert ok
 
     def test_buy_pass_when_ltp_above_entry(self):
-        """Price ran up — still place LIMIT at signal entry (retest logic)."""
+        """Price moved up slightly (within 1.5%) — still valid, LIMIT at entry."""
         from app.trade_manager import should_place_entry
-        ok, _ = should_place_entry(_sig(direction="BUY", entry=100.0, sl=95.0), ltp=108.0)
+        ok, _ = should_place_entry(_sig(direction="BUY", entry=100.0, sl=95.0), ltp=101.4)
         assert ok
+
+    def test_buy_skip_when_ltp_above_chase_limit(self):
+        """Price ran > 1.5% above entry — ENTRY_MISSED, do not chase."""
+        from app.trade_manager import should_place_entry
+        ok, reason = should_place_entry(_sig(direction="BUY", entry=100.0, sl=95.0), ltp=108.0)
+        assert not ok
+        assert "ENTRY_MISSED" in reason
 
     def test_sell_skip_when_ltp_at_sl(self):
         from app.trade_manager import should_place_entry
@@ -99,10 +107,20 @@ class TestShouldPlaceEntry:
 
     def test_sell_pass_when_ltp_below_sl(self):
         from app.trade_manager import should_place_entry
+        # ltp=99.0 is within -1.5% of entry=100 → valid zone
         ok, _ = should_place_entry(
-            _sig(direction="SELL", entry=100.0, sl=105.0), ltp=98.0
+            _sig(direction="SELL", entry=100.0, sl=105.0), ltp=99.0
         )
         assert ok
+
+    def test_sell_skip_when_ltp_below_chase_limit(self):
+        """Price fell > 1.5% below entry — ENTRY_MISSED, do not chase."""
+        from app.trade_manager import should_place_entry
+        ok, reason = should_place_entry(
+            _sig(direction="SELL", entry=100.0, sl=105.0), ltp=98.0
+        )
+        assert not ok
+        assert "ENTRY_MISSED" in reason
 
 
 # ── pre_trade_ok ──────────────────────────────────────────────────────────────
