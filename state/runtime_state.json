@@ -779,7 +779,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_LODHA_1793766643",
-      "last_ltp": 1101.1,
+      "last_ltp": 1100.7,
       "price_history": [
         {
           "time": "2026-11-04T10:05:52.481181+05:30",
@@ -912,6 +912,10 @@
         {
           "time": "2026-11-04T12:45:34.355648+05:30",
           "ltp": 1101.1
+        },
+        {
+          "time": "2026-11-04T12:50:28.189914+05:30",
+          "ltp": 1100.7
         }
       ]
     },
@@ -976,7 +980,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_CARTRADE_1793768449",
-      "last_ltp": 2519.0,
+      "last_ltp": 2513.7,
       "price_history": [
         {
           "time": "2026-11-04T10:35:57.285611+05:30",
@@ -1085,6 +1089,10 @@
         {
           "time": "2026-11-04T12:45:34.355648+05:30",
           "ltp": 2519.0
+        },
+        {
+          "time": "2026-11-04T12:50:28.189914+05:30",
+          "ltp": 2513.7
         }
       ]
     },
@@ -1126,7 +1134,7 @@
       "signal_time": "2026-11-04T10:45:00+05:30",
       "risk": {
         "entry": 576.2,
-        "sl": 585.0,
+        "sl": 590.4,
         "risk": 17.0,
         "risk_percent": 2.950364456785838,
         "t1": 593.2,
@@ -1149,7 +1157,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_SAREGAMA_1793770237",
-      "last_ltp": 602.0,
+      "last_ltp": 607.4,
       "price_history": [
         {
           "time": "2026-11-04T11:06:03.451722+05:30",
@@ -1234,6 +1242,10 @@
         {
           "time": "2026-11-04T12:45:34.355648+05:30",
           "ltp": 602.0
+        },
+        {
+          "time": "2026-11-04T12:50:28.189914+05:30",
+          "ltp": 607.4
         }
       ],
       "highest_target_hit": "T1_HIT",
@@ -1301,7 +1313,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_HYUNDAI_1793772935",
-      "last_ltp": 2058.9,
+      "last_ltp": 2059.4,
       "price_history": [
         {
           "time": "2026-11-04T11:50:59.185937+05:30",
@@ -1350,6 +1362,10 @@
         {
           "time": "2026-11-04T12:45:34.355648+05:30",
           "ltp": 2058.9
+        },
+        {
+          "time": "2026-11-04T12:50:28.189914+05:30",
+          "ltp": 2059.4
         }
       ]
     },
@@ -1414,7 +1430,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_RADICO_1793774731",
-      "last_ltp": 4331.9,
+      "last_ltp": 4330.2,
       "price_history": [
         {
           "time": "2026-11-04T12:21:05.266313+05:30",
@@ -1439,6 +1455,10 @@
         {
           "time": "2026-11-04T12:45:34.355648+05:30",
           "ltp": 4331.9
+        },
+        {
+          "time": "2026-11-04T12:50:28.189914+05:30",
+          "ltp": 4330.2
         }
       ]
     },
@@ -1503,7 +1523,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_IIFL_1793774732",
-      "last_ltp": 567.05,
+      "last_ltp": 567.1,
       "price_history": [
         {
           "time": "2026-11-04T12:21:05.266313+05:30",
@@ -1528,6 +1548,10 @@
         {
           "time": "2026-11-04T12:45:34.355648+05:30",
           "ltp": 567.05
+        },
+        {
+          "time": "2026-11-04T12:50:28.189914+05:30",
+          "ltp": 567.1
         }
       ]
     },
@@ -1591,7 +1615,14 @@
       "fill_price": 665.2,
       "qty": 1,
       "live_managed": true,
-      "sl_order_id": "PAPER_SL_THELEELA_1793776535"
+      "sl_order_id": "PAPER_SL_THELEELA_1793776535",
+      "last_ltp": 670.9,
+      "price_history": [
+        {
+          "time": "2026-11-04T12:50:28.189914+05:30",
+          "ltp": 670.9
+        }
+      ]
     }
   },
   "pending_setups": {},
@@ -6329,12 +6360,13 @@
   },
   "volume_gainers_last_refresh": "2026-11-04T12:40:00+05:30",
   "current_prices": {
-    "LODHA": 1101.1,
-    "CARTRADE": 2519.0,
-    "SAREGAMA": 602.0,
-    "HYUNDAI": 2058.9,
-    "RADICO": 4331.9,
-    "IIFL": 567.05
+    "LODHA": 1100.7,
+    "CARTRADE": 2513.7,
+    "SAREGAMA": 607.4,
+    "HYUNDAI": 2059.4,
+    "RADICO": 4330.2,
+    "IIFL": 567.1,
+    "THELEELA": 670.9
   },
   "_tg_update_id": 170211604
 }
