@@ -378,6 +378,46 @@ def _process_b1(dhan, state, ts):
                     log_signal_generated(symbol, side, signal["entry"], signal["sl"],
                                         signal["t1"], rvol, rsi, signal["confirmation_5m_timestamp"])
                     stats.signals_generated += 1
+
+                    # Place order immediately — same process, zero delay after alert
+                    try:
+                        from .trade_manager import pre_trade_ok, should_place_entry, place_entry_order, wait_for_fill, place_sl_order, _margin_ok, PAPER_MODE, TRADE_QTY
+                        ltp = float(close5)
+                        if pre_trade_ok(signal, state):
+                            ok, reason = should_place_entry(signal, ltp)
+                            if ok:
+                                if not PAPER_MODE:
+                                    ok, reason = _margin_ok(dhan, signal, TRADE_QTY)
+                                if ok:
+                                    oid = place_entry_order(dhan, signal, TRADE_QTY, PAPER_MODE)
+                                    if oid:
+                                        signal["entry_order_id"] = oid
+                                        signal["status"] = "ENTRY_PLACED"
+                                        save(state)
+                                        fill = wait_for_fill(dhan, oid, signal, TRADE_QTY, PAPER_MODE)
+                                        if fill:
+                                            signal["fill_price"] = fill
+                                            signal["qty"] = TRADE_QTY
+                                            signal["live_managed"] = True
+                                            sl_oid = place_sl_order(dhan, signal, TRADE_QTY, PAPER_MODE)
+                                            if sl_oid:
+                                                signal["sl_order_id"] = sl_oid
+                                                signal["status"] = "ACTIVE"
+                                        else:
+                                            signal["status"] = "SKIPPED"
+                                    else:
+                                        signal["status"] = "SKIPPED"
+                                else:
+                                    signal["status"] = "SKIPPED"
+                                    from . import telegram_notify as tg
+                                    tg.signal_skipped(signal, reason)
+                            else:
+                                signal["status"] = "SKIPPED"
+                                from . import telegram_notify as tg
+                                tg.signal_skipped(signal, reason, ltp=ltp)
+                        save(state)
+                    except Exception as exc:
+                        LOG.warning("%s | INLINE_ORDER_FAILED | %s", symbol, exc)
                 else:
                     log_telegram_failure(symbol, side, "SEND_FAILED", signal["entry"])
                 break
