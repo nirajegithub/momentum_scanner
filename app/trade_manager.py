@@ -124,19 +124,30 @@ def _margin_ok(dhan, signal: dict, qty: int) -> tuple[bool, str]:
     return True, ""
 
 
+ENTRY_CHASE_LIMIT_PCT = float(os.environ.get("ENTRY_CHASE_LIMIT_PCT", "0.015"))
+
+
 def should_place_entry(signal: dict, ltp: float) -> tuple[bool, str]:
     """
     Strict LIMIT logic: always place at signal entry price.
-    Skip only if LTP ≤ original_sl (breakout already failed).
+    Rejects if breakout already failed (LTP crossed SL) or price ran
+    more than ENTRY_CHASE_LIMIT_PCT (default 1.5%) past entry.
     """
     r         = signal["risk"]
     orig_sl   = float(r.get("original_sl", r["sl"]))
+    entry     = float(r["entry"])
     direction = signal["direction"]
 
-    if direction == "BUY"  and ltp <= orig_sl:
-        return False, f"BREAKOUT_FAILED ltp={ltp:.2f} ≤ sl={orig_sl:.2f}"
-    if direction == "SELL" and ltp >= orig_sl:
-        return False, f"BREAKOUT_FAILED ltp={ltp:.2f} ≥ sl={orig_sl:.2f}"
+    if direction == "BUY":
+        if ltp <= orig_sl:
+            return False, f"BREAKOUT_FAILED ltp={ltp:.2f} ≤ sl={orig_sl:.2f}"
+        if ltp > entry * (1 + ENTRY_CHASE_LIMIT_PCT):
+            return False, f"ENTRY_MISSED ltp={ltp:.2f} > entry+{ENTRY_CHASE_LIMIT_PCT*100:.1f}%={entry*(1+ENTRY_CHASE_LIMIT_PCT):.2f}"
+    else:
+        if ltp >= orig_sl:
+            return False, f"BREAKOUT_FAILED ltp={ltp:.2f} ≥ sl={orig_sl:.2f}"
+        if ltp < entry * (1 - ENTRY_CHASE_LIMIT_PCT):
+            return False, f"ENTRY_MISSED ltp={ltp:.2f} < entry-{ENTRY_CHASE_LIMIT_PCT*100:.1f}%={entry*(1-ENTRY_CHASE_LIMIT_PCT):.2f}"
     return True, ""
 
 

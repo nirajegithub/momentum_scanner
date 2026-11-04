@@ -35,7 +35,7 @@ jobs:
       T3_RR: "3.0"
       MIN_RR: "1.0"
       MIN_STOP_DISTANCE_PERCENT: "0.50"
-      MAX_STOP_DISTANCE_PERCENT: "99.0"
+      MAX_STOP_DISTANCE_PERCENT: "3.0"
       RISK_PERCENT: "1.0"
       ENTRY_TIMEFRAME: "5"
       SETUP_TIMEFRAME: "5"
@@ -67,6 +67,19 @@ jobs:
         run: python -m compileall -q app
       - name: Run B1 ORB + RVOL scanner
         run: python -m app.main
+
+      - name: Place orders for new signals
+        env:
+          PAPER_MODE: "true"
+          TRADE_QTY: "1"
+          MAX_SIGNAL_AGE_MIN: "5"
+          MAX_ENTRY_HHMM: "1300"
+          MAX_OPEN_POSITIONS: "35"
+          DAILY_LOSS_HALT_INR: "-1000"
+          MIN_TRAIL_INC: "2.0"
+          PARTIAL_EXIT_T3: "true"
+        run: python -m app.trade_manager
+
       - name: Commit scanner state
         run: |
           git config user.name "github-actions[bot]"
