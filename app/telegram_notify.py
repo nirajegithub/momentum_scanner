@@ -44,8 +44,7 @@ def _now_str() -> str:
 
 
 def _dir(signal: dict) -> str:
-    """↑ for BUY, ↓ for SELL."""
-    return "↑" if signal.get("direction") == "BUY" else "↓"
+    return "↑ (Buy)" if signal.get("direction") == "BUY" else "↓ (Sell)"
 
 
 def _paper_tag(paper: bool) -> str:
@@ -197,21 +196,21 @@ def daily_summary(trades: list[dict], qty: int, paper: bool = True) -> None:
     best      = max(trades, key=lambda t: t["pnl_pts"])
     worst     = min(trades, key=lambda t: t["pnl_pts"])
     net_icon  = "🟢" if net_inr >= 0 else "🔴"
-    label     = "PAPER  " if paper else ""
+    paper_tag = "  📄 PAPER" if paper else ""
     date_str  = datetime.now(IST).strftime("%a %d %b")
 
     _send(
-        f"📊 <b>{label}DAY SUMMARY</b>  ·  {date_str}\n"
+        f"📊 <b>DAY SUMMARY</b>  ·  {date_str}{paper_tag}\n"
         f"{_DIV}\n"
-        f"{len(trades)} trades  ·  {len(wins)}W / {len(losses)}L  ·  WR {wr:.0f}%\n"
+        f"📋 <b>{len(trades)} trades</b>  ·  🟢 {len(wins)}W  🔴 {len(losses)}L  ·  WR <b>{wr:.0f}%</b>\n"
         f"{_DIV}\n"
-        f"Gross      {gross_pts:+.1f} pts   {gross_inr:+,.0f} ₹\n"
-        f"Brokerage  −₹{brokerage:,.2f}   ({len(trades)} trades)\n"
+        f"📈 Gross    {gross_pts:+.1f} pts  ({gross_inr:+,.0f} ₹)\n"
+        f"💸 Fees     −₹{brokerage:,.2f}  ({len(trades)} trades)\n"
         f"{_DIV}\n"
-        f"{net_icon} Net        ₹{net_inr:+,.2f}\n"
+        f"{net_icon} <b>Net P&L   {net_inr:+,.2f} ₹</b>\n"
         f"{_DIV}\n"
-        f"↑ Best   {best['symbol']:12s}  {best['pnl_pts']:+.1f} pts\n"
-        f"↓ Worst  {worst['symbol']:12s}  {worst['pnl_pts']:+.1f} pts"
+        f"🏆 Best    <b>{best['symbol']}</b>   {best['pnl_pts']:+.1f} pts\n"
+        f"📉 Worst   <b>{worst['symbol']}</b>   {worst['pnl_pts']:+.1f} pts"
     )
 
 
@@ -225,7 +224,7 @@ def signal_skipped(signal: dict, reason: str, ltp: float | None = None) -> None:
 
 
 def manual_trade_adopted(sym: str, direction: str, entry: float, sl: float, qty: int) -> None:
-    dir_arrow = "↑" if direction == "BUY" else "↓"
+    dir_arrow = "↑ (Buy)" if direction == "BUY" else "↓ (Sell)"
     _send(
         f"🤝 <b>MANUAL TRADE ADOPTED</b>  ·  {sym}  {dir_arrow}\n"
         f"Entry ₹{entry:,.2f}  ·  Default SL ₹{sl:,.2f}  (1% fallback)\n"
@@ -243,7 +242,7 @@ def trade_drift_alert(sym: str, drift_type: str, detail: str) -> None:
 
 
 def manual_exit_detected(sym: str, direction: str, sl_cancelled: bool = False) -> None:
-    dir_arrow = "↑" if direction == "BUY" else "↓"
+    dir_arrow = "↑ (Buy)" if direction == "BUY" else "↓ (Sell)"
     sl_note   = "SL cancelled ✓" if sl_cancelled else "⚠️ Check SL manually in DhanHQ"
     _send(
         f"👤 <b>MANUAL EXIT</b>  ·  {sym}  {dir_arrow}\n"
