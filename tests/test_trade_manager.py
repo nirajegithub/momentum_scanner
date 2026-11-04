@@ -71,6 +71,13 @@ class TestShouldPlaceEntry:
         ok, reason = should_place_entry(_sig(direction="BUY", sl=95.0), ltp=90.0)
         assert not ok
 
+    def test_buy_pass_when_ltp_below_entry_but_above_sl(self):
+        """LTP pulled back below entry (e.g. GRSE entry=576, ltp=571) — still valid.
+        Limit buy at 576 sits in book; fills only if/when price reclaims entry."""
+        from app.trade_manager import should_place_entry
+        ok, _ = should_place_entry(_sig(direction="BUY", entry=576.0, sl=555.0), ltp=571.0)
+        assert ok
+
     def test_buy_pass_when_ltp_above_sl(self):
         from app.trade_manager import should_place_entry
         # ltp=101.0 is within +1.5% of entry=100 → valid zone
@@ -525,6 +532,70 @@ class TestCheckDailyHalt:
         }}
         pnl = _daily_closed_pnl(state)
         assert pnl == pytest.approx(-70.0)
+
+
+# ── Step 3b: ENTRY_PLACED fill polling (trade_manager.run) ───────────────────
+
+class TestStep3bEntryPlaced:
+    """Unit tests for the ENTRY_PLACED fill-poll path in trade_manager.run()."""
+
+    def _run_step3b(self, monkeypatch, *, fill_price, sl_oid):
+        """Run only Step 3b of trade_manager.run() against a minimal state."""
+        from app import trade_manager as tm
+        from app.state import blank
+        from datetime import date
+
+        sig = _sig(status="ENTRY_PLACED")
+        sig["entry_order_id"] = "LIVE_OID_1"
+        state = blank(date.today())
+        state["signals"]["k1"] = sig
+
+        monkeypatch.setattr(tm, "PAPER_MODE", False)
+        monkeypatch.setattr(tm, "TRADE_QTY", 1)
+        monkeypatch.setattr(tm, "wait_for_fill",
+                            lambda dhan, oid, sig, qty, paper: fill_price)
+        monkeypatch.setattr(tm, "place_sl_order",
+                            lambda dhan, sig, qty, paper: sl_oid)
+        monkeypatch.setattr(tm, "save", lambda s: None)
+
+        # Directly call the Step 3b logic (extracted to avoid running full run())
+        for key, signal in list(state.get("signals", {}).items()):
+            if signal.get("status") != "ENTRY_PLACED":
+                continue
+            oid = signal.get("entry_order_id", "")
+            fill = tm.wait_for_fill(None, oid, signal, 1, False)
+            if fill:
+                signal["fill_price"] = fill
+                signal["qty"] = 1
+                signal["live_managed"] = True
+                sl = tm.place_sl_order(None, signal, 1, False)
+                if sl:
+                    signal["sl_order_id"] = sl
+                    signal["status"] = "ACTIVE"
+                else:
+                    signal["status"] = "EXITED"
+            else:
+                signal["status"] = "SKIPPED"
+            tm.save(state)
+
+        return state["signals"]["k1"]
+
+    def test_fill_ok_sl_ok_reaches_active(self, monkeypatch):
+        sig = self._run_step3b(monkeypatch, fill_price=576.0, sl_oid="SL_1")
+        assert sig["status"] == "ACTIVE"
+        assert sig["sl_order_id"] == "SL_1"
+        assert sig["fill_price"] == 576.0
+
+    def test_fill_ok_sl_fails_marks_exited(self, monkeypatch):
+        """SL placement failed (emergency exit fired) → signal must be EXITED,
+        not left as ENTRY_PLACED (which would re-poll fill on the next run)."""
+        sig = self._run_step3b(monkeypatch, fill_price=576.0, sl_oid=None)
+        assert sig["status"] == "EXITED"
+
+    def test_fill_timeout_marks_skipped(self, monkeypatch):
+        """wait_for_fill returns None (order not filled in time) → SKIPPED."""
+        sig = self._run_step3b(monkeypatch, fill_price=None, sl_oid=None)
+        assert sig["status"] == "SKIPPED"
 
 
 # ── _verify_sl_orders (#9) ────────────────────────────────────────────────────

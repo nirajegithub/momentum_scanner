@@ -574,6 +574,9 @@ def run(dhan, state: dict, qty: int = TRADE_QTY, paper: bool = PAPER_MODE) -> No
             if sl_oid:
                 signal["sl_order_id"] = sl_oid
                 signal["status"]      = "ACTIVE"
+            else:
+                # _emergency_exit fired inside place_sl_order; mark closed
+                signal["status"] = "EXITED"
         else:
             signal["status"] = "SKIPPED"
         save(state)
