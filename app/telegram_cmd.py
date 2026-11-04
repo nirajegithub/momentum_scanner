@@ -6,6 +6,8 @@ Supported commands (sent to the bot's chat):
   /resume     Re-enable entries (sets state["trading_halted"] = False)
   /squareoff  Close all open positions at market immediately
   /status     Report open positions + today's P&L
+  /paper on   Switch to paper/simulated mode
+  /paper off  Switch to live trading mode
 
 Security: only messages from TELEGRAM_CHAT_ID are processed.
 Last processed update_id is stored in state["_tg_update_id"] so
@@ -79,6 +81,41 @@ def _cmd_resume(state: dict) -> None:
     _reply(f"🟢 <b>TRADING RESUMED</b>  ·  /resume command\nNew entries enabled.  |  {_now_str()}")
 
 
+def _cmd_paper(state: dict, text: str) -> bool:
+    """Set paper_mode override in state. Returns True if state was modified."""
+    arg = (text.strip().lower().split() + [""])[1]
+    if arg == "on":
+        state["paper_mode"] = True
+        LOG.warning("CMD_PAPER_ON | paper mode enabled via Telegram")
+        _reply(
+            f"📄 <b>PAPER MODE ON</b>  ·  Simulated orders only\n"
+            f"No real trades will be placed.  |  {_now_str()}"
+        )
+        return True
+    elif arg == "off":
+        state["paper_mode"] = False
+        LOG.warning("CMD_PAPER_OFF | LIVE trading enabled via Telegram")
+        _reply(
+            f"🔴 <b>PAPER MODE OFF — LIVE ACTIVE</b>\n"
+            f"Real orders will be placed on Dhan.  |  {_now_str()}"
+        )
+        return True
+    else:
+        current = state.get("paper_mode")
+        if current is None:
+            mode_str = "env default (check workflow)"
+        elif current:
+            mode_str = "ON  (paper / simulated)"
+        else:
+            mode_str = "OFF  ⚠️  LIVE TRADING"
+        _reply(
+            f"📄 Paper mode: <b>{mode_str}</b>\n"
+            f"/paper on  → safe / simulated\n"
+            f"/paper off → live orders  |  {_now_str()}"
+        )
+        return False
+
+
 def _cmd_squareoff(dhan, state: dict, paper: bool) -> None:
     from app.square_off import square_off_all
     LOG.warning("CMD_SQUAREOFF | manual square-off triggered via Telegram")
@@ -124,9 +161,11 @@ def _cmd_status(state: dict) -> None:
 
     halted   = state.get("trading_halted", False)
     halt_tag = "🔴 <b>HALTED</b>" if halted else "🟢 Entries active"
+    paper_st = state.get("paper_mode")
+    paper_tag = "📄 paper" if paper_st else ("🔴 LIVE" if paper_st is False else "📄 paper (default)")
     date_str = datetime.now(IST).strftime("%a %d %b")
 
-    msg = f"📋 <b>STATUS</b>  ·  {date_str}  ·  {_now_str()}\n{halt_tag}\n"
+    msg = f"📋 <b>STATUS</b>  ·  {date_str}  ·  {_now_str()}\n{halt_tag}  ·  {paper_tag}\n"
 
     if active:
         msg += f"\n<b>Open ({len(active)})</b>  ·  unrealised {pnl_open:+.1f} pts\n"
@@ -186,10 +225,13 @@ def poll_and_process(dhan, state: dict, paper: bool) -> None:
             modified = True
         elif cmd == "/status":
             _cmd_status(state)
+        elif cmd == "/paper":
+            if _cmd_paper(state, text):
+                modified = True
         elif text.startswith("/"):
             _reply(
                 f"❓ Unknown command: <code>{text[:40]}</code>\n"
-                f"Available: /halt  /resume  /squareoff  /status"
+                f"Available: /halt  /resume  /squareoff  /status  /paper on|off"
             )
 
     if modified:

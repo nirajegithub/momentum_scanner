@@ -651,8 +651,9 @@ def main() -> None:
 
     dhan  = DhanClient()
     state = load(now.date())
-    tg.system_start(paper=PAPER_MODE)
-    run(dhan, state, qty=TRADE_QTY, paper=PAPER_MODE)
+    paper = state.get("paper_mode", PAPER_MODE)
+    tg.system_start(paper=paper)
+    run(dhan, state, qty=TRADE_QTY, paper=paper)
 
 
 if __name__ == "__main__":

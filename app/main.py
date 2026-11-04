@@ -390,6 +390,8 @@ def _process_b1(dhan, state, ts):
                             PAPER_MODE, TRADE_QTY,
                         )
                         from . import telegram_notify as _tg
+                        # Telegram /paper override takes precedence over env var
+                        _paper = state.get("paper_mode", PAPER_MODE)
                         ltp = float(close5)
                         if not pre_trade_ok(signal, state):
                             signal["status"] = "SKIPPED"
@@ -399,18 +401,18 @@ def _process_b1(dhan, state, ts):
                                 signal["status"] = "SKIPPED"
                                 _tg.signal_skipped(signal, reason, ltp=ltp)
                             else:
-                                if not PAPER_MODE:
+                                if not _paper:
                                     ok, reason = _margin_ok(dhan, signal, TRADE_QTY)
                                 if not ok:
                                     signal["status"] = "SKIPPED"
                                     _tg.signal_skipped(signal, reason)
                                 else:
-                                    oid = place_entry_order(dhan, signal, TRADE_QTY, PAPER_MODE)
+                                    oid = place_entry_order(dhan, signal, TRADE_QTY, _paper)
                                     if oid:
                                         signal["entry_order_id"] = oid
                                         signal["status"] = "ENTRY_PLACED"
                                         save(state)
-                                        if PAPER_MODE:
+                                        if _paper:
                                             # Instant fill in paper — complete the flow now
                                             fill = wait_for_fill(dhan, oid, signal, TRADE_QTY, True)
                                             if fill:
