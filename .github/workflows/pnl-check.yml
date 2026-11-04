@@ -2,6 +2,8 @@ name: Today P&L Check
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 10 * * 1-5'   # 15:30 IST Mon–Fri
 
 permissions:
   contents: write
