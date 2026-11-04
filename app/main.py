@@ -391,7 +391,9 @@ def _process_b1(dhan, state, ts):
                         )
                         from . import telegram_notify as _tg
                         ltp = float(close5)
-                        if pre_trade_ok(signal, state):
+                        if not pre_trade_ok(signal, state):
+                            signal["status"] = "SKIPPED"
+                        else:
                             ok, reason = should_place_entry(signal, ltp)
                             if not ok:
                                 signal["status"] = "SKIPPED"

@@ -8,7 +8,8 @@ Tests isolate _process_b1 from:
   - Dhan HTTP/API calls  (_prepare_5m, get_orb_with_fallback patched)
   - strategy thresholds  (evaluate_b1_breakout, market_trend_aligned patched)
   - T1 safety logic      (t1_blocked patched)
-  - Telegram transport   (send, signal_message patched)
+  - Telegram transport   (send, signal_message, telegram_notify patched)
+  - Trade execution      (trade_manager functions patched)
 """
 
 from __future__ import annotations
@@ -170,6 +171,128 @@ def test_b1_no_breakout_stays_waiting(monkeypatch):
     assert sent == []
     assert state.get("signals", {}) == {}
     assert state["b1"][SYMBOL]["status"] == "WAITING_FOR_5M"
+
+
+# ── Inline order placement E2E tests ─────────────────────────────────────────
+
+def _patch_order(monkeypatch, *, paper=True, pre_ok=True, entry_ok=True,
+                 fill_price=112.0, sl_ok=True, margin_ok=True,
+                 chase_ok=True):
+    """
+    Extend _patch_infra with trade_manager and telegram_notify patches.
+    Returns a dict of call recorders keyed by function name.
+    """
+    calls = {
+        "place_entry_order": [],
+        "wait_for_fill": [],
+        "place_sl_order": [],
+        "signal_skipped": [],
+    }
+
+    monkeypatch.setattr("app.trade_manager.PAPER_MODE", paper)
+    monkeypatch.setattr("app.trade_manager.TRADE_QTY", 1)
+    monkeypatch.setattr("app.trade_manager.pre_trade_ok",
+                        lambda sig, state: pre_ok)
+    monkeypatch.setattr("app.trade_manager.should_place_entry",
+                        lambda sig, ltp: (True, "") if chase_ok else (False, "ENTRY_MISSED ltp=x"))
+    monkeypatch.setattr("app.trade_manager._margin_ok",
+                        lambda dhan, sig, qty: (True, "") if margin_ok else (False, "INSUFFICIENT_MARGIN"))
+    monkeypatch.setattr("app.trade_manager.place_entry_order",
+                        lambda dhan, sig, qty, p: calls["place_entry_order"].append(1) or ("PAPER_TEST_1" if entry_ok else None))
+    monkeypatch.setattr("app.trade_manager.wait_for_fill",
+                        lambda dhan, oid, sig, qty, p: calls["wait_for_fill"].append(1) or fill_price)
+    monkeypatch.setattr("app.trade_manager.place_sl_order",
+                        lambda dhan, sig, qty, p: calls["place_sl_order"].append(1) or ("PAPER_SL_1" if sl_ok else None))
+    monkeypatch.setattr("app.telegram_notify.signal_skipped",
+                        lambda sig, reason, ltp=None: calls["signal_skipped"].append(reason))
+    return calls
+
+
+def test_inline_paper_breakout_reaches_active(monkeypatch):
+    """Paper mode: breakout → all checks pass → signal ends up ACTIVE with SL placed."""
+    _patch_infra(monkeypatch, _df5_breakout(), lambda msg: True)
+    calls = _patch_order(monkeypatch, paper=True)
+
+    state = _state()
+    _process_b1(object(), state, _scan_ts("09:40"))
+
+    signal = next(iter(state["signals"].values()))
+    assert signal["status"] == "ACTIVE"
+    assert signal["entry_order_id"] == "PAPER_TEST_1"
+    assert signal["sl_order_id"] == "PAPER_SL_1"
+    assert signal["live_managed"] is True
+    assert calls["place_entry_order"] == [1]
+    assert calls["wait_for_fill"] == [1]
+    assert calls["place_sl_order"] == [1]
+
+
+def test_inline_live_breakout_leaves_entry_placed(monkeypatch):
+    """Live mode: order is fired but fill polling is deferred — status = ENTRY_PLACED."""
+    _patch_infra(monkeypatch, _df5_breakout(), lambda msg: True)
+    calls = _patch_order(monkeypatch, paper=False)
+
+    state = _state()
+    _process_b1(object(), state, _scan_ts("09:40"))
+
+    signal = next(iter(state["signals"].values()))
+    assert signal["status"] == "ENTRY_PLACED"
+    assert signal["entry_order_id"] == "PAPER_TEST_1"
+    assert calls["place_entry_order"] == [1]
+    assert calls["wait_for_fill"] == []   # deferred — not called inline in live mode
+    assert calls["place_sl_order"] == []
+
+
+def test_inline_pre_trade_fails_skips_order(monkeypatch):
+    """pre_trade_ok returns False (e.g. daily halt) → order never placed, signal SKIPPED."""
+    _patch_infra(monkeypatch, _df5_breakout(), lambda msg: True)
+    calls = _patch_order(monkeypatch, paper=True, pre_ok=False)
+
+    state = _state()
+    _process_b1(object(), state, _scan_ts("09:40"))
+
+    signal = next(iter(state["signals"].values()))
+    assert signal["status"] == "SKIPPED"
+    assert calls["place_entry_order"] == []
+
+
+def test_inline_entry_missed_skips_and_notifies(monkeypatch):
+    """should_place_entry returns ENTRY_MISSED → signal SKIPPED + Telegram notified."""
+    _patch_infra(monkeypatch, _df5_breakout(), lambda msg: True)
+    calls = _patch_order(monkeypatch, paper=True, chase_ok=False)
+
+    state = _state()
+    _process_b1(object(), state, _scan_ts("09:40"))
+
+    signal = next(iter(state["signals"].values()))
+    assert signal["status"] == "SKIPPED"
+    assert calls["place_entry_order"] == []
+    assert any("ENTRY_MISSED" in r for r in calls["signal_skipped"])
+
+
+def test_inline_place_order_fails_skips(monkeypatch):
+    """place_entry_order returns None (API error) → signal SKIPPED."""
+    _patch_infra(monkeypatch, _df5_breakout(), lambda msg: True)
+    calls = _patch_order(monkeypatch, paper=True, entry_ok=False)
+
+    state = _state()
+    _process_b1(object(), state, _scan_ts("09:40"))
+
+    signal = next(iter(state["signals"].values()))
+    assert signal["status"] == "SKIPPED"
+    assert calls["wait_for_fill"] == []
+
+
+def test_inline_live_margin_fails_skips(monkeypatch):
+    """Live mode: insufficient margin → signal SKIPPED, order never placed."""
+    _patch_infra(monkeypatch, _df5_breakout(), lambda msg: True)
+    calls = _patch_order(monkeypatch, paper=False, margin_ok=False)
+
+    state = _state()
+    _process_b1(object(), state, _scan_ts("09:40"))
+
+    signal = next(iter(state["signals"].values()))
+    assert signal["status"] == "SKIPPED"
+    assert calls["place_entry_order"] == []
 
 
 if __name__ == "__main__":
