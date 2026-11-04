@@ -1,146 +1,271 @@
 # Momentum Scanner — B1 ORB Strategy
 
-> **Note on this file's history:** this document previously described a
-> "progressive trailing-stop" exit model and referenced backtest scripts
-> that compared it against a fixed-target exit. That trailing-stop model
-> was never wired into the live scanner (`app/main.py`), and the backtest
-> scripts that describe it currently fail to import against the live
-> `app/strategy.py` (they reference `evaluate_15m_setup` /
-> `confirm_5m_breakout`, functions that no longer exist — see the
-> **Backtest scripts** section at the bottom). This file has been rewritten
-> to describe what the live scanner actually does today.
+Automated intraday scanner and trade executor for NSE equities using the
+**B1 Opening Range Breakout (ORB)** strategy. Runs on GitHub Actions,
+sends signals and trade updates via Telegram, and places/manages orders
+through the Dhan API.
+
+---
+
+## How it works — end to end
+
+```
+09:15–09:30  ORB candle locks  →  high & low fixed for the day
+09:30 onward  Every 5M candle checked for breakout (close > ORB high = BUY, close < ORB low = SELL)
+              ↓ filters pass
+              Telegram alert sent  +  LIMIT order placed inline (same process, zero delay)
+              ↓ paper mode
+              Fill confirmed immediately  →  SL-M placed  →  ACTIVE
+              ↓ live mode
+              Scanner moves on (fire-and-forget)
+              trade_manager step (after scan) polls fill  →  SL-M placed  →  ACTIVE
+Every 15 min  Telegram live status: open positions + live LTP + unrealised P&L
+15:10 IST     Status updates stop
+15:15 IST     Square-off workflow closes all open positions
+```
+
+---
 
 ## Entry logic
 
-1. **ORB (Opening Range Breakout):** the very first completed 15-minute
-   candle of the day (09:15–09:30 IST) sets the fixed reference range —
-   its `high` and `low`. This range does not update again for the rest of
-   the day.
-2. **15M setup candle:** every subsequent completed 15M candle is checked
-   in chronological order. A candle whose `close` is above the ORB high
-   is a `BUY` breakout candidate; below the ORB low is a `SELL` breakout
-   candidate. A candle closing inside the range is `NO_BREAKOUT` and is
-   skipped.
-3. **Entry filters**, all of which must pass on that same 15M candle
-   (`app/strategy.py::evaluate_b1_breakout`):
-   - Daily close > `MIN_PRICE` (default 350) and daily volume >
-     `MIN_DAILY_VOLUME` (default 500,000).
-   - RSI(14) must sit inside a directional band **and** be moving the
-     right way: `BUY` needs `BUY_RSI_MIN < RSI < BUY_RSI_MAX` (default
-     55–70) and RSI rising vs. the previous candle; `SELL` needs
-     `SELL_RSI_MIN < RSI < SELL_RSI_MAX` (default 30–45) and RSI falling.
-   - 15M relative volume (`RVOL`, current volume vs. the trailing
-     `RVOL_LOOKBACK`-candle average, default 20) must be ≥ `MIN_15M_RVOL`
-     (default 1.2).
-   - A demand/supply "trade quality score" (base-candle compactness +
-     zone freshness + departure-candle strength, see `app/scoring.py`)
-     must fall between `MIN_TRADE_SCORE` and `MAX_TRADE_SCORE` (default
-     3–7).
-   - If a candle breaks out but fails any filter, that specific candle is
-     rejected and logged (`B1_FILTER_REJECTED`, with a specific reason —
-     see below); the scanner keeps checking **later** 15M candles the
-     same day for a fresh breakout, it does not stop at the first
-     attempt.
-4. Once a 15M candle clears every filter, it becomes the symbol's
-   **accepted setup** for the day and the scanner moves to confirmation.
-   No second setup is opened for that symbol while one is pending or
-   already resolved.
+### 1. Opening Range (ORB)
+The **first completed 15-minute candle** of the session (09:15–09:30 IST)
+sets the day's fixed range. Its `high` and `low` do not change again.
 
-## Confirmation and entry price
+### 2. 5M breakout scan
+Every completed 5M candle **after** the ORB candle is checked in
+chronological order:
 
-- After a setup is accepted, the scanner waits for a **completed 5-minute
-  candle** (strictly after the setup 15M candle's completion time) whose
-  close moves **strictly beyond** the setup candle's own high (`BUY`) or
-  low (`SELL`) — equality does not confirm.
-- **Entry price = that confirming 5M candle's close** (not the 15M
-  breakout close).
-- **Stop-loss = the 15M setup candle's own close** (`setup_15m_close`) —
-  not the 09:15 ORB candle's close. These will usually be different
-  prices, since the setup candle is, by definition, a later candle than
-  the opening range.
+- `close > ORB high` → **BUY** candidate
+- `close < ORB low` → **SELL** candidate
+- close inside range → skipped, next candle checked
 
-## Targets and risk (fixed, not progressive)
+### 3. Entry filters (`app/strategy.py::evaluate_b1_breakout`)
+All must pass on the confirming 5M candle:
 
-Computed once at confirmation by `app/risk.py::build_risk_and_targets`:
+| Filter | Default |
+|--------|---------|
+| Daily close | ≥ `MIN_PRICE` (450) |
+| Previous day volume | ≥ `MIN_PREV_VOLUME` (500,000) |
+| Today's cumulative volume | ≥ `MIN_DAILY_VOLUME` (100,000) |
+| RSI(14) — BUY | `BUY_RSI_MIN`–`BUY_RSI_MAX` (50–100) |
+| RSI(14) — SELL | `SELL_RSI_MIN`–`SELL_RSI_MAX` (0–50) |
+| 5M RVOL | ≥ `MIN_15M_RVOL` (1.5) and ≤ `MAX_15M_RVOL` (8.0) |
+| Trade quality score | `MIN_TRADE_SCORE`–`MAX_TRADE_SCORE` (3–7) |
+| Market trend alignment | Nifty 5M trend must agree with direction |
 
-- `risk = |entry − stop_loss|`; rejected if `risk / entry` is below
-  `MIN_STOP_DISTANCE_PERCENT` (default 0.50%).
-- `T1 = entry ± T1_RR × risk`, `T2 = entry ± T2_RR × risk`,
-  `T3 = entry ± T3_RR × risk` (defaults 2.0 / 3.0 / 4.0).
-- Rejected if `T1_RR < MIN_RR` (default 2.0).
-- **There is no trailing stop, break-even shift, or structure-based
-  ratchet in the live code.** Every alert carries this same fixed
-  entry/SL/T1/T2/T3 for its full life. (`app/config.py` still defines an
-  `ENABLE_PROGRESSIVE_TS` flag, but nothing in `app/` reads it — it is
-  currently a dead setting.)
+A candle that fails any filter is skipped; later candles in the same day
+are still checked. Once a signal fires for a symbol, that symbol is
+locked (`CONSUMED`) for the rest of the day.
 
-## T1-blocked safety check
+### 4. Risk & targets (`app/risk.py`)
 
-Before an alert is sent, `app/strategy.py::t1_blocked` checks the 5M
-candles between the setup and the confirmation candle: if price already
-touched T1 *before* the trade would have technically been confirmed, the
-signal is rejected (`CONFIRMED_BUT_REJECTED | reason=T1_BLOCKED`) rather
-than sent as an alert that's already "late."
+- **Entry** = close of the confirming 5M candle
+- **Stop-loss** = ORB low (BUY) or ORB high (SELL)
+- **Stop distance** must be between `MIN_STOP_DISTANCE_PERCENT` (0.50%)
+  and `MAX_STOP_DISTANCE_PERCENT` (3.0%) of entry — wide stops (e.g.
+  7.9%) and noise stops (e.g. 0.16%) are both rejected
+- `T1 = entry ± T1_RR × risk` (default 1.0×)
+- `T2 = entry ± T2_RR × risk` (default 2.0×)
+- `T3 = entry ± T3_RR × risk` (default 3.0×)
+- Rejected if T1 R:R < `MIN_RR` (1.0)
 
-## One resolved outcome per symbol per day
+### 5. T1-blocked safety check
+Before sending the alert, `t1_blocked()` checks whether price already
+touched T1 on any of the 5M candles between the ORB and the confirming
+candle. If so, the signal is rejected (`T1_BLOCKED`) — the trade is
+already "late."
 
-A symbol can have multiple **rejected setup attempts** in one day (each
-logged, each simply skipped). But once a setup is accepted and reaches
-the confirmation phase, that symbol is locked for the rest of the day
-once confirmation resolves — whether that resolution is a sent alert, a
-risk rejection, or a T1-blocked rejection. It will not be re-evaluated
-again that trading day after that point.
+---
 
-## Key log lines to look for
+## Order placement (inline, zero delay)
 
-| Log line | Meaning |
-|---|---|
-| `B1_ORB` | The day's opening range has been fixed for this symbol |
-| `B1_15M ... NO_BREAKOUT` | Candle closed back inside the ORB range |
-| `B1_FILTER_REJECTED` | A breakout candle failed a specific filter (reason + numbers included) |
-| `B1_SETUP_ACCEPTED` | A 15M candle passed every filter; now waiting for 5M confirmation |
-| `B1_5M ... NO_CONFIRMATION` | A later 5M candle didn't yet cross the setup high/low |
-| `B1_5M ... CONFIRMED` | A 5M candle crossed the threshold |
-| `CONFIRMED_BUT_REJECTED` | Confirmed, but rejected by risk sizing or the T1-blocked check |
-| `ALERT_SENT` | A Telegram alert was actually sent |
+Orders are placed **immediately after the Telegram alert** in the same
+scanner process — no separate workflow trigger needed.
+
+### Paper mode (current)
+Full synchronous flow in one pass:
+
+```
+Alert sent → place_entry_order() → wait_for_fill() → place_sl_order() → ACTIVE
+```
+
+### Live mode
+Fire-and-forget to avoid blocking the scan of remaining symbols:
+
+```
+Alert sent → place_entry_order() → signal status = ENTRY_PLACED → next symbol
+             (trade_manager step after scan: wait_for_fill() → place_sl_order() → ACTIVE)
+```
+
+### Chase limit (`ENTRY_CHASE_LIMIT_PCT = 0.015`)
+If LTP has moved more than 1.5% past the entry price by order time, the
+trade is skipped (`ENTRY_MISSED`) — the limit order is unlikely to fill
+cleanly at that distance.
+
+### Pre-entry guards
+`pre_trade_ok()` blocks an order if:
+- Daily loss halt has fired (`DAILY_LOSS_HALT_INR`)
+- Current time > `MAX_ENTRY_HHMM` (13:30)
+- Signal age > `MAX_SIGNAL_AGE_MIN` (30 min)
+- Open positions ≥ `MAX_OPEN_POSITIONS` (35)
+
+---
+
+## Trade management (`app/trade_manager.py`)
+
+After entry fills, the trade manager runs a TSL (trailing stop-loss) loop:
+
+| Trigger | Action |
+|---------|--------|
+| T1 hit | SL moved to breakeven |
+| T2 hit | SL moved to T1 |
+| T3 hit | SL moved to T2 + partial exit (50% qty) |
+| SL hit | Position marked EXITED |
+| SL order cancelled externally | SL re-placed automatically |
+
+---
+
+## Telegram notifications
+
+| Event | Message |
+|-------|---------|
+| Breakout detected | Signal details — entry, SL, T1/T2/T3, R:R, RVOL |
+| Order placed | Symbol, qty, price, order ID |
+| Fill confirmed | Fill price, SL level |
+| Target hit | Tier (T1/T2/T3), unrealised P&L, new SL |
+| SL hit | Exit price, final P&L |
+| Skipped signal | Reason (ENTRY_MISSED, STALE, DAILY_LOSS_HALT, …) |
+| **Live status** (every 15 min) | All open positions + live LTP + unrealised P&L + day P&L |
+| Square-off | Each position closed at EOD |
+| Daily summary | Win rate, gross/net P&L, best/worst trade |
+
+Live status sends every `STATUS_INTERVAL_MIN` (15) minutes while any
+ACTIVE position exists, stopping at `STATUS_SQUAREOFF_HHMM` (15:10) or
+when all positions close — whichever comes first.
+
+---
+
+## GitHub Actions workflows
+
+| Workflow | Trigger | Purpose |
+|----------|---------|---------|
+| `momentum-scan.yml` | `workflow_dispatch` | Scan + inline order + fill/SL step |
+| `live-trade.yml` | `workflow_dispatch` | Standalone trade manager cycle |
+| `square-off.yml` | `workflow_dispatch` | EOD square-off + daily summary |
+| `momentum-universe.yml` | `workflow_dispatch` | Refresh stock universe |
+| `momentum-summary.yml` | `workflow_dispatch` | Build scan summary report |
+| `pnl-check.yml` | `workflow_dispatch` | P&L check / reporting |
+| `dhan-token-management.yml` | `workflow_dispatch` | Refresh Dhan API token |
+
+All workflows use a **cached virtualenv** (keyed on `requirements.txt`
+hash) and `fetch-depth: 1` for fast startup — typically 30–55 s saved
+per run vs. a cold pip install with full history fetch.
+
+The scanner and trade_manager steps share the `dhan-api-access`
+concurrency group so parallel runs never conflict on API rate limits or
+state file writes.
+
+### Switching to live
+
+Change these two lines in `momentum-scan.yml`:
+
+```yaml
+PAPER_MODE: "false"   # scanner step
+PAPER_MODE: "false"   # fill+SL step
+```
+
+Confirm GitHub secrets are set:
+`DHAN_CLIENT_ID`, `DHAN_ACCESS_TOKEN`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`
+
+---
 
 ## Configuration reference
 
-All of the above thresholds are environment variables, set in
-`.github/workflows/nse-momentum-scan.yml` and defaulted in
-`app/config.py`:
+All variables are environment variables set in the workflow and defaulted
+in `app/config.py`. The table below shows the **workflow values** (which
+override the code defaults).
+
+### Scanner filters
+
+| Variable | Workflow value | Purpose |
+|----------|---------------|---------|
+| `MIN_PRICE` | 450 | Minimum stock price |
+| `MIN_PREV_VOLUME` | 500,000 | Min previous-day volume |
+| `MIN_DAILY_VOLUME` | 100,000 | Min today's cumulative volume |
+| `BUY_RSI_MIN` / `BUY_RSI_MAX` | 50 / 100 | RSI band for BUY |
+| `SELL_RSI_MIN` / `SELL_RSI_MAX` | 0 / 50 | RSI band for SELL |
+| `MIN_15M_RVOL` / `MAX_15M_RVOL` | 1.5 / 8.0 | Relative volume range |
+| `RVOL_LOOKBACK` | 20 | Candles for RVOL average |
+| `MIN_TRADE_SCORE` / `MAX_TRADE_SCORE` | 3 / 7 | Trade quality score |
+| `MIN_STOP_DISTANCE_PERCENT` | 0.50 | Tightest allowed stop (% of entry) |
+| `MAX_STOP_DISTANCE_PERCENT` | 3.0 | Widest allowed stop (% of entry) |
+| `T1_RR` / `T2_RR` / `T3_RR` | 1.0 / 2.0 / 3.0 | Target R:R multiples |
+| `MIN_RR` | 1.0 | Minimum T1 R:R to accept signal |
+| `SCAN_START_HHMM` / `SCAN_END_HHMM` | 930 / 1330 | Active scan window (IST) |
+
+### Trade execution
 
 | Variable | Default | Purpose |
-|---|---|---|
-| `MIN_PRICE` | 350 | Minimum daily close to be considered |
-| `MIN_DAILY_VOLUME` | 500000 | Minimum daily volume |
-| `BUY_RSI_MIN` / `BUY_RSI_MAX` | 55 / 70 | RSI band for BUY setups |
-| `SELL_RSI_MIN` / `SELL_RSI_MAX` | 30 / 45 | RSI band for SELL setups |
-| `RVOL_LOOKBACK` | 20 | Candles used for the RVOL average |
-| `MIN_15M_RVOL` | 1.2 | Minimum 15M relative volume |
-| `MIN_TRADE_SCORE` / `MAX_TRADE_SCORE` | 3 / 7 | Accepted trade-quality score range |
-| `T1_RR` / `T2_RR` / `T3_RR` | 2.0 / 3.0 / 4.0 | Target reward multiples |
-| `MIN_RR` | 2.0 | Minimum required T1 reward:risk |
-| `MIN_STOP_DISTANCE_PERCENT` | 0.50 | Minimum stop distance as % of entry |
-| `SCAN_START_HHMM` / `SCAN_END_HHMM` | 930 / 1505 | Scan window (IST, 24h HHMM) |
-| `DRY_RUN` | true | If true, alerts are logged but not sent to Telegram |
+|----------|---------|---------|
+| `PAPER_MODE` | `true` | `false` = live orders via Dhan API |
+| `TRADE_QTY` | 1 | Shares per trade |
+| `MAX_ENTRY_HHMM` | 1330 | No new entries after this time |
+| `MAX_SIGNAL_AGE_MIN` | 30 | Skip signals older than this |
+| `MAX_OPEN_POSITIONS` | 35 | Halt new entries at this count |
+| `DAILY_LOSS_HALT_INR` | -1000 | Halt trading after this day loss (₹) |
+| `ENTRY_CHASE_LIMIT_PCT` | 0.015 | Skip order if LTP > entry + 1.5% |
+| `STATUS_INTERVAL_MIN` | 15 | Minutes between live status Telegrams |
+| `STATUS_SQUAREOFF_HHMM` | 1510 | Stop sending status after this time |
 
-## Backtest scripts (`scripts/`) — currently outdated
+---
 
-The scripts in this folder (`historical_backtest_15m5m_confirmation.py`,
-`historical_backtest_4_methods_ORB_STATE_MACHINE.py`,
-`historical_backtest_orb_ts_engine.py`,
-`historical_backtest_orb_1_11.py`) all import `evaluate_15m_setup` and
-`confirm_5m_breakout` from `app/strategy.py`. Neither function exists
-anymore — the live strategy module now exposes `evaluate_b1_breakout`
-and `t1_blocked` instead. **Every one of these scripts currently fails
-immediately on import** and will not run as-is.
+## State file
 
-Separately, `historical_backtest_orb_1_11.py`'s default `--script`
-argument points at `scripts/historical_backtest_4_methods.py`, which does
-not exist in this repository under that name at all.
+`state/runtime_state.json` is committed to the repo after every scan run.
+It persists the ORB for each symbol (so it is not re-fetched on the next
+run), all signal states, and the last status timestamp. The git commit
+step retries push with rebase up to 3 times to handle concurrent runs.
 
-If you want a working backtest against the current live logic, the
-scripts need to be updated to call `evaluate_b1_breakout` /
-`t1_blocked` with the current function signatures — they are not
-currently usable out of the box.
+---
+
+## Key log lines
+
+| Log line | Meaning |
+|----------|---------|
+| `B1_ORB` | ORB range locked for this symbol |
+| `B1_5M ... NO_BREAKOUT` | 5M close inside ORB range, skipped |
+| `B1_FILTER_REJECTED` | Breakout candle failed a filter (reason included) |
+| `CONFIRMED_BUT_REJECTED` | Passed breakout but failed risk or T1-blocked check |
+| `T1_BLOCKED` | T1 already touched before confirmation |
+| `ALERT_SENT` | Telegram alert fired |
+| `INLINE_ORDER_FAILED` | Exception during order placement (order not placed) |
+| `ENTRY_MISSED` | LTP ran > 1.5% past entry before order could be placed |
+| `BREAKOUT_FAILED` | LTP crossed original SL — signal invalidated |
+| `ENTRY_PLACED` | Live order fired; fill polling deferred to trade_manager |
+| `DAILY_LOSS_HALT` | Day loss threshold crossed, no more entries |
+
+---
+
+## Project structure
+
+```
+app/
+  main.py            — scanner: ORB fetch, 5M breakout scan, inline order placement
+  trade_manager.py   — fill polling, SL placement, TSL loop, live status report
+  strategy.py        — evaluate_b1_breakout, t1_blocked, market_trend_aligned
+  risk.py            — build_risk_and_targets (entry/SL/T1/T2/T3 + filters)
+  dhan_client.py     — Dhan API wrapper (candles, quotes, orders, margin)
+  telegram_notify.py — all Telegram message formatters
+  telegram_cmd.py    — inbound Telegram command polling (halt/resume/status/squareoff)
+  signal_monitor.py  — paper-mode SL/target monitoring
+  position_tracker.py — live order reconciliation, manual trade adoption
+  square_off.py      — EOD market-order close of all positions
+  state.py           — load/save runtime_state.json
+  config.py          — SETTINGS dataclass (all env-var defaults)
+state/
+  runtime_state.json — persisted scan + trade state (committed each run)
+  pnl_history.json   — historical daily P&L log
+tests/               — 141 pytest tests
+.github/workflows/   — GitHub Actions (scanner, trade manager, square-off, …)
+```
