@@ -31,8 +31,30 @@ BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
 CHAT_ID   = os.environ.get("TELEGRAM_CHAT_ID", "")
 TRADE_QTY = int(os.environ.get("TRADE_QTY", "1"))
 
+_BOT_COMMANDS = [
+    {"command": "status",    "description": "Open positions + today P&L"},
+    {"command": "paper",     "description": "Toggle paper mode: /paper on | off"},
+    {"command": "halt",      "description": "Stop new entries"},
+    {"command": "resume",    "description": "Re-enable entries"},
+    {"command": "squareoff", "description": "Close all open positions now"},
+]
+
 
 # ── Telegram API helpers ──────────────────────────────────────────────────────
+
+def register_commands() -> None:
+    """Push command menu to Telegram (idempotent — safe to call every run)."""
+    if not BOT_TOKEN:
+        return
+    try:
+        requests.post(
+            f"https://api.telegram.org/bot{BOT_TOKEN}/setMyCommands",
+            json={"commands": _BOT_COMMANDS},
+            timeout=8,
+        )
+    except Exception as exc:
+        LOG.warning("TG_SET_COMMANDS_FAILED | %s", exc)
+
 
 def _get_updates(offset: int) -> list:
     if not BOT_TOKEN:

@@ -526,7 +526,8 @@ def run(dhan, state: dict, qty: int = TRADE_QTY, paper: bool = PAPER_MODE) -> No
       4. Apply TSL for ACTIVE signals
     """
     from app.position_tracker import reconcile
-    from app.telegram_cmd import poll_and_process
+    from app.telegram_cmd import poll_and_process, register_commands
+    register_commands()
 
     # Step 0: reconcile before anything else
     reconcile(dhan, state, qty, paper)
