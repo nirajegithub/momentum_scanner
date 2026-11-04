@@ -778,7 +778,14 @@
       "fill_price": 1100.4,
       "qty": 1,
       "live_managed": true,
-      "sl_order_id": "PAPER_SL_LODHA_1793766643"
+      "sl_order_id": "PAPER_SL_LODHA_1793766643",
+      "last_ltp": 1106.7,
+      "price_history": [
+        {
+          "time": "2026-11-04T10:05:30.645437+05:30",
+          "ltp": 1106.7
+        }
+      ]
     }
   },
   "pending_setups": {},
@@ -5466,5 +5473,8 @@
       }
     }
   },
-  "volume_gainers_last_refresh": "2026-11-04T09:50:00+05:30"
+  "volume_gainers_last_refresh": "2026-11-04T09:50:00+05:30",
+  "current_prices": {
+    "LODHA": 1106.7
+  }
 }
