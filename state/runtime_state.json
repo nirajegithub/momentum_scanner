@@ -752,7 +752,7 @@
       "confirmation_5m_close": 1100.4,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-11-04T09:50:00+05:30",
       "risk": {
         "entry": 1100.4,
@@ -773,7 +773,12 @@
       "sl": 1036.1,
       "t1": 1164.7000000000003,
       "t2": 1229.0000000000005,
-      "t3": 1293.3000000000006
+      "t3": 1293.3000000000006,
+      "entry_order_id": "PAPER_LODHA_1793766641",
+      "fill_price": 1100.4,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_LODHA_1793766643"
     }
   },
   "pending_setups": {},
