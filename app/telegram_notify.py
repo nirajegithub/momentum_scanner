@@ -89,7 +89,7 @@ def signal_detected(signal: dict) -> None:
     rr       = abs(float(r["t1"]) - entry) / risk_pts if risk_pts else 0
     rvol     = signal.get("rvol_15m", "—")
     _send(
-        f"🔍 <b>SIGNAL</b>  ·  {signal['symbol']}  {_dir(signal)}{signal['direction']}\n"
+        f"🔍 <b>SIGNAL</b>  ·  {signal['symbol']}  {_dir(signal)}\n"
         f"Entry ₹{entry:,.2f}  ·  SL ₹{sl:,.2f}  ·  Risk {risk_pts:.1f} pts\n"
         f"T1 ₹{float(r['t1']):,.2f}  ·  T2 ₹{float(r['t2']):,.2f}  ·  T3 ₹{float(r['t3']):,.2f}\n"
         f"R:R 1:{rr:.1f}  ·  RVOL {rvol}×  ·  {_now_str()}"
@@ -99,7 +99,7 @@ def signal_detected(signal: dict) -> None:
 def order_placed(signal: dict, qty: int, order_id: str, paper: bool = True) -> None:
     r = signal["risk"]
     _send(
-        f"📥 <b>ENTRY ORDER</b>{_paper_tag(paper)}  ·  {signal['symbol']}  {_dir(signal)}{signal['direction']}\n"
+        f"📥 <b>ENTRY ORDER</b>{_paper_tag(paper)}  ·  {signal['symbol']}  {_dir(signal)}\n"
         f"{qty} share{'s' if qty > 1 else ''} @ ₹{float(r['entry']):,.2f}  ·  LIMIT MIS\n"
         f"Order <code>{order_id}</code>  ·  {_now_str()}"
     )
@@ -107,7 +107,7 @@ def order_placed(signal: dict, qty: int, order_id: str, paper: bool = True) -> N
 
 def order_filled(signal: dict, qty: int, fill_price: float, paper: bool = True) -> None:
     _send(
-        f"✅ <b>FILLED</b>{_paper_tag(paper)}  ·  {signal['symbol']}  {_dir(signal)}{signal['direction']}\n"
+        f"✅ <b>FILLED</b>{_paper_tag(paper)}  ·  {signal['symbol']}  {_dir(signal)}\n"
         f"{qty} share{'s' if qty > 1 else ''} @ ₹{fill_price:,.2f}  ·  SL @ ₹{float(signal['risk']['sl']):,.2f}\n"
         f"{_now_str()}"
     )
@@ -131,7 +131,7 @@ def target_hit(signal: dict, tier: str, ltp: float, qty: int, new_sl: float | No
     pnl_pts  = (ltp - entry) if signal["direction"] == "BUY" else (entry - ltp)
 
     lines = [
-        f"{icon} <b>{tier_lbl}</b>  ·  {signal['symbol']}  {_dir(signal)}{signal['direction']}",
+        f"{icon} <b>{tier_lbl}</b>  ·  {signal['symbol']}  {_dir(signal)}",
         f"LTP ₹{ltp:,.2f}  ·  Target ₹{t_val:,.2f}",
         f"Unrealised  {pnl_pts:+.1f} pts  ({_inr(pnl_pts, qty)}  ×  {qty})",
     ]
@@ -150,7 +150,7 @@ def sl_hit(signal: dict, exit_price: float, qty: int) -> None:
     tier    = signal.get("highest_target_hit", "")
     tier_tag = f"  <code>[{tier.replace('_HIT','')} ✓]</code>" if tier else ""
     _send(
-        f"🛑 <b>SL HIT</b>  ·  {signal['symbol']}  {_dir(signal)}{signal['direction']}{tier_tag}\n"
+        f"🛑 <b>SL HIT</b>  ·  {signal['symbol']}  {_dir(signal)}{tier_tag}\n"
         f"Exit ₹{exit_price:,.2f}  ·  P&L  {pnl_pts:+.1f} pts  ({_inr(pnl_pts, qty)})\n"
         f"{_now_str()}"
     )
@@ -161,7 +161,7 @@ def manual_exit(signal: dict, exit_price: float, qty: int, reason: str = "T3") -
     entry   = float(r["entry"])
     pnl_pts = (exit_price - entry) if signal["direction"] == "BUY" else (entry - exit_price)
     _send(
-        f"💰 <b>EXIT</b>  ·  {signal['symbol']}  {_dir(signal)}{signal['direction']}  <code>[{reason}]</code>\n"
+        f"💰 <b>EXIT</b>  ·  {signal['symbol']}  {_dir(signal)}  <code>[{reason}]</code>\n"
         f"Exit ₹{exit_price:,.2f}  ·  P&L  {pnl_pts:+.1f} pts  ({_inr(pnl_pts, qty)})\n"
         f"{_now_str()}"
     )
@@ -175,7 +175,7 @@ def square_off(signal: dict, exit_price: float, qty: int, paper: bool = True) ->
     tier_tag = f"  <code>[{tier.replace('_HIT','')}]</code>" if tier else ""
     icon    = "🟢" if pnl_pts >= 0 else "🔴"
     _send(
-        f"⏰ <b>SQUARE-OFF</b>{_paper_tag(paper)}  ·  {signal['symbol']}  {_dir(signal)}{signal['direction']}{tier_tag}\n"
+        f"⏰ <b>SQUARE-OFF</b>{_paper_tag(paper)}  ·  {signal['symbol']}  {_dir(signal)}{tier_tag}\n"
         f"Exit ₹{exit_price:,.2f}  ·  {qty} share{'s' if qty > 1 else ''}  ·  15:05 IST\n"
         f"{icon}  {pnl_pts:+.1f} pts  ·  {_inr(pnl_pts, qty)}"
     )
@@ -218,7 +218,7 @@ def daily_summary(trades: list[dict], qty: int, paper: bool = True) -> None:
 def signal_skipped(signal: dict, reason: str, ltp: float | None = None) -> None:
     ltp_line = f"LTP ₹{ltp:,.2f}  →  Entry ₹{float(signal['risk']['entry']):,.2f}\n" if ltp else ""
     _send(
-        f"⏭ <b>SKIPPED</b>  ·  {signal['symbol']}  {_dir(signal)}{signal['direction']}\n"
+        f"⏭ <b>SKIPPED</b>  ·  {signal['symbol']}  {_dir(signal)}\n"
         f"{ltp_line}"
         f"Reason  {reason}  ·  {_now_str()}"
     )
@@ -227,7 +227,7 @@ def signal_skipped(signal: dict, reason: str, ltp: float | None = None) -> None:
 def manual_trade_adopted(sym: str, direction: str, entry: float, sl: float, qty: int) -> None:
     dir_arrow = "↑" if direction == "BUY" else "↓"
     _send(
-        f"🤝 <b>MANUAL TRADE ADOPTED</b>  ·  {sym}  {dir_arrow}{direction}\n"
+        f"🤝 <b>MANUAL TRADE ADOPTED</b>  ·  {sym}  {dir_arrow}\n"
         f"Entry ₹{entry:,.2f}  ·  Default SL ₹{sl:,.2f}  (1% fallback)\n"
         f"Qty {qty}  ·  ⚠️ Verify SL in runtime_state.json\n"
         f"{_now_str()}"
@@ -246,7 +246,7 @@ def manual_exit_detected(sym: str, direction: str, sl_cancelled: bool = False) -
     dir_arrow = "↑" if direction == "BUY" else "↓"
     sl_note   = "SL cancelled ✓" if sl_cancelled else "⚠️ Check SL manually in DhanHQ"
     _send(
-        f"👤 <b>MANUAL EXIT</b>  ·  {sym}  {dir_arrow}{direction}\n"
+        f"👤 <b>MANUAL EXIT</b>  ·  {sym}  {dir_arrow}\n"
         f"Closed outside bot  ·  {sl_note}\n"
         f"{_now_str()}"
     )
