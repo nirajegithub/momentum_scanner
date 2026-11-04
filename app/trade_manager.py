@@ -13,7 +13,7 @@ IST = ZoneInfo("Asia/Kolkata")
 LOG = logging.getLogger(__name__)
 
 PAPER_MODE            = os.environ.get("PAPER_MODE", "true").lower() == "true"
-TRADE_QTY             = int(os.environ.get("TRADE_QTY", "1"))
+TRADE_QTY             = max(1, int(os.environ.get("TRADE_QTY", "1")))
 MAX_SIGNAL_AGE_MIN    = int(os.environ.get("MAX_SIGNAL_AGE_MIN", "30"))
 MAX_ENTRY_HHMM        = int(os.environ.get("MAX_ENTRY_HHMM", "1230"))
 MAX_PENDING_MIN       = int(os.environ.get("MAX_PENDING_MIN", "15"))
@@ -24,6 +24,7 @@ DAILY_LOSS_HALT_INR   = float(os.environ.get("DAILY_LOSS_HALT_INR", "-5000"))
 STATUS_INTERVAL_MIN   = int(os.environ.get("STATUS_INTERVAL_MIN", "15"))
 STATUS_SQUAREOFF_HHMM = int(os.environ.get("STATUS_SQUAREOFF_HHMM", "1510"))
 ENTRY_CHASE_LIMIT_PCT = float(os.environ.get("ENTRY_CHASE_LIMIT_PCT", "0.015"))
+MAX_ORDER_VALUE_INR   = float(os.environ.get("MAX_ORDER_VALUE_INR", "100000"))
 
 
 def _now_ist() -> datetime:
@@ -209,6 +210,13 @@ def place_entry_order(dhan, signal: dict, qty: int, paper: bool) -> str | None:
         tg.order_placed(signal, qty, oid, paper=True)
         return oid
 
+    order_value = qty * entry
+    if order_value > MAX_ORDER_VALUE_INR:
+        reason = f"ORDER_VALUE_EXCEEDED ₹{order_value:,.0f} > limit ₹{MAX_ORDER_VALUE_INR:,.0f}"
+        LOG.warning("ENTRY_BLOCKED | %s | %s", sym, reason)
+        tg.signal_skipped(signal, reason)
+        return None
+
     try:
         resp = dhan.place_order(
             security_id      = sec_id,
@@ -384,6 +392,7 @@ def _partial_exit_t3(dhan, signal: dict, ltp: float, paper: bool) -> None:
     qty = int(signal.get("qty", TRADE_QTY))
     if qty < 2:
         LOG.info("PARTIAL_EXIT_SKIP | %s | qty=%d — cannot split", signal["symbol"], qty)
+        tg.signal_skipped(signal, "T3_PARTIAL_SKIP qty=1 (holding full position)")
         signal["t3_partial_done"] = True
         return
 
