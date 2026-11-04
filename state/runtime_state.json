@@ -779,7 +779,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_LODHA_1793766643",
-      "last_ltp": 1103.2,
+      "last_ltp": 1102.8,
       "price_history": [
         {
           "time": "2026-11-04T10:05:52.481181+05:30",
@@ -820,6 +820,10 @@
         {
           "time": "2026-11-04T10:50:58.094554+05:30",
           "ltp": 1103.2
+        },
+        {
+          "time": "2026-11-04T10:55:34.140101+05:30",
+          "ltp": 1102.8
         }
       ]
     },
@@ -884,7 +888,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_CARTRADE_1793768449",
-      "last_ltp": 2519.2,
+      "last_ltp": 2516.3,
       "price_history": [
         {
           "time": "2026-11-04T10:35:57.285611+05:30",
@@ -901,6 +905,10 @@
         {
           "time": "2026-11-04T10:50:58.094554+05:30",
           "ltp": 2519.2
+        },
+        {
+          "time": "2026-11-04T10:55:34.140101+05:30",
+          "ltp": 2516.3
         }
       ]
     },
@@ -938,7 +946,7 @@
       "confirmation_5m_close": 576.2,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-11-04T10:45:00+05:30",
       "risk": {
         "entry": 576.2,
@@ -959,7 +967,12 @@
       "sl": 559.2,
       "t1": 593.2,
       "t2": 610.2,
-      "t3": 627.2
+      "t3": 627.2,
+      "entry_order_id": "PAPER_SAREGAMA_1793769934",
+      "fill_price": 576.2,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_SAREGAMA_1793769935"
     }
   },
   "pending_setups": {},
@@ -5665,7 +5678,7 @@
   },
   "volume_gainers_last_refresh": "2026-11-04T10:50:00+05:30",
   "current_prices": {
-    "LODHA": 1099.1,
-    "CARTRADE": 2515.5
+    "LODHA": 1102.8,
+    "CARTRADE": 2516.3
   }
 }
