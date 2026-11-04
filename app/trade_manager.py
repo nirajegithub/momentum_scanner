@@ -124,30 +124,45 @@ def _margin_ok(dhan, signal: dict, qty: int) -> tuple[bool, str]:
     return True, ""
 
 
-ENTRY_CHASE_LIMIT_PCT = float(os.environ.get("ENTRY_CHASE_LIMIT_PCT", "0.015"))
+# Fraction of T1 distance allowed as chase buffer (default 0.5 = 50% of T1 dist).
+# Entry rejected when LTP is already more than this fraction past entry toward T1.
+# Example: entry=576, T1=593 (dist=17), frac=0.5 → chase limit=584.5
+ENTRY_CHASE_T1_FRAC = float(os.environ.get("ENTRY_CHASE_T1_FRAC", "0.5"))
 
 
 def should_place_entry(signal: dict, ltp: float) -> tuple[bool, str]:
     """
     Strict LIMIT logic: always place at signal entry price.
-    Rejects if breakout already failed (LTP crossed SL) or price ran
-    more than ENTRY_CHASE_LIMIT_PCT (default 1.5%) past entry.
+    Rejects if:
+      - breakout already failed (LTP crossed original SL), or
+      - price ran past 50% of T1 distance from entry (R:R would be destroyed)
     """
     r         = signal["risk"]
     orig_sl   = float(r.get("original_sl", r["sl"]))
     entry     = float(r["entry"])
+    t1        = float(r["t1"])
     direction = signal["direction"]
+
+    t1_dist     = abs(t1 - entry)
+    chase_pts   = t1_dist * ENTRY_CHASE_T1_FRAC
+    chase_limit = entry + chase_pts if direction == "BUY" else entry - chase_pts
 
     if direction == "BUY":
         if ltp <= orig_sl:
             return False, f"BREAKOUT_FAILED ltp={ltp:.2f} ≤ sl={orig_sl:.2f}"
-        if ltp > entry * (1 + ENTRY_CHASE_LIMIT_PCT):
-            return False, f"ENTRY_MISSED ltp={ltp:.2f} > entry+{ENTRY_CHASE_LIMIT_PCT*100:.1f}%={entry*(1+ENTRY_CHASE_LIMIT_PCT):.2f}"
+        if ltp > chase_limit:
+            return False, (
+                f"ENTRY_MISSED ltp={ltp:.2f} > chase_limit={chase_limit:.2f} "
+                f"(entry={entry:.2f} + {ENTRY_CHASE_T1_FRAC*100:.0f}%×T1dist={chase_pts:.1f}pts)"
+            )
     else:
         if ltp >= orig_sl:
             return False, f"BREAKOUT_FAILED ltp={ltp:.2f} ≥ sl={orig_sl:.2f}"
-        if ltp < entry * (1 - ENTRY_CHASE_LIMIT_PCT):
-            return False, f"ENTRY_MISSED ltp={ltp:.2f} < entry-{ENTRY_CHASE_LIMIT_PCT*100:.1f}%={entry*(1-ENTRY_CHASE_LIMIT_PCT):.2f}"
+        if ltp < chase_limit:
+            return False, (
+                f"ENTRY_MISSED ltp={ltp:.2f} < chase_limit={chase_limit:.2f} "
+                f"(entry={entry:.2f} - {ENTRY_CHASE_T1_FRAC*100:.0f}%×T1dist={chase_pts:.1f}pts)"
+            )
     return True, ""
 
 

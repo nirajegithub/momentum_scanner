@@ -72,7 +72,7 @@ jobs:
           MAX_ENTRY_HHMM: "1300"
           MAX_OPEN_POSITIONS: "35"
           DAILY_LOSS_HALT_INR: "-1000"
-          ENTRY_CHASE_LIMIT_PCT: "0.015"
+          ENTRY_CHASE_T1_FRAC: "0.5"
         run: python -m app.main
 
       - name: Fill poll + SL for live ENTRY_PLACED signals

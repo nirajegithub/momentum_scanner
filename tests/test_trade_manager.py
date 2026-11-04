@@ -73,20 +73,22 @@ class TestShouldPlaceEntry:
 
     def test_buy_pass_when_ltp_above_sl(self):
         from app.trade_manager import should_place_entry
-        # ltp=101.0 is within +1.5% of entry=100 → valid zone
-        ok, _ = should_place_entry(_sig(direction="BUY", entry=100.0, sl=95.0), ltp=101.0)
+        # entry=100, t1=105 → chase_limit=102.5; ltp=101.0 is within range
+        ok, _ = should_place_entry(_sig(direction="BUY", entry=100.0, sl=95.0, t1=105.0), ltp=101.0)
         assert ok
 
     def test_buy_pass_when_ltp_above_entry(self):
-        """Price moved up slightly (within 1.5%) — still valid, LIMIT at entry."""
+        """Price moved up within 50% of T1 distance — still valid, LIMIT at entry."""
         from app.trade_manager import should_place_entry
-        ok, _ = should_place_entry(_sig(direction="BUY", entry=100.0, sl=95.0), ltp=101.4)
+        # entry=100, t1=105 → chase_limit=102.5; ltp=102.0 is within range
+        ok, _ = should_place_entry(_sig(direction="BUY", entry=100.0, sl=95.0, t1=105.0), ltp=102.0)
         assert ok
 
     def test_buy_skip_when_ltp_above_chase_limit(self):
-        """Price ran > 1.5% above entry — ENTRY_MISSED, do not chase."""
+        """Price ran past 50% of T1 distance from entry — ENTRY_MISSED, do not chase."""
         from app.trade_manager import should_place_entry
-        ok, reason = should_place_entry(_sig(direction="BUY", entry=100.0, sl=95.0), ltp=108.0)
+        # entry=100, t1=105 → t1_dist=5, chase_pts=2.5, chase_limit=102.5; ltp=103.0 > limit
+        ok, reason = should_place_entry(_sig(direction="BUY", entry=100.0, sl=95.0, t1=105.0), ltp=103.0)
         assert not ok
         assert "ENTRY_MISSED" in reason
 
@@ -107,17 +109,18 @@ class TestShouldPlaceEntry:
 
     def test_sell_pass_when_ltp_below_sl(self):
         from app.trade_manager import should_place_entry
-        # ltp=99.0 is within -1.5% of entry=100 → valid zone
+        # entry=100, t1=105 → chase_limit=97.5; ltp=99.0 is within range
         ok, _ = should_place_entry(
-            _sig(direction="SELL", entry=100.0, sl=105.0), ltp=99.0
+            _sig(direction="SELL", entry=100.0, sl=105.0, t1=105.0), ltp=99.0
         )
         assert ok
 
     def test_sell_skip_when_ltp_below_chase_limit(self):
-        """Price fell > 1.5% below entry — ENTRY_MISSED, do not chase."""
+        """Price fell past 50% of T1 distance below entry — ENTRY_MISSED, do not chase."""
         from app.trade_manager import should_place_entry
+        # entry=100, t1=105 → t1_dist=5, chase_pts=2.5, chase_limit=97.5; ltp=97.0 < limit
         ok, reason = should_place_entry(
-            _sig(direction="SELL", entry=100.0, sl=105.0), ltp=98.0
+            _sig(direction="SELL", entry=100.0, sl=105.0, t1=105.0), ltp=97.0
         )
         assert not ok
         assert "ENTRY_MISSED" in reason
