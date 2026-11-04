@@ -555,6 +555,25 @@ def run(dhan, state: dict, qty: int = TRADE_QTY, paper: bool = PAPER_MODE) -> No
             # if sl_oid is None, _emergency_exit already fired inside place_sl_order
             save(state)
 
+    # Step 3b: fill polling for live orders placed inline by scanner
+    # (ENTRY_PLACED signals: order fired, waiting for TRADED status)
+    for key, signal in list(state.get("signals", {}).items()):
+        if signal.get("status") != "ENTRY_PLACED":
+            continue
+        oid = signal.get("entry_order_id", "")
+        fill = wait_for_fill(dhan, oid, signal, qty, paper)
+        if fill:
+            signal["fill_price"] = fill
+            signal["qty"]        = qty
+            signal["live_managed"] = True
+            sl_oid = place_sl_order(dhan, signal, qty, paper)
+            if sl_oid:
+                signal["sl_order_id"] = sl_oid
+                signal["status"]      = "ACTIVE"
+        else:
+            signal["status"] = "SKIPPED"
+        save(state)
+
     # Step 4: TSL management
     for key, signal in list(state.get("signals", {}).items()):
         if signal.get("status") == "ACTIVE":

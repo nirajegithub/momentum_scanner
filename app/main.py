@@ -379,42 +379,52 @@ def _process_b1(dhan, state, ts):
                                         signal["t1"], rvol, rsi, signal["confirmation_5m_timestamp"])
                     stats.signals_generated += 1
 
-                    # Place order immediately — same process, zero delay after alert
+                    # Place order immediately — same process, zero delay after alert.
+                    # Paper mode: fully synchronous (wait_for_fill returns instantly).
+                    # Live mode: fire-and-forget — place order and move to next symbol;
+                    #   fill polling + SL placement handled by trade_manager step after scan.
                     try:
-                        from .trade_manager import pre_trade_ok, should_place_entry, place_entry_order, wait_for_fill, place_sl_order, _margin_ok, PAPER_MODE, TRADE_QTY
+                        from .trade_manager import (
+                            pre_trade_ok, should_place_entry, place_entry_order,
+                            wait_for_fill, place_sl_order, _margin_ok,
+                            PAPER_MODE, TRADE_QTY,
+                        )
+                        from . import telegram_notify as _tg
                         ltp = float(close5)
                         if pre_trade_ok(signal, state):
                             ok, reason = should_place_entry(signal, ltp)
-                            if ok:
+                            if not ok:
+                                signal["status"] = "SKIPPED"
+                                _tg.signal_skipped(signal, reason, ltp=ltp)
+                            else:
                                 if not PAPER_MODE:
                                     ok, reason = _margin_ok(dhan, signal, TRADE_QTY)
-                                if ok:
+                                if not ok:
+                                    signal["status"] = "SKIPPED"
+                                    _tg.signal_skipped(signal, reason)
+                                else:
                                     oid = place_entry_order(dhan, signal, TRADE_QTY, PAPER_MODE)
                                     if oid:
                                         signal["entry_order_id"] = oid
                                         signal["status"] = "ENTRY_PLACED"
                                         save(state)
-                                        fill = wait_for_fill(dhan, oid, signal, TRADE_QTY, PAPER_MODE)
-                                        if fill:
-                                            signal["fill_price"] = fill
-                                            signal["qty"] = TRADE_QTY
-                                            signal["live_managed"] = True
-                                            sl_oid = place_sl_order(dhan, signal, TRADE_QTY, PAPER_MODE)
-                                            if sl_oid:
-                                                signal["sl_order_id"] = sl_oid
-                                                signal["status"] = "ACTIVE"
-                                        else:
-                                            signal["status"] = "SKIPPED"
+                                        if PAPER_MODE:
+                                            # Instant fill in paper — complete the flow now
+                                            fill = wait_for_fill(dhan, oid, signal, TRADE_QTY, True)
+                                            if fill:
+                                                signal["fill_price"] = fill
+                                                signal["qty"] = TRADE_QTY
+                                                signal["live_managed"] = True
+                                                sl_oid = place_sl_order(dhan, signal, TRADE_QTY, True)
+                                                if sl_oid:
+                                                    signal["sl_order_id"] = sl_oid
+                                                    signal["status"] = "ACTIVE"
+                                            else:
+                                                signal["status"] = "SKIPPED"
+                                        # Live mode: leave as ENTRY_PLACED — trade_manager
+                                        # step (runs after scan) handles fill + SL
                                     else:
                                         signal["status"] = "SKIPPED"
-                                else:
-                                    signal["status"] = "SKIPPED"
-                                    from . import telegram_notify as tg
-                                    tg.signal_skipped(signal, reason)
-                            else:
-                                signal["status"] = "SKIPPED"
-                                from . import telegram_notify as tg
-                                tg.signal_skipped(signal, reason, ltp=ltp)
                         save(state)
                     except Exception as exc:
                         LOG.warning("%s | INLINE_ORDER_FAILED | %s", symbol, exc)
