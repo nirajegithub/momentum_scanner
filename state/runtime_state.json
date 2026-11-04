@@ -779,7 +779,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_LODHA_1793766643",
-      "last_ltp": 1095.4,
+      "last_ltp": 1099.4,
       "price_history": [
         {
           "time": "2026-11-04T10:05:52.481181+05:30",
@@ -804,6 +804,10 @@
         {
           "time": "2026-11-04T10:30:47.822248+05:30",
           "ltp": 1095.4
+        },
+        {
+          "time": "2026-11-04T10:35:26.378123+05:30",
+          "ltp": 1099.4
         }
       ]
     },
@@ -867,7 +871,14 @@
       "fill_price": 2494.1,
       "qty": 1,
       "live_managed": true,
-      "sl_order_id": "PAPER_SL_CARTRADE_1793768449"
+      "sl_order_id": "PAPER_SL_CARTRADE_1793768449",
+      "last_ltp": 2523.9,
+      "price_history": [
+        {
+          "time": "2026-11-04T10:35:26.378123+05:30",
+          "ltp": 2523.9
+        }
+      ]
     }
   },
   "pending_setups": {},
@@ -5565,6 +5576,7 @@
   },
   "volume_gainers_last_refresh": "2026-11-04T10:20:00+05:30",
   "current_prices": {
-    "LODHA": 1095.4
+    "LODHA": 1099.4,
+    "CARTRADE": 2523.9
   }
 }
