@@ -779,7 +779,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_LODHA_1793766643",
-      "last_ltp": 1103.1,
+      "last_ltp": 1105.6,
       "price_history": [
         {
           "time": "2026-11-04T10:05:52.481181+05:30",
@@ -920,6 +920,10 @@
         {
           "time": "2026-11-04T12:56:14.574942+05:30",
           "ltp": 1103.1
+        },
+        {
+          "time": "2026-11-04T13:00:39.201782+05:30",
+          "ltp": 1105.6
         }
       ]
     },
@@ -984,7 +988,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_CARTRADE_1793768449",
-      "last_ltp": 2510.0,
+      "last_ltp": 2511.4,
       "price_history": [
         {
           "time": "2026-11-04T10:35:57.285611+05:30",
@@ -1101,6 +1105,10 @@
         {
           "time": "2026-11-04T12:56:14.574942+05:30",
           "ltp": 2510.0
+        },
+        {
+          "time": "2026-11-04T13:00:39.201782+05:30",
+          "ltp": 2511.4
         }
       ]
     },
@@ -1165,7 +1173,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_SAREGAMA_1793770237",
-      "last_ltp": 604.75,
+      "last_ltp": 603.45,
       "price_history": [
         {
           "time": "2026-11-04T11:06:03.451722+05:30",
@@ -1258,6 +1266,10 @@
         {
           "time": "2026-11-04T12:56:14.574942+05:30",
           "ltp": 604.75
+        },
+        {
+          "time": "2026-11-04T13:00:39.201782+05:30",
+          "ltp": 603.45
         }
       ],
       "highest_target_hit": "T1_HIT",
@@ -1325,7 +1337,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_HYUNDAI_1793772935",
-      "last_ltp": 2060.0,
+      "last_ltp": 2061.2,
       "price_history": [
         {
           "time": "2026-11-04T11:50:59.185937+05:30",
@@ -1382,6 +1394,10 @@
         {
           "time": "2026-11-04T12:56:14.574942+05:30",
           "ltp": 2060.0
+        },
+        {
+          "time": "2026-11-04T13:00:39.201782+05:30",
+          "ltp": 2061.2
         }
       ]
     },
@@ -1446,7 +1462,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_RADICO_1793774731",
-      "last_ltp": 4331.6,
+      "last_ltp": 4333.4,
       "price_history": [
         {
           "time": "2026-11-04T12:21:05.266313+05:30",
@@ -1479,6 +1495,10 @@
         {
           "time": "2026-11-04T12:56:14.574942+05:30",
           "ltp": 4331.6
+        },
+        {
+          "time": "2026-11-04T13:00:39.201782+05:30",
+          "ltp": 4333.4
         }
       ]
     },
@@ -1543,7 +1563,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_IIFL_1793774732",
-      "last_ltp": 569.0,
+      "last_ltp": 570.15,
       "price_history": [
         {
           "time": "2026-11-04T12:21:05.266313+05:30",
@@ -1576,6 +1596,10 @@
         {
           "time": "2026-11-04T12:56:14.574942+05:30",
           "ltp": 569.0
+        },
+        {
+          "time": "2026-11-04T13:00:39.201782+05:30",
+          "ltp": 570.15
         }
       ]
     },
@@ -1640,7 +1664,7 @@
       "qty": 1,
       "live_managed": true,
       "sl_order_id": "PAPER_SL_THELEELA_1793776535",
-      "last_ltp": 672.05,
+      "last_ltp": 672.55,
       "price_history": [
         {
           "time": "2026-11-04T12:50:56.761092+05:30",
@@ -1649,6 +1673,10 @@
         {
           "time": "2026-11-04T12:56:14.574942+05:30",
           "ltp": 672.05
+        },
+        {
+          "time": "2026-11-04T13:00:39.201782+05:30",
+          "ltp": 672.55
         }
       ]
     },
@@ -1686,7 +1714,7 @@
       "confirmation_5m_close": 560.25,
       "confirmation_lag_minutes": -5.0,
       "confirmation_lag_5m_candles": -1,
-      "status": "NEW",
+      "status": "ACTIVE",
       "signal_time": "2026-11-04T12:40:00+05:30",
       "risk": {
         "entry": 560.25,
@@ -1707,7 +1735,12 @@
       "sl": 548.65,
       "t1": 571.85,
       "t2": 583.45,
-      "t3": 595.0500000000001
+      "t3": 595.0500000000001,
+      "entry_order_id": "PAPER_TATAINVEST_1793777440",
+      "fill_price": 560.25,
+      "qty": 1,
+      "live_managed": true,
+      "sl_order_id": "PAPER_SL_TATAINVEST_1793777441"
     }
   },
   "pending_setups": {},
@@ -6453,12 +6486,13 @@
   },
   "volume_gainers_last_refresh": "2026-11-04T12:50:00+05:30",
   "current_prices": {
-    "LODHA": 1101.1,
-    "CARTRADE": 2519.0,
-    "SAREGAMA": 602.0,
-    "HYUNDAI": 2058.9,
-    "RADICO": 4331.9,
-    "IIFL": 567.05
+    "LODHA": 1105.6,
+    "CARTRADE": 2511.4,
+    "SAREGAMA": 603.45,
+    "HYUNDAI": 2061.2,
+    "RADICO": 4333.4,
+    "IIFL": 570.15,
+    "THELEELA": 672.55
   },
-  "_tg_update_id": 170211604
+  "_tg_update_id": 170211605
 }
