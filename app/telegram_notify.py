@@ -252,6 +252,48 @@ def manual_exit_detected(sym: str, direction: str, sl_cancelled: bool = False) -
     )
 
 
+def live_status(signals: dict, ltps: dict[str, float], closed_pnl_inr: float, paper: bool = True) -> None:
+    """Periodic portfolio heartbeat — active positions with live LTP + unrealised P&L."""
+    active = [s for s in signals.values() if s.get("status") == "ACTIVE"]
+    closed = [s for s in signals.values() if s.get("status") == "EXITED"]
+    if not active:
+        return
+
+    lines = [f"📊 <b>Live Status</b>{_paper_tag(paper)}  ·  {_now_str()}", ""]
+
+    for sig in sorted(active, key=lambda s: s["symbol"]):
+        r       = sig["risk"]
+        sym     = sig["symbol"]
+        sec_id  = str(sig.get("security_id", ""))
+        entry   = float(r["entry"])
+        sl      = float(r["sl"])
+        t1      = float(r["t1"])
+        qty     = int(sig.get("qty", 1))
+        ltp     = ltps.get(sec_id)
+        tier    = sig.get("highest_target_hit", "")
+        tier_tag = f" [{tier.replace('_HIT','')}✓]" if tier else ""
+
+        if ltp is not None:
+            pnl_pts = (ltp - entry) if sig["direction"] == "BUY" else (entry - ltp)
+            pnl_str = f"{pnl_pts:+.1f} pts  {_inr(pnl_pts, qty)}"
+            ltp_str = f"ltp ₹{ltp:,.2f}"
+        else:
+            pnl_str = "ltp N/A"
+            ltp_str = ""
+
+        lines.append(
+            f"{_dir(sig)}<b>{sym}</b>{tier_tag}  entry ₹{entry:,.2f}  sl ₹{sl:,.2f}\n"
+            f"   {ltp_str}  →  {pnl_str}"
+        )
+
+    lines.append("")
+    pnl_icon = "🟢" if closed_pnl_inr >= 0 else "🔴"
+    lines.append(
+        f"📋 Closed: {len(closed)}  ·  {pnl_icon} Day P&L: {closed_pnl_inr:+,.0f} ₹"
+    )
+    _send("\n".join(lines))
+
+
 def error_alert(context: str, error: str) -> None:
     _send(
         f"⚠️ <b>ERROR</b>  ·  {context}\n"

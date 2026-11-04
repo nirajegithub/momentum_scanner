@@ -598,6 +598,83 @@ class TestStep3bEntryPlaced:
         assert sig["status"] == "SKIPPED"
 
 
+# ── send_status_report / _should_send_status ─────────────────────────────────
+
+class TestStatusReport:
+    def _active_state(self):
+        from app.state import blank
+        from datetime import date
+        state = blank(date.today())
+        sig = _sig(status="ACTIVE")
+        sig["security_id"] = "9999"
+        sig["fill_price"] = 100.0
+        sig["qty"] = 1
+        state["signals"]["k1"] = sig
+        return state
+
+    def test_no_send_when_no_active_positions(self, monkeypatch):
+        from app.trade_manager import _should_send_status
+        from app.state import blank
+        from datetime import date
+        state = blank(date.today())
+        state["signals"]["k1"] = _sig(status="SKIPPED")
+        assert not _should_send_status(state)
+
+    def test_sends_on_first_run_with_active(self, monkeypatch):
+        from app.trade_manager import _should_send_status
+        import app.trade_manager as tm
+        monkeypatch.setattr(tm, "STATUS_SQUAREOFF_HHMM", 2359)
+        state = self._active_state()
+        assert _should_send_status(state)
+
+    def test_no_send_before_interval_elapsed(self, monkeypatch):
+        from app.trade_manager import _should_send_status
+        from datetime import datetime, timezone, timedelta
+        import app.trade_manager as tm
+        monkeypatch.setattr(tm, "STATUS_SQUAREOFF_HHMM", 2359)
+        monkeypatch.setattr(tm, "STATUS_INTERVAL_MIN", 15)
+        state = self._active_state()
+        # Last sent 5 min ago — not yet 15 min
+        state["last_status_time"] = (datetime.now(timezone.utc).astimezone()).isoformat()
+        assert not _should_send_status(state)
+
+    def test_sends_after_interval_elapsed(self, monkeypatch):
+        from app.trade_manager import _should_send_status
+        from datetime import datetime, timedelta
+        from zoneinfo import ZoneInfo
+        import app.trade_manager as tm
+        monkeypatch.setattr(tm, "STATUS_SQUAREOFF_HHMM", 2359)
+        monkeypatch.setattr(tm, "STATUS_INTERVAL_MIN", 15)
+        state = self._active_state()
+        # Last sent 20 min ago
+        past = (datetime.now(ZoneInfo("Asia/Kolkata")) - timedelta(minutes=20)).isoformat()
+        state["last_status_time"] = past
+        assert _should_send_status(state)
+
+    def test_no_send_past_squareoff_time(self, monkeypatch):
+        from app.trade_manager import _should_send_status
+        import app.trade_manager as tm
+        monkeypatch.setattr(tm, "STATUS_SQUAREOFF_HHMM", 0)  # always past
+        state = self._active_state()
+        assert not _should_send_status(state)
+
+    def test_send_status_report_updates_last_status_time(self, monkeypatch):
+        from app.trade_manager import send_status_report
+        import app.trade_manager as tm
+        monkeypatch.setattr(tm, "STATUS_SQUAREOFF_HHMM", 2359)
+        monkeypatch.setattr(tm, "_should_send_status", lambda s: True)
+        monkeypatch.setattr(tm, "_fetch_active_ltps", lambda dhan, sigs: {"9999": 102.0})
+        monkeypatch.setattr(tm, "_daily_closed_pnl", lambda s: 500.0)
+        monkeypatch.setattr(tm, "save", lambda s: None)
+        sent = []
+        monkeypatch.setattr("app.telegram_notify.live_status",
+                            lambda sigs, ltps, pnl, paper: sent.append(1))
+        state = self._active_state()
+        send_status_report(None, state, paper=True)
+        assert sent == [1]
+        assert "last_status_time" in state
+
+
 # ── _verify_sl_orders (#9) ────────────────────────────────────────────────────
 
 class TestVerifySlOrders:

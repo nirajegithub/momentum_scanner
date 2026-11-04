@@ -12,15 +12,18 @@ from app.state import load, save
 IST = ZoneInfo("Asia/Kolkata")
 LOG = logging.getLogger(__name__)
 
-PAPER_MODE           = os.environ.get("PAPER_MODE", "true").lower() == "true"
-TRADE_QTY            = int(os.environ.get("TRADE_QTY", "1"))
-MAX_SIGNAL_AGE_MIN   = int(os.environ.get("MAX_SIGNAL_AGE_MIN", "30"))
-MAX_ENTRY_HHMM       = int(os.environ.get("MAX_ENTRY_HHMM", "1230"))
-MAX_PENDING_MIN      = int(os.environ.get("MAX_PENDING_MIN", "15"))
-MIN_TRAIL_INC        = float(os.environ.get("MIN_TRAIL_INC", "2.0"))
-MAX_OPEN_POSITIONS   = int(os.environ.get("MAX_OPEN_POSITIONS", "5"))
-PARTIAL_EXIT_T3      = os.environ.get("PARTIAL_EXIT_T3", "true").lower() == "true"
-DAILY_LOSS_HALT_INR  = float(os.environ.get("DAILY_LOSS_HALT_INR", "-5000"))
+PAPER_MODE            = os.environ.get("PAPER_MODE", "true").lower() == "true"
+TRADE_QTY             = int(os.environ.get("TRADE_QTY", "1"))
+MAX_SIGNAL_AGE_MIN    = int(os.environ.get("MAX_SIGNAL_AGE_MIN", "30"))
+MAX_ENTRY_HHMM        = int(os.environ.get("MAX_ENTRY_HHMM", "1230"))
+MAX_PENDING_MIN       = int(os.environ.get("MAX_PENDING_MIN", "15"))
+MIN_TRAIL_INC         = float(os.environ.get("MIN_TRAIL_INC", "2.0"))
+MAX_OPEN_POSITIONS    = int(os.environ.get("MAX_OPEN_POSITIONS", "5"))
+PARTIAL_EXIT_T3       = os.environ.get("PARTIAL_EXIT_T3", "true").lower() == "true"
+DAILY_LOSS_HALT_INR   = float(os.environ.get("DAILY_LOSS_HALT_INR", "-5000"))
+STATUS_INTERVAL_MIN   = int(os.environ.get("STATUS_INTERVAL_MIN", "15"))
+STATUS_SQUAREOFF_HHMM = int(os.environ.get("STATUS_SQUAREOFF_HHMM", "1510"))
+ENTRY_CHASE_LIMIT_PCT = float(os.environ.get("ENTRY_CHASE_LIMIT_PCT", "0.015"))
 
 
 def _now_ist() -> datetime:
@@ -32,6 +35,47 @@ def _hhmm(dt: datetime) -> int:
 
 
 # ── Guards ────────────────────────────────────────────────────────────────────
+
+def _fetch_active_ltps(dhan, signals: dict) -> dict[str, float]:
+    """Return {security_id: ltp} for all ACTIVE signals. Fails-open (empty dict)."""
+    sec_ids = [
+        sig["security_id"]
+        for sig in signals.values()
+        if sig.get("status") == "ACTIVE" and sig.get("security_id")
+    ]
+    if not sec_ids:
+        return {}
+    try:
+        rows = dhan.quote_batch(sec_ids)
+        return {str(k): float(v["ltp"]) for k, v in rows.items() if v.get("ltp") is not None}
+    except Exception as exc:
+        LOG.warning("STATUS_LTP_FETCH_FAILED | %s", exc)
+        return {}
+
+
+def _should_send_status(state: dict) -> bool:
+    """True if STATUS_INTERVAL_MIN has elapsed since last status and time < STATUS_SQUAREOFF_HHMM."""
+    if _hhmm(_now_ist()) >= STATUS_SQUAREOFF_HHMM:
+        return False
+    active = any(s.get("status") == "ACTIVE" for s in state.get("signals", {}).values())
+    if not active:
+        return False
+    last = state.get("last_status_time")
+    if last is None:
+        return True
+    elapsed = (_now_ist() - datetime.fromisoformat(last)).total_seconds() / 60
+    return elapsed >= STATUS_INTERVAL_MIN
+
+
+def send_status_report(dhan, state: dict, paper: bool) -> None:
+    """Fetch live LTPs and fire a Telegram portfolio status update."""
+    if not _should_send_status(state):
+        return
+    ltps = _fetch_active_ltps(dhan, state.get("signals", {}))
+    tg.live_status(state.get("signals", {}), ltps, _daily_closed_pnl(state), paper)
+    state["last_status_time"] = _now_ist().isoformat()
+    save(state)
+
 
 def _daily_closed_pnl(state: dict) -> float:
     """Sum P&L in rupees (pts × qty) of all EXITED signals for today."""
@@ -122,11 +166,6 @@ def _margin_ok(dhan, signal: dict, qty: int) -> tuple[bool, str]:
 
     LOG.info("MARGIN_CHECK | %s | OK required=₹%.0f available=₹%.0f", signal["symbol"], required, available)
     return True, ""
-
-
-# Max % LTP can be past entry before we stop placing a limit order.
-# Beyond this the stock is unlikely to pull back to the limit price cleanly.
-ENTRY_CHASE_LIMIT_PCT = float(os.environ.get("ENTRY_CHASE_LIMIT_PCT", "0.015"))
 
 
 def should_place_entry(signal: dict, ltp: float) -> tuple[bool, str]:
@@ -587,6 +626,9 @@ def run(dhan, state: dict, qty: int = TRADE_QTY, paper: bool = PAPER_MODE) -> No
             _apply_tsl(dhan, signal, paper)
 
     save(state)
+
+    # Step 5: periodic live status report
+    send_status_report(dhan, state, paper)
 
 
 def main() -> None:
