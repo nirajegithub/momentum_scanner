@@ -69,7 +69,7 @@ jobs:
         env:
           PAPER_MODE: "true"
           TRADE_QTY: "1"
-          MAX_ENTRY_HHMM: "1300"
+          MAX_ENTRY_HHMM: "1330"
           MAX_OPEN_POSITIONS: "35"
           DAILY_LOSS_HALT_INR: "-1000"
           ENTRY_CHASE_LIMIT_PCT: "0.015"
@@ -80,7 +80,7 @@ jobs:
           PAPER_MODE: "true"
           TRADE_QTY: "1"
           MAX_SIGNAL_AGE_MIN: "5"
-          MAX_ENTRY_HHMM: "1300"
+          MAX_ENTRY_HHMM: "1330"
           MAX_OPEN_POSITIONS: "35"
           DAILY_LOSS_HALT_INR: "-1000"
         run: python -m app.trade_manager
