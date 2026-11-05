@@ -186,10 +186,16 @@ def quick_backtest(symbols: list = None, days: int = 5):
 
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s | %(levelname)s | %(message)s",
-    )
+    class _ISTFormatter(logging.Formatter):
+        def formatTime(self, record, datefmt=None):
+            from datetime import datetime as _dt
+            from zoneinfo import ZoneInfo as _ZI
+            t = _dt.fromtimestamp(record.created, tz=_ZI("Asia/Kolkata"))
+            return t.strftime(datefmt or "%Y-%m-%d %H:%M:%S IST")
+    _h = logging.StreamHandler()
+    _h.setFormatter(_ISTFormatter("%(asctime)s | %(levelname)s | %(message)s"))
+    logging.root.addHandler(_h)
+    logging.root.setLevel(logging.INFO)
 
     symbols = ["HINDALCO", "RELIANCE", "TCS", "INFY", "WIPRO", "ICICIBANK", "HDFC", "LT", "BAJAJ-AUTO", "MARUTI"]
     results = quick_backtest(symbols=symbols, days=5)

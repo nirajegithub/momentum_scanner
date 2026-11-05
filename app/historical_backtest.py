@@ -216,10 +216,16 @@ def historical_backtest(csv_path: str = "data/historical/15m_last_90d_2026-09-22
 
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s | %(levelname)s | %(message)s",
-    )
+    class _ISTFormatter(logging.Formatter):
+        def formatTime(self, record, datefmt=None):
+            from datetime import datetime as _dt
+            from zoneinfo import ZoneInfo as _ZI
+            t = _dt.fromtimestamp(record.created, tz=_ZI("Asia/Kolkata"))
+            return t.strftime(datefmt or "%Y-%m-%d %H:%M:%S IST")
+    _h = logging.StreamHandler()
+    _h.setFormatter(_ISTFormatter("%(asctime)s | %(levelname)s | %(message)s"))
+    logging.root.addHandler(_h)
+    logging.root.setLevel(logging.INFO)
 
     results = historical_backtest()
     LOG.info("\n✅ Historical backtest complete!")
