@@ -225,6 +225,11 @@ class DhanClient:
                     LOG.warning("Dhan %s data not a dict (chunk %d-%d): %s", method_name, start, start + len(chunk), type(data).__name__)
                     continue
 
+                # Dhan API wraps response in {"data": {...}, "status": ...};
+                # SDK's _parse_response stores that whole JSON as resp["data"],
+                # so we may need one more level of unwrapping.
+                if "NSE_EQ" not in data and isinstance(data.get("data"), dict):
+                    data = data["data"]
                 segment_rows = data.get("NSE_EQ", {})
                 if not isinstance(segment_rows, dict) or not segment_rows:
                     LOG.warning("Dhan %s NSE_EQ empty (chunk %d-%d) — data keys: %s", method_name, start, start + len(chunk), list(data.keys()))
@@ -239,6 +244,8 @@ class DhanClient:
                 continue
 
             data = payload.get("data", payload)
+            if isinstance(data, dict) and "NSE_EQ" not in data and isinstance(data.get("data"), dict):
+                data = data["data"]
             segment_rows = data.get("NSE_EQ", {}) if isinstance(data, dict) else {}
 
             for sec_id, row in segment_rows.items():
@@ -822,6 +829,10 @@ class DhanClient:
         except Exception as exc:
             LOG.warning("margin_calculator failed: %s", exc)
             return None
+
+    def get_positions(self) -> dict:
+        """Fetch all open intraday positions from Dhan."""
+        return self.dhan.get_positions()
 
     def get_available_balance(self) -> float | None:
         """Return the available intraday balance (₹) from Dhan fund limits.
