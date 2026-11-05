@@ -23,7 +23,7 @@ jobs:
       DHAN_CLIENT_ID:    ${{ secrets.DHAN_CLIENT_ID }}
       DHAN_ACCESS_TOKEN: ${{ secrets.DHAN_ACCESS_TOKEN }}
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-      TELEGRAM_CHAT_ID:  ${{ secrets.TELEGRAM_CHAT_ID }}
+      TELEGRAM_CHAT_ID:  ${{ secrets.TELEGRAM_TOKEN_ALERT_CHAT_ID }}  # personal — trade mgmt alerts
       PAPER_MODE:        ${{ github.event.inputs.paper_mode || 'true' }}
       TRADE_QTY:         "1"
       MAX_SIGNAL_AGE_MIN: "30"
