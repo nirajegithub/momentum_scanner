@@ -185,6 +185,10 @@ def refresh_dynamic_volume_gainers(dhan: DhanClient, state, ts):
         LOG.warning("Volume gainer quote fetch failed: %s", exc)
         return False
 
+    if not quotes:
+        LOG.error("Volume gainer quote fetch: empty response (all chunks failed) — universe not updated")
+        return False
+
     elapsed_fraction = _elapsed_trading_fraction(ts)
     symbols = []
     for symbol, row in symbol_baseline.items():

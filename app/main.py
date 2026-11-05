@@ -364,7 +364,15 @@ def _process_b1(dhan, state, ts):
                 except Exception as exc:
                     LOG.warning("%s T1 block check failed; continuing | %s", symbol, exc)
 
-                sent = send(signal_message(signal))
+                # Paper signals go to personal chat; trading group is for real signals only
+                from .trade_manager import PAPER_MODE as _TM_PAPER_MODE
+                from . import telegram_notify as _tg_notify
+                _paper_alert = state.get("paper_mode", _TM_PAPER_MODE)
+                if _paper_alert:
+                    _tg_notify.signal_detected(signal)
+                    sent = True
+                else:
+                    sent = send(signal_message(signal))
                 if sent:
                     record_alert(state, signal, ts)
                     signal_key = f"{symbol}|{side}|{setup['setup_15m_timestamp']}|{signal['confirmation_5m_timestamp']}"

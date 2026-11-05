@@ -544,6 +544,9 @@ def run(dhan, state: dict, qty: int = TRADE_QTY, paper: bool = PAPER_MODE) -> No
     from app.telegram_cmd import poll_and_process, register_commands
     register_commands()
 
+    # Respect Telegram /paper override stored in state from a previous cycle
+    paper = state.get("paper_mode", paper)
+
     # Step 0: reconcile before anything else
     reconcile(dhan, state, qty, paper)
     save(state)
@@ -554,6 +557,8 @@ def run(dhan, state: dict, qty: int = TRADE_QTY, paper: bool = PAPER_MODE) -> No
 
     # Step 2: Telegram command poll (non-blocking, timeout=0; LTPs now fresh)
     poll_and_process(dhan, state, paper)
+    # Re-read paper in case /paper on|off arrived this cycle
+    paper = state.get("paper_mode", paper)
 
     now  = _now_ist()
     hhmm = _hhmm(now)

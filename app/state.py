@@ -34,6 +34,7 @@ def load(day):
         LOG.exception("State file is unreadable: %s", STATE)
         return blank(day)
     if s.get("date") != day.isoformat():
+        LOG.warning("STATE_DATE_MISMATCH | expected=%s got=%s — returning blank state", day.isoformat(), s.get("date"))
         return blank(day)
     for key, default in {
         "universe": [], "signals": {}, "pending_setups": {},

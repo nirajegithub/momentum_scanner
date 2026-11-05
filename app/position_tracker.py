@@ -73,7 +73,7 @@ def reconcile(dhan, state: dict, qty: int, paper: bool) -> None:
         save(state)
 
     # 4. Verify SL orders are still alive in broker — re-place if missing
-    _verify_sl_orders(dhan, state, qty)
+    _verify_sl_orders(dhan, state, qty, paper=False)
 
 
 def _reconcile_paper(state: dict) -> None:
@@ -177,10 +177,11 @@ def _check_drift(sig: dict, pos: dict) -> None:
         tg.trade_drift_alert(sym, expected, actual, drift_pct)
 
 
-def _verify_sl_orders(dhan, state: dict, qty: int) -> None:
+def _verify_sl_orders(dhan, state: dict, qty: int, paper: bool = False) -> None:
     """
     For each ACTIVE signal, confirm its SL order is still PENDING in the broker.
     If the order is missing or has been cancelled/rejected, re-place SL immediately.
+    Also upgrades PAPER_SL orders to real SL orders when mode switches to live.
     Called at the end of every reconcile cycle (live mode only).
     """
     from app.trade_manager import place_sl_order
@@ -190,8 +191,22 @@ def _verify_sl_orders(dhan, state: dict, qty: int) -> None:
         if sig.get("status") != "ACTIVE":
             continue
         sl_oid = sig.get("sl_order_id")
-        if not sl_oid or sl_oid.startswith("PAPER_"):
+        if sl_oid and sl_oid.startswith("PAPER_"):
+            if not paper:
+                # Mode switched live — upgrade synthetic SL to real Dhan order
+                sym = sig["symbol"]
+                LOG.warning("PAPER_SL_UPGRADE | %s | placing real SL on Dhan", sym)
+                tg.error_alert(f"Mode switched live — placing real SL for {sym}", f"was: {sl_oid}")
+                new_oid = place_sl_order(dhan, sig, int(sig.get("qty", qty)), paper=False)
+                if new_oid:
+                    sig["sl_order_id"] = new_oid
+                    save(state)
             continue
+        if not sl_oid:
+            if sig.get("manual_adopted"):
+                # Broker may already have an SL — skip auto-placement to avoid duplicates
+                continue
+            # No SL order on a non-adopted signal — will be caught below as "NOT_FOUND"
         sym = sig["symbol"]
         try:
             data   = (dhan.get_order_by_id(sl_oid).get("data") or {})

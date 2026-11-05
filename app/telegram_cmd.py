@@ -15,15 +15,37 @@ commands are never replayed across GHA cycles.
 """
 from __future__ import annotations
 
+import json
 import logging
 import os
 from datetime import datetime
+from pathlib import Path
 from zoneinfo import ZoneInfo
 
 import requests
 
 import app.telegram_notify as tg
 from app.state import save
+
+# Shared update-id file — mode-independent so scanner and trade_manager
+# never re-process the same Telegram command regardless of which state file each uses.
+_TG_ID_FILE = Path(__file__).resolve().parents[1] / "state" / "tg_update_id.json"
+
+
+def _load_update_id(state: dict) -> int:
+    try:
+        return int(json.loads(_TG_ID_FILE.read_text(encoding="utf-8")))
+    except Exception:
+        return int(state.get("_tg_update_id", 0))
+
+
+def _save_update_id(uid: int, state: dict) -> None:
+    try:
+        _TG_ID_FILE.parent.mkdir(parents=True, exist_ok=True)
+        _TG_ID_FILE.write_text(str(uid), encoding="utf-8")
+    except Exception as exc:
+        LOG.warning("TG_ID_SAVE_FAILED | %s — falling back to state", exc)
+    state["_tg_update_id"] = uid  # keep state in sync as fallback
 
 IST       = ZoneInfo("Asia/Kolkata")
 LOG       = logging.getLogger(__name__)
@@ -144,6 +166,7 @@ def _cmd_squareoff(dhan, state: dict, paper: bool) -> None:
     LOG.warning("CMD_SQUAREOFF | manual square-off triggered via Telegram")
     _reply(f"⏰ <b>MANUAL SQUARE-OFF</b> triggered  ·  Closing all open positions…  |  {_now_str()}")
     square_off_all(dhan, state, qty=TRADE_QTY, paper=paper)
+    state["trading_halted"] = True  # prevent new entries after manual squareoff
 
 
 def _cmd_status(state: dict) -> None:
@@ -217,13 +240,13 @@ def poll_and_process(dhan, state: dict, paper: bool) -> None:
     if not (BOT_TOKEN and CHAT_ID):
         return
 
-    offset   = int(state.get("_tg_update_id", 0))
+    offset   = _load_update_id(state)
     updates  = _get_updates(offset)
     modified = False
 
     for update in updates:
         uid = update.get("update_id", 0)
-        state["_tg_update_id"] = uid + 1   # advance offset regardless
+        _save_update_id(uid + 1, state)   # advance shared offset regardless
 
         msg    = update.get("message") or update.get("channel_post") or {}
         text   = (msg.get("text") or "").strip()

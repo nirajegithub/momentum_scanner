@@ -28,7 +28,7 @@ jobs:
       PAPER_MODE:        ${{ github.event.inputs.paper_mode || vars.PAPER_MODE || 'true' }}
       TRADE_QTY:         "1"
       MAX_SIGNAL_AGE_MIN: "30"
-      MAX_ENTRY_HHMM:    "1300"
+      MAX_ENTRY_HHMM:    "1330"
       MAX_PENDING_MIN:   "15"
       MIN_TRAIL_INC:     "2.0"
       MAX_OPEN_POSITIONS: "35"
@@ -70,7 +70,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           STATE_FILE="state/runtime_state_$([[ "$PAPER_MODE" == "true" ]] && echo "paper" || echo "live").json"
-          git add "$STATE_FILE"
+          git add "$STATE_FILE" state/tg_update_id.json
           if git diff --cached --quiet; then
             echo "No state changes."
           else
