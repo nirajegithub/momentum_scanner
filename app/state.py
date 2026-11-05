@@ -6,7 +6,8 @@ import os
 import tempfile
 from pathlib import Path
 
-STATE = Path(__file__).resolve().parents[1] / "state" / "runtime_state.json"
+_mode = "paper" if os.environ.get("PAPER_MODE", "true").lower() == "true" else "live"
+STATE = Path(__file__).resolve().parents[1] / "state" / f"runtime_state_{_mode}.json"
 BACKUP_DIR = STATE.parent / "backups"
 LOG = logging.getLogger(__name__)
 
