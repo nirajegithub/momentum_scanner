@@ -662,7 +662,8 @@ def main() -> None:
     dhan  = DhanClient()
     state = load(now.date())
     paper = state.get("paper_mode", PAPER_MODE)
-    tg.system_start(paper=paper)
+    if os.environ.get("ANNOUNCE_START", "true").lower() != "false":
+        tg.system_start(paper=paper)
     run(dhan, state, qty=TRADE_QTY, paper=paper)
 
 

@@ -81,6 +81,7 @@ jobs:
           MAX_ENTRY_HHMM: "1330"
           MAX_OPEN_POSITIONS: "35"
           DAILY_LOSS_HALT_INR: "-1000"
+          ANNOUNCE_START: "false"
         run: python -m app.trade_manager
 
       - name: Commit scanner state
