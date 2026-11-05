@@ -192,8 +192,10 @@ def refresh_dynamic_volume_gainers(dhan: DhanClient, state, ts):
         if not quote:
             continue
 
-        price = quote["ltp"]
-        volume_so_far = quote["volume"]
+        price = quote.get("ltp")
+        volume_so_far = quote.get("volume")
+        if price is None or volume_so_far is None:
+            continue
         expected_by_now = row["avg_volume"] * elapsed_fraction
         if expected_by_now <= 0:
             continue
