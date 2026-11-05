@@ -48,7 +48,6 @@ jobs:
           key: ${{ runner.os }}-venv-3.11-${{ hashFiles('requirements.txt') }}
 
       - name: Install dependencies
-        if: steps.venv-cache.outputs.cache-hit != 'true'
         run: |
           python -m venv .venv
           .venv/bin/pip install -r requirements.txt
