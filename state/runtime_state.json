@@ -2719,7 +2719,7 @@
     "SHRIRAMFIN_MANUAL_1793865382": {
       "symbol": "SHRIRAMFIN",
       "direction": "SELL",
-      "status": "ACTIVE",
+      "status": "EXITED",
       "live_managed": true,
       "manual_adopted": true,
       "fill_price": 962.5,
@@ -2732,12 +2732,15 @@
         "t2": 962.5,
         "t3": 962.5
       },
-      "signal_time": "2026-11-05T13:26:22.649597+05:30"
+      "signal_time": "2026-11-05T13:26:22.649597+05:30",
+      "exit_price": 962.5,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-11-05T15:05:34.540848+05:30"
     },
     "SENSEX-Nov2026-80000-CE_MANUAL_1793865383": {
       "symbol": "SENSEX-Nov2026-80000-CE",
       "direction": "SELL",
-      "status": "ACTIVE",
+      "status": "EXITED",
       "live_managed": true,
       "manual_adopted": true,
       "fill_price": 12.15,
@@ -2750,12 +2753,15 @@
         "t2": 12.15,
         "t3": 12.15
       },
-      "signal_time": "2026-11-05T13:26:23.148779+05:30"
+      "signal_time": "2026-11-05T13:26:23.148779+05:30",
+      "exit_price": 12.15,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-11-05T15:05:34.540848+05:30"
     },
     "SENSEX-Nov2026-77700-PE_MANUAL_1793865383": {
       "symbol": "SENSEX-Nov2026-77700-PE",
       "direction": "SELL",
-      "status": "ACTIVE",
+      "status": "EXITED",
       "live_managed": true,
       "manual_adopted": true,
       "fill_price": 15.9,
@@ -2768,7 +2774,10 @@
         "t2": 15.9,
         "t3": 15.9
       },
-      "signal_time": "2026-11-05T13:26:23.618668+05:30"
+      "signal_time": "2026-11-05T13:26:23.618668+05:30",
+      "exit_price": 15.9,
+      "exit_reason": "EOD_SQUARE_OFF",
+      "exit_time": "2026-11-05T15:05:34.540848+05:30"
     }
   },
   "pending_setups": {},
