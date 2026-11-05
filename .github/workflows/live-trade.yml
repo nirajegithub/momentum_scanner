@@ -24,7 +24,7 @@ jobs:
       DHAN_ACCESS_TOKEN: ${{ secrets.DHAN_ACCESS_TOKEN }}
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       # Reuse the existing token-management chat — no new secret needed
-      TELEGRAM_CHAT_ID:  ${{ secrets.TELEGRAM_TOKEN_ALERT_CHAT_ID }}
+      TELEGRAM_CHAT_ID:  ${{ secrets.TELEGRAM_CHAT_ID }}
       PAPER_MODE:        ${{ github.event.inputs.paper_mode || 'true' }}
       TRADE_QTY:         "1"
       MAX_SIGNAL_AGE_MIN: "30"
