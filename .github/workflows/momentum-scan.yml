@@ -14,7 +14,8 @@ jobs:
       DHAN_CLIENT_ID: ${{ secrets.DHAN_CLIENT_ID }}
       DHAN_ACCESS_TOKEN: ${{ secrets.DHAN_ACCESS_TOKEN }}
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}            # trading group — BUY/SELL ALERT only
+      TELEGRAM_PERSONAL_CHAT_ID: ${{ secrets.TELEGRAM_TOKEN_ALERT_CHAT_ID }}  # personal — trade mgmt
       DRY_RUN: "false"
       MIN_PRICE: "450"
       MIN_PREV_VOLUME: "500000"
@@ -75,7 +76,6 @@ jobs:
 
       - name: Fill poll + SL for live ENTRY_PLACED signals
         env:
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_TOKEN_ALERT_CHAT_ID }}  # personal — trade mgmt
           PAPER_MODE: "true"
           TRADE_QTY: "1"
           MAX_SIGNAL_AGE_MIN: "5"

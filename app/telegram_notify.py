@@ -10,7 +10,11 @@ IST = ZoneInfo("Asia/Kolkata")
 LOG = logging.getLogger(__name__)
 
 _BOT_TOKEN           = os.environ.get("TELEGRAM_BOT_TOKEN", "")
-_CHAT_ID             = os.environ.get("TELEGRAM_CHAT_ID", "")
+# TELEGRAM_PERSONAL_CHAT_ID lets trade-mgmt alerts go to a separate chat
+# (personal) while BUY/SELL signals stay on the trading group.
+# Falls back to TELEGRAM_CHAT_ID when not set.
+_CHAT_ID             = (os.environ.get("TELEGRAM_PERSONAL_CHAT_ID")
+                        or os.environ.get("TELEGRAM_CHAT_ID", ""))
 _ENABLED             = bool(_BOT_TOKEN and _CHAT_ID)
 BROKERAGE_PER_TRADE  = float(os.environ.get("BROKERAGE_PER_TRADE", "0"))
 
