@@ -216,4 +216,4 @@ def _adopt_manual(state: dict, sym: str, pos: dict, qty: int) -> None:
         "signal_time"  : datetime.now(IST).isoformat(),
     }
     LOG.info("MANUAL_TRADE_ADOPTED | %s | %s | fill=%.2f | sl=%.2f", sym, direction, fill, sl)
-    tg.manual_trade_adopted(sym, direction, fill, sl)
+    tg.manual_trade_adopted(sym, direction, fill, sl, qty)

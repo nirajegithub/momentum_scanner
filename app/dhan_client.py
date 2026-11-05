@@ -834,6 +834,10 @@ class DhanClient:
         """Fetch all open intraday positions from Dhan."""
         return self.dhan.get_positions()
 
+    def cancel_order(self, order_id: str) -> dict:
+        """Cancel an open order by order ID."""
+        return self.dhan.cancel_order(order_id)
+
     def get_available_balance(self) -> float | None:
         """Return the available intraday balance (₹) from Dhan fund limits.
 
