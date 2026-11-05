@@ -257,5 +257,7 @@ def poll_and_process(dhan, state: dict, paper: bool) -> None:
                 f"Available: /halt  /resume  /squareoff  /status  /paper on|off"
             )
 
-    if modified:
+    # Always persist _tg_update_id so processed updates are never replayed,
+    # even when no state-modifying command was received (/status, unknown cmd).
+    if updates or modified:
         save(state)
