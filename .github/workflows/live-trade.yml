@@ -25,7 +25,7 @@ jobs:
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHAT_ID:         ${{ secrets.TELEGRAM_CHAT_ID }}
       TELEGRAM_PERSONAL_CHAT_ID: ${{ secrets.TELEGRAM_TOKEN_ALERT_CHAT_ID }}  # personal — trade mgmt
-      PAPER_MODE:        ${{ github.event.inputs.paper_mode || 'true' }}
+      PAPER_MODE:        ${{ github.event.inputs.paper_mode || vars.PAPER_MODE || 'true' }}
       TRADE_QTY:         "1"
       MAX_SIGNAL_AGE_MIN: "30"
       MAX_ENTRY_HHMM:    "1300"

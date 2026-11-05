@@ -24,7 +24,7 @@ jobs:
       DHAN_ACCESS_TOKEN: ${{ secrets.DHAN_ACCESS_TOKEN }}
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHAT_ID:  ${{ secrets.TELEGRAM_TOKEN_ALERT_CHAT_ID }}  # personal — EOD results
-      PAPER_MODE:        ${{ github.event.inputs.paper_mode || 'true' }}
+      PAPER_MODE:        ${{ github.event.inputs.paper_mode || vars.PAPER_MODE || 'true' }}
       TRADE_QTY:         "1"
       LOG_LEVEL:         "INFO"
       PYTHONUNBUFFERED:  "1"

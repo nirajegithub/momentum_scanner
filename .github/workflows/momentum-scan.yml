@@ -66,7 +66,7 @@ jobs:
         run: echo "$GITHUB_WORKSPACE/.venv/bin" >> $GITHUB_PATH
       - name: Run B1 ORB + RVOL scanner (places orders inline on signal)
         env:
-          PAPER_MODE: "true"
+          PAPER_MODE: ${{ vars.PAPER_MODE || 'true' }}
           TRADE_QTY: "1"
           MAX_ENTRY_HHMM: "1330"
           MAX_OPEN_POSITIONS: "35"
@@ -76,7 +76,7 @@ jobs:
 
       - name: Fill poll + SL for live ENTRY_PLACED signals
         env:
-          PAPER_MODE: "true"
+          PAPER_MODE: ${{ vars.PAPER_MODE || 'true' }}
           TRADE_QTY: "1"
           MAX_SIGNAL_AGE_MIN: "5"
           MAX_ENTRY_HHMM: "1330"
