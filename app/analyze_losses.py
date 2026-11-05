@@ -8,9 +8,12 @@ from pathlib import Path
 LOG = logging.getLogger(__name__)
 
 
-def analyze_state_signals(state_path: str = "state/runtime_state.json"):
+def analyze_state_signals(state_path: str | None = None):
     """Analyze signals from state file to show what 5 filters would have done."""
 
+    if state_path is None:
+        from app.state import STATE
+        state_path = str(STATE)
     state_file = Path(state_path)
     if not state_file.exists():
         LOG.error("State file not found: %s", state_path)

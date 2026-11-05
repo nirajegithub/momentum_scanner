@@ -66,7 +66,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           # Save the freshly calculated universe before touching Git state.
-          cp state/runtime_state.json /tmp/universe_refresh_state.json
+          cp state/runtime_state_paper.json /tmp/universe_refresh_state.json
 
           # Retry because the scanner workflow may push runtime_state.json
           # while this universe-refresh job is running.
@@ -86,7 +86,7 @@ jobs:
           from pathlib import Path
 
           refreshed_path = Path("/tmp/universe_refresh_state.json")
-          latest_path = Path("state/runtime_state.json")
+          latest_path = Path("state/runtime_state_paper.json")
 
           refreshed = json.loads(refreshed_path.read_text(encoding="utf-8"))
 
@@ -106,7 +106,7 @@ jobs:
           )
           PYMERGE
 
-            git add state/runtime_state.json
+            git add state/runtime_state_paper.json
 
             if git diff --cached --quiet; then
               echo "No universe state changes."

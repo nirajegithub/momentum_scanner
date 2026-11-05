@@ -11,7 +11,7 @@ TARGET_STOCKS = {
     "AXISBANK", "HONASA", "AUBANK", "BAJFINANCE",
 }
 
-STATE_FILE = Path(__file__).parent.parent / "state" / "runtime_state.json"
+from app.state import STATE as STATE_FILE
 
 
 def load_state():
