@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 import os
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, time
 from zoneinfo import ZoneInfo
 
@@ -230,6 +231,59 @@ def _confirmation_5m(dhan, security_id, setup_completion, now_ts):
     return rows, df5
 
 
+_SCAN_WORKERS = int(os.getenv("SCAN_WORKERS", "5"))
+
+
+def _prefetch_5m(dhan, items: list, ts) -> dict:
+    """Parallel 5M data fetch for a list of universe items. Returns {security_id: DataFrame}."""
+    if not items:
+        return {}
+
+    cache: dict = {}
+
+    def _fetch(item):
+        return item["security_id"], _prepare_5m(dhan, item["security_id"], ts)
+
+    with ThreadPoolExecutor(max_workers=_SCAN_WORKERS) as ex:
+        futs = {ex.submit(_fetch, item): item for item in items}
+        for fut in as_completed(futs):
+            item = futs[fut]
+            try:
+                sid, df = fut.result()
+                cache[sid] = df
+            except Exception as exc:
+                LOG.warning("5M_PREFETCH_FAILED | %s | %s", item.get("symbol"), exc)
+                cache[item["security_id"]] = pd.DataFrame()
+
+    LOG.info("5M_PREFETCH | fetched=%d symbols", len(cache))
+    return cache
+
+
+def _prefetch_orbs(dhan, items: list, trading_day) -> dict:
+    """Parallel ORB fetch for symbols missing today's cached ORB. Returns {security_id: (orb, source)}."""
+    if not items:
+        return {}
+
+    cache: dict = {}
+
+    def _fetch(item):
+        return item["security_id"], get_orb_with_fallback(dhan, item["security_id"], trading_day)
+
+    with ThreadPoolExecutor(max_workers=_SCAN_WORKERS) as ex:
+        futs = {ex.submit(_fetch, item): item for item in items}
+        for fut in as_completed(futs):
+            item = futs[fut]
+            try:
+                sid, result = fut.result()
+                cache[sid] = result
+            except Exception as exc:
+                LOG.warning("ORB_PREFETCH_FAILED | %s | %s", item.get("symbol"), exc)
+                cache[item["security_id"]] = (None, "ERROR")
+
+    LOG.info("ORB_PREFETCH | fetched=%d symbols", len(cache))
+    return cache
+
+
 def _process_b1(dhan, state, ts):
     trading_day = ts.date()
 
@@ -248,10 +302,38 @@ def _process_b1(dhan, state, ts):
         1 for ss in b1_state.values()
         if (ss.get("orb") or {}).get("timestamp", "")[:10] == trading_day.isoformat()
     )
+
+    # ── Fix 1+2+3: pre-filter, parallel 5M fetch, parallel ORB fetch ─────────
+    # Identify symbols that still need scanning (not consumed, not index, valid id)
+    active_items = [
+        item for item in universe
+        if item.get("symbol")
+        and item.get("security_id") is not None
+        and item["symbol"] not in INDICES_TO_SKIP
+        and b1_state.get(item["symbol"], {}).get("status") != "CONSUMED"
+    ]
+    consumed_count = len(universe) - len(active_items)
+
     LOG.info(
-        "UNIVERSE | total=%d | orb_cached=%d | orb_pending=%d",
-        len(universe), orb_cached_count, len(universe) - orb_cached_count,
+        "UNIVERSE | total=%d | orb_cached=%d | consumed_skipped=%d | to_scan=%d | workers=%d",
+        len(universe), orb_cached_count, consumed_count, len(active_items), _SCAN_WORKERS,
     )
+
+    # Parallel 5M data fetch for all active symbols
+    df5_cache = _prefetch_5m(dhan, active_items, ts)
+
+    # Parallel ORB fetch only for symbols missing today's cached ORB
+    orb_needed = [
+        item for item in active_items
+        if not (
+            b1_state.get(item["symbol"], {}).get("orb") and
+            (b1_state[item["symbol"]]["orb"].get("date") or
+             str(b1_state[item["symbol"]]["orb"].get("timestamp", ""))[:10])
+            == trading_day.isoformat()
+        )
+    ]
+    orb_prefetch = _prefetch_orbs(dhan, orb_needed, trading_day)
+    # ─────────────────────────────────────────────────────────────────────────
 
     for item in universe:
         symbol = item.get("symbol")
@@ -264,8 +346,13 @@ def _process_b1(dhan, state, ts):
 
         ss = _state_for_symbol(state, symbol)
 
+        # Fix 1: skip CONSUMED symbols — no new setup possible
+        if ss.get("status") == "CONSUMED":
+            continue
+
         try:
-            df5 = _prepare_5m(dhan, item["security_id"], ts)
+            # Fix 2: use pre-fetched 5M data
+            df5 = df5_cache.get(item["security_id"], pd.DataFrame())
             if df5.empty:
                 LOG.info("%s | DATA_STAGE | status=5M_DATA_UNAVAILABLE", symbol)
                 stats.data_unavailable += 1
@@ -273,7 +360,7 @@ def _process_b1(dhan, state, ts):
 
             day5 = df5[df5.index.date == trading_day]
 
-            # Use cached ORB from state if already fetched today; otherwise fetch from API.
+            # Fix 3: use pre-fetched ORB if not cached
             cached_orb = ss.get("orb")
             cached_orb_date = (cached_orb or {}).get("date") or (
                 str((cached_orb or {}).get("timestamp", ""))[:10]
@@ -282,7 +369,7 @@ def _process_b1(dhan, state, ts):
                 orb = cached_orb
                 orb_source = ss.get("orb_source", "CACHED")
             else:
-                orb, orb_source = get_orb_with_fallback(dhan, item["security_id"], trading_day)
+                orb, orb_source = orb_prefetch.get(item["security_id"], (None, "MISSING"))
                 if orb is None:
                     LOG.info("%s | DATA_STAGE | status=ORB_NOT_AVAILABLE", symbol)
                     stats.orb_not_available += 1
