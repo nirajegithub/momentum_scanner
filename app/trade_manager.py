@@ -645,10 +645,19 @@ def main() -> None:
     import logging as _logging
     from app.dhan_client import DhanClient
 
-    _logging.basicConfig(
-        level=os.getenv("LOG_LEVEL", "INFO"),
-        format="%(asctime)s | %(levelname)s | %(message)s",
-    )
+    from zoneinfo import ZoneInfo as _ZoneInfo
+    _IST = _ZoneInfo("Asia/Kolkata")
+
+    class _ISTFormatter(_logging.Formatter):
+        def formatTime(self, record, datefmt=None):
+            from datetime import datetime as _dt
+            t = _dt.fromtimestamp(record.created, tz=_IST)
+            return t.strftime(datefmt or "%Y-%m-%d %H:%M:%S IST")
+
+    _handler = _logging.StreamHandler()
+    _handler.setFormatter(_ISTFormatter("%(asctime)s | %(levelname)s | %(message)s"))
+    _logging.root.addHandler(_handler)
+    _logging.root.setLevel(os.getenv("LOG_LEVEL", "INFO"))
 
     from datetime import time as dtime
     from zoneinfo import ZoneInfo
