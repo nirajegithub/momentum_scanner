@@ -123,8 +123,9 @@ def main() -> None:
     now   = datetime.now(IST)
     dhan  = DhanClient()
     state = load(now.date())
+    paper = state.get("paper_mode", PAPER_MODE)
 
-    square_off_all(dhan, state, qty=TRADE_QTY, paper=PAPER_MODE)
+    square_off_all(dhan, state, qty=TRADE_QTY, paper=paper)
 
     # Build trades list in the format telegram_notify.daily_summary expects
     trades = []
@@ -140,7 +141,7 @@ def main() -> None:
             "entry"  : entry,
             "qty"    : int(sig.get("qty", TRADE_QTY)),
         })
-    tg.daily_summary(trades=trades, qty=TRADE_QTY, paper=PAPER_MODE)
+    tg.daily_summary(trades=trades, qty=TRADE_QTY, paper=paper)
     won     = sum(1 for t in trades if t["pnl_pts"] >= 0)
     pnl_pts = round(sum(t["pnl_pts"] for t in trades), 2)
     LOG.info(
