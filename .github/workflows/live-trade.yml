@@ -83,8 +83,8 @@ jobs:
               if [ $i -lt 3 ]; then
                 echo "Push rejected (attempt $i) — rebasing onto remote..."
                 if ! git pull --rebase origin main; then
-                  git checkout --theirs -- "$STATE_FILE"
-                  git add "$STATE_FILE"
+                  git checkout --theirs -- "$STATE_FILE" state/tg_update_id.json
+                  git add "$STATE_FILE" state/tg_update_id.json
                   GIT_EDITOR=true git rebase --continue
                 fi
               else
