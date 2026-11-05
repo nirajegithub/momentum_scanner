@@ -27,13 +27,10 @@ from app.state import save
 
 IST       = ZoneInfo("Asia/Kolkata")
 LOG       = logging.getLogger(__name__)
-BOT_TOKEN   = os.environ.get("TELEGRAM_BOT_TOKEN", "")
-CHAT_ID     = (os.environ.get("TELEGRAM_PERSONAL_CHAT_ID")
-               or os.environ.get("TELEGRAM_CHAT_ID", ""))
-_TRADING_ID = os.environ.get("TELEGRAM_CHAT_ID", "")
-# Accept commands from personal chat OR the trading group (whichever is configured)
-_ALLOWED_SENDERS = {s for s in (CHAT_ID, _TRADING_ID) if s}
-TRADE_QTY   = int(os.environ.get("TRADE_QTY", "1"))
+BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
+CHAT_ID   = (os.environ.get("TELEGRAM_PERSONAL_CHAT_ID")
+             or os.environ.get("TELEGRAM_CHAT_ID", ""))
+TRADE_QTY = int(os.environ.get("TRADE_QTY", "1"))
 
 _BOT_COMMANDS = [
     {"command": "status",    "description": "Open positions + today P&L"},
@@ -232,8 +229,8 @@ def poll_and_process(dhan, state: dict, paper: bool) -> None:
         text   = (msg.get("text") or "").strip()
         sender = str(msg.get("chat", {}).get("id", ""))
 
-        # Only process commands from authorised chats (personal or trading group)
-        if sender not in _ALLOWED_SENDERS:
+        # Only process commands from the personal chat (trading group is alerts-only)
+        if sender != str(CHAT_ID):
             LOG.debug("TG_CMD_IGNORED | from=%s (not authorised)", sender)
             continue
 
