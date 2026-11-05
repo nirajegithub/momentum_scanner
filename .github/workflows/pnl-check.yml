@@ -15,6 +15,7 @@ jobs:
       DHAN_ACCESS_TOKEN: ${{ secrets.DHAN_ACCESS_TOKEN }}
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      PAPER_MODE: "false"
       DRY_RUN: "false"
       PYTHONUNBUFFERED: "1"
 
@@ -50,7 +51,8 @@ jobs:
           IST = ZoneInfo("Asia/Kolkata")
           today = datetime.now(IST).date()
 
-          state = json.loads(Path("state/runtime_state.json").read_text(encoding="utf-8"))
+          _mode = "paper" if os.environ.get("PAPER_MODE", "false").lower() == "true" else "live"
+          state = json.loads(Path(f"state/runtime_state_{_mode}.json").read_text(encoding="utf-8"))
           signals = state.get("signals", {})
           if not signals:
               print("No signals found in state.")
