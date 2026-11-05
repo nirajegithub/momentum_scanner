@@ -40,12 +40,11 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Cache virtualenv
-        id: venv-cache
+      - name: Cache pip downloads
         uses: actions/cache@v4
         with:
-          path: .venv
-          key: ${{ runner.os }}-venv-3.11-${{ hashFiles('requirements.txt') }}
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-3.11-${{ hashFiles('requirements.txt') }}
 
       - name: Install dependencies
         run: |
