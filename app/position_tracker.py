@@ -86,12 +86,47 @@ def _reconcile_paper(state: dict) -> None:
         if ltp is None:
             continue
         ltp       = float(ltp)
-        sl        = float(sig["risk"]["sl"])
+        r         = sig["risk"]
+        sl        = float(r["sl"])
+        t1        = float(r["t1"])
+        t2        = float(r["t2"])
+        t3        = float(r["t3"])
         direction = sig["direction"]
-        if direction == "BUY"  and ltp <= sl:
-            _paper_sl_hit(sig, ltp)
-        elif direction == "SELL" and ltp >= sl:
-            _paper_sl_hit(sig, ltp)
+        qty       = int(sig.get("qty", 1))
+        if direction == "BUY":
+            if ltp <= sl:
+                _paper_sl_hit(sig, ltp)
+            elif ltp >= t3 and not sig.get("t3_hit"):
+                _paper_target_hit(sig, ltp, "T3", t3, qty)
+            elif ltp >= t2 and not sig.get("t2_hit"):
+                _paper_target_hit(sig, ltp, "T2", t2, qty)
+            elif ltp >= t1 and not sig.get("t1_hit"):
+                _paper_target_hit(sig, ltp, "T1", t1, qty)
+        else:
+            if ltp >= sl:
+                _paper_sl_hit(sig, ltp)
+            elif ltp <= t3 and not sig.get("t3_hit"):
+                _paper_target_hit(sig, ltp, "T3", t3, qty)
+            elif ltp <= t2 and not sig.get("t2_hit"):
+                _paper_target_hit(sig, ltp, "T2", t2, qty)
+            elif ltp <= t1 and not sig.get("t1_hit"):
+                _paper_target_hit(sig, ltp, "T1", t1, qty)
+
+
+def _paper_target_hit(sig: dict, ltp: float, tier: str, price: float, qty: int) -> None:
+    sym = sig["symbol"]
+    LOG.info("PAPER_%s_HIT | %s | target=%.2f | ltp=%.2f", tier, sym, price, ltp)
+    sig[f"{tier.lower()}_hit"] = True
+    sig["highest_target_hit"]  = f"{tier}_HIT"
+    # Update trailing SL floor to match tier (T1→entry, T2→t1, T3→t2)
+    r = sig["risk"]
+    if tier == "T1":
+        sig["risk"]["sl"] = float(r["entry"])
+    elif tier == "T2":
+        sig["risk"]["sl"] = float(r["t1"])
+    elif tier == "T3":
+        sig["risk"]["sl"] = float(r["t2"])
+    tg.target_hit(sig, f"{tier}_HIT", ltp, qty, new_sl=sig["risk"]["sl"])
 
 
 def _paper_sl_hit(sig: dict, ltp: float) -> None:

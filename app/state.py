@@ -104,7 +104,7 @@ def record_alert(state, signal, ts):
 
 def backup_and_clear(s, day):
     BACKUP_DIR.mkdir(parents=True, exist_ok=True)
-    backup = BACKUP_DIR / f"runtime_state_{day.isoformat()}.json"
+    backup = BACKUP_DIR / f"runtime_state_{_mode}_{day.isoformat()}.json"
     backup.write_text(json.dumps(s, indent=2, ensure_ascii=False), encoding="utf-8")
     cleared = blank(day)
     cleared["date"] = ""

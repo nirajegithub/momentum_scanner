@@ -29,9 +29,9 @@ def square_off_all(dhan, state: dict, qty: int, paper: bool) -> None:
         sym       = sig["symbol"]
         direction = sig["direction"]
 
-        # Cancel orphaned SL before squaring off
+        # Cancel orphaned SL before squaring off (skip synthetic paper order IDs)
         sl_oid = sig.get("sl_order_id")
-        if sl_oid and not paper:
+        if sl_oid and not paper and not str(sl_oid).startswith("PAPER_"):
             try:
                 dhan.cancel_order(sl_oid)
                 LOG.info("SQUARE_OFF_SL_CANCELLED | %s | sl_oid=%s", sym, sl_oid)

@@ -251,7 +251,8 @@ def wait_for_fill(dhan, order_id: str, signal: dict, qty: int, paper: bool) -> f
         tg.order_filled(signal, qty, fill, paper=True)
         return fill
 
-    deadline = time.time() + MAX_PENDING_MIN * 60
+    # Cap at 2 minutes to avoid blocking the GHA runner across cycles
+    deadline = time.time() + min(MAX_PENDING_MIN * 60, 120)
     while time.time() < deadline:
         try:
             data   = (dhan.get_order_by_id(order_id).get("data") or {})
@@ -312,16 +313,21 @@ def place_sl_order(dhan, signal: dict, qty: int, paper: bool) -> str | None:
     except Exception as exc:
         LOG.error("SL_ORDER_FAILED | %s | %s — emergency exit", sym, exc)
         tg.error_alert(f"SL order FAILED — {sym} — emergency exit triggered", str(exc))
-        _emergency_exit(dhan, signal, qty)
+        _emergency_exit(dhan, signal, qty, paper)
         return None
 
 
-def _emergency_exit(dhan, signal: dict, qty: int) -> None:
+def _emergency_exit(dhan, signal: dict, qty: int, paper: bool = False) -> None:
     """Market order to close position when SL placement fails."""
     sym       = signal["symbol"]
     sec_id    = str(signal.get("security_id", ""))
     direction = signal["direction"]
-    LOG.critical("EMERGENCY_EXIT | %s | market close qty=%d", sym, qty)
+    LOG.critical("EMERGENCY_EXIT | %s | market close qty=%d | paper=%s", sym, qty, paper)
+    if paper:
+        signal["status"]      = "EXITED"
+        signal["exit_reason"] = "EMERGENCY_EXIT_SL_FAILED_PAPER"
+        LOG.info("PAPER_EMERGENCY_EXIT | %s | no real order placed", sym)
+        return
     try:
         dhan.place_order(
             security_id      = sec_id,

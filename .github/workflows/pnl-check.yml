@@ -15,7 +15,7 @@ jobs:
       DHAN_ACCESS_TOKEN: ${{ secrets.DHAN_ACCESS_TOKEN }}
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-      PAPER_MODE: "false"
+      PAPER_MODE: ${{ vars.PAPER_MODE || 'true' }}
       DRY_RUN: "false"
       PYTHONUNBUFFERED: "1"
 
@@ -37,7 +37,7 @@ jobs:
       - name: Calculate and send P&L
         run: |
           python - <<'EOF'
-          import json, sys
+          import json, os, sys
           from pathlib import Path
           from zoneinfo import ZoneInfo
           from datetime import datetime, date, timedelta

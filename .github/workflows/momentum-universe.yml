@@ -104,9 +104,22 @@ jobs:
               json.dumps(latest, indent=2, ensure_ascii=False) + "",
               encoding="utf-8",
           )
+
+          # Also propagate universe to live state so live-trade.yml has candidates
+          live_path = Path("state/runtime_state_live.json")
+          if live_path.exists():
+              live = json.loads(live_path.read_text(encoding="utf-8"))
+          else:
+              live = {}
+          live["date"] = refreshed.get("date")
+          live["universe"] = refreshed.get("universe", [])
+          live_path.write_text(
+              json.dumps(live, indent=2, ensure_ascii=False) + "",
+              encoding="utf-8",
+          )
           PYMERGE
 
-            git add state/runtime_state_paper.json
+            git add state/runtime_state_paper.json state/runtime_state_live.json
 
             if git diff --cached --quiet; then
               echo "No universe state changes."
