@@ -28,7 +28,8 @@ from app.state import save
 IST       = ZoneInfo("Asia/Kolkata")
 LOG       = logging.getLogger(__name__)
 BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
-CHAT_ID   = os.environ.get("TELEGRAM_CHAT_ID", "")
+CHAT_ID   = (os.environ.get("TELEGRAM_PERSONAL_CHAT_ID")
+             or os.environ.get("TELEGRAM_CHAT_ID", ""))
 TRADE_QTY = int(os.environ.get("TRADE_QTY", "1"))
 
 _BOT_COMMANDS = [
