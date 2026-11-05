@@ -51,7 +51,17 @@ jobs:
           IST = ZoneInfo("Asia/Kolkata")
           today = datetime.now(IST).date()
 
-          _mode = "paper" if os.environ.get("PAPER_MODE", "false").lower() == "true" else "live"
+          _env_mode = "paper" if os.environ.get("PAPER_MODE", "true").lower() == "true" else "live"
+          # Respect Telegram /paper override: if paper state says paper_mode=False, use live file
+          _mode = _env_mode
+          _paper_path = Path("state/runtime_state_paper.json")
+          if _env_mode == "paper" and _paper_path.exists():
+              try:
+                  _ps = json.loads(_paper_path.read_text(encoding="utf-8"))
+                  if _ps.get("paper_mode") is False:
+                      _mode = "live"
+              except Exception:
+                  pass
           state = json.loads(Path(f"state/runtime_state_{_mode}.json").read_text(encoding="utf-8"))
           signals = state.get("signals", {})
           if not signals:

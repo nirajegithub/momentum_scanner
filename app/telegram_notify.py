@@ -232,7 +232,7 @@ def manual_trade_adopted(sym: str, direction: str, entry: float, sl: float, qty:
     _send(
         f"🤝 <b>MANUAL TRADE ADOPTED</b>  ·  {sym}  {dir_arrow}\n"
         f"Entry ₹{entry:,.2f}  ·  Default SL ₹{sl:,.2f}  (1% fallback)\n"
-        f"Qty {qty}  ·  ⚠️ Verify SL in runtime_state.json\n"
+        f"Qty {qty}  ·  ⚠️ Verify SL in state file\n"
         f"{_now_str()}"
     )
 

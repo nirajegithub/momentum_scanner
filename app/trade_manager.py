@@ -13,6 +13,7 @@ IST = ZoneInfo("Asia/Kolkata")
 LOG = logging.getLogger(__name__)
 
 PAPER_MODE            = os.environ.get("PAPER_MODE", "true").lower() == "true"
+_commands_registered  = False
 TRADE_QTY             = max(1, int(os.environ.get("TRADE_QTY", "1")))
 MAX_SIGNAL_AGE_MIN    = int(os.environ.get("MAX_SIGNAL_AGE_MIN", "30"))
 MAX_ENTRY_HHMM        = int(os.environ.get("MAX_ENTRY_HHMM", "1230"))
@@ -542,7 +543,10 @@ def run(dhan, state: dict, qty: int = TRADE_QTY, paper: bool = PAPER_MODE) -> No
     """
     from app.position_tracker import reconcile
     from app.telegram_cmd import poll_and_process, register_commands
-    register_commands()
+    global _commands_registered
+    if not _commands_registered:
+        register_commands()
+        _commands_registered = True
 
     # Respect Telegram /paper override stored in state from a previous cycle
     paper = state.get("paper_mode", paper)

@@ -69,38 +69,6 @@ def square_off_all(dhan, state: dict, qty: int, paper: bool) -> None:
     save(state)
 
 
-def _compute_daily_summary(state: dict) -> dict:
-    """Aggregate today's closed signals into P&L stats."""
-    signals  = state.get("signals", {})
-    total    = won = lost = skipped = 0
-    pnl_pts  = 0.0
-
-    for sig in signals.values():
-        status = sig.get("status")
-        if status == "SKIPPED":
-            skipped += 1
-            continue
-        if status != "EXITED":
-            continue
-        total += 1
-        entry = float(sig["risk"]["entry"])
-        exit_ = float(sig.get("exit_price", entry))
-        qty   = int(sig.get("qty", 1))
-        pts   = (exit_ - entry) if sig["direction"] == "BUY" else (entry - exit_)
-        pnl_pts += pts
-        if pts >= 0:
-            won  += 1
-        else:
-            lost += 1
-
-    return {
-        "total"  : total,
-        "won"    : won,
-        "lost"   : lost,
-        "skipped": skipped,
-        "pnl_pts": round(pnl_pts, 2),
-    }
-
 
 def main() -> None:
     import logging as _logging

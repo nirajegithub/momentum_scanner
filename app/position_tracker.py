@@ -243,8 +243,8 @@ def _adopt_manual(state: dict, sym: str, pos: dict, qty: int) -> None:
         LOG.warning("ADOPT_MANUAL_NO_PRICE | %s — skipping", sym)
         return
 
-    # Synthetic 2% SL; user can adjust via Telegram or manual state edit
-    sl = round(fill * 0.98, 2) if direction == "BUY" else round(fill * 1.02, 2)
+    # Synthetic 3% SL; user can adjust via Telegram or manual state edit
+    sl = round(fill * 0.97, 2) if direction == "BUY" else round(fill * 1.03, 2)
 
     key = f"{sym}_MANUAL_{int(datetime.now(IST).timestamp())}"
     state.setdefault("signals", {})[key] = {
