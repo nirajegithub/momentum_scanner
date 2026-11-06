@@ -89,7 +89,8 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add state/runtime_state_paper.json state/tg_update_id.json
+          git add state/runtime_state_paper.json
+          [ -f state/tg_update_id.json ] && git add state/tg_update_id.json || true
           if git diff --cached --quiet; then
             echo "No scanner state changes."
           else
@@ -102,8 +103,10 @@ jobs:
               if [ $i -lt 3 ]; then
                 echo "Push rejected (attempt $i) — rebasing onto remote..."
                 if ! git pull --rebase origin main; then
-                  git checkout --theirs -- state/runtime_state_paper.json state/tg_update_id.json
-                  git add state/runtime_state_paper.json state/tg_update_id.json
+                  git checkout --theirs -- state/runtime_state_paper.json
+                  [ -f state/tg_update_id.json ] && git checkout --theirs -- state/tg_update_id.json || true
+                  git add state/runtime_state_paper.json
+                  [ -f state/tg_update_id.json ] && git add state/tg_update_id.json || true
                   GIT_EDITOR=true git rebase --continue
                 fi
               else

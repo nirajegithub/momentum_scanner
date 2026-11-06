@@ -70,7 +70,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           STATE_FILE="state/runtime_state_$([[ "$PAPER_MODE" == "true" ]] && echo "paper" || echo "live").json"
-          git add "$STATE_FILE" state/tg_update_id.json
+          git add "$STATE_FILE"
+          [ -f state/tg_update_id.json ] && git add state/tg_update_id.json || true
           if git diff --cached --quiet; then
             echo "No state changes."
           else
@@ -83,8 +84,10 @@ jobs:
               if [ $i -lt 3 ]; then
                 echo "Push rejected (attempt $i) — rebasing onto remote..."
                 if ! git pull --rebase origin main; then
-                  git checkout --theirs -- "$STATE_FILE" state/tg_update_id.json
-                  git add "$STATE_FILE" state/tg_update_id.json
+                  git checkout --theirs -- "$STATE_FILE"
+                  [ -f state/tg_update_id.json ] && git checkout --theirs -- state/tg_update_id.json || true
+                  git add "$STATE_FILE"
+                  [ -f state/tg_update_id.json ] && git add state/tg_update_id.json || true
                   GIT_EDITOR=true git rebase --continue
                 fi
               else
