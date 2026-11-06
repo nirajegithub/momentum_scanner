@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 import os
+import random
 import time
 
 import pandas as pd
@@ -32,8 +33,8 @@ MARKET_CLOSE = "15:30"
 # up on immediately. This retries specifically on 429 with backoff before
 # falling back to the old give-up behavior, so a rate-limited symbol gets
 # a real second chance instead of silently vanishing from that run.
-RATE_LIMIT_MAX_RETRIES = 3
-RATE_LIMIT_BASE_DELAY_SECONDS = 1.5
+RATE_LIMIT_MAX_RETRIES = 5
+RATE_LIMIT_BASE_DELAY_SECONDS = 2.0
 
 
 def _post_with_rate_limit_retry(url, headers, json_payload, timeout, log_context):
@@ -41,6 +42,9 @@ def _post_with_rate_limit_retry(url, headers, json_payload, timeout, log_context
 
     Any other status code (200 or a genuine error) is returned immediately,
     unchanged from the previous behavior — only 429 gets retried.
+
+    Jitter is added to each delay so parallel workers (ThreadPoolExecutor)
+    don't retry in lockstep and re-collide on the rate-limit window.
     """
     delay = RATE_LIMIT_BASE_DELAY_SECONDS
     last_response = None
@@ -59,12 +63,14 @@ def _post_with_rate_limit_retry(url, headers, json_payload, timeout, log_context
             )
             return response
 
+        jitter = random.uniform(0, delay * 0.5)
+        actual_delay = delay + jitter
         LOG.warning(
             "Dhan rate limit (429) — retry %d/%d in %.1fs | %s",
-            attempt, RATE_LIMIT_MAX_RETRIES, delay, log_context,
+            attempt, RATE_LIMIT_MAX_RETRIES, actual_delay, log_context,
         )
-        time.sleep(delay)
-        delay *= 2  # exponential backoff: 1.5s, 3s, 6s
+        time.sleep(actual_delay)
+        delay *= 2  # exponential backoff: 2s, 4s, 8s, 16s, 32s
 
     return last_response
 
