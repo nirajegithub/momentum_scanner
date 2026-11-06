@@ -119,7 +119,7 @@ def evaluate_b1_breakout(df15, orb, daily_close, daily_volume, symbol=None):
 
     quality = score_trade_quality(df15, direction)
     score = float(quality.get("trade_quality_score", 0.0))
-    if score <= SETTINGS.min_trade_score:
+    if score < SETTINGS.min_trade_score:
         return _rejected(symbol, "SCORE_TOO_LOW", score=round(score, 1),
                         min_trade_score=SETTINGS.min_trade_score)
 
