@@ -86,15 +86,18 @@ jobs:
         run: python -m app.trade_manager
 
       - name: Commit scanner state
+        env:
+          PAPER_MODE: ${{ vars.PAPER_MODE || 'true' }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add state/runtime_state_paper.json
+          STATE_FILE="state/runtime_state_$([[ "$PAPER_MODE" == "true" ]] && echo "paper" || echo "live").json"
+          git add "$STATE_FILE"
           [ -f state/tg_update_id.json ] && git add state/tg_update_id.json || true
           if git diff --cached --quiet; then
             echo "No scanner state changes."
           else
-            git commit -m "Update NSE momentum scanner state"
+            git commit -m "Update NSE momentum scanner state [paper=$PAPER_MODE]"
             for i in 1 2 3; do
               if git push; then
                 echo "Push succeeded on attempt $i"
@@ -103,9 +106,9 @@ jobs:
               if [ $i -lt 3 ]; then
                 echo "Push rejected (attempt $i) — rebasing onto remote..."
                 if ! git pull --rebase origin main; then
-                  git checkout --theirs -- state/runtime_state_paper.json
+                  git checkout --theirs -- "$STATE_FILE"
                   [ -f state/tg_update_id.json ] && git checkout --theirs -- state/tg_update_id.json || true
-                  git add state/runtime_state_paper.json
+                  git add "$STATE_FILE"
                   [ -f state/tg_update_id.json ] && git add state/tg_update_id.json || true
                   GIT_EDITOR=true git rebase --continue
                 fi
