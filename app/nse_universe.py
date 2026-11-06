@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
 import json
 import logging
+import os
 
 from .config import SETTINGS
 from .calendar import previous_trading_day
@@ -113,37 +115,48 @@ def _candidate_pool(dhan: DhanClient) -> list[dict]:
     ]
 
 
+_BASELINE_WORKERS = int(os.getenv("SCAN_WORKERS", "3"))
+
+
 def _build_volume_baseline(dhan: DhanClient, candidates: list[dict], prev_day) -> dict[str, dict]:
     """Once-per-day average daily volume + latest close, per candidate.
 
-    One historical_daily_df call per candidate over the trailing
-    VOLUME_GAINER_BASELINE_DAYS trading days. Failures for individual
-    symbols are skipped rather than aborting the whole baseline build.
+    Parallelised via ThreadPoolExecutor (SCAN_WORKERS threads) to avoid the
+    ~6-minute sequential build time that caused queued jobs to be cancelled.
+    Failures for individual symbols are skipped rather than aborting the whole
+    baseline build.
     """
     from_date = (prev_day - timedelta(days=SETTINGS.volume_gainer_baseline_days * 2)).isoformat()
     to_date = (prev_day + timedelta(days=1)).isoformat()
 
-    baseline: dict[str, dict] = {}
-    for item in candidates:
+    def _fetch(item: dict):
         symbol = item["symbol"]
         try:
             df = dhan.historical_daily_df(item["security_id"], from_date, to_date)
         except Exception as exc:
             LOG.warning("Volume gainer baseline failed for %s: %s", symbol, exc)
-            continue
-
+            return symbol, None
         if df.empty:
-            continue
-
+            return symbol, None
         df = df.tail(SETTINGS.volume_gainer_baseline_days)
         avg_volume = float(df["volume"].mean())
         last_close = float(df["close"].iloc[-1])
-        if avg_volume > 0:
-            baseline[symbol] = {
-                "avg_volume": avg_volume,
-                "last_close": last_close,
-                "security_id": item["security_id"],
-            }
+        if avg_volume <= 0:
+            return symbol, None
+        return symbol, {
+            "avg_volume": avg_volume,
+            "last_close": last_close,
+            "security_id": item["security_id"],
+        }
+
+    baseline: dict[str, dict] = {}
+    LOG.info("Volume gainer baseline: fetching %d candidates with %d workers", len(candidates), _BASELINE_WORKERS)
+    with ThreadPoolExecutor(max_workers=_BASELINE_WORKERS) as pool:
+        futures = {pool.submit(_fetch, item): item["symbol"] for item in candidates}
+        for future in as_completed(futures):
+            symbol, entry = future.result()
+            if entry is not None:
+                baseline[symbol] = entry
 
     LOG.info("Volume gainer baseline built: %d/%d candidates", len(baseline), len(candidates))
     return baseline
