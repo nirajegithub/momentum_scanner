@@ -194,6 +194,11 @@ class DhanClient:
         truncated responses. This defensively parses a couple of plausible
         field-name variants since the exact response schema should be
         confirmed against a live account before relying on it in production.
+
+        quote_data is tried first because it returns both LTP and volume.
+        ticker_data is kept as a fallback for LTP-only situations (volume
+        gainer logic drops rows without volume, so ticker_data alone is not
+        useful — but it at least proves the API is reachable).
         """
         result: dict[str, dict] = {}
         # SDK example uses integers; convert so we match the documented format
@@ -202,13 +207,19 @@ class DhanClient:
         for start in range(0, len(ids), chunk_size):
             chunk = ids[start:start + chunk_size]
 
-            # Try ticker_data (/marketfeed/ltp) first — simpler payload, same
-            # subscription tier as quote_data but fewer fields returned.
-            # Fall back to quote_data if ticker_data also fails.
+            # Pause between chunks so back-to-back calls don't immediately
+            # hit Dhan's per-second rate limit on the second request.
+            if start > 0:
+                time.sleep(0.5)
+
+            # quote_data first — returns both LTP and volume (needed by the
+            # volume-gainer RVOL calculation). ticker_data returns LTP only
+            # and is used as a last-resort fallback for connectivity checks.
             payload = None
+            has_volume = False
             for method_name, method_fn in [
-                ("ticker_data", self.dhan.ticker_data),
                 ("quote_data",  self.dhan.quote_data),
+                ("ticker_data", self.dhan.ticker_data),
             ]:
                 try:
                     resp = method_fn({"NSE_EQ": chunk})
@@ -241,13 +252,37 @@ class DhanClient:
                     LOG.warning("Dhan %s NSE_EQ empty (chunk %d-%d) — data keys: %s", method_name, start, start + len(chunk), list(data.keys()))
                     continue
 
-                # Got data — use this method's response
+                # Check whether this response carries volume data. ticker_data
+                # returns only last_price — useless for the RVOL calculation.
+                # If no row has a volume field, treat as insufficient and
+                # continue to the next method (quote_data).
+                rows_have_volume = any(
+                    isinstance(r, dict) and (
+                        r.get("volume") or r.get("total_traded_volume") or r.get("totalTradedVolume")
+                    )
+                    for r in segment_rows.values()
+                )
+                if not rows_have_volume:
+                    LOG.warning(
+                        "Dhan %s chunk %d-%d: no volume field in any row — trying next method",
+                        method_name, start, start + len(chunk),
+                    )
+                    continue
+
+                # Got data with volume — use this method's response
                 payload = resp
+                has_volume = True
                 LOG.info("Dhan %s succeeded for chunk %d-%d (%d rows)", method_name, start, start + len(chunk), len(segment_rows))
                 break
 
             if payload is None:
                 continue
+
+            if not has_volume:
+                LOG.warning(
+                    "quote_batch chunk %d-%d: no method returned volume data — LTP-only result, volume gainer will skip these symbols",
+                    start, start + len(chunk),
+                )
 
             data = payload.get("data", payload)
             if isinstance(data, dict) and "NSE_EQ" not in data and isinstance(data.get("data"), dict):
