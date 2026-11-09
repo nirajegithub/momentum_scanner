@@ -880,6 +880,42 @@
       "membership_count": 1,
       "universe_source": "DHAN_VOLUME_GAINERS",
       "volume_gainer_added_at": "2026-11-09T09:31:49.981505+05:30"
+    },
+    {
+      "symbol": "CGPOWER",
+      "security_id": "760",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "DHAN_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-11-09T09:56:28.194826+05:30"
+    },
+    {
+      "symbol": "DIVISLAB",
+      "security_id": "10940",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "DHAN_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-11-09T09:56:28.194826+05:30"
+    },
+    {
+      "symbol": "EBGNG",
+      "security_id": "757862",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "DHAN_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-11-09T09:56:28.194826+05:30"
     }
   ],
   "signals": {},
@@ -1977,6 +2013,48 @@
         "high": 675.0,
         "low": 643.3,
         "close": 658.85
+      },
+      "orb_source": "TODAY_ORB",
+      "setup": null
+    },
+    "CGPOWER": {
+      "status": "WAITING_FOR_5M",
+      "last_processed_5m": "2026-11-09T09:50:00+05:30",
+      "orb": {
+        "timestamp": "2026-11-09T09:15:00+05:30",
+        "date": "2026-11-09",
+        "time": "09:15",
+        "high": 802.0,
+        "low": 782.6,
+        "close": 798.85
+      },
+      "orb_source": "TODAY_ORB",
+      "setup": null
+    },
+    "DIVISLAB": {
+      "status": "WAITING_FOR_5M",
+      "last_processed_5m": "2026-11-09T09:50:00+05:30",
+      "orb": {
+        "timestamp": "2026-11-09T09:15:00+05:30",
+        "date": "2026-11-09",
+        "time": "09:15",
+        "high": 11698.0,
+        "low": 11071.0,
+        "close": 11688.0
+      },
+      "orb_source": "TODAY_ORB",
+      "setup": null
+    },
+    "EBGNG": {
+      "status": "WAITING_FOR_5M",
+      "last_processed_5m": "2026-11-09T09:50:00+05:30",
+      "orb": {
+        "timestamp": "2026-11-09T09:15:00+05:30",
+        "date": "2026-11-09",
+        "time": "09:15",
+        "high": 609.5,
+        "low": 559.95,
+        "close": 589.6
       },
       "orb_source": "TODAY_ORB",
       "setup": null
