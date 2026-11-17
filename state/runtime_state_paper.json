@@ -702,6 +702,30 @@
       "prev_close": 2441.0,
       "prev_volume": 1034938,
       "prev_trading_day": "2026-11-16"
+    },
+    {
+      "symbol": "APOLLO",
+      "security_id": "1134",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "DHAN_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-11-17T09:31:52.379553+05:30"
+    },
+    {
+      "symbol": "AXISBANK",
+      "security_id": "5900",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "DHAN_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-11-17T09:31:52.379553+05:30"
     }
   ],
   "signals": {},
