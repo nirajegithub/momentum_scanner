@@ -34,9 +34,9 @@ jobs:
       T1_RR: "1.0"
       T2_RR: "2.0"
       T3_RR: "3.0"
-      MIN_RR: "1.0"
+      MIN_RR: "1.5"
       MIN_STOP_DISTANCE_PERCENT: "0.50"
-      MAX_STOP_DISTANCE_PERCENT: "3.0"
+      MAX_STOP_DISTANCE_PERCENT: "2.0"
       RISK_PERCENT: "1.0"
       ENTRY_TIMEFRAME: "5"
       SETUP_TIMEFRAME: "5"
@@ -69,8 +69,8 @@ jobs:
           PAPER_MODE: ${{ vars.PAPER_MODE || 'true' }}
           TRADE_QTY: "1"
           MAX_ENTRY_HHMM: "1330"
-          MAX_OPEN_POSITIONS: "35"
-          DAILY_LOSS_HALT_INR: "-1000"
+          MAX_OPEN_POSITIONS: "12"
+          DAILY_LOSS_HALT_INR: "-400"
           ENTRY_CHASE_LIMIT_PCT: "0.015"
           SCAN_WORKERS: "3"
         run: python -m app.main
@@ -81,8 +81,8 @@ jobs:
           TRADE_QTY: "1"
           MAX_SIGNAL_AGE_MIN: "5"
           MAX_ENTRY_HHMM: "1330"
-          MAX_OPEN_POSITIONS: "35"
-          DAILY_LOSS_HALT_INR: "-1000"
+          MAX_OPEN_POSITIONS: "12"
+          DAILY_LOSS_HALT_INR: "-400"
           ANNOUNCE_START: "false"
         run: python -m app.trade_manager
 
