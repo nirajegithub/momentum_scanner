@@ -124,6 +124,8 @@ def _fetch_5m(dhan: DhanClient, item: dict, from_date: date, to_date: date) -> t
 def _simulate_day(sym: str, df5_all: pd.DataFrame, trading_date: date, prev_close: float, prev_volume: float) -> dict | None:
     """Return a signal dict (with pnl/exit fields) or None if no signal fired."""
 
+    if df5_all.empty:
+        return None
     day_mask = df5_all.index.date == trading_date
     day_df = df5_all[day_mask]
     if len(day_df) < 6:
