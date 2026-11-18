@@ -72,7 +72,7 @@ jobs:
           MAX_OPEN_POSITIONS: "12"
           DAILY_LOSS_HALT_INR: "-400"
           ENTRY_CHASE_LIMIT_PCT: "0.015"
-          SCAN_WORKERS: "3"
+          SCAN_WORKERS: "2"
         run: python -m app.main
 
       - name: Fill poll + SL for live ENTRY_PLACED signals
