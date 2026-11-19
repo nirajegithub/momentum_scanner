@@ -1,32 +1,6 @@
 {
-  "date": "2026-11-18",
+  "date": "2026-11-19",
   "universe": [
-    {
-      "symbol": "360ONE",
-      "security_id": "13061",
-      "exchange_segment": "NSE_EQ",
-      "instrument": "EQUITY",
-      "indices": [
-        "NIFTY500"
-      ],
-      "membership_count": 1,
-      "prev_close": 1202.85,
-      "prev_volume": 1429280,
-      "prev_trading_day": "2026-11-17"
-    },
-    {
-      "symbol": "ADANIENSOL",
-      "security_id": "10217",
-      "exchange_segment": "NSE_EQ",
-      "instrument": "EQUITY",
-      "indices": [
-        "NIFTY500"
-      ],
-      "membership_count": 1,
-      "prev_close": 1493.7,
-      "prev_volume": 1657569,
-      "prev_trading_day": "2026-11-17"
-    },
     {
       "symbol": "ADANIENT",
       "security_id": "25",
@@ -36,48 +10,48 @@
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 2745.1,
-      "prev_volume": 2015270,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 2684.2,
+      "prev_volume": 1394678,
+      "prev_trading_day": "2026-11-18"
     },
     {
-      "symbol": "APLAPOLLO",
-      "security_id": "25780",
+      "symbol": "BBTC",
+      "security_id": "380",
       "exchange_segment": "NSE_EQ",
       "instrument": "EQUITY",
       "indices": [
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 2188.5,
-      "prev_volume": 535216,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 1319.8,
+      "prev_volume": 666754,
+      "prev_trading_day": "2026-11-18"
     },
     {
-      "symbol": "AUBANK",
-      "security_id": "21238",
+      "symbol": "BERGEPAINT",
+      "security_id": "404",
       "exchange_segment": "NSE_EQ",
       "instrument": "EQUITY",
       "indices": [
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 993.1,
-      "prev_volume": 2187665,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 467.15,
+      "prev_volume": 600202,
+      "prev_trading_day": "2026-11-18"
     },
     {
-      "symbol": "BRIGADE",
-      "security_id": "15184",
+      "symbol": "BSE",
+      "security_id": "19585",
       "exchange_segment": "NSE_EQ",
       "instrument": "EQUITY",
       "indices": [
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 560.5,
-      "prev_volume": 578586,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 3755.7,
+      "prev_volume": 4421992,
+      "prev_trading_day": "2026-11-18"
     },
     {
       "symbol": "CAMS",
@@ -88,22 +62,22 @@
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 744.0,
-      "prev_volume": 4277128,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 716.0,
+      "prev_volume": 1519029,
+      "prev_trading_day": "2026-11-18"
     },
     {
-      "symbol": "CEMPRO",
-      "security_id": "5622",
+      "symbol": "CAPLIPOINT",
+      "security_id": "3906",
       "exchange_segment": "NSE_EQ",
       "instrument": "EQUITY",
       "indices": [
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 1352.3,
-      "prev_volume": 743464,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 2085.3,
+      "prev_volume": 710053,
+      "prev_trading_day": "2026-11-18"
     },
     {
       "symbol": "CONCORDBIO",
@@ -114,9 +88,22 @@
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 554.8,
-      "prev_volume": 690494,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 561.0,
+      "prev_volume": 570378,
+      "prev_trading_day": "2026-11-18"
+    },
+    {
+      "symbol": "CREDITACC",
+      "security_id": "4421",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "NIFTY500"
+      ],
+      "membership_count": 1,
+      "prev_close": 1046.2,
+      "prev_volume": 559505,
+      "prev_trading_day": "2026-11-18"
     },
     {
       "symbol": "DEEPAKFERT",
@@ -127,48 +114,22 @@
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 1443.7,
-      "prev_volume": 2427264,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 1480.5,
+      "prev_volume": 1187154,
+      "prev_trading_day": "2026-11-18"
     },
     {
-      "symbol": "DELHIVERY",
-      "security_id": "9599",
+      "symbol": "FINCABLES",
+      "security_id": "1038",
       "exchange_segment": "NSE_EQ",
       "instrument": "EQUITY",
       "indices": [
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 457.95,
-      "prev_volume": 7500779,
-      "prev_trading_day": "2026-11-17"
-    },
-    {
-      "symbol": "EICHERMOT",
-      "security_id": "910",
-      "exchange_segment": "NSE_EQ",
-      "instrument": "EQUITY",
-      "indices": [
-        "NIFTY500"
-      ],
-      "membership_count": 1,
-      "prev_close": 7828.0,
-      "prev_volume": 742414,
-      "prev_trading_day": "2026-11-17"
-    },
-    {
-      "symbol": "GODREJPROP",
-      "security_id": "17875",
-      "exchange_segment": "NSE_EQ",
-      "instrument": "EQUITY",
-      "indices": [
-        "NIFTY500"
-      ],
-      "membership_count": 1,
-      "prev_close": 1892.4,
-      "prev_volume": 777545,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 1186.0,
+      "prev_volume": 778962,
+      "prev_trading_day": "2026-11-18"
     },
     {
       "symbol": "GRANULES",
@@ -179,61 +140,100 @@
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 815.5,
-      "prev_volume": 1907634,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 797.5,
+      "prev_volume": 1197833,
+      "prev_trading_day": "2026-11-18"
     },
     {
-      "symbol": "HONASA",
-      "security_id": "19813",
+      "symbol": "HAVELLS",
+      "security_id": "9819",
       "exchange_segment": "NSE_EQ",
       "instrument": "EQUITY",
       "indices": [
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 517.8,
-      "prev_volume": 2580356,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 1140.0,
+      "prev_volume": 981506,
+      "prev_trading_day": "2026-11-18"
     },
     {
-      "symbol": "HSCL",
-      "security_id": "14334",
+      "symbol": "HDFCLIFE",
+      "security_id": "467",
       "exchange_segment": "NSE_EQ",
       "instrument": "EQUITY",
       "indices": [
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 561.25,
-      "prev_volume": 1081057,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 575.5,
+      "prev_volume": 2120563,
+      "prev_trading_day": "2026-11-18"
     },
     {
-      "symbol": "IGIL",
-      "security_id": "28378",
+      "symbol": "HINDZINC",
+      "security_id": "1424",
       "exchange_segment": "NSE_EQ",
       "instrument": "EQUITY",
       "indices": [
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 450.6,
-      "prev_volume": 1209763,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 527.0,
+      "prev_volume": 5751858,
+      "prev_trading_day": "2026-11-18"
     },
     {
-      "symbol": "IIFL",
-      "security_id": "11809",
+      "symbol": "ICICIGI",
+      "security_id": "21770",
       "exchange_segment": "NSE_EQ",
       "instrument": "EQUITY",
       "indices": [
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 636.4,
-      "prev_volume": 6177859,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 1646.5,
+      "prev_volume": 530514,
+      "prev_trading_day": "2026-11-18"
+    },
+    {
+      "symbol": "INDHOTEL",
+      "security_id": "1512",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "NIFTY500"
+      ],
+      "membership_count": 1,
+      "prev_close": 875.05,
+      "prev_volume": 3032607,
+      "prev_trading_day": "2026-11-18"
+    },
+    {
+      "symbol": "INTELLECT",
+      "security_id": "5926",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "NIFTY500"
+      ],
+      "membership_count": 1,
+      "prev_close": 529.3,
+      "prev_volume": 548420,
+      "prev_trading_day": "2026-11-18"
+    },
+    {
+      "symbol": "JINDALSTEL",
+      "security_id": "6733",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "NIFTY500"
+      ],
+      "membership_count": 1,
+      "prev_close": 1103.0,
+      "prev_volume": 598447,
+      "prev_trading_day": "2026-11-18"
     },
     {
       "symbol": "KALYANKJIL",
@@ -244,22 +244,9 @@
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 682.75,
-      "prev_volume": 16418243,
-      "prev_trading_day": "2026-11-17"
-    },
-    {
-      "symbol": "KAYNES",
-      "security_id": "12092",
-      "exchange_segment": "NSE_EQ",
-      "instrument": "EQUITY",
-      "indices": [
-        "NIFTY500"
-      ],
-      "membership_count": 1,
-      "prev_close": 2858.0,
-      "prev_volume": 4219295,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 650.0,
+      "prev_volume": 13020275,
+      "prev_trading_day": "2026-11-18"
     },
     {
       "symbol": "KEI",
@@ -270,9 +257,9 @@
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 3851.0,
-      "prev_volume": 782269,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 3725.0,
+      "prev_volume": 611535,
+      "prev_trading_day": "2026-11-18"
     },
     {
       "symbol": "KFINTECH",
@@ -283,61 +270,48 @@
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 965.0,
-      "prev_volume": 2687006,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 932.75,
+      "prev_volume": 825623,
+      "prev_trading_day": "2026-11-18"
     },
     {
-      "symbol": "LAURUSLABS",
-      "security_id": "19234",
+      "symbol": "MCX",
+      "security_id": "31181",
       "exchange_segment": "NSE_EQ",
       "instrument": "EQUITY",
       "indices": [
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 2338.0,
-      "prev_volume": 4889747,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 3619.0,
+      "prev_volume": 2517975,
+      "prev_trading_day": "2026-11-18"
     },
     {
-      "symbol": "LICHSGFIN",
-      "security_id": "1997",
+      "symbol": "MUTHOOTFIN",
+      "security_id": "23650",
       "exchange_segment": "NSE_EQ",
       "instrument": "EQUITY",
       "indices": [
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 622.5,
-      "prev_volume": 6926428,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 2640.0,
+      "prev_volume": 1446028,
+      "prev_trading_day": "2026-11-18"
     },
     {
-      "symbol": "MOTILALOFS",
-      "security_id": "14947",
+      "symbol": "PIIND",
+      "security_id": "24184",
       "exchange_segment": "NSE_EQ",
       "instrument": "EQUITY",
       "indices": [
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 1240.25,
-      "prev_volume": 2670266,
-      "prev_trading_day": "2026-11-17"
-    },
-    {
-      "symbol": "POLICYBZR",
-      "security_id": "6656",
-      "exchange_segment": "NSE_EQ",
-      "instrument": "EQUITY",
-      "indices": [
-        "NIFTY500"
-      ],
-      "membership_count": 1,
-      "prev_close": 1052.1,
-      "prev_volume": 2649345,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 1624.0,
+      "prev_volume": 900369,
+      "prev_trading_day": "2026-11-18"
     },
     {
       "symbol": "POLYCAB",
@@ -348,22 +322,9 @@
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 7702.0,
-      "prev_volume": 533721,
-      "prev_trading_day": "2026-11-17"
-    },
-    {
-      "symbol": "PRESTIGE",
-      "security_id": "20302",
-      "exchange_segment": "NSE_EQ",
-      "instrument": "EQUITY",
-      "indices": [
-        "NIFTY500"
-      ],
-      "membership_count": 1,
-      "prev_close": 1691.5,
-      "prev_volume": 582154,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 7307.5,
+      "prev_volume": 864380,
+      "prev_trading_day": "2026-11-18"
     },
     {
       "symbol": "PVRINOX",
@@ -374,22 +335,22 @@
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 1677.4,
-      "prev_volume": 629120,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 1714.4,
+      "prev_volume": 1247986,
+      "prev_trading_day": "2026-11-18"
     },
     {
-      "symbol": "RELIANCE",
-      "security_id": "2885",
+      "symbol": "RKFORGE",
+      "security_id": "11411",
       "exchange_segment": "NSE_EQ",
       "instrument": "EQUITY",
       "indices": [
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 1367.0,
-      "prev_volume": 15905595,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 758.65,
+      "prev_volume": 549089,
+      "prev_trading_day": "2026-11-18"
     },
     {
       "symbol": "SAILIFE",
@@ -400,290 +361,100 @@
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 1751.5,
-      "prev_volume": 1824640,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 1788.1,
+      "prev_volume": 1187183,
+      "prev_trading_day": "2026-11-18"
     },
     {
-      "symbol": "SIGNATURE",
-      "security_id": "18743",
+      "symbol": "SBIN",
+      "security_id": "3045",
       "exchange_segment": "NSE_EQ",
       "instrument": "EQUITY",
       "indices": [
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 835.6,
-      "prev_volume": 1797681,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 1135.0,
+      "prev_volume": 35420675,
+      "prev_trading_day": "2026-11-18"
     },
     {
-      "symbol": "STARHEALTH",
-      "security_id": "7083",
+      "symbol": "SUNTV",
+      "security_id": "13404",
       "exchange_segment": "NSE_EQ",
       "instrument": "EQUITY",
       "indices": [
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 549.15,
-      "prev_volume": 500852,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 696.35,
+      "prev_volume": 2989983,
+      "prev_trading_day": "2026-11-18"
     },
     {
-      "symbol": "TATAINVEST",
-      "security_id": "1621",
+      "symbol": "TATACHEM",
+      "security_id": "3405",
       "exchange_segment": "NSE_EQ",
       "instrument": "EQUITY",
       "indices": [
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 609.55,
-      "prev_volume": 2790253,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 634.6,
+      "prev_volume": 1229465,
+      "prev_trading_day": "2026-11-18"
     },
     {
-      "symbol": "UNOMINDA",
-      "security_id": "14154",
+      "symbol": "TATACONSUM",
+      "security_id": "3432",
       "exchange_segment": "NSE_EQ",
       "instrument": "EQUITY",
       "indices": [
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 1388.1,
-      "prev_volume": 1149444,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 1130.9,
+      "prev_volume": 1299221,
+      "prev_trading_day": "2026-11-18"
     },
     {
-      "symbol": "WELCORP",
-      "security_id": "11821",
+      "symbol": "TITAN",
+      "security_id": "3506",
       "exchange_segment": "NSE_EQ",
       "instrument": "EQUITY",
       "indices": [
         "NIFTY500"
       ],
       "membership_count": 1,
-      "prev_close": 2260.2,
-      "prev_volume": 981713,
-      "prev_trading_day": "2026-11-17"
+      "prev_close": 4648.1,
+      "prev_volume": 1326172,
+      "prev_trading_day": "2026-11-18"
     },
     {
-      "symbol": "AEROFLEX",
-      "security_id": "18268",
+      "symbol": "TVSMOTOR",
+      "security_id": "8479",
       "exchange_segment": "NSE_EQ",
       "instrument": "EQUITY",
       "indices": [
-        "VOLUME_GAINERS"
+        "NIFTY500"
       ],
       "membership_count": 1,
-      "universe_source": "DHAN_VOLUME_GAINERS",
-      "volume_gainer_added_at": "2026-11-18T09:31:56.178280+05:30"
+      "prev_close": 4369.0,
+      "prev_volume": 1175971,
+      "prev_trading_day": "2026-11-18"
     },
     {
-      "symbol": "APOLLO",
-      "security_id": "1134",
+      "symbol": "VIJAYA",
+      "security_id": "5585",
       "exchange_segment": "NSE_EQ",
       "instrument": "EQUITY",
       "indices": [
-        "VOLUME_GAINERS"
+        "NIFTY500"
       ],
       "membership_count": 1,
-      "universe_source": "DHAN_VOLUME_GAINERS",
-      "volume_gainer_added_at": "2026-11-18T09:31:56.178280+05:30"
-    },
-    {
-      "symbol": "AXISBANK",
-      "security_id": "5900",
-      "exchange_segment": "NSE_EQ",
-      "instrument": "EQUITY",
-      "indices": [
-        "VOLUME_GAINERS"
-      ],
-      "membership_count": 1,
-      "universe_source": "DHAN_VOLUME_GAINERS",
-      "volume_gainer_added_at": "2026-11-18T09:31:56.178280+05:30"
-    },
-    {
-      "symbol": "AZAD",
-      "security_id": "20905",
-      "exchange_segment": "NSE_EQ",
-      "instrument": "EQUITY",
-      "indices": [
-        "VOLUME_GAINERS"
-      ],
-      "membership_count": 1,
-      "universe_source": "DHAN_VOLUME_GAINERS",
-      "volume_gainer_added_at": "2026-11-18T09:31:56.178280+05:30"
-    },
-    {
-      "symbol": "ADANIGREEN",
-      "security_id": "3563",
-      "exchange_segment": "NSE_EQ",
-      "instrument": "EQUITY",
-      "indices": [
-        "VOLUME_GAINERS"
-      ],
-      "membership_count": 1,
-      "universe_source": "DHAN_VOLUME_GAINERS",
-      "volume_gainer_added_at": "2026-11-18T10:02:04.765254+05:30"
-    },
-    {
-      "symbol": "BSE",
-      "security_id": "19585",
-      "exchange_segment": "NSE_EQ",
-      "instrument": "EQUITY",
-      "indices": [
-        "VOLUME_GAINERS"
-      ],
-      "membership_count": 1,
-      "universe_source": "DHAN_VOLUME_GAINERS",
-      "volume_gainer_added_at": "2026-11-18T10:02:04.765254+05:30"
-    },
-    {
-      "symbol": "CDSL",
-      "security_id": "21174",
-      "exchange_segment": "NSE_EQ",
-      "instrument": "EQUITY",
-      "indices": [
-        "VOLUME_GAINERS"
-      ],
-      "membership_count": 1,
-      "universe_source": "DHAN_VOLUME_GAINERS",
-      "volume_gainer_added_at": "2026-11-18T10:02:04.765254+05:30"
-    },
-    {
-      "symbol": "CMLL",
-      "security_id": "764255",
-      "exchange_segment": "NSE_EQ",
-      "instrument": "EQUITY",
-      "indices": [
-        "VOLUME_GAINERS"
-      ],
-      "membership_count": 1,
-      "universe_source": "DHAN_VOLUME_GAINERS",
-      "volume_gainer_added_at": "2026-11-18T10:02:04.765254+05:30"
-    },
-    {
-      "symbol": "COFORGE",
-      "security_id": "11543",
-      "exchange_segment": "NSE_EQ",
-      "instrument": "EQUITY",
-      "indices": [
-        "VOLUME_GAINERS"
-      ],
-      "membership_count": 1,
-      "universe_source": "DHAN_VOLUME_GAINERS",
-      "volume_gainer_added_at": "2026-11-18T10:02:04.765254+05:30"
-    },
-    {
-      "symbol": "E2E",
-      "security_id": "8937",
-      "exchange_segment": "NSE_EQ",
-      "instrument": "EQUITY",
-      "indices": [
-        "VOLUME_GAINERS"
-      ],
-      "membership_count": 1,
-      "universe_source": "DHAN_VOLUME_GAINERS",
-      "volume_gainer_added_at": "2026-11-18T10:02:04.765254+05:30"
-    },
-    {
-      "symbol": "BLACKBUCK",
-      "security_id": "27144",
-      "exchange_segment": "NSE_EQ",
-      "instrument": "EQUITY",
-      "indices": [
-        "VOLUME_GAINERS"
-      ],
-      "membership_count": 1,
-      "universe_source": "DHAN_VOLUME_GAINERS",
-      "volume_gainer_added_at": "2026-11-18T10:31:42.546412+05:30"
-    },
-    {
-      "symbol": "BALUFORGE",
-      "security_id": "23607",
-      "exchange_segment": "NSE_EQ",
-      "instrument": "EQUITY",
-      "indices": [
-        "VOLUME_GAINERS"
-      ],
-      "membership_count": 1,
-      "universe_source": "DHAN_VOLUME_GAINERS",
-      "volume_gainer_added_at": "2026-11-18T11:01:45.840311+05:30"
-    },
-    {
-      "symbol": "BBTC",
-      "security_id": "380",
-      "exchange_segment": "NSE_EQ",
-      "instrument": "EQUITY",
-      "indices": [
-        "VOLUME_GAINERS"
-      ],
-      "membership_count": 1,
-      "universe_source": "DHAN_VOLUME_GAINERS",
-      "volume_gainer_added_at": "2026-11-18T12:16:40.252273+05:30"
-    },
-    {
-      "symbol": "CAPLIPOINT",
-      "security_id": "3906",
-      "exchange_segment": "NSE_EQ",
-      "instrument": "EQUITY",
-      "indices": [
-        "VOLUME_GAINERS"
-      ],
-      "membership_count": 1,
-      "universe_source": "DHAN_VOLUME_GAINERS",
-      "volume_gainer_added_at": "2026-11-18T12:31:46.382843+05:30"
-    },
-    {
-      "symbol": "CIPLA",
-      "security_id": "694",
-      "exchange_segment": "NSE_EQ",
-      "instrument": "EQUITY",
-      "indices": [
-        "VOLUME_GAINERS"
-      ],
-      "membership_count": 1,
-      "universe_source": "DHAN_VOLUME_GAINERS",
-      "volume_gainer_added_at": "2026-11-18T12:31:46.382843+05:30"
-    },
-    {
-      "symbol": "FAZE3Q",
-      "security_id": "12000",
-      "exchange_segment": "NSE_EQ",
-      "instrument": "EQUITY",
-      "indices": [
-        "VOLUME_GAINERS"
-      ],
-      "membership_count": 1,
-      "universe_source": "DHAN_VOLUME_GAINERS",
-      "volume_gainer_added_at": "2026-11-18T13:01:50.933562+05:30"
-    },
-    {
-      "symbol": "AJAXENGG",
-      "security_id": "29624",
-      "exchange_segment": "NSE_EQ",
-      "instrument": "EQUITY",
-      "indices": [
-        "VOLUME_GAINERS"
-      ],
-      "membership_count": 1,
-      "universe_source": "DHAN_VOLUME_GAINERS",
-      "volume_gainer_added_at": "2026-11-18T14:16:43.726621+05:30"
-    },
-    {
-      "symbol": "APOLLOPIPE",
-      "security_id": "14361",
-      "exchange_segment": "NSE_EQ",
-      "instrument": "EQUITY",
-      "indices": [
-        "VOLUME_GAINERS"
-      ],
-      "membership_count": 1,
-      "universe_source": "DHAN_VOLUME_GAINERS",
-      "volume_gainer_added_at": "2026-11-18T15:01:58.872076+05:30"
+      "prev_close": 1533.6,
+      "prev_volume": 552678,
+      "prev_trading_day": "2026-11-18"
     }
   ],
   "signals": {
