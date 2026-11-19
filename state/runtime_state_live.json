@@ -991,6 +991,24 @@
       "t1": 542.25,
       "t2": 538.5,
       "t3": 531.0
+    },
+    "IREDA_MANUAL_1795075741": {
+      "symbol": "IREDA",
+      "direction": "BUY",
+      "status": "ACTIVE",
+      "live_managed": true,
+      "manual_adopted": true,
+      "fill_price": 129.43,
+      "qty": 1,
+      "risk": {
+        "entry": 129.43,
+        "sl": 125.55,
+        "original_sl": 125.55,
+        "t1": 129.43,
+        "t2": 129.43,
+        "t3": 129.43
+      },
+      "signal_time": "2026-11-19T13:39:01.097301+05:30"
     }
   },
   "pending_setups": {},
@@ -6415,5 +6433,6 @@
     }
   },
   "volume_gainers_last_refresh": "2026-11-19T13:20:00+05:30",
-  "_tg_update_id": 170211621
+  "_tg_update_id": 170211621,
+  "last_status_time": "2026-11-19T13:39:02.618720+05:30"
 }
