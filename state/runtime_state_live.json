@@ -2568,6 +2568,34 @@
       },
       "orb_source": "TODAY_ORB",
       "setup": null
+    },
+    "BSE": {
+      "status": "WAITING_FOR_5M",
+      "last_processed_5m": "2026-11-23T10:05:00+05:30",
+      "orb": {
+        "timestamp": "2026-11-23T09:15:00+05:30",
+        "date": "2026-11-23",
+        "time": "09:15",
+        "high": 3816.4,
+        "low": 3761.4,
+        "close": 3764.0
+      },
+      "orb_source": "TODAY_ORB",
+      "setup": null
+    },
+    "E2E": {
+      "status": "WAITING_FOR_5M",
+      "last_processed_5m": "2026-11-23T10:05:00+05:30",
+      "orb": {
+        "timestamp": "2026-11-23T09:15:00+05:30",
+        "date": "2026-11-23",
+        "time": "09:15",
+        "high": 467.05,
+        "low": 452.45,
+        "close": 452.45
+      },
+      "orb_source": "TODAY_ORB",
+      "setup": null
     }
   },
   "volume_gainer_baseline": {
