@@ -559,6 +559,42 @@
       "prev_close": 1194.2,
       "prev_volume": 2435694,
       "prev_trading_day": "2026-11-26"
+    },
+    {
+      "symbol": "ADANIENT",
+      "security_id": "25",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "DHAN_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-11-27T09:31:50.372649+05:30"
+    },
+    {
+      "symbol": "ADANIPORTS",
+      "security_id": "15083",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "DHAN_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-11-27T09:31:50.372649+05:30"
+    },
+    {
+      "symbol": "APLAPOLLO",
+      "security_id": "25780",
+      "exchange_segment": "NSE_EQ",
+      "instrument": "EQUITY",
+      "indices": [
+        "VOLUME_GAINERS"
+      ],
+      "membership_count": 1,
+      "universe_source": "DHAN_VOLUME_GAINERS",
+      "volume_gainer_added_at": "2026-11-27T09:31:50.372649+05:30"
     }
   ],
   "signals": {
